@@ -32,7 +32,7 @@ def load_data(league, season):
 
 df = load_data(selected_league, selected_season)
 
-st.subheader(f"Dataframe: {selected_league) - {selected_season}")
+st.subheader(f"Dataframe: {selected_league} - {selected_season}")
 
 st.dataframe(df)
 
