@@ -24,7 +24,7 @@ def load_data(league, season):
     case 'France':
       league = 'F1'
 
-  season = season[2,2]+season[7,2]
+  season = season[2:4]+season[7:9]
   
   url = f"https://www.football-data.co.uk/mmz4281/{season}/{league}.csv"
   data = pd.read_csv(url)
