@@ -35,22 +35,18 @@ confrontos = pd.DataFrame({
     "Resultado": ["1-2", "0-3", "2-1"]
 })
 
+st.table(confrontos.style.hide(axis="index"))
+
 # Dividindo a página em duas colunas
-col1, col2 = st.columns([1, 3])
+col1, col2, col3, col4, col5, col6, col7 = st.columns(7)
 
-# Odds no lado esquerdo
-with col1:
-    st.metric(label="MO Home", value="2.10")
-    st.metric(label="MO Draw", value="3.20")
-    st.metric(label="MO Away", value="3.50")
-    st.metric(label="Over 0.5 HT", value="1.50")
-    st.metric(label="Over 1.5 FT", value="1.80")
-    st.metric(label="Over 2.5 FT", value="2.10")
-    st.metric(label="BTTS", value="1.95")
-
-# Tabela de Confrontos no lado direito
-with col2:
-    st.table(confrontos.style.hide(axis="index"))
+col1 = st.metric(label="MO Home", value="2.10")
+col2 = st.metric(label="MO Draw", value="3.20")
+col3 = st.metric(label="MO Away", value="3.50")
+col4 = st.metric(label="Over 0.5 HT", value="1.50")
+col5 = st.metric(label="Over 1.5 FT", value="1.80")
+col6 = st.metric(label="Over 2.5 FT", value="2.10")
+col7 = st.metric(label="BTTS", value="1.95")
 
 # Tabela 6 e Tabela 7: Últimos 10 jogos
 ultimos_casa = pd.DataFrame({
