@@ -54,6 +54,36 @@ with col2:
     st.subheader("Últimos 10 Jogos - Visitante")
     st.table(ultimos_visitante)
 
+classificacao_geral = pd.DataFrame({
+    "Posição": [1, 2, 3, 4],
+    "Clube": ["Benfica", "Porto", "Sporting", "Braga"],
+    "Pontos": [50, 47, 45, 42],
+    "Jogos": [20, 20, 20, 20],
+    "Vitórias": [16, 15, 14, 13],
+    "Empates": [2, 2, 3, 3],
+    "Derrotas": [2, 3, 3, 4],
+})
+
+classificacao_casa = pd.DataFrame({
+    "Posição": [1, 2, 3, 4],
+    "Clube": ["Benfica", "Porto", "Braga", "Sporting"],
+    "Pontos em Casa": [30, 28, 26, 24],
+    "Jogos em Casa": [10, 10, 10, 10],
+    "Vitórias em Casa": [10, 9, 8, 8],
+    "Empates em Casa": [0, 1, 2, 0],
+    "Derrotas em Casa": [0, 0, 0, 2],
+})
+
+classificacao_visitante = pd.DataFrame({
+    "Posição": [1, 2, 3, 4],
+    "Clube": ["Porto", "Benfica", "Sporting", "Braga"],
+    "Pontos Fora": [25, 23, 21, 18],
+    "Jogos Fora": [10, 10, 10, 10],
+    "Vitórias Fora": [8, 7, 7, 6],
+    "Empates Fora": [1, 2, 0, 0],
+    "Derrotas Fora": [1, 1, 3, 4],
+})
+
 col1, col2, col3 = st.columns(3)
 with col1:
     st.subheader("Classificação Geral")
