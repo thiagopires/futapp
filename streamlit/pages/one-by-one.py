@@ -33,7 +33,7 @@ confrontos = pd.DataFrame({
     "Resultado": ["1-2", "0-3", "2-1"]
 })
 st.subheader("Confronto nos últimos 3 anos")
-st.dataframe(confrontos)
+st.table(confrontos)
 
 # Tabela 6 e Tabela 7: Últimos 10 jogos
 ultimos_casa = pd.DataFrame({
@@ -52,7 +52,7 @@ with col1:
     st.table(ultimos_casa)
 with col2:
     st.subheader("Últimos 10 Jogos - Visitante")
-    st.tablr(ultimos_visitante)
+    st.table(ultimos_visitante)
 
 st.subheader("⚽ Classificações nesta competição")
 
