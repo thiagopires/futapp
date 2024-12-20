@@ -33,7 +33,7 @@ confrontos = pd.DataFrame({
     "Resultado": ["1-2", "0-3", "2-1"]
 })
 st.subheader("Confronto nos últimos 3 anos")
-st.table(confrontos)
+st.dataframe(confrontos)
 
 # Tabela 6 e Tabela 7: Últimos 10 jogos
 ultimos_casa = pd.DataFrame({
@@ -49,12 +49,12 @@ ultimos_visitante = pd.DataFrame({
 col1, col2 = st.columns(2)
 with col1:
     st.subheader("Últimos 10 Jogos - Casa")
-    st.table(ultimos_casa)
+    st.dataframe(ultimos_casa)
 with col2:
     st.subheader("Últimos 10 Jogos - Visitante")
-    st.table(ultimos_visitante)
+    st.dataframe(ultimos_visitante)
 
-st.title("⚽ Classificações nesta competição")
+st.subheader("⚽ Classificações nesta competição")
 
 classificacao_geral = pd.DataFrame({
     "Posição": [1, 2, 3, 4],
@@ -89,13 +89,13 @@ classificacao_visitante = pd.DataFrame({
 col1, col2, col3 = st.columns(3)
 with col1:
     st.subheader("Geral")
-    st.table(classificacao_geral.style.hide(axis="index"))
+    st.dataframe(classificacao_geral)
 with col2:
     st.subheader("Casa")
-    st.table(classificacao_casa.style.hide(axis="index"))
+    st.dataframe(classificacao_casa)
 with col3:
     st.subheader("Visitante")
-    st.table(classificacao_visitante.style.hide(axis="index"))
+    st.dataframe(classificacao_visitante)
 
 # Tabela 25 e 26: Gols Casa e Visitante
 gols = pd.DataFrame({
