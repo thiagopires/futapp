@@ -132,5 +132,78 @@ with col2:
     st.subheader("Percurso - Visitante")
     st.json(percurso_visitante)
 
+
+# Título
+st.subheader("⚽ Estatísticas de Confrontos de Futebol")
+
+# Dados Simulados para Times
+estatisticas_time_1 = {
+    "Categoria": [
+        "Média de gols marcados por jogo",
+        "Média de gols sofridos por jogo",
+        "Média de gols marcados + sofridos",
+        "Jogos sem sofrer gols",
+        "Jogos sem marcar gols",
+        "Jogos com Mais de 2,5 Gols",
+        "Jogos com Menos de 2,5 Gols"
+    ],
+    "Casa": [2.83, 0.5, 3.33, "67%", "-", "67%", "33%"],
+    "Fora": [3.13, 1.13, 4.26, "38%", "-", "75%", "25%"],
+    "Global": [3.0, 0.86, 3.86, "50%", "-", "71%", "29%"],
+}
+
+estatisticas_time_11 = {
+    "Categoria": [
+        "Abre marcador (qualquer altura)",
+        "Está a vencer ao intervalo",
+        "Vence no final",
+        "Reviravoltas"
+    ],
+    "Casa": ["5 em 6 (83%)", "3 em 5 (60%)", "5 em 5 (100%)", "0 em 1 (0%)"],
+    "Global": ["10 em 15 (67%)", "6 em 10 (60%)", "8 em 8 (80%)", "1 em 5 (20%)"]
+}
+
+estatisticas_time_2 = {
+    "Categoria": [
+        "Média de gols marcados por jogo",
+        "Média de gols sofridos por jogo",
+        "Média de gols marcados + sofridos",
+        "Jogos sem sofrer gols",
+        "Jogos sem marcar gols",
+        "Jogos com Mais de 2,5 Gols",
+        "Jogos com Menos de 2,5 Gols"
+    ],
+    "Casa": [2.83, 0.5, 3.33, "67%", "-", "67%", "33%"],
+    "Fora": [3.13, 1.13, 4.26, "38%", "-", "75%", "25%"],
+    "Global": [3.0, 0.86, 3.86, "50%", "-", "71%", "29%"],
+}
+
+estatisticas_time_22 = {
+    "Categoria": [
+        "Abre marcador (qualquer altura)",
+        "Está a vencer ao intervalo",
+        "Vence no final",
+        "Reviravoltas"
+    ],
+    "Casa": ["5 em 6 (83%)", "3 em 5 (60%)", "5 em 5 (100%)", "0 em 1 (0%)"],
+    "Global": ["10 em 15 (67%)", "6 em 10 (60%)", "8 em 8 (80%)", "1 em 5 (20%)"]
+}
+
+# Converte para DataFrame
+df_time_1 = pd.DataFrame(estatisticas_time_1)
+df_time_11 = pd.DataFrame(estatisticas_time_11)
+df_time_2 = pd.DataFrame(estatisticas_time_2)
+df_time_22 = pd.DataFrame(estatisticas_time_22)
+
+col1, col2 = st.columns(2)
+with col1:
+    st.subheader(club1)
+    st.table(df_time_1.style.hide(axis="index"))
+    st.table(df_time_11.style.hide(axis="index"))
+with col2:
+    st.subheader(club2)
+    st.table(df_time_2.style.hide(axis="index"))
+    st.table(df_time_22.style.hide(axis="index"))
+
 # Outros dados e análises podem ser adicionados conforme necessário
 st.write("⚡ Dashboard dinâmico para análise de confrontos! ⚡")
