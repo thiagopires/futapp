@@ -49,10 +49,10 @@ ultimos_visitante = pd.DataFrame({
 col1, col2 = st.columns(2)
 with col1:
     st.subheader("Últimos 10 Jogos - Casa")
-    st.dataframe(ultimos_casa)
+    st.table(ultimos_casa)
 with col2:
     st.subheader("Últimos 10 Jogos - Visitante")
-    st.dataframe(ultimos_visitante)
+    st.tablr(ultimos_visitante)
 
 st.subheader("⚽ Classificações nesta competição")
 
