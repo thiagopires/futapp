@@ -9,6 +9,24 @@ st.set_page_config(
     layout="wide",
 )
 
+# Estilo CSS para os botões
+st.markdown("""
+    <style>
+    .odds-box {
+        display: inline-block;
+        background-color: #f0f0f0;
+        color: #333;
+        border-radius: 12px;
+        padding: 10px 20px;
+        margin: 5px;
+        font-weight: bold;
+        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        font-size: 14px;
+    }
+    </style>
+""", unsafe_allow_html=True)
+
 # Título do dashboard
 st.title("⚽ Análise Completa do Confronto de Futebol")
 
@@ -26,14 +44,30 @@ st.write(f"Data: {match_date} | Campeonato: {league} | Rodada: {round_number}")
 
 # Simulação de dados das tabelas (substitua por dados reais)
 # Tabela 4: Confronto nos últimos 3 anos
+
+# Dados Simulados para Confrontos
 confrontos = pd.DataFrame({
     "Data": ["2023-01-01", "2022-03-15", "2021-07-20"],
     "Clube 1": ["Nacional", "Nacional", "Benfica"],
     "Clube 2": ["Benfica", "Benfica", "Nacional"],
     "Resultado": ["1-2", "0-3", "2-1"]
 })
-st.subheader("Confronto nos últimos 3 anos")
-st.table(confrontos)
+
+# Dividindo a página em duas colunas
+col1, col2 = st.columns([1, 3])
+
+# Odds no lado esquerdo
+with col1:
+    st.markdown("### Odds Importantes")
+    st.markdown('<div class="odds-box">Match Odds: 2.10 | 3.20 | 3.50</div>', unsafe_allow_html=True)
+    st.markdown('<div class="odds-box">Over 0.5 HT: 1.50</div>', unsafe_allow_html=True)
+    st.markdown('<div class="odds-box">Over 1.5 FT: 1.80</div>', unsafe_allow_html=True)
+    st.markdown('<div class="odds-box">Over 2.5 FT: 2.10</div>', unsafe_allow_html=True)
+    st.markdown('<div class="odds-box">BTTS: 1.95</div>', unsafe_allow_html=True)
+
+# Tabela de Confrontos no lado direito
+with col2:
+    st.table(confrontos.style.hide(axis="index"))
 
 # Tabela 6 e Tabela 7: Últimos 10 jogos
 ultimos_casa = pd.DataFrame({
