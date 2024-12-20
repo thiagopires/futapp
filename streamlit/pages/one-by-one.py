@@ -9,24 +9,6 @@ st.set_page_config(
     layout="wide",
 )
 
-# Estilo CSS para os botões
-st.markdown("""
-    <style>
-    .odds-box {
-        display: inline-block;
-        background-color: #f0f0f0;
-        color: #333;
-        border-radius: 12px;
-        padding: 10px 20px;
-        margin: 5px;
-        font-weight: bold;
-        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
-        text-align: center;
-        font-size: 14px;
-    }
-    </style>
-""", unsafe_allow_html=True)
-
 # Título do dashboard
 st.title("⚽ Análise Completa do Confronto de Futebol")
 
@@ -58,12 +40,13 @@ col1, col2 = st.columns([1, 3])
 
 # Odds no lado esquerdo
 with col1:
-    st.markdown("### Odds Importantes")
-    st.markdown('<div class="odds-box">Match Odds: 2.10 | 3.20 | 3.50</div>', unsafe_allow_html=True)
-    st.markdown('<div class="odds-box">Over 0.5 HT: 1.50</div>', unsafe_allow_html=True)
-    st.markdown('<div class="odds-box">Over 1.5 FT: 1.80</div>', unsafe_allow_html=True)
-    st.markdown('<div class="odds-box">Over 2.5 FT: 2.10</div>', unsafe_allow_html=True)
-    st.markdown('<div class="odds-box">BTTS: 1.95</div>', unsafe_allow_html=True)
+    st.metric(label="MO Home", value="2.10")
+    st.metric(label="MO Draw", value="3.20")
+    st.metric(label="MO Away", value="3.50")
+    st.metric(label="Over 0.5 HT", value="1.50")
+    st.metric(label="Over 1.5 FT", value="1.80")
+    st.metric(label="Over 2.5 FT", value="2.10")
+    st.metric(label="BTTS", value="1.95")
 
 # Tabela de Confrontos no lado direito
 with col2:
