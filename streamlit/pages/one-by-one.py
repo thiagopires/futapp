@@ -198,12 +198,12 @@ df_time_22 = pd.DataFrame(estatisticas_time_22)
 col1, col2 = st.columns(2)
 with col1:
     st.subheader(club1)
-    st.table(df_time_1.style.hide(axis="index"))
-    st.table(df_time_11.style.hide(axis="index"))
+    st.table(df_time_1.to_dict(orient='records'))
+    st.table(df_time_11.to_dict(orient='records'))
 with col2:
     st.subheader(club2)
-    st.table(df_time_2.style.hide(axis="index"))
-    st.table(df_time_22.style.hide(axis="index"))
+    st.table(df_time_2.to_dict(orient='records'))
+    st.table(df_time_22.to_dict(orient='records'))
 
 # Outros dados e análises podem ser adicionados conforme necessário
 st.write("⚡ Dashboard dinâmico para análise de confrontos! ⚡")
