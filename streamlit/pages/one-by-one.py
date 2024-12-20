@@ -24,19 +24,6 @@ round_number = st.sidebar.number_input("Rodada", min_value=1, step=1)
 st.subheader(f"Confronto: {club1} x {club2}")
 st.write(f"Data: {match_date} | Campeonato: {league} | Rodada: {round_number}")
 
-# Simulação de dados das tabelas (substitua por dados reais)
-# Tabela 4: Confronto nos últimos 3 anos
-
-# Dados Simulados para Confrontos
-confrontos = pd.DataFrame({
-    "Data": ["2023-01-01", "2022-03-15", "2021-07-20"],
-    "Clube 1": ["Nacional", "Nacional", "Benfica"],
-    "Clube 2": ["Benfica", "Benfica", "Nacional"],
-    "Resultado": ["1-2", "0-3", "2-1"]
-})
-
-st.table(confrontos.style.hide(axis="index"))
-
 # Dividindo a página em duas colunas
 col1, col2, col3, col4, col5, col6, col7 = st.columns(7)
 
@@ -47,6 +34,16 @@ col4.metric(label="Over 0.5 HT", value="1.50")
 col5.metric(label="Over 1.5 FT", value="1.80")
 col6.metric(label="Over 2.5 FT", value="2.10")
 col7.metric(label="BTTS", value="1.95")
+
+# Dados Simulados para Confrontos
+confrontos = pd.DataFrame({
+    "Data": ["2023-01-01", "2022-03-15", "2021-07-20"],
+    "Clube 1": ["Nacional", "Nacional", "Benfica"],
+    "Clube 2": ["Benfica", "Benfica", "Nacional"],
+    "Resultado": ["1-2", "0-3", "2-1"]
+})
+
+st.table(confrontos.style.hide(axis="index"))
 
 # Tabela 6 e Tabela 7: Últimos 10 jogos
 ultimos_casa = pd.DataFrame({
