@@ -43,7 +43,7 @@ confrontos = pd.DataFrame({
     "Resultado": ["1-2", "0-3", "2-1"]
 })
 
-st.table(confrontos.style.hide(axis="index"))
+st.dataframe(confrontos)
 
 # Tabela 6 e Tabela 7: Últimos 10 jogos
 ultimos_casa = pd.DataFrame({
