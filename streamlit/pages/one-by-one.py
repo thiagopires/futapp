@@ -11,7 +11,7 @@ def load_data_matches():
     dia = date.today()
     df = pd.read_csv(f"https://github.com/futpythontrader/YouTube/blob/main/Jogos_do_Dia/FootyStats/Jogos_do_Dia_FootyStats_{str(dia)}.csv?raw=true")
     df["Datetime"] = pd.to_datetime(df["Date"] + " " + df["Time"])
-    df["Formatted_Datetime"] = df["datetime"].dt.strftime("%d/%m/%Y %H:%M")
+    df["Formatted_Datetime"] = df["Datetime"].dt.strftime("%d/%m/%Y %H:%M")
     return df
 
 # Configuração da página
