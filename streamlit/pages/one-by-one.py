@@ -7,7 +7,7 @@ from datetime import date, timedelta
 def print_dataframe(df):
     st.dataframe(df, use_container_width=True, hide_index=True)
     
-@st.cache_data
+# @st.cache_data
 def load_daymatches(i):
     dia = date.today() + timedelta(days=i)
     df = pd.read_csv(f"https://github.com/futpythontrader/YouTube/blob/main/Jogos_do_Dia/FootyStats/Jogos_do_Dia_FootyStats_{str(dia)}.csv?raw=true")
@@ -15,7 +15,7 @@ def load_daymatches(i):
     df["Formatted_Datetime"] = df["Datetime"].dt.strftime("%d/%m/%Y %H:%M")
     return df
 
-@st.cache_data
+# @st.cache_data
 def load_histmatches():
     df = pd.read_csv("https://github.com/futpythontrader/YouTube/blob/main/Bases_de_Dados/FootyStats/Base_de_Dados_FootyStats_(2022_2024).csv?raw=true")
     df[["Date", "Time"]] = df["Date"].str.split(" ", expand=True)
