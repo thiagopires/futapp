@@ -2,9 +2,8 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 
-def print_table(df):
-    table_data = [df.columns.to_list()] + df.values.tolist()
-    st.table(table_data)
+def print_dataframe(df):
+    st.dataframe(df, use_container_width=True, hide_index=True)
 
 # Configuração da página
 st.set_page_config(
