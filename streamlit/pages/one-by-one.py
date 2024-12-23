@@ -6,8 +6,9 @@ def print_dataframe(df):
     st.dataframe(df, use_container_width=True, hide_index=True)
 
 def load_data_matches():
-  data_matches = pd.read_csv(f"https://github.com/futpythontrader/YouTube/blob/main/Jogos_do_Dia/FootyStats/Jogos_do_Dia_FootyStats_{str(dia)}.csv?raw=true")
-  return data_matches
+    dia = date.today()
+    data_matches = pd.read_csv(f"https://github.com/futpythontrader/YouTube/blob/main/Jogos_do_Dia/FootyStats/Jogos_do_Dia_FootyStats_{str(dia)}.csv?raw=true")
+    return data_matches
 
 # Configuração da página
 st.set_page_config(
