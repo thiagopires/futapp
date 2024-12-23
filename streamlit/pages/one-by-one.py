@@ -64,7 +64,7 @@ st.divider()
 #     "Clube 2": ["Benfica", "Benfica", "Nacional"],
 #     "Resultado": ["1-2", "0-3", "2-1"]
 # })
-filter_confrontos = (df_hist["Home"].isin([df_match_selected["Home"], df_match_selected["Away"]])) | (df["Away"].isin([df_match_selected["Home"], df_match_selected["Away"]]))
+filter_confrontos = (df_hist["Home"].isin([df_match_selected["Home"], df_match_selected["Away"]])) | (df_match_selected["Away"].isin([df_match_selected["Home"], df_match_selected["Away"]]))
 confrontos = df_hist.loc[filter_confrontos, ["Formatted_Date", "Season", "Home", "Resultado_FT", "Away"]].sort_values(by="Date", ascending=False)
 
 # Dividindo a página em duas colunas
