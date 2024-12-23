@@ -20,7 +20,7 @@ def load_histmatches():
     df["Date"] = pd.to_datetime(df["Date"])
     # df["Date"] = df["Date"].dt.date
     df["Formatted_Date"] = df["Date"].dt.strftime("%d/%m/%Y")
-    df["Resultado_FT"] = str(df["Goals_H_FT"]) + "-" + str(df["Goals_A_FT"])
+    df["Resultado_FT"] = df["Goals_H_FT"].astype(str) + "-" + df["Goals_A_FT"].astype(str)
     return df
 
 def atualizar_estatisticas(row, clubes, casa=True):
@@ -106,23 +106,19 @@ matches = df_matches["Confronto"].value_counts().index
 match_selected = st.sidebar.selectbox("Confronto", matches)
 df_match_selected = df_matches[df_matches["Confronto"] == match_selected].iloc[0]
 
-# Main
-with st.expander("Seção Fixa (expandir ou recolher)", expanded=True):
+# Título do dashboard
+st.title("⚽ Análise Completa do Confronto de Futebol")
 
-    # Título do dashboard
-    st.title("⚽ Análise Completa do Confronto de Futebol")
+# club1 = st.sidebar.selectbox("Clube 1", ["Nacional", "Benfica", "Porto"])
+# club2 = st.sidebar.selectbox("Clube 2", ["Nacional", "Benfica", "Porto"])
+# match_date = st.sidebar.date_input("Data do Jogo")
+# league = st.sidebar.selectbox("Campeonato", ["Primeira Liga", "Copa de Portugal"])
+# round_number = st.sidebar.number_input("Rodada", min_value=1, step=1)
 
-
-    # club1 = st.sidebar.selectbox("Clube 1", ["Nacional", "Benfica", "Porto"])
-    # club2 = st.sidebar.selectbox("Clube 2", ["Nacional", "Benfica", "Porto"])
-    # match_date = st.sidebar.date_input("Data do Jogo")
-    # league = st.sidebar.selectbox("Campeonato", ["Primeira Liga", "Copa de Portugal"])
-    # round_number = st.sidebar.number_input("Rodada", min_value=1, step=1)
-
-    # Header
-    st.caption(f"{df_match_selected['Formatted_Datetime']} - {df_match_selected["League"]} (Rodada {df_match_selected["Rodada"]})")
-    st.subheader(df_match_selected["Confronto"])
-    st.divider()
+# Header
+st.caption(f"{df_match_selected['Formatted_Datetime']} - {df_match_selected["League"]} (Rodada {df_match_selected["Rodada"]})")
+st.subheader(df_match_selected["Confronto"])
+st.divider()
 
 # st.write(f"*Data:* {str(df_match_selected["Datetime"])} | *Campeonato:* {df_match_selected["League"]} | *Rodada:* {df_match_selected["Rodada"]}")
 
@@ -135,7 +131,7 @@ with st.expander("Seção Fixa (expandir ou recolher)", expanded=True):
 # })
 
 filter_confrontos = (df_hist["Home"].isin([df_match_selected["Home"], df_match_selected["Away"]])) & (df_hist["Away"].isin([df_match_selected["Home"], df_match_selected["Away"]]))
-confrontos = df_hist.loc[filter_confrontos, ["Date", "Season", "Home", "Goals_H_FT", "Goals_A_FT", "Away"]].sort_values(by="Date", ascending=False)
+confrontos = df_hist.loc[filter_confrontos, ["Date", "Season", "Home", "Resultado_FT", "Away"]].sort_values(by="Date", ascending=False)
 
 # Dividindo a página em duas colunas
 col1, col2 = st.columns(2)
@@ -166,10 +162,10 @@ with col2:
 # })
 
 filter_ultimos_casa = df_hist["Home"] == df_match_selected["Home"]
-ultimos_casa = df_hist.loc[filter_ultimos_casa, ["Date", "Away", "Goals_H_FT", "Goals_A_FT"]].tail(10).sort_values(by="Date", ascending=False)
+ultimos_casa = df_hist.loc[filter_ultimos_casa, ["Date", "Home", "Resultado_FT", "Away"]].tail(10).sort_values(by="Date", ascending=False)
 
 filter_ultimos_visitante = df_hist["Away"] == df_match_selected["Away"]
-ultimos_visitante = df_hist.loc[filter_ultimos_visitante, ["Date", "Home", "Goals_H_FT", "Goals_A_FT"]].tail(10).sort_values(by="Date", ascending=False)
+ultimos_visitante = df_hist.loc[filter_ultimos_visitante, ["Date", "Home", "Resultado_FT", "Away"]].tail(10).sort_values(by="Date", ascending=False)
 
 col1, col2 = st.columns(2)
 with col1:
