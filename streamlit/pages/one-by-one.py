@@ -49,7 +49,7 @@ def generate_classificacao(df):
     
     # Inicializando as tabelas de pontos
     clubes = pd.DataFrame({"Clube": pd.concat([df["Home"], df["Away"]]).unique()})
-    clubes.set_index("Clube", inplace=True)
+    # clubes.set_index("Clube", inplace=True)
     columns = ["pontos", "jogos", "vitorias", "empates", "derrotas", "gols_a_favor", "gols_contra", "saldo"]
     for col in columns:
         clubes[col] = 0
