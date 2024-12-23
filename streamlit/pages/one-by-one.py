@@ -2,6 +2,10 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 
+def print_table(df):
+    table_data = [df.columns.to_list()] + df.values.tolist()
+    st.table(table_data)
+
 # Configuração da página
 st.set_page_config(
     page_title="Análise de Confrontos de Futebol",
@@ -47,7 +51,7 @@ with col1:
     # col7.metric(label="BTTS", value="1.95")
 with col2:
     st.subheader("Confrontos diretos nos últimos 3 anos")
-    st.table(confrontos.to_dict(orient="records"))
+    print_table(df)
 
 # Tabela 6 e Tabela 7: Últimos 10 jogos
 ultimos_casa = pd.DataFrame({
