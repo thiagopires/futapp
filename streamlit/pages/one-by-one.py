@@ -4,7 +4,7 @@ import plotly.express as px
 import datetime
 from datetime import date, timedelta
 
-def first_goal(row):
+def first_goal_string(row):
     try:
         # Extrair os minutos de cada coluna, tratando valores vazios ou não numéricos
         home = [
@@ -20,16 +20,16 @@ def first_goal(row):
     except AttributeError:
         home = []
         away = []
-    
+
     # Combinar os minutos de ambas as colunas
     all_goals = home + away
 
     # Identificar o menor minuto e sua origem
     if all_goals:
         first = min(all_goals, key=lambda x: x[0])  # Ordenar pelo minuto
-        return first[1], first[0]  # Retornar origem e minuto
+        return f"{first[0]}' {first[1]}"  # Formatar como "minuto' origem"
     else:
-        return '-', '-'  # Caso não haja gols
+        return '-'  # Caso não haja gols
 
 def print_dataframe(df, pheight=None):
     st.dataframe(df, height=pheight, use_container_width=True, hide_index=True)
@@ -48,6 +48,7 @@ def load_histmatches():
     # df["Date"] = df["Date"].dt.date
     df["Formatted_Date"] = df["Date"].dt.strftime("%d/%m/%Y")
     df["Resultado_FT"] = df["Goals_H_FT"].astype(str) + "-" + df["Goals_A_FT"].astype(str)
+    df["Primeiro_Gol"] = df.apply(first_goal_string, axis=1)
     return df
 
 def atualizar_estatisticas(row, clubes, casa=True):
