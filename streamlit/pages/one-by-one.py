@@ -21,7 +21,7 @@ def load_histmatches():
     df[["Date", "Time"]] = df["Date"].str.split(" ", expand=True)
     df["Date"] = pd.to_datetime(df["Date"])
     df["Formatted_Date"] = df["Date"].dt.strftime("%d/%m/%Y")
-    df["Resultado_FT"] = df["Goals_H_FT"] + "-" + df["Goals_A_FT"]
+    df["Resultado_FT"] = str(df["Goals_H_FT"]) + "-" + str(df["Goals_A_FT"])
     return df
 
 # Configuração da página
