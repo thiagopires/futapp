@@ -194,7 +194,7 @@ with st.spinner('Carregando...'):
     #     "Derrotas Fora": [1, 1, 3, 4],
     # })
 
-    filter_classificacao = (df_hist["Season"] == "2024/2025" & (df_hist["League"] == df_match_selected["League"]))
+    filter_classificacao = (df_hist["Season"] == "2024/2025") & (df_hist["League"] == df_match_selected["League"])
     df_classificacao = df_hist.loc[filter_classificacao, ["League","Season","Date","Rodada","Home","Away","Goals_H_FT","Goals_A_FT"]]
 
     classificacao_geral, classificacao_casa, classificacao_visitante = generate_classificacao(df_classificacao)
