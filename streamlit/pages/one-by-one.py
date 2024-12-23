@@ -11,6 +11,7 @@ def load_data_matches():
     dia = date.today()
     df = pd.read_csv(f"https://github.com/futpythontrader/YouTube/blob/main/Jogos_do_Dia/FootyStats/Jogos_do_Dia_FootyStats_{str(dia)}.csv?raw=true")
     df["Datetime"] = pd.to_datetime(df["Date"] + " " + df["Time"])
+    df["Formatted_Datetime"] = df["datetime"].dt.strftime("%d/%m/%Y %H:%M")
     return df
 
 # Configuração da página
@@ -39,8 +40,9 @@ match_selected = st.sidebar.selectbox("Confronto", matches)
 df_match_selected = df_matches[df_matches["Confronto"] == match_selected].iloc[0]
 
 # Exibição do confronto
+st.caption(f"{df_match_selected['Formatted_Datetime']} - {df_match_selected["League"]} (Rodada {df_match_selected["Rodada"]})")
 st.subheader(df_match_selected["Confronto"])
-st.write(f"Data: {str(df_match_selected["Datetime"])} | Campeonato: {df_match_selected["League"]} | Rodada: {df_match_selected["Rodada"]}")
+# st.write(f"*Data:* {str(df_match_selected["Datetime"])} | *Campeonato:* {df_match_selected["League"]} | *Rodada:* {df_match_selected["Rodada"]}")
 st.divider()
 
 # Dados Simulados para Confrontos
