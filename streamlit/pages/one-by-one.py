@@ -25,7 +25,7 @@ def load_histmatches():
     df["Resultado_FT"] = str(df["Goals_H_FT"]) + "-" + str(df["Goals_A_FT"])
     return df
 
-    def atualizar_estatisticas(row, clubes, casa=True):
+def atualizar_estatisticas(row, clubes, casa=True):
     clube = row["Home"] if casa else row["Away"]
     gols_favor = row["Goals_H_FT"] if casa else row["Goals_A_FT"]
     gols_contra = row["Goals_A_FT"] if casa else row["Goals_H_FT"]
