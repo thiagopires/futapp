@@ -255,7 +255,7 @@ with st.spinner('Carregando...'):
     df_time_22 = pd.DataFrame(estatisticas_time_22)
     
     col1, col2 = st.columns(2)
-    with col1d
+    with col1:
         st.subheader(df_match_selected["Home"])
         print_dataframe(df_time_1.to_dict(orient='records'))
         print_dataframe(df_time_11.to_dict(orient='records'))
