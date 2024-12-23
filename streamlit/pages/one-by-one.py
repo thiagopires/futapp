@@ -58,9 +58,9 @@ def generate_classificacao(df, type):
     for _, row in df.iterrows():
         if   type == 'HOME':
             atualizar_estatisticas(row, clubes, casa=True)  # Jogos em casa
-        elif type == 'AWAY:
+        elif type == 'AWAY':
             atualizar_estatisticas(row, clubes, casa=False)  # Jogos fora
-        elif type == 'ALL:
+        elif type == 'ALL':
             atualizar_estatisticas(row, clubes, casa=True)  # Jogos em casa
             atualizar_estatisticas(row, clubes, casa=False) # Jogos fora
     
