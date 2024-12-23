@@ -99,11 +99,11 @@ with col2:
 #     "Resultado": ["1-1", "3-2", "0-1"]
 # })
 
-filter_confrontos = df_hist["Home"] == df_match_selected["Home"]
-ultimos_casa = df_hist.loc[filter_confrontos, ["Date", "Away", "Goals_H_FT", "Goals_A_FT"]].sort_values(by="Date", ascending=False)
+filter_ultimos_casa = df_hist["Home"] == df_match_selected["Home"]
+ultimos_casa = df_hist.loc[filter_ultimos_casa, ["Date", "Away", "Goals_H_FT", "Goals_A_FT"]].sort_values(by="Date", ascending=False)
 
-filter_confrontos = df_hist["Away"] == df_match_selected["Away"]
-ultimos_casa = df_hist.loc[filter_confrontos, ["Date", "Home", "Goals_H_FT", "Goals_A_FT"]].sort_values(by="Date", ascending=False)
+filter_ultimos_visitante = df_hist["Away"] == df_match_selected["Away"]
+ultimos_visitante = df_hist.loc[filter_ultimos_visitante, ["Date", "Home", "Goals_H_FT", "Goals_A_FT"]].sort_values(by="Date", ascending=False)
 
 col1, col2 = st.columns(2)
 with col1:
