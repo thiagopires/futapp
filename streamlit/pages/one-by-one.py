@@ -25,6 +25,22 @@ def load_histmatches():
     df["Resultado_FT"] = str(df["Goals_H_FT"]) + "-" + str(df["Goals_A_FT"])
     return df
 
+def atualizar_estatisticas(row, clubes, casa=True):
+    clube = row["Home"] if casa else row["Away"]
+    gols_favor = row["Goals_H_FT"] if casa else row["Goals_A_FT"]
+    gols_contra = row["Goals_A_FT"] if casa else row["Goals_H_FT"]
+    pontos = 3 if (row["Home_Win"] if casa else row["Away_Win"]) else 1 if row["Draw"] else 0
+
+    clubes.loc[clube, "jogos"] += 1
+    clubes.loc[clube, "vitorias"] += 1 if (row["Home_Win"] if casa else row["Away_Win"]) else 0
+    clubes.loc[clube, "empates"] += 1 if row["Draw"] else 0
+    clubes.loc[clube, "derrotas"] += 1 if not row["Draw"] and not (row["Home_Win"] if casa else row["Away_Win"]) else 0
+    clubes.loc[clube, "gols_a_favor"] += gols_favor
+    clubes.loc[clube, "gols_contra"] += gols_contra
+    clubes.loc[clube, "pontos"] += pontos
+    clubes.loc[clube, "saldo"] += gols_favor - gols_contra
+
+
 def generate_classificacao(df):
     # Calculando o resultado do jogo
     df["Home_Win"] = df["Goals_H_FT"] > df["Goals_A_FT"]
@@ -40,47 +56,22 @@ def generate_classificacao(df):
     
     # Atualizando estatísticas para todos os jogos
     for _, row in df.iterrows():
-        casa = True
-        clube = row["Home"] if casa else row["Away"]
-        gols_favor = row["Goals_H_FT"] if casa else row["Goals_A_FT"]
-        gols_contra = row["Goals_A_FT"] if casa else row["Goals_H_FT"]
-        pontos = 3 if (row["Home_Win"] if casa else row["Away_Win"]) else 1 if row["Draw"] else 0
+        atualizar_estatisticas(row, clubes, casa=True)  # Jogos em casa
+        atualizar_estatisticas(row, clubes, casa=False)  # Jogos fora
     
-        clubes.loc[clube, "jogos"] += 1
-        clubes.loc[clube, "vitorias"] += 1 if (row["Home_Win"] if casa else row["Away_Win"]) else 0
-        clubes.loc[clube, "empates"] += 1 if row["Draw"] else 0
-        clubes.loc[clube, "derrotas"] += 1 if not row["Draw"] and not (row["Home_Win"] if casa else row["Away_Win"]) else 0
-        clubes.loc[clube, "gols_a_favor"] += gols_favor
-        clubes.loc[clube, "gols_contra"] += gols_contra
-        clubes.loc[clube, "pontos"] += pontos
-        clubes.loc[clube, "saldo"] += gols_favor - gols_contra
-
-        casa = False
-        clube = row["Home"] if casa else row["Away"]
-        gols_favor = row["Goals_H_FT"] if casa else row["Goals_A_FT"]
-        gols_contra = row["Goals_A_FT"] if casa else row["Goals_H_FT"]
-        pontos = 3 if (row["Home_Win"] if casa else row["Away_Win"]) else 1 if row["Draw"] else 0
+    # Adicionando a posição e ordenando
+    clubes = clubes.sort_values(by=["pontos", "saldo", "gols_a_favor"], ascending=False)
+    clubes["posicao"] = range(1, len(clubes) + 1)
     
-        clubes.loc[clube, "jogos"] += 1
-        clubes.loc[clube, "vitorias"] += 1 if (row["Home_Win"] if casa else row["Away_Win"]) else 0
-        clubes.loc[clube, "empates"] += 1 if row["Draw"] else 0
-        clubes.loc[clube, "derrotas"] += 1 if not row["Draw"] and not (row["Home_Win"] if casa else row["Away_Win"]) else 0
-        clubes.loc[clube, "gols_a_favor"] += gols_favor
-        clubes.loc[clube, "gols_contra"] += gols_contra
-        clubes.loc[clube, "pontos"] += pontos
-        clubes.loc[clube, "saldo"] += gols_favor - gols_contra
-        
-        # Adicionando a posição e ordenando
-        clubes = clubes.sort_values(by=["pontos", "saldo", "gols_a_favor"], ascending=False)
-        clubes["posicao"] = range(1, len(clubes) + 1)
-        
+    # Visualização geral
+    print("Classificação Geral:")
+    
     classificacao_geral = clubes.reset_index()
 
     classificacao_casa = clubes.copy()
     classificacao_visitante = clubes.copy()
 
     return classificacao_geral, classificacao_casa, classificacao_visitante
-
 
 # Configuração da página
 st.set_page_config(
@@ -203,7 +194,7 @@ with st.spinner('Carregando...'):
     #     "Derrotas Fora": [1, 1, 3, 4],
     # })
 
-    filter_classificacao = (df_hist["Season"].str.contains("2024", na=False) & (df_hist["League"] == df_match_selected["League"]))
+    filter_classificacao = (df_hist["Season"] == "2024/2025" & (df_hist["League"] == df_match_selected["League"]))
     df_classificacao = df_hist.loc[filter_classificacao, ["League","Season","Date","Rodada","Home","Away","Goals_H_FT","Goals_A_FT"]]
 
     classificacao_geral, classificacao_casa, classificacao_visitante = generate_classificacao(df_classificacao)
