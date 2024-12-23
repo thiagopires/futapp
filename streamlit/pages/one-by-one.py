@@ -19,6 +19,7 @@ def load_daymatches(i):
 def load_histmatches():
     df = pd.read_csv("https://github.com/futpythontrader/YouTube/blob/main/Bases_de_Dados/FootyStats/Base_de_Dados_FootyStats_(2022_2024).csv?raw=true")
     df[["Date", "Time"]] = df["Date"].str.split(" ", expand=True)
+    df["Date"] = pd.to_datetime(df["Date"])
     df["Formatted_Date"] = df["Date"].dt.strftime("%d/%m/%Y")
     df["Resultado_FT"] = df["Goals_H_FT"] + "-" + df["Goals_A_FT"]
     return df
