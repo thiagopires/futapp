@@ -66,7 +66,7 @@ def generate_classificacao(df, type):
     # Adicionando a posição e ordenando
 
     clubes = clubes.sort_values(by=["PTS", "DIFF", "GF"], ascending=False)
-    clubes["Goals"] = f"{str(clubes["GF"])}:{str(clubes["GC"])}"
+    clubes["Goals"] = f"{str(clubes['GF'])}:{str(clubes['GC'])}"
     clubes["#"] = range(1, len(clubes) + 1)
     clubes = clubes[["#","PTS", "P", "W", "D", "L", "DIFF", "Goals"]]
 
