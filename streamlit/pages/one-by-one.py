@@ -23,6 +23,7 @@ round_number = st.sidebar.number_input("Rodada", min_value=1, step=1)
 # Exibição do confronto
 st.subheader(f"{club1} x {club2}")
 st.write(f"Data: {match_date} | Campeonato: {league} | Rodada: {round_number}")
+st.divider()
 
 # Dados Simulados para Confrontos
 confrontos = pd.DataFrame({
@@ -35,6 +36,7 @@ confrontos = pd.DataFrame({
 # Dividindo a página em duas colunas
 col1, col2 = st.columns(2)
 with col1:
+    st.subheader("Odds")
     col11, col12, col13 = st.columns(3)
     col11.metric(label="MO Home", value="2.10")
     col12.metric(label="MO Draw", value="3.20")
@@ -44,6 +46,7 @@ with col1:
     col13.metric(label="Over 2.5 FT", value="2.10")
     # col7.metric(label="BTTS", value="1.95")
 with col2:
+    st.subheader("Confrontos diretos últimos 3 anos")
     st.table(confrontos)
 
 # Tabela 6 e Tabela 7: Últimos 10 jogos
