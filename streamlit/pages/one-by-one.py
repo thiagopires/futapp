@@ -5,6 +5,10 @@ import plotly.express as px
 def print_dataframe(df):
     st.dataframe(df, use_container_width=True, hide_index=True)
 
+def load_data_matches():
+  data_matches = pd.read_csv(f"https://github.com/futpythontrader/YouTube/blob/main/Jogos_do_Dia/FootyStats/Jogos_do_Dia_FootyStats_{str(dia)}.csv?raw=true")
+  return data_matches
+
 # Configuração da página
 st.set_page_config(
     page_title="Análise de Confrontos de Futebol",
@@ -15,13 +19,20 @@ st.set_page_config(
 # Título do dashboard
 st.title("⚽ Análise Completa do Confronto de Futebol")
 
+df_matches = load_data_matches()
+df_matches["Confronto"] = df_matches["Home"] + " vs." + df_matches["Away"]
+matches = df_matches["Confronto"].value_counts().index
+
 # Entrada para seleção do confronto
 st.sidebar.header("Selecione o Confronto")
-club1 = st.sidebar.selectbox("Clube 1", ["Nacional", "Benfica", "Porto"])
-club2 = st.sidebar.selectbox("Clube 2", ["Nacional", "Benfica", "Porto"])
-match_date = st.sidebar.date_input("Data do Jogo")
-league = st.sidebar.selectbox("Campeonato", ["Primeira Liga", "Copa de Portugal"])
-round_number = st.sidebar.number_input("Rodada", min_value=1, step=1)
+# club1 = st.sidebar.selectbox("Clube 1", ["Nacional", "Benfica", "Porto"])
+# club2 = st.sidebar.selectbox("Clube 2", ["Nacional", "Benfica", "Porto"])
+# match_date = st.sidebar.date_input("Data do Jogo")
+# league = st.sidebar.selectbox("Campeonato", ["Primeira Liga", "Copa de Portugal"])
+# round_number = st.sidebar.number_input("Rodada", min_value=1, step=1)
+match_selected = st.sidebar.selectbox("Confronto", matches)
+
+df_match_selected = df_matches[df_matches["Confronto"] == match_selected]
 
 # Exibição do confronto
 st.subheader(f"{club1} x {club2}")
@@ -41,12 +52,12 @@ col1, col2 = st.columns(2)
 with col1:
     st.subheader("Odds")
     col11, col12, col13 = st.columns(3)
-    col11.metric(label="MO Home", value="2.10")
-    col12.metric(label="MO Draw", value="3.20")
-    col13.metric(label="MO Away", value="3.50")
-    col11.metric(label="Over 0.5 HT", value="1.50")
-    col12.metric(label="Over 1.5 FT", value="1.80")
-    col13.metric(label="Over 2.5 FT", value="2.10")
+    col11.metric(label="MO Home", value=df_match_selected["Odd_H_FT"])
+    col12.metric(label="MO Draw", value=df_match_selected["Odd_D_FT"])
+    col13.metric(label="MO Away", value=df_match_selected["Odd_A_FT"])
+    col11.metric(label="Over 0.5 HT", value=df_match_selected["Odd_Over05_HT"])
+    col12.metric(label="Over 2.5 FT", value=df_match_selected["Odd_Over25_FT"])
+    col13.metric(label="BTTS", value=df_match_selected["Odd_BTTS_Yes"])
     # col7.metric(label="BTTS", value="1.95")
 with col2:
     st.subheader("Confrontos diretos nos últimos 3 anos")
