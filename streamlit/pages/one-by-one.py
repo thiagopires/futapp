@@ -40,6 +40,22 @@ def generate_classificacao(df):
     
     # Atualizando estatísticas para todos os jogos
     for _, row in df.iterrows():
+        casa = True
+        clube = row["Home"] if casa else row["Away"]
+        gols_favor = row["Goals_H_FT"] if casa else row["Goals_A_FT"]
+        gols_contra = row["Goals_A_FT"] if casa else row["Goals_H_FT"]
+        pontos = 3 if (row["Home_Win"] if casa else row["Away_Win"]) else 1 if row["Draw"] else 0
+    
+        clubes.loc[clube, "jogos"] += 1
+        clubes.loc[clube, "vitorias"] += 1 if (row["Home_Win"] if casa else row["Away_Win"]) else 0
+        clubes.loc[clube, "empates"] += 1 if row["Draw"] else 0
+        clubes.loc[clube, "derrotas"] += 1 if not row["Draw"] and not (row["Home_Win"] if casa else row["Away_Win"]) else 0
+        clubes.loc[clube, "gols_a_favor"] += gols_favor
+        clubes.loc[clube, "gols_contra"] += gols_contra
+        clubes.loc[clube, "pontos"] += pontos
+        clubes.loc[clube, "saldo"] += gols_favor - gols_contra
+
+        casa = False
         clube = row["Home"] if casa else row["Away"]
         gols_favor = row["Goals_H_FT"] if casa else row["Goals_A_FT"]
         gols_contra = row["Goals_A_FT"] if casa else row["Goals_H_FT"]
