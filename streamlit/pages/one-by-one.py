@@ -85,25 +85,25 @@ st.set_page_config(
 df_matches = load_daymatches(0)
 df_hist = load_histmatches()
 
-# Título do dashboard
-st.title("⚽ Análise Completa do Confronto de Futebol")
-
-st.sidebar.header("Selecione o Confronto")
-
-# Entrada para seleção do confronto
-df_matches["Confronto"] = df_matches["Home"] + " vs. " + df_matches["Away"]
-matches = df_matches["Confronto"].value_counts().index
-match_selected = st.sidebar.selectbox("Confronto", matches)
-df_match_selected = df_matches[df_matches["Confronto"] == match_selected].iloc[0]
-
-# club1 = st.sidebar.selectbox("Clube 1", ["Nacional", "Benfica", "Porto"])
-# club2 = st.sidebar.selectbox("Clube 2", ["Nacional", "Benfica", "Porto"])
-# match_date = st.sidebar.date_input("Data do Jogo")
-# league = st.sidebar.selectbox("Campeonato", ["Primeira Liga", "Copa de Portugal"])
-# round_number = st.sidebar.number_input("Rodada", min_value=1, step=1)
-
 with st.spinner('Carregando...'):
 
+
+    # Título do dashboard
+    st.title("⚽ Análise Completa do Confronto de Futebol")
+
+    st.sidebar.header("Selecione o Confronto")
+
+    # Entrada para seleção do confronto
+    df_matches["Confronto"] = df_matches["Home"] + " vs. " + df_matches["Away"]
+    matches = df_matches["Confronto"].value_counts().index
+    match_selected = st.sidebar.selectbox("Confronto", matches)
+    df_match_selected = df_matches[df_matches["Confronto"] == match_selected].iloc[0]
+
+    # club1 = st.sidebar.selectbox("Clube 1", ["Nacional", "Benfica", "Porto"])
+    # club2 = st.sidebar.selectbox("Clube 2", ["Nacional", "Benfica", "Porto"])
+    # match_date = st.sidebar.date_input("Data do Jogo")
+    # league = st.sidebar.selectbox("Campeonato", ["Primeira Liga", "Copa de Portugal"])
+    # round_number = st.sidebar.number_input("Rodada", min_value=1, step=1)
 
     # Header
     st.caption(f"{df_match_selected['Formatted_Datetime']} - {df_match_selected["League"]} (Rodada {df_match_selected["Rodada"]})")
