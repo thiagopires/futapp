@@ -5,19 +5,23 @@ import datetime
 from datetime import date, timedelta
 
 def first_goal_string(row):
+    def parse_minutes(value, team):
+        # Garantir que a entrada seja uma string e remover caracteres problemáticos
+        value = str(value).replace("[", "").replace("]", "").replace("'", "")
+        # Dividir em minutos e processar apenas números válidos
+        return [
+            (int(x.split('+')[0]), team)
+            for x in value.split(',')
+            if x.strip().isdigit() or '+' in x
+        ]
+
     try:
-        # Extrair os minutos de cada coluna, tratando valores vazios ou não numéricos
-        home = [
-            (int(x.split('+')[0]), 'Home')
-            for x in row['Goals_H_Minutes'].replace('[]', '').split(',')
-            if x.strip().isdigit() or '+' in x
-        ]
-        away = [
-            (int(x.split('+')[0]), 'Away')
-            for x in row['Goals_A_Minutes'].replace('[]', '').split(',')
-            if x.strip().isdigit() or '+' in x
-        ]
-    except AttributeError:
+        # Extrair e processar minutos para Home e Away
+        home = parse_minutes(row['Goals_H_Minutes'], 'Home')
+        away = parse_minutes(row['Goals_A_Minutes'], 'Away')
+    except Exception as e:
+        # Tratar casos de erro inesperado
+        print(f"Erro ao processar linha: {row}. Detalhes: {e}")
         home = []
         away = []
 
