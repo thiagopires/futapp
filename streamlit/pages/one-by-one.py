@@ -50,7 +50,7 @@ with col1:
     # col7.metric(label="BTTS", value="1.95")
 with col2:
     st.subheader("Confrontos diretos nos últimos 3 anos")
-    print_table(confrontos)
+    print_dataframe(confrontos)
 
 # Tabela 6 e Tabela 7: Últimos 10 jogos
 ultimos_casa = pd.DataFrame({
