@@ -25,6 +25,55 @@ def load_histmatches():
     df["Resultado_FT"] = str(df["Goals_H_FT"]) + "-" + str(df["Goals_A_FT"])
     return df
 
+# Função para atualizar estatísticas
+def atualizar_estatisticas(row, casa=True):
+    clube = row["Home"] if casa else row["Away"]
+    gols_favor = row["Goals_H_FT"] if casa else row["Goals_A_FT"]
+    gols_contra = row["Goals_A_FT"] if casa else row["Goals_H_FT"]
+    pontos = 3 if (row["Home_Win"] if casa else row["Away_Win"]) else 1 if row["Draw"] else 0
+
+    clubes.loc[clube, "jogos"] += 1
+    clubes.loc[clube, "vitorias"] += 1 if (row["Home_Win"] if casa else row["Away_Win"]) else 0
+    clubes.loc[clube, "empates"] += 1 if row["Draw"] else 0
+    clubes.loc[clube, "derrotas"] += 1 if not row["Draw"] and not (row["Home_Win"] if casa else row["Away_Win"]) else 0
+    clubes.loc[clube, "gols_a_favor"] += gols_favor
+    clubes.loc[clube, "gols_contra"] += gols_contra
+    clubes.loc[clube, "pontos"] += pontos
+    clubes.loc[clube, "saldo"] += gols_favor - gols_contra
+    
+def generate_classificacao(df):
+    # Calculando o resultado do jogo
+    df["Home_Win"] = df["Goals_H_FT"] > df["Goals_A_FT"]
+    df["Away_Win"] = df["Goals_H_FT"] < df["Goals_A_FT"]
+    df["Draw"] = df["Goals_H_FT"] == df["Goals_A_FT"]
+    
+    # Inicializando as tabelas de pontos
+    clubes = pd.DataFrame({"Clube": pd.concat([df["Home"], df["Away"]]).unique()})
+    clubes.set_index("Clube", inplace=True)
+    columns = ["pontos", "jogos", "vitorias", "empates", "derrotas", "gols_a_favor", "gols_contra", "saldo"]
+    for col in columns:
+        clubes[col] = 0
+    
+    # Atualizando estatísticas para todos os jogos
+    for _, row in df.iterrows():
+        atualizar_estatisticas(row, casa=True)  # Jogos em casa
+        atualizar_estatisticas(row, casa=False)  # Jogos fora
+    
+    # Adicionando a posição e ordenando
+    clubes = clubes.sort_values(by=["pontos", "saldo", "gols_a_favor"], ascending=False)
+    clubes["posicao"] = range(1, len(clubes) + 1)
+    
+    # Visualização geral
+    print("Classificação Geral:")
+    
+    classificacao_geral = clubes.reset_index()    
+
+    classificacao_casa = clubes.copy()
+    classificacao_visitante = clubes.copy()
+
+    return classificacao_geral, classificacao_casa, classificacao_visitante
+    
+
 # Configuração da página
 st.set_page_config(
     page_title="Análise de Confrontos de Futebol",
@@ -116,35 +165,40 @@ with st.spinner('Carregando...'):
     
     st.subheader("⚽ Classificações nesta competição")
     
-    classificacao_geral = pd.DataFrame({
-        "Posição": [1, 2, 3, 4],
-        "Clube": ["Benfica", "Porto", "Sporting", "Braga"],
-        "Pontos": [50, 47, 45, 42],
-        "Jogos": [20, 20, 20, 20],
-        "Vitórias": [16, 15, 14, 13],
-        "Empates": [2, 2, 3, 3],
-        "Derrotas": [2, 3, 3, 4],
-    })
+    # classificacao_geral = pd.DataFrame({
+    #     "Posição": [1, 2, 3, 4],
+    #     "Clube": ["Benfica", "Porto", "Sporting", "Braga"],
+    #     "Pontos": [50, 47, 45, 42],
+    #     "Jogos": [20, 20, 20, 20],
+    #     "Vitórias": [16, 15, 14, 13],
+    #     "Empates": [2, 2, 3, 3],
+    #     "Derrotas": [2, 3, 3, 4],
+    # })
     
-    classificacao_casa = pd.DataFrame({
-        "Posição": [1, 2, 3, 4],
-        "Clube": ["Benfica", "Porto", "Braga", "Sporting"],
-        "Pontos em Casa": [30, 28, 26, 24],
-        "Jogos em Casa": [10, 10, 10, 10],
-        "Vitórias em Casa": [10, 9, 8, 8],
-        "Empates em Casa": [0, 1, 2, 0],
-        "Derrotas em Casa": [0, 0, 0, 2],
-    })
+    # classificacao_casa = pd.DataFrame({
+    #     "Posição": [1, 2, 3, 4],
+    #     "Clube": ["Benfica", "Porto", "Braga", "Sporting"],
+    #     "Pontos em Casa": [30, 28, 26, 24],
+    #     "Jogos em Casa": [10, 10, 10, 10],
+    #     "Vitórias em Casa": [10, 9, 8, 8],
+    #     "Empates em Casa": [0, 1, 2, 0],
+    #     "Derrotas em Casa": [0, 0, 0, 2],
+    # })
     
-    classificacao_visitante = pd.DataFrame({
-        "Posição": [1, 2, 3, 4],
-        "Clube": ["Porto", "Benfica", "Sporting", "Braga"],
-        "Pontos Fora": [25, 23, 21, 18],
-        "Jogos Fora": [10, 10, 10, 10],
-        "Vitórias Fora": [8, 7, 7, 6],
-        "Empates Fora": [1, 2, 0, 0],
-        "Derrotas Fora": [1, 1, 3, 4],
-    })
+    # classificacao_visitante = pd.DataFrame({
+    #     "Posição": [1, 2, 3, 4],
+    #     "Clube": ["Porto", "Benfica", "Sporting", "Braga"],
+    #     "Pontos Fora": [25, 23, 21, 18],
+    #     "Jogos Fora": [10, 10, 10, 10],
+    #     "Vitórias Fora": [8, 7, 7, 6],
+    #     "Empates Fora": [1, 2, 0, 0],
+    #     "Derrotas Fora": [1, 1, 3, 4],
+    # })
+
+    filter_classificacao = (df_hist["Season"] == df_match_selected["Season"] & df_hist["League"] == df_match_selected["League"])
+    df_classificacao = df_hist.loc[filter_classificacao, ["League","Season","Date","Rodada","Home","Away","Goals_H_FT","Goals_A_FT"]]
+
+    classificacao_geral, classificacao_casa, classificacao_visitante = generate_classificacao(df_classificacao)
     
     col1, col2, col3 = st.columns(3)
     with col1:
