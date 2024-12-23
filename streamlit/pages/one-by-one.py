@@ -66,10 +66,10 @@ ultimos_visitante = pd.DataFrame({
 col1, col2 = st.columns(2)
 with col1:
     st.subheader("Últimos 10 Jogos - Casa")
-    st.table(ultimos_casa)
+    print_dataframe(ultimos_casa)
 with col2:
     st.subheader("Últimos 10 Jogos - Visitante")
-    st.table(ultimos_visitante)
+    print_dataframe(ultimos_visitante)
 
 st.subheader("⚽ Classificações nesta competição")
 
@@ -106,13 +106,13 @@ classificacao_visitante = pd.DataFrame({
 col1, col2, col3 = st.columns(3)
 with col1:
     st.subheader("Geral")
-    st.dataframe(classificacao_geral)
+    print_dataframe(classificacao_geral)
 with col2:
     st.subheader("Casa")
-    st.dataframe(classificacao_casa)
+    print_dataframe(classificacao_casa)
 with col3:
     st.subheader("Visitante")
-    st.dataframe(classificacao_visitante)
+    print_dataframe(classificacao_visitante)
 
 # Tabela 25 e 26: Gols Casa e Visitante
 gols = pd.DataFrame({
@@ -125,29 +125,29 @@ fig = px.bar(gols, x="Minuto", y=["Gols Casa", "Gols Visitante"], barmode="group
 st.plotly_chart(fig, use_container_width=True)
 
 # Tabela 22 e 23: Percurso Casa e Visitante
-percurso_casa = {
+percurso_casa = pd.DataFrame({
     "Sequência de Vitórias": 1,
     "Sequência de Empates": 0,
     "Sequência de Derrotas": 3,
     "Não ganha há": 7,
     "Não empata há": 1,
     "Não perde há": 3,
-}
-percurso_visitante = {
+})
+percurso_visitante = pd.DataFrame({
     "Sequência de Vitórias": 2,
     "Sequência de Empates": 1,
     "Sequência de Derrotas": 0,
     "Não ganha há": 1,
     "Não empata há": 2,
     "Não perde há": 5,
-}
+})
 col1, col2 = st.columns(2)
 with col1:
     st.subheader("Percurso - Casa")
-    st.json(percurso_casa)
+    print_dataframe(percurso_casa)
 with col2:
     st.subheader("Percurso - Visitante")
-    st.json(percurso_visitante)
+    print_dataframe(percurso_visitante)
 
 
 # Título
@@ -215,12 +215,12 @@ df_time_22 = pd.DataFrame(estatisticas_time_22)
 col1, col2 = st.columns(2)
 with col1:
     st.subheader(club1)
-    st.table(df_time_1.to_dict(orient='records'))
-    st.table(df_time_11.to_dict(orient='records'))
+    print_dataframe(df_time_1.to_dict(orient='records'))
+    print_dataframe(df_time_11.to_dict(orient='records'))
 with col2:
     st.subheader(club2)
-    st.table(df_time_2.to_dict(orient='records'))
-    st.table(df_time_22.to_dict(orient='records'))
+    print_dataframe(df_time_2.to_dict(orient='records'))
+    print_dataframe(df_time_22.to_dict(orient='records'))
 
 # Outros dados e análises podem ser adicionados conforme necessário
 st.write("⚡ Dashboard dinâmico para análise de confrontos! ⚡")
