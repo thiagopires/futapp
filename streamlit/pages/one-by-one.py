@@ -1,7 +1,6 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
-import datetime
 from datetime import date, timedelta
 
 def first_goal_string(row):
@@ -158,26 +157,10 @@ df_match_selected = df_matches[df_matches["Confronto"] == match_selected].iloc[0
 # Título do dashboard
 st.title("⚽ Análise Completa do Confronto de Futebol")
 
-# club1 = st.sidebar.selectbox("Clube 1", ["Nacional", "Benfica", "Porto"])
-# club2 = st.sidebar.selectbox("Clube 2", ["Nacional", "Benfica", "Porto"])
-# match_date = st.sidebar.date_input("Data do Jogo")
-# league = st.sidebar.selectbox("Campeonato", ["Primeira Liga", "Copa de Portugal"])
-# round_number = st.sidebar.number_input("Rodada", min_value=1, step=1)
-
 # Header
 st.caption(f"{df_match_selected['Formatted_Datetime']} - {df_match_selected["League"]} (Rodada {df_match_selected["Rodada"]})")
 st.subheader(df_match_selected["Confronto"])
 st.divider()
-
-# st.write(f"*Data:* {str(df_match_selected["Datetime"])} | *Campeonato:* {df_match_selected["League"]} | *Rodada:* {df_match_selected["Rodada"]}")
-
-# Dados Simulados para Confrontos
-# confrontos = pd.DataFrame({
-#     "Data": ["2023-01-01", "2022-03-15", "2021-07-20"],
-#     "Clube 1": ["Nacional", "Nacional", "Benfica"],
-#     "Clube 2": ["Benfica", "Benfica", "Nacional"],
-#     "Resultado": ["1-2", "0-3", "2-1"]
-# })
 
 filter_confrontos = (df_hist["Home"].isin([df_match_selected["Home"], df_match_selected["Away"]])) & (df_hist["Away"].isin([df_match_selected["Home"], df_match_selected["Away"]]))
 confrontos = df_hist.loc[filter_confrontos, ["Date", "Season", "Home", "Resultado_FT", "Away"]].sort_values(by="Date", ascending=False)
@@ -193,70 +176,27 @@ with col1:
     col11.metric(label="Over 0.5 HT", value=df_match_selected["Odd_Over05_HT"])
     col12.metric(label="Over 2.5 FT", value=df_match_selected["Odd_Over25_FT"])
     col13.metric(label="BTTS", value=df_match_selected["Odd_BTTS_Yes"])
-    # col7.metric(label="BTTS", value="1.95")
 with col2:
     st.subheader("Confrontos diretos nos últimos 3 anos")
     print_dataframe(confrontos)
 
-# Tabela 6 e Tabela 7: Últimos 10 jogos
-# ultimos_casa = pd.DataFrame({
-#     "Data": ["2023-12-01", "2023-11-28", "2023-11-15"],
-#     "Adversário": ["Porto", "Sporting", "Braga"],
-#     "Resultado": ["2-0", "1-1", "0-3"]
-# })
-# ultimos_visitante = pd.DataFrame({
-#     "Data": ["2023-12-02", "2023-11-27", "2023-11-14"],
-#     "Adversário": ["Portimonense", "Boavista", "Vitória SC"],
-#     "Resultado": ["1-1", "3-2", "0-1"]
-# })
-
-filter_ultimos_casa = df_hist["Home"] == df_match_selected["Home"]
+filter_ultimos_casa = df_hist["Home"] == df_match_selected["Home"] & (df_hist["League"] == df_match_selected["League"])
 ultimos_casa = df_hist.loc[filter_ultimos_casa, ["Date", "Home", "Resultado_FT", "Away", "Primeiro_Gol"]].tail(10).sort_values(by="Date", ascending=False)
 df_ultimos_casa = ultimos_casa.style.apply(highlight_result, axis=1, type="HOME")
 
-filter_ultimos_visitante = df_hist["Away"] == df_match_selected["Away"]
+filter_ultimos_visitante = (df_hist["Away"] == df_match_selected["Away"]) & (df_hist["League"] == df_match_selected["League"])
 ultimos_visitante = df_hist.loc[filter_ultimos_visitante, ["Date", "Home", "Resultado_FT", "Away", "Primeiro_Gol"]].tail(10).sort_values(by="Date", ascending=False)
 df_ultimos_visitante = ultimos_visitante.style.apply(highlight_result, axis=1, type="AWAY")
 
 col1, col2 = st.columns(2)
 with col1:
-    st.subheader("Últimos 10 Jogos - Casa")
+    st.subheader("Últimos 10 Jogos na competição- Casa")
     print_dataframe(df_ultimos_casa)
 with col2:
-    st.subheader("Últimos 10 Jogos - Visitante")
+    st.subheader("Últimos 10 Jogos na competição - Visitante")
     print_dataframe(df_ultimos_visitante)
 
 st.subheader("⚽ Classificações nesta competição")
-
-# classificacao_geral = pd.DataFrame({
-#     "Posição": [1, 2, 3, 4],
-#     "Clube": ["Benfica", "Porto", "Sporting", "Braga"],
-#     "Pontos": [50, 47, 45, 42],
-#     "Jogos": [20, 20, 20, 20],
-#     "Vitórias": [16, 15, 14, 13],
-#     "Empates": [2, 2, 3, 3],
-#     "Derrotas": [2, 3, 3, 4],
-# })
-
-# classificacao_casa = pd.DataFrame({
-#     "Posição": [1, 2, 3, 4],
-#     "Clube": ["Benfica", "Porto", "Braga", "Sporting"],
-#     "Pontos em Casa": [30, 28, 26, 24],
-#     "Jogos em Casa": [10, 10, 10, 10],
-#     "Vitórias em Casa": [10, 9, 8, 8],
-#     "Empates em Casa": [0, 1, 2, 0],
-#     "Derrotas em Casa": [0, 0, 0, 2],
-# })
-
-# classificacao_visitante = pd.DataFrame({
-#     "Posição": [1, 2, 3, 4],
-#     "Clube": ["Porto", "Benfica", "Sporting", "Braga"],
-#     "Pontos Fora": [25, 23, 21, 18],
-#     "Jogos Fora": [10, 10, 10, 10],
-#     "Vitórias Fora": [8, 7, 7, 6],
-#     "Empates Fora": [1, 2, 0, 0],
-#     "Derrotas Fora": [1, 1, 3, 4],
-# })
 
 filter_classificacao = (df_hist["Season"] == "2024/2025") & (df_hist["League"] == df_match_selected["League"])
 df_classificacao = df_hist.loc[filter_classificacao, ["League","Season","Date","Rodada","Home","Away","Goals_H_FT","Goals_A_FT"]]
