@@ -76,8 +76,8 @@ def generate_classificacao(df, type):
         classificacao = classificacao.style.apply(lambda v: 'background-color: yellow' if v == df_match_selected["Home"] else '', subset=["Clube"])
     elif type == 'AWAY':
         classificacao = classificacao.style.apply(lambda v: 'background-color: yellow' if v == df_match_selected["Away"] else '', subset=["Clube"])
-    elif type == 'ALL':
-        classificacao = classificacao.style.apply(lambda v: 'background-color: yellow' if (v == df_match_selected["Home"] or v == df_match_selected["Away"]) else '', subset=["Clube"])
+    # elif type == 'ALL':
+    #     classificacao = classificacao.style.apply(lambda v: 'background-color: yellow' if (v == df_match_selected["Home"] or v == df_match_selected["Away"]) else '', subset=["Clube"])
 
     return classificacao
 
