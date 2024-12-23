@@ -25,8 +25,7 @@ def load_histmatches():
     df["Resultado_FT"] = str(df["Goals_H_FT"]) + "-" + str(df["Goals_A_FT"])
     return df
 
-# Função para atualizar estatísticas
-def atualizar_estatisticas(row, casa=True):
+    def atualizar_estatisticas(row, clubes, casa=True):
     clube = row["Home"] if casa else row["Away"]
     gols_favor = row["Goals_H_FT"] if casa else row["Goals_A_FT"]
     gols_contra = row["Goals_A_FT"] if casa else row["Goals_H_FT"]
@@ -40,7 +39,8 @@ def atualizar_estatisticas(row, casa=True):
     clubes.loc[clube, "gols_contra"] += gols_contra
     clubes.loc[clube, "pontos"] += pontos
     clubes.loc[clube, "saldo"] += gols_favor - gols_contra
-    
+
+
 def generate_classificacao(df):
     # Calculando o resultado do jogo
     df["Home_Win"] = df["Goals_H_FT"] > df["Goals_A_FT"]
@@ -56,23 +56,20 @@ def generate_classificacao(df):
     
     # Atualizando estatísticas para todos os jogos
     for _, row in df.iterrows():
-        atualizar_estatisticas(row, casa=True)  # Jogos em casa
-        atualizar_estatisticas(row, casa=False)  # Jogos fora
+        atualizar_estatisticas(row, clubes, casa=True)  # Jogos em casa
+        atualizar_estatisticas(row, clubes, casa=False)  # Jogos fora
     
     # Adicionando a posição e ordenando
     clubes = clubes.sort_values(by=["pontos", "saldo", "gols_a_favor"], ascending=False)
     clubes["posicao"] = range(1, len(clubes) + 1)
-    
-    # Visualização geral
-    print("Classificação Geral:")
-    
-    classificacao_geral = clubes.reset_index()    
+        
+    classificacao_geral = clubes.reset_index()
 
     classificacao_casa = clubes.copy()
     classificacao_visitante = clubes.copy()
 
     return classificacao_geral, classificacao_casa, classificacao_visitante
-    
+
 
 # Configuração da página
 st.set_page_config(
