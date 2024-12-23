@@ -9,7 +9,7 @@ def print_dataframe(df):
     
 @st.cache_data
 def load_daymatches(i):
-    dia = date.today() + timedelta(days=i))
+    dia = date.today() + timedelta(days=i)
     df = pd.read_csv(f"https://github.com/futpythontrader/YouTube/blob/main/Jogos_do_Dia/FootyStats/Jogos_do_Dia_FootyStats_{str(dia)}.csv?raw=true")
     df["Datetime"] = pd.to_datetime(df["Date"] + " " + df["Time"])
     df["Formatted_Datetime"] = df["Datetime"].dt.strftime("%d/%m/%Y %H:%M")
@@ -30,7 +30,7 @@ st.set_page_config(
     layout="wide",
 )
 
-df_matches = load_daymatches()
+df_matches = load_daymatches(0)
 df_hist = load_histmatches()
 
 # Título do dashboard
