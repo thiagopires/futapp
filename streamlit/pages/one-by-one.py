@@ -35,7 +35,15 @@ def first_goal_string(row):
         return '-'  # Caso não haja gols
 
 def print_dataframe(df, pheight=None):
-    st.dataframe(df, height=pheight, use_container_width=True, hide_index=True)
+    styled_df = df.style.set_properties(**{
+        'text-align': 'center'
+    }).set_table_styles([
+        {
+            'selector': 'th',
+            'props': [('text-align', 'center')]
+        }
+    ])
+    st.dataframe(styled_df, height=pheight, use_container_width=True, hide_index=True)
 
 def load_daymatches(i):
     dia = date.today() + timedelta(days=i)
@@ -190,7 +198,7 @@ df_ultimos_visitante = ultimos_visitante.style.apply(highlight_result, axis=1, t
 
 col1, col2 = st.columns(2)
 with col1:
-    st.subheader("Últimos 10 Jogos na competição- Casa")
+    st.subheader("Últimos 10 Jogos na competição - Casa")
     print_dataframe(df_ultimos_casa)
 with col2:
     st.subheader("Últimos 10 Jogos na competição - Visitante")
