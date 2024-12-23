@@ -72,6 +72,14 @@ def generate_classificacao(df, type):
     classificacao = clubes.reset_index()
     classificacao = classificacao[["#", "Clube", "PTS", "P", "W", "D", "L", "DIFF", "Goals"]]
 
+    if type == 'HOME':
+        classificacao = classificacao.style.apply(lambda v: 'background-color: yellow' if v == df_match_selected["Home"] else '', subset=["Clube"])
+    elif type == 'AWAY':
+        classificacao = classificacao.style.apply(lambda v: 'background-color: yellow' if v == df_match_selected["Away"] else '', subset=["Clube"])
+    elif type == 'ALL':
+        classificacao = classificacao.style.apply(lambda v: 'background-color: yellow' if v == df_match_selected["Home"] else '', subset=["Clube"])
+        classificacao = classificacao.style.apply(lambda v: 'background-color: yellow' if v == df_match_selected["Away"] else '', subset=["Clube"])
+
     return classificacao
 
 # Configuração da página
