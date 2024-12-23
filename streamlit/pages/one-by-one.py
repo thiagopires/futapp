@@ -41,7 +41,7 @@ def atualizar_estatisticas(row, clubes, casa=True):
     clubes.loc[clube, "saldo"] += gols_favor - gols_contra
 
 
-def generate_classificacao(df):
+def generate_classificacao(df, type):
     # Calculando o resultado do jogo
     df["Home_Win"] = df["Goals_H_FT"] > df["Goals_A_FT"]
     df["Away_Win"] = df["Goals_H_FT"] < df["Goals_A_FT"]
@@ -56,22 +56,21 @@ def generate_classificacao(df):
     
     # Atualizando estatísticas para todos os jogos
     for _, row in df.iterrows():
-        atualizar_estatisticas(row, clubes, casa=True)  # Jogos em casa
-        atualizar_estatisticas(row, clubes, casa=False)  # Jogos fora
+        if   type == 'HOME':
+            atualizar_estatisticas(row, clubes, casa=True)  # Jogos em casa
+        elif type == 'AWAY:
+            atualizar_estatisticas(row, clubes, casa=False)  # Jogos fora
+        elif type == 'ALL:
+            atualizar_estatisticas(row, clubes, casa=True)  # Jogos em casa
+            atualizar_estatisticas(row, clubes, casa=False) # Jogos fora
     
     # Adicionando a posição e ordenando
     clubes = clubes.sort_values(by=["pontos", "saldo", "gols_a_favor"], ascending=False)
     clubes["posicao"] = range(1, len(clubes) + 1)
-    
-    # Visualização geral
-    print("Classificação Geral:")
-    
-    classificacao_geral = clubes.reset_index()
 
-    classificacao_casa = clubes.copy()
-    classificacao_visitante = clubes.copy()
+    classificacao = clubes.reset_index()
 
-    return classificacao_geral, classificacao_casa, classificacao_visitante
+    return classificacao
 
 # Configuração da página
 st.set_page_config(
@@ -197,7 +196,9 @@ with st.spinner('Carregando...'):
     filter_classificacao = (df_hist["Season"] == "2024/2025") & (df_hist["League"] == df_match_selected["League"])
     df_classificacao = df_hist.loc[filter_classificacao, ["League","Season","Date","Rodada","Home","Away","Goals_H_FT","Goals_A_FT"]]
 
-    classificacao_geral, classificacao_casa, classificacao_visitante = generate_classificacao(df_classificacao)
+    classificacao_geral = generate_classificacao(df_classificacao, "ALL")
+    classificacao_casa = generate_classificacao(df_classificacao, "HOME")
+    classificacao_visitante = generate_classificacao(df_classificacao, "AWAY")
     
     col1, col2, col3 = st.columns(3)
     with col1:
