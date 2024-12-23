@@ -21,20 +21,8 @@ league = st.sidebar.selectbox("Campeonato", ["Primeira Liga", "Copa de Portugal"
 round_number = st.sidebar.number_input("Rodada", min_value=1, step=1)
 
 # Exibição do confronto
-st.subheader(f"Confronto: {club1} x {club2}")
+st.subheader(f"{club1} x {club2}")
 st.write(f"Data: {match_date} | Campeonato: {league} | Rodada: {round_number}")
-
-
-# Dividindo a página em duas colunas
-col1, col2 = st.columns(2)
-
-col1.metric(label="MO Home", value="2.10")
-col1.metric(label="MO Draw", value="3.20")
-col1.metric(label="MO Away", value="3.50")
-col1.metric(label="Over 0.5 HT", value="1.50")
-col1.metric(label="Over 1.5 FT", value="1.80")
-col1.metric(label="Over 2.5 FT", value="2.10")
-# col7.metric(label="BTTS", value="1.95")
 
 # Dados Simulados para Confrontos
 confrontos = pd.DataFrame({
@@ -44,7 +32,19 @@ confrontos = pd.DataFrame({
     "Resultado": ["1-2", "0-3", "2-1"]
 })
 
-col2.table(confrontos)
+# Dividindo a página em duas colunas
+col1, col2 = st.columns(2)
+with col1:
+    col1, col2, col3, col4, col5, col6 = st.columns(6)
+    col1.metric(label="MO Home", value="2.10")
+    col2.metric(label="MO Draw", value="3.20")
+    col3.metric(label="MO Away", value="3.50")
+    col4.metric(label="Over 0.5 HT", value="1.50")
+    col5.metric(label="Over 1.5 FT", value="1.80")
+    col6.metric(label="Over 2.5 FT", value="2.10")
+    # col7.metric(label="BTTS", value="1.95")
+with col2:
+    st.table(confrontos)
 
 # Tabela 6 e Tabela 7: Últimos 10 jogos
 ultimos_casa = pd.DataFrame({
