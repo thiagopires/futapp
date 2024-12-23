@@ -38,8 +38,8 @@ match_selected = st.sidebar.selectbox("Confronto", matches)
 df_match_selected = df_matches[df_matches["Confronto"] == match_selected]
 
 # Exibição do confronto
-st.subheader(f"{club1} x {club2}")
-st.write(f"Data: {match_date} | Campeonato: {league} | Rodada: {round_number}")
+st.subheader(df_match_selected["Confronto"])
+st.write(f"Data: {df_match_selected["Date"]} {df_match_selected["Time"]} | Campeonato: {df_match_selected["League"]} | Rodada: {df_match_selected["Rodada"]}")
 st.divider()
 
 # Dados Simulados para Confrontos
