@@ -156,8 +156,10 @@ if right.button("D.Amanhã", use_container_width=True):
 
 df_matches["Confronto"] = df_matches["Time"] + " - " + df_matches["Home"] + " vs. " + df_matches["Away"]
 matches = df_matches["Confronto"].value_counts().index
-match_selected = st.sidebar.selectbox("Confronto", matches)
-df_match_selected = df_matches[df_matches["Confronto"].str.contains(match_selected, na=False)].iloc[0]
+with st.spinner('Wait for it...'):
+    match_selected = st.sidebar.selectbox("Confronto", matches)
+    df_match_selected = df_matches[df_matches["Confronto"].str.contains(match_selected, na=False)].iloc[0]
+st.success("Done!")
 
 # Título do dashboard
 st.title("⚽ Análise Completa do Confronto de Futebol")
