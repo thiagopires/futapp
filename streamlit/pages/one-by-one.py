@@ -48,8 +48,6 @@ def load_histmatches():
     # df["Date"] = df["Date"].dt.date
     df["Formatted_Date"] = df["Date"].dt.strftime("%d/%m/%Y")
     df["Resultado_FT"] = df["Goals_H_FT"].astype(str) + "-" + df["Goals_A_FT"].astype(str)
-    # df[["First_Goal_Team", "First_Goal_Minute"]] = df.apply(lambda row: pd.Series(first_goal(row)), axis=1)
-    df["Primeiro Gol"] = "-" # df["First_Goal_Minute"].astype(str) + " " + df["First_Goal_Team"].astype(str)
     return df
 
 def atualizar_estatisticas(row, clubes, casa=True):
@@ -191,10 +189,10 @@ with col2:
 # })
 
 filter_ultimos_casa = df_hist["Home"] == df_match_selected["Home"]
-ultimos_casa = df_hist.loc[filter_ultimos_casa, ["Date", "Home", "Resultado_FT", "Away", "Primeiro Gol"]].tail(10).sort_values(by="Date", ascending=False)
+ultimos_casa = df_hist.loc[filter_ultimos_casa, ["Date", "Home", "Resultado_FT", "Away"]].tail(10).sort_values(by="Date", ascending=False)
 
 filter_ultimos_visitante = df_hist["Away"] == df_match_selected["Away"]
-ultimos_visitante = df_hist.loc[filter_ultimos_visitante, ["Date", "Home", "Resultado_FT", "Away", "Primeiro Gol"]].tail(10).sort_values(by="Date", ascending=False)
+ultimos_visitante = df_hist.loc[filter_ultimos_visitante, ["Date", "Home", "Resultado_FT", "Away"]].tail(10).sort_values(by="Date", ascending=False)
 
 col1, col2 = st.columns(2)
 with col1:
