@@ -156,179 +156,179 @@ if right.button("D.Amanhã", use_container_width=True):
 
 df_matches["Confronto"] = df_matches["Time"] + " - " + df_matches["Home"] + " vs. " + df_matches["Away"]
 matches = df_matches["Confronto"].value_counts().index
+
 with st.spinner('Wait for it...'):
     match_selected = st.sidebar.selectbox("Confronto", matches)
     df_match_selected = df_matches[df_matches["Confronto"].str.contains(match_selected, na=False)].iloc[0]
-st.success("Done!")
 
-# Título do dashboard
-st.title("⚽ Análise Completa do Confronto de Futebol")
+    # Título do dashboard
+    st.title("⚽ Análise Completa do Confronto de Futebol")
 
-# Header
-st.header(f'{df_match_selected["Confronto"].split("-")[1]}')
-st.subheader(f"{df_match_selected['Formatted_Datetime']} - {df_match_selected["League"]} (Rodada {df_match_selected["Rodada"]})")
-st.divider()
+    # Header
+    st.header(f'{df_match_selected["Confronto"].split("-")[1]}')
+    st.subheader(f"{df_match_selected['Formatted_Datetime']} - {df_match_selected["League"]} (Rodada {df_match_selected["Rodada"]})")
+    st.divider()
 
-filter_confrontos = (df_hist["Home"].isin([df_match_selected["Home"], df_match_selected["Away"]])) & (df_hist["Away"].isin([df_match_selected["Home"], df_match_selected["Away"]]))
-confrontos = df_hist.loc[filter_confrontos, ["Date", "Season", "Home", "Resultado_FT", "Away"]].sort_values(by="Date", ascending=False)
+    filter_confrontos = (df_hist["Home"].isin([df_match_selected["Home"], df_match_selected["Away"]])) & (df_hist["Away"].isin([df_match_selected["Home"], df_match_selected["Away"]]))
+    confrontos = df_hist.loc[filter_confrontos, ["Date", "Season", "Home", "Resultado_FT", "Away"]].sort_values(by="Date", ascending=False)
 
-# Dividindo a página em duas colunas
-col1, col2 = st.columns(2)
-with col1:
-    st.subheader("Odds")
-    col11, col12, col13 = st.columns(3)
-    col11.metric(label="MO Home", value=df_match_selected["Odd_H_FT"])
-    col12.metric(label="MO Draw", value=df_match_selected["Odd_D_FT"])
-    col13.metric(label="MO Away", value=df_match_selected["Odd_A_FT"])
-    col11.metric(label="Over 0.5 HT", value=df_match_selected["Odd_Over05_HT"])
-    col12.metric(label="Over 2.5 FT", value=df_match_selected["Odd_Over25_FT"])
-    col13.metric(label="BTTS", value=df_match_selected["Odd_BTTS_Yes"])
-with col2:
-    st.subheader("Confrontos diretos nos últimos 3 anos")
-    print_dataframe(confrontos)
+    # Dividindo a página em duas colunas
+    col1, col2 = st.columns(2)
+    with col1:
+        st.subheader("Odds")
+        col11, col12, col13 = st.columns(3)
+        col11.metric(label="MO Home", value=df_match_selected["Odd_H_FT"])
+        col12.metric(label="MO Draw", value=df_match_selected["Odd_D_FT"])
+        col13.metric(label="MO Away", value=df_match_selected["Odd_A_FT"])
+        col11.metric(label="Over 0.5 HT", value=df_match_selected["Odd_Over05_HT"])
+        col12.metric(label="Over 2.5 FT", value=df_match_selected["Odd_Over25_FT"])
+        col13.metric(label="BTTS", value=df_match_selected["Odd_BTTS_Yes"])
+    with col2:
+        st.subheader("Confrontos diretos nos últimos 3 anos")
+        print_dataframe(confrontos)
 
-filter_ultimos_casa = (df_hist["Home"] == df_match_selected["Home"]) & (df_hist["League"] == df_match_selected["League"])
-ultimos_casa = df_hist.loc[filter_ultimos_casa, ["Date", "Home", "Resultado_FT", "Away", "Primeiro_Gol"]].tail(10).sort_values(by="Date", ascending=False)
-df_ultimos_casa = ultimos_casa.style.apply(highlight_result, axis=1, type="HOME")
+    filter_ultimos_casa = (df_hist["Home"] == df_match_selected["Home"]) & (df_hist["League"] == df_match_selected["League"])
+    ultimos_casa = df_hist.loc[filter_ultimos_casa, ["Date", "Home", "Resultado_FT", "Away", "Primeiro_Gol"]].tail(10).sort_values(by="Date", ascending=False)
+    df_ultimos_casa = ultimos_casa.style.apply(highlight_result, axis=1, type="HOME")
 
-filter_ultimos_visitante = (df_hist["Away"] == df_match_selected["Away"]) & (df_hist["League"] == df_match_selected["League"])
-ultimos_visitante = df_hist.loc[filter_ultimos_visitante, ["Date", "Home", "Resultado_FT", "Away", "Primeiro_Gol"]].tail(10).sort_values(by="Date", ascending=False)
-df_ultimos_visitante = ultimos_visitante.style.apply(highlight_result, axis=1, type="AWAY")
+    filter_ultimos_visitante = (df_hist["Away"] == df_match_selected["Away"]) & (df_hist["League"] == df_match_selected["League"])
+    ultimos_visitante = df_hist.loc[filter_ultimos_visitante, ["Date", "Home", "Resultado_FT", "Away", "Primeiro_Gol"]].tail(10).sort_values(by="Date", ascending=False)
+    df_ultimos_visitante = ultimos_visitante.style.apply(highlight_result, axis=1, type="AWAY")
 
-col1, col2 = st.columns(2)
-with col1:
-    st.subheader("Últimos 10 Jogos na competição - Casa")
-    print_dataframe(df_ultimos_casa)
-with col2:
-    st.subheader("Últimos 10 Jogos na competição - Visitante")
-    print_dataframe(df_ultimos_visitante)
+    col1, col2 = st.columns(2)
+    with col1:
+        st.subheader("Últimos 10 Jogos na competição - Casa")
+        print_dataframe(df_ultimos_casa)
+    with col2:
+        st.subheader("Últimos 10 Jogos na competição - Visitante")
+        print_dataframe(df_ultimos_visitante)
 
-st.subheader("⚽ Classificações nesta competição")
+    st.subheader("⚽ Classificações nesta competição")
 
-filter_classificacao = (df_hist["Season"] == "2024/2025") & (df_hist["League"] == df_match_selected["League"])
-df_classificacao = df_hist.loc[filter_classificacao, ["League","Season","Date","Rodada","Home","Away","Goals_H_FT","Goals_A_FT"]]
+    filter_classificacao = (df_hist["Season"] == "2024/2025") & (df_hist["League"] == df_match_selected["League"])
+    df_classificacao = df_hist.loc[filter_classificacao, ["League","Season","Date","Rodada","Home","Away","Goals_H_FT","Goals_A_FT"]]
 
-classificacao_geral = generate_classificacao(df_classificacao, "ALL")
-classificacao_casa = generate_classificacao(df_classificacao, "HOME")
-classificacao_visitante = generate_classificacao(df_classificacao, "AWAY")
+    classificacao_geral = generate_classificacao(df_classificacao, "ALL")
+    classificacao_casa = generate_classificacao(df_classificacao, "HOME")
+    classificacao_visitante = generate_classificacao(df_classificacao, "AWAY")
 
-tab1, tab2, tab3 = st.tabs(["Geral", "Casa", "Visitante"])
-with tab1:
-    # st.subheader("Geral")
-    print_dataframe(classificacao_geral, 740)
-with tab2:
-    # st.subheader("Casa")
-    print_dataframe(classificacao_casa, 740)
-with tab3:
-    # st.subheader("Visitante")
-    print_dataframe(classificacao_visitante, 740)
+    tab1, tab2, tab3 = st.tabs(["Geral", "Casa", "Visitante"])
+    with tab1:
+        # st.subheader("Geral")
+        print_dataframe(classificacao_geral, 740)
+    with tab2:
+        # st.subheader("Casa")
+        print_dataframe(classificacao_casa, 740)
+    with tab3:
+        # st.subheader("Visitante")
+        print_dataframe(classificacao_visitante, 740)
 
-# Tabela 25 e 26: Gols Casa e Visitante
-gols = pd.DataFrame({
-    "Minuto": ["0-15", "16-30", "31-45", "46-60", "61-75", "76-90"],
-    "Gols Casa": [3, 5, 2, 6, 4, 8],
-    "Gols Visitante": [2, 3, 4, 3, 6, 5]
-})
-st.subheader("Distribuição de Gols por Minuto")
-fig = px.bar(gols, x="Minuto", y=["Gols Casa", "Gols Visitante"], barmode="group", title="Gols por Minuto")
-st.plotly_chart(fig, use_container_width=True)
+    # Tabela 25 e 26: Gols Casa e Visitante
+    gols = pd.DataFrame({
+        "Minuto": ["0-15", "16-30", "31-45", "46-60", "61-75", "76-90"],
+        "Gols Casa": [3, 5, 2, 6, 4, 8],
+        "Gols Visitante": [2, 3, 4, 3, 6, 5]
+    })
+    st.subheader("Distribuição de Gols por Minuto")
+    fig = px.bar(gols, x="Minuto", y=["Gols Casa", "Gols Visitante"], barmode="group", title="Gols por Minuto")
+    st.plotly_chart(fig, use_container_width=True)
 
-# Tabela 22 e 23: Percurso Casa e Visitante
-percurso_casa = {
-    "Sequência de Vitórias": 1,
-    "Sequência de Empates": 0,
-    "Sequência de Derrotas": 3,
-    "Não ganha há": 7,
-    "Não empata há": 1,
-    "Não perde há": 3,
-}
-percurso_visitante = {
-    "Sequência de Vitórias": 2,
-    "Sequência de Empates": 1,
-    "Sequência de Derrotas": 0,
-    "Não ganha há": 1,
-    "Não empata há": 2,
-    "Não perde há": 5,
-}
-col1, col2 = st.columns(2)
-with col1:
-    st.subheader("Percurso - Casa")
-    st.json(percurso_casa)
-with col2:
-    st.subheader("Percurso - Visitante")
-    st.json(percurso_visitante)    
+    # Tabela 22 e 23: Percurso Casa e Visitante
+    percurso_casa = {
+        "Sequência de Vitórias": 1,
+        "Sequência de Empates": 0,
+        "Sequência de Derrotas": 3,
+        "Não ganha há": 7,
+        "Não empata há": 1,
+        "Não perde há": 3,
+    }
+    percurso_visitante = {
+        "Sequência de Vitórias": 2,
+        "Sequência de Empates": 1,
+        "Sequência de Derrotas": 0,
+        "Não ganha há": 1,
+        "Não empata há": 2,
+        "Não perde há": 5,
+    }
+    col1, col2 = st.columns(2)
+    with col1:
+        st.subheader("Percurso - Casa")
+        st.json(percurso_casa)
+    with col2:
+        st.subheader("Percurso - Visitante")
+        st.json(percurso_visitante)    
 
-# Título
-st.subheader("⚽ Estatísticas de Confrontos de Futebol")
+    # Título
+    st.subheader("⚽ Estatísticas de Confrontos de Futebol")
 
-# Dados Simulados para Times
-estatisticas_time_1 = {
-    "Categoria": [
-        "Média de gols marcados por jogo",
-        "Média de gols sofridos por jogo",
-        "Média de gols marcados + sofridos",
-        "Jogos sem sofrer gols",
-        "Jogos sem marcar gols",
-        "Jogos com Mais de 2,5 Gols",
-        "Jogos com Menos de 2,5 Gols"
-    ],
-    "Casa": [2.83, 0.5, 3.33, "67%", "-", "67%", "33%"],
-    "Fora": [3.13, 1.13, 4.26, "38%", "-", "75%", "25%"],
-    "Global": [3.0, 0.86, 3.86, "50%", "-", "71%", "29%"],
-}
+    # Dados Simulados para Times
+    estatisticas_time_1 = {
+        "Categoria": [
+            "Média de gols marcados por jogo",
+            "Média de gols sofridos por jogo",
+            "Média de gols marcados + sofridos",
+            "Jogos sem sofrer gols",
+            "Jogos sem marcar gols",
+            "Jogos com Mais de 2,5 Gols",
+            "Jogos com Menos de 2,5 Gols"
+        ],
+        "Casa": [2.83, 0.5, 3.33, "67%", "-", "67%", "33%"],
+        "Fora": [3.13, 1.13, 4.26, "38%", "-", "75%", "25%"],
+        "Global": [3.0, 0.86, 3.86, "50%", "-", "71%", "29%"],
+    }
 
-estatisticas_time_11 = {
-    "Categoria": [
-        "Abre marcador (qualquer altura)",
-        "Está a vencer ao intervalo",
-        "Vence no final",
-        "Reviravoltas"
-    ],
-    "Casa": ["5 em 6 (83%)", "3 em 5 (60%)", "5 em 5 (100%)", "0 em 1 (0%)"],
-    "Global": ["10 em 15 (67%)", "6 em 10 (60%)", "8 em 8 (80%)", "1 em 5 (20%)"]
-}
+    estatisticas_time_11 = {
+        "Categoria": [
+            "Abre marcador (qualquer altura)",
+            "Está a vencer ao intervalo",
+            "Vence no final",
+            "Reviravoltas"
+        ],
+        "Casa": ["5 em 6 (83%)", "3 em 5 (60%)", "5 em 5 (100%)", "0 em 1 (0%)"],
+        "Global": ["10 em 15 (67%)", "6 em 10 (60%)", "8 em 8 (80%)", "1 em 5 (20%)"]
+    }
 
-estatisticas_time_2 = {
-    "Categoria": [
-        "Média de gols marcados por jogo",
-        "Média de gols sofridos por jogo",
-        "Média de gols marcados + sofridos",
-        "Jogos sem sofrer gols",
-        "Jogos sem marcar gols",
-        "Jogos com Mais de 2,5 Gols",
-        "Jogos com Menos de 2,5 Gols"
-    ],
-    "Casa": [2.83, 0.5, 3.33, "67%", "-", "67%", "33%"],
-    "Fora": [3.13, 1.13, 4.26, "38%", "-", "75%", "25%"],
-    "Global": [3.0, 0.86, 3.86, "50%", "-", "71%", "29%"],
-}
+    estatisticas_time_2 = {
+        "Categoria": [
+            "Média de gols marcados por jogo",
+            "Média de gols sofridos por jogo",
+            "Média de gols marcados + sofridos",
+            "Jogos sem sofrer gols",
+            "Jogos sem marcar gols",
+            "Jogos com Mais de 2,5 Gols",
+            "Jogos com Menos de 2,5 Gols"
+        ],
+        "Casa": [2.83, 0.5, 3.33, "67%", "-", "67%", "33%"],
+        "Fora": [3.13, 1.13, 4.26, "38%", "-", "75%", "25%"],
+        "Global": [3.0, 0.86, 3.86, "50%", "-", "71%", "29%"],
+    }
 
-estatisticas_time_22 = {
-    "Categoria": [
-        "Abre marcador (qualquer altura)",
-        "Está a vencer ao intervalo",
-        "Vence no final",
-        "Reviravoltas"
-    ],
-    "Casa": ["5 em 6 (83%)", "3 em 5 (60%)", "5 em 5 (100%)", "0 em 1 (0%)"],
-    "Global": ["10 em 15 (67%)", "6 em 10 (60%)", "8 em 8 (80%)", "1 em 5 (20%)"]
-}
+    estatisticas_time_22 = {
+        "Categoria": [
+            "Abre marcador (qualquer altura)",
+            "Está a vencer ao intervalo",
+            "Vence no final",
+            "Reviravoltas"
+        ],
+        "Casa": ["5 em 6 (83%)", "3 em 5 (60%)", "5 em 5 (100%)", "0 em 1 (0%)"],
+        "Global": ["10 em 15 (67%)", "6 em 10 (60%)", "8 em 8 (80%)", "1 em 5 (20%)"]
+    }
 
-# Converte para DataFrame
-df_time_1 = pd.DataFrame(estatisticas_time_1)
-df_time_11 = pd.DataFrame(estatisticas_time_11)
-df_time_2 = pd.DataFrame(estatisticas_time_2)
-df_time_22 = pd.DataFrame(estatisticas_time_22)
+    # Converte para DataFrame
+    df_time_1 = pd.DataFrame(estatisticas_time_1)
+    df_time_11 = pd.DataFrame(estatisticas_time_11)
+    df_time_2 = pd.DataFrame(estatisticas_time_2)
+    df_time_22 = pd.DataFrame(estatisticas_time_22)
 
-col1, col2 = st.columns(2)
-with col1:
-    st.subheader(df_match_selected["Home"])
-    print_dataframe(df_time_1.to_dict(orient='records'))
-    print_dataframe(df_time_11.to_dict(orient='records'))
-with col2:
-    st.subheader(df_match_selected["Away"])
-    print_dataframe(df_time_2.to_dict(orient='records'))
-    print_dataframe(df_time_22.to_dict(orient='records'))
+    col1, col2 = st.columns(2)
+    with col1:
+        st.subheader(df_match_selected["Home"])
+        print_dataframe(df_time_1.to_dict(orient='records'))
+        print_dataframe(df_time_11.to_dict(orient='records'))
+    with col2:
+        st.subheader(df_match_selected["Away"])
+        print_dataframe(df_time_2.to_dict(orient='records'))
+        print_dataframe(df_time_22.to_dict(orient='records'))
 
-# Outros dados e análises podem ser adicionados conforme necessário
-st.write("⚡ Dashboard dinâmico para análise de confrontos! ⚡")
+    # Outros dados e análises podem ser adicionados conforme necessário
+    st.write("⚡ Dashboard dinâmico para análise de confrontos! ⚡")
