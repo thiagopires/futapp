@@ -9,9 +9,9 @@ def print_dataframe(df):
 
 def load_data_matches():
     dia = date.today()
-    data_matches = pd.read_csv(f"https://github.com/futpythontrader/YouTube/blob/main/Jogos_do_Dia/FootyStats/Jogos_do_Dia_FootyStats_{str(dia)}.csv?raw=true")
-    data_matches["Datetime"] = pd.to_datetime(df["Date"] + " " + df["Time"])
-    return data_matches
+    df = pd.read_csv(f"https://github.com/futpythontrader/YouTube/blob/main/Jogos_do_Dia/FootyStats/Jogos_do_Dia_FootyStats_{str(dia)}.csv?raw=true")
+    df["Datetime"] = pd.to_datetime(df["Date"] + " " + df["Time"])
+    return df
 
 # Configuração da página
 st.set_page_config(
