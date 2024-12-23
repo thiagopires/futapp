@@ -118,6 +118,23 @@ def generate_classificacao(df, type):
         layout="wide",
     )
 
+def highlight_result(row, type):
+    colors = {
+        'HOME': ['lightgreen','lightyellow','lightcoral'],
+        'AWAY': ['lightcoral','lightyellow','lightgreen']
+    }
+
+    Goals = row["Resultado_FT"].split("-")
+    Goals_H_FT = Goals[0]
+    Goals_A_FT = Goals[1]
+
+    if Goals_H_FT > Goals_A_FT:
+        return [f"background-color: {colors[type][0]}" if col == "Resultado_FT" else "" for col in row.index]
+    elif Goals_H_FT == Goals_A_FT:
+        return [f"background-color: {colors[type][1]}" if col == "Resultado_FT" else "" for col in row.index]
+    elif Goals_H_FT < Goals_A_FT:
+        return [f"background-color: {colors[type][2]}" if col == "Resultado_FT" else "" for col in row.index]
+
 # Carregando as bases
 df_matches = load_daymatches(0)
 df_hist = load_histmatches()
@@ -195,17 +212,19 @@ with col2:
 
 filter_ultimos_casa = df_hist["Home"] == df_match_selected["Home"]
 ultimos_casa = df_hist.loc[filter_ultimos_casa, ["Date", "Home", "Resultado_FT", "Away", "Primeiro_Gol"]].tail(10).sort_values(by="Date", ascending=False)
+df_ultimos_casa = ultimos_casa.style.apply(highlight_result, axis=1, type="home")
 
 filter_ultimos_visitante = df_hist["Away"] == df_match_selected["Away"]
 ultimos_visitante = df_hist.loc[filter_ultimos_visitante, ["Date", "Home", "Resultado_FT", "Away", "Primeiro_Gol"]].tail(10).sort_values(by="Date", ascending=False)
+df_ultimos_visitante = ultimos_visitante.style.apply(highlight_result, axis=1, type="AWAY")
 
 col1, col2 = st.columns(2)
 with col1:
     st.subheader("Últimos 10 Jogos - Casa")
-    print_dataframe(ultimos_casa)
+    print_dataframe(df_ultimos_casa)
 with col2:
     st.subheader("Últimos 10 Jogos - Visitante")
-    print_dataframe(ultimos_visitante)
+    print_dataframe(df_ultimos_visitante)
 
 st.subheader("⚽ Classificações nesta competição")
 
