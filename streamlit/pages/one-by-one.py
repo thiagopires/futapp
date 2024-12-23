@@ -79,6 +79,13 @@ def generate_classificacao(df, type):
 
     return classificacao
 
+    # Configuração da página
+    st.set_page_config(
+        page_title="Análise de Confrontos de Futebol",
+        page_icon="⚽",
+        layout="wide",
+    )
+
 # Carregando as bases
 df_matches = load_daymatches(0)
 df_hist = load_histmatches()
@@ -101,13 +108,6 @@ df_match_selected = df_matches[df_matches["Confronto"] == match_selected].iloc[0
 
 # Main
 with st.expander("Seção Fixa (expandir ou recolher)", expanded=True):
-    # Configuração da página
-    st.set_page_config(
-        page_title="Análise de Confrontos de Futebol",
-        page_icon="⚽",
-        layout="wide",
-    )
-
 
     # Título do dashboard
     st.title("⚽ Análise Completa do Confronto de Futebol")
