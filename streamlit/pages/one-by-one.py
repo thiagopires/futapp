@@ -32,7 +32,6 @@ confrontos = pd.DataFrame({
     "Clube 2": ["Benfica", "Benfica", "Nacional"],
     "Resultado": ["1-2", "0-3", "2-1"]
 })
-confrontos = confrontos.reset_index(drop=True)
 
 # Dividindo a página em duas colunas
 col1, col2 = st.columns(2)
@@ -47,8 +46,8 @@ with col1:
     col13.metric(label="Over 2.5 FT", value="2.10")
     # col7.metric(label="BTTS", value="1.95")
 with col2:
-    st.subheader("Confrontos diretos últimos 3 anos")
-    st.table(confrontos)
+    st.subheader("Confrontos diretos nos últimos 3 anos")
+    st.table(confrontos.to_dict(orient="records"))
 
 # Tabela 6 e Tabela 7: Últimos 10 jogos
 ultimos_casa = pd.DataFrame({
