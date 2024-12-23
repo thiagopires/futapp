@@ -187,11 +187,10 @@ with st.spinner('Carregando...'):
     col1, col2 = st.columns(2)
     with col1:
         st.subheader("Percurso - Casa")
-        print_dataframe(percurso_casa)
+        st.json(percurso_casa)
     with col2:
         st.subheader("Percurso - Visitante")
-        print_dataframe(percurso_visitante)
-    
+        st.json(percurso_visitante)    
     
     # Título
     st.subheader("⚽ Estatísticas de Confrontos de Futebol")
