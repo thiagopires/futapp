@@ -31,14 +31,14 @@ def atualizar_estatisticas(row, clubes, casa=True):
     gols_contra = row["Goals_A_FT"] if casa else row["Goals_H_FT"]
     pontos = 3 if (row["Home_Win"] if casa else row["Away_Win"]) else 1 if row["Draw"] else 0
 
-    clubes.loc[clube, "jogos"] += 1
-    clubes.loc[clube, "vitorias"] += 1 if (row["Home_Win"] if casa else row["Away_Win"]) else 0
-    clubes.loc[clube, "empates"] += 1 if row["Draw"] else 0
-    clubes.loc[clube, "derrotas"] += 1 if not row["Draw"] and not (row["Home_Win"] if casa else row["Away_Win"]) else 0
-    clubes.loc[clube, "gols_a_favor"] += gols_favor
-    clubes.loc[clube, "gols_contra"] += gols_contra
-    clubes.loc[clube, "pontos"] += pontos
-    clubes.loc[clube, "saldo"] += gols_favor - gols_contra
+    clubes.loc[clube, "P"] += 1
+    clubes.loc[clube, "W"] += 1 if (row["Home_Win"] if casa else row["Away_Win"]) else 0
+    clubes.loc[clube, "D"] += 1 if row["Draw"] else 0
+    clubes.loc[clube, "L"] += 1 if not row["Draw"] and not (row["Home_Win"] if casa else row["Away_Win"]) else 0
+    clubes.loc[clube, "GF"] += gols_favor
+    clubes.loc[clube, "GC"] += gols_contra
+    clubes.loc[clube, "PTS"] += pontos
+    clubes.loc[clube, "DIFF"] += gols_favor - gols_contra
 
 
 def generate_classificacao(df, type):
@@ -50,23 +50,26 @@ def generate_classificacao(df, type):
     # Inicializando as tabelas de pontos
     clubes = pd.DataFrame({"Clube": pd.concat([df["Home"], df["Away"]]).unique()})
     clubes.set_index("Clube", inplace=True)
-    columns = ["pontos", "jogos", "vitorias", "empates", "derrotas", "gols_a_favor", "gols_contra", "saldo"]
+    columns = ["PTS", "P", "W", "D", "L", "GF", "GC", "DIFF"]
     for col in columns:
         clubes[col] = 0
     
     # Atualizando estatísticas para todos os jogos
     for _, row in df.iterrows():
         if   type == 'HOME':
-            atualizar_estatisticas(row, clubes, casa=True)  # Jogos em casa
+            atualizar_estatisticas(row, clubes, casa=True)
         elif type == 'AWAY':
-            atualizar_estatisticas(row, clubes, casa=False)  # Jogos fora
+            atualizar_estatisticas(row, clubes, casa=False)
         elif type == 'ALL':
-            atualizar_estatisticas(row, clubes, casa=True)  # Jogos em casa
-            atualizar_estatisticas(row, clubes, casa=False) # Jogos fora
+            atualizar_estatisticas(row, clubes, casa=True)
+            atualizar_estatisticas(row, clubes, casa=False)
     
     # Adicionando a posição e ordenando
-    clubes = clubes.sort_values(by=["pontos", "saldo", "gols_a_favor"], ascending=False)
-    clubes["posicao"] = range(1, len(clubes) + 1)
+
+    clubes = clubes.sort_values(by=["PTS", "DIFF", "GF"], ascending=False)
+    clubes["Goals"] = f"{str(clubes["GF"])}:{str(clubes["GC"])}"
+    clubes["#"] = range(1, len(clubes) + 1)
+    clubes = clubes["#","PTS", "P", "W", "D", "L", "DIFF", "Goals"]
 
     classificacao = clubes.reset_index()
 
