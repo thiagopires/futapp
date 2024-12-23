@@ -35,15 +35,12 @@ def first_goal_string(row):
         return '-'  # Caso não haja gols
 
 def print_dataframe(df, pheight=None):
-    styled_df = df.style.set_properties(**{
-        'text-align': 'center'
-    }).set_table_styles([
-        {
-            'selector': 'th',
-            'props': [('text-align', 'center')]
-        }
-    ])
-    st.dataframe(styled_df, height=pheight, use_container_width=True, hide_index=True)
+    if isinstance(df, pd.io.formats.style.Styler):
+        df = df.set_properties(**{'text-align': 'center'})
+        df = df.set_table_styles([
+            {'selector': 'th', 'props': [('text-align', 'center')]}
+        ])
+    st.dataframe(df, height=pheight, use_container_width=True, hide_index=True)
 
 def load_daymatches(i):
     dia = date.today() + timedelta(days=i)
