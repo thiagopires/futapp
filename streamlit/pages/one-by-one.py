@@ -36,7 +36,7 @@ st.sidebar.header("Selecione o Confronto")
 # round_number = st.sidebar.number_input("Rodada", min_value=1, step=1)
 match_selected = st.sidebar.selectbox("Confronto", matches)
 
-df_match_selected = df_matches[df_matches["Confronto"] == match_selected]
+df_match_selected = df_matches[df_matches["Confronto"] == match_selected].iloc[0]
 
 # Exibição do confronto
 st.subheader(df_match_selected["Confronto"])
