@@ -8,8 +8,8 @@ def print_dataframe(df):
     st.dataframe(df, use_container_width=True, hide_index=True)
     
 # @st.cache_data
-def load_daymatches(i):
-    dia = date.today() + timedelta(days=i)
+def load_daymatches():
+    dia = date.today() + timedelta(days=diff)
     df = pd.read_csv(f"https://github.com/futpythontrader/YouTube/blob/main/Jogos_do_Dia/FootyStats/Jogos_do_Dia_FootyStats_{str(dia)}.csv?raw=true")
     df["Datetime"] = pd.to_datetime(df["Date"] + " " + df["Time"])
     df["Formatted_Datetime"] = df["Datetime"].dt.strftime("%d/%m/%Y %H:%M")
@@ -91,13 +91,19 @@ st.title("⚽ Análise Completa do Confronto de Futebol")
 st.sidebar.header("Selecione o Confronto")
 
 # Entrada para seleção do confronto
+diff = 0
+left, middle, right = st.sidebar.columns(3)
+if left.button("Hoje", use_container_width=True):
+    diff = 0
+if middle.button("Amanhã", use_container_width=True):
+    diff = 1
+if right.button("Dps. Amanhã", use_container_width=True):
+    diff = 2
+
 df_matches["Confronto"] = df_matches["Home"] + " vs. " + df_matches["Away"]
 matches = df_matches["Confronto"].value_counts().index
 match_selected = st.sidebar.selectbox("Confronto", matches)
-
-with st.spinner('Carregando...'):
-    df_match_selected = df_matches[df_matches["Confronto"] == match_selected].iloc[0]
-st.status("Done.")
+df_match_selected = df_matches[df_matches["Confronto"] == match_selected].iloc[0]
 
 # club1 = st.sidebar.selectbox("Clube 1", ["Nacional", "Benfica", "Porto"])
 # club2 = st.sidebar.selectbox("Clube 2", ["Nacional", "Benfica", "Porto"])
