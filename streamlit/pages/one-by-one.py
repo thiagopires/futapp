@@ -8,7 +8,7 @@ def print_dataframe(df):
     st.dataframe(df, use_container_width=True, hide_index=True)
     
 # @st.cache_data
-def load_daymatches():
+def load_daymatches(diff):
     dia = date.today() + timedelta(days=diff)
     df = pd.read_csv(f"https://github.com/futpythontrader/YouTube/blob/main/Jogos_do_Dia/FootyStats/Jogos_do_Dia_FootyStats_{str(dia)}.csv?raw=true")
     df["Datetime"] = pd.to_datetime(df["Date"] + " " + df["Time"])
