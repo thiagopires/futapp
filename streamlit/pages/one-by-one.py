@@ -163,8 +163,8 @@ df_match_selected = df_matches[df_matches["Confronto"].str.contains(match_select
 st.title("⚽ Análise Completa do Confronto de Futebol")
 
 # Header
-st.caption(f"{df_match_selected['Formatted_Datetime']} - {df_match_selected["League"]} (Rodada {df_match_selected["Rodada"]})")
-st.subheader(df_match_selected["Confronto"])
+# st.caption(f"{df_match_selected['Formatted_Datetime']} - {df_match_selected["League"]} (Rodada {df_match_selected["Rodada"]})")
+st.subheader(f"{df_match_selected['Formatted_Datetime']} - {df_match_selected["Confronto"].split("-")[1]} ({df_match_selected["League"]} - Rodada {df_match_selected["Rodada"]})")
 st.divider()
 
 filter_confrontos = (df_hist["Home"].isin([df_match_selected["Home"], df_match_selected["Away"]])) & (df_hist["Away"].isin([df_match_selected["Home"], df_match_selected["Away"]]))
