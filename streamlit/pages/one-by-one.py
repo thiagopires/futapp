@@ -82,7 +82,8 @@ st.set_page_config(
 )
 
 # Carregando as bases
-df_matches = load_daymatches(0)
+diff = 0
+df_matches = load_daymatches(diff)
 df_hist = load_histmatches()
 
 # Título do dashboard
@@ -91,7 +92,7 @@ st.title("⚽ Análise Completa do Confronto de Futebol")
 st.sidebar.header("Selecione o Confronto")
 
 # Entrada para seleção do confronto
-diff = 0
+
 left, middle, right = st.sidebar.columns(3)
 if left.button("Hoje", use_container_width=True):
     diff = 0
