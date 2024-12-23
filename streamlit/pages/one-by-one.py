@@ -31,7 +31,7 @@ confrontos = pd.DataFrame({
     "Clube 1": ["Nacional", "Nacional", "Benfica"],
     "Clube 2": ["Benfica", "Benfica", "Nacional"],
     "Resultado": ["1-2", "0-3", "2-1"]
-})
+}).reset_index(drop=True)
 
 # Dividindo a página em duas colunas
 col1, col2 = st.columns(2)
