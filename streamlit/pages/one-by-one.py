@@ -25,22 +25,6 @@ def load_histmatches():
     df["Resultado_FT"] = str(df["Goals_H_FT"]) + "-" + str(df["Goals_A_FT"])
     return df
 
-def atualizar_estatisticas(row, clubes, casa=True):
-    clube = row["Home"] if casa else row["Away"]
-    gols_favor = row["Goals_H_FT"] if casa else row["Goals_A_FT"]
-    gols_contra = row["Goals_A_FT"] if casa else row["Goals_H_FT"]
-    pontos = 3 if (row["Home_Win"] if casa else row["Away_Win"]) else 1 if row["Draw"] else 0
-
-    clubes.loc[clube, "jogos"] += 1
-    clubes.loc[clube, "vitorias"] += 1 if (row["Home_Win"] if casa else row["Away_Win"]) else 0
-    clubes.loc[clube, "empates"] += 1 if row["Draw"] else 0
-    clubes.loc[clube, "derrotas"] += 1 if not row["Draw"] and not (row["Home_Win"] if casa else row["Away_Win"]) else 0
-    clubes.loc[clube, "gols_a_favor"] += gols_favor
-    clubes.loc[clube, "gols_contra"] += gols_contra
-    clubes.loc[clube, "pontos"] += pontos
-    clubes.loc[clube, "saldo"] += gols_favor - gols_contra
-
-
 def generate_classificacao(df):
     # Calculando o resultado do jogo
     df["Home_Win"] = df["Goals_H_FT"] > df["Goals_A_FT"]
@@ -49,19 +33,30 @@ def generate_classificacao(df):
     
     # Inicializando as tabelas de pontos
     clubes = pd.DataFrame({"Clube": pd.concat([df["Home"], df["Away"]]).unique()})
-    # clubes.set_index("Clube", inplace=True)
+    clubes.set_index("Clube", inplace=True)
     columns = ["pontos", "jogos", "vitorias", "empates", "derrotas", "gols_a_favor", "gols_contra", "saldo"]
     for col in columns:
         clubes[col] = 0
     
     # Atualizando estatísticas para todos os jogos
     for _, row in df.iterrows():
-        atualizar_estatisticas(row, clubes, casa=True)  # Jogos em casa
-        atualizar_estatisticas(row, clubes, casa=False)  # Jogos fora
+        clube = row["Home"] if casa else row["Away"]
+        gols_favor = row["Goals_H_FT"] if casa else row["Goals_A_FT"]
+        gols_contra = row["Goals_A_FT"] if casa else row["Goals_H_FT"]
+        pontos = 3 if (row["Home_Win"] if casa else row["Away_Win"]) else 1 if row["Draw"] else 0
     
-    # Adicionando a posição e ordenando
-    clubes = clubes.sort_values(by=["pontos", "saldo", "gols_a_favor"], ascending=False)
-    clubes["posicao"] = range(1, len(clubes) + 1)
+        clubes.loc[clube, "jogos"] += 1
+        clubes.loc[clube, "vitorias"] += 1 if (row["Home_Win"] if casa else row["Away_Win"]) else 0
+        clubes.loc[clube, "empates"] += 1 if row["Draw"] else 0
+        clubes.loc[clube, "derrotas"] += 1 if not row["Draw"] and not (row["Home_Win"] if casa else row["Away_Win"]) else 0
+        clubes.loc[clube, "gols_a_favor"] += gols_favor
+        clubes.loc[clube, "gols_contra"] += gols_contra
+        clubes.loc[clube, "pontos"] += pontos
+        clubes.loc[clube, "saldo"] += gols_favor - gols_contra
+        
+        # Adicionando a posição e ordenando
+        clubes = clubes.sort_values(by=["pontos", "saldo", "gols_a_favor"], ascending=False)
+        clubes["posicao"] = range(1, len(clubes) + 1)
         
     classificacao_geral = clubes.reset_index()
 
