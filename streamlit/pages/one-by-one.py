@@ -6,12 +6,21 @@ from datetime import date
 
 def print_dataframe(df):
     st.dataframe(df, use_container_width=True, hide_index=True)
-
-def load_data_matches():
-    dia = date.today()
+    
+@st.cache_data
+def load_daymatches(i):
+    dia = date.today() + timedelta(days=i))
     df = pd.read_csv(f"https://github.com/futpythontrader/YouTube/blob/main/Jogos_do_Dia/FootyStats/Jogos_do_Dia_FootyStats_{str(dia)}.csv?raw=true")
     df["Datetime"] = pd.to_datetime(df["Date"] + " " + df["Time"])
     df["Formatted_Datetime"] = df["Datetime"].dt.strftime("%d/%m/%Y %H:%M")
+    return df
+
+@st.cache_data
+def load_histmatches():
+    df = pd.read_csv("https://github.com/futpythontrader/YouTube/blob/main/Bases_de_Dados/FootyStats/Base_de_Dados_FootyStats_(2022_2024).csv?raw=true")
+    df[["Date", "Time"]] = df["Date"].str.split(" ", expand=True)
+    df["Formatted_Date"] = df["Date"].dt.strftime("%d/%m/%Y")
+    df["Resultado_FT"] = df["Goals_H_FT"] + "-" + df["Goals_A_FT"]
     return df
 
 # Configuração da página
@@ -21,23 +30,25 @@ st.set_page_config(
     layout="wide",
 )
 
+df_matches = load_daymatches()
+df_hist = load_histmatches()
+
 # Título do dashboard
 st.title("⚽ Análise Completa do Confronto de Futebol")
 
-df_matches = load_data_matches()
 df_matches["Confronto"] = df_matches["Home"] + " vs." + df_matches["Away"]
 matches = df_matches["Confronto"].value_counts().index
 
 # Entrada para seleção do confronto
 st.sidebar.header("Selecione o Confronto")
+match_selected = st.sidebar.selectbox("Confronto", matches)
+df_match_selected = df_matches[df_matches["Confronto"] == match_selected].iloc[0]
+
 # club1 = st.sidebar.selectbox("Clube 1", ["Nacional", "Benfica", "Porto"])
 # club2 = st.sidebar.selectbox("Clube 2", ["Nacional", "Benfica", "Porto"])
 # match_date = st.sidebar.date_input("Data do Jogo")
 # league = st.sidebar.selectbox("Campeonato", ["Primeira Liga", "Copa de Portugal"])
 # round_number = st.sidebar.number_input("Rodada", min_value=1, step=1)
-match_selected = st.sidebar.selectbox("Confronto", matches)
-
-df_match_selected = df_matches[df_matches["Confronto"] == match_selected].iloc[0]
 
 # Exibição do confronto
 st.caption(f"{df_match_selected['Formatted_Datetime']} - {df_match_selected["League"]} (Rodada {df_match_selected["Rodada"]})")
@@ -46,12 +57,14 @@ st.subheader(df_match_selected["Confronto"])
 st.divider()
 
 # Dados Simulados para Confrontos
-confrontos = pd.DataFrame({
-    "Data": ["2023-01-01", "2022-03-15", "2021-07-20"],
-    "Clube 1": ["Nacional", "Nacional", "Benfica"],
-    "Clube 2": ["Benfica", "Benfica", "Nacional"],
-    "Resultado": ["1-2", "0-3", "2-1"]
-})
+# confrontos = pd.DataFrame({
+#     "Data": ["2023-01-01", "2022-03-15", "2021-07-20"],
+#     "Clube 1": ["Nacional", "Nacional", "Benfica"],
+#     "Clube 2": ["Benfica", "Benfica", "Nacional"],
+#     "Resultado": ["1-2", "0-3", "2-1"]
+# })
+filter_confrontos = (df_hist["Home"].isin([df_match_selected["Home"], df_match_selected["Away"]])) | (df["Away"].isin([df_match_selected["Home"], df_match_selected["Away"]]))
+confrontos = df_hist.loc[filter_confrontos, ["Formatted_Date", "Season", "Home", "Resultado_FT", "Away"]].sort_values(by="Date", ascending=False)
 
 # Dividindo a página em duas colunas
 col1, col2 = st.columns(2)
