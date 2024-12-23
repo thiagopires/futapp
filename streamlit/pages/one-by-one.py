@@ -6,8 +6,7 @@ from datetime import date, timedelta
 
 def print_dataframe(df):
     st.dataframe(df, use_container_width=True, hide_index=True)
-    
-# @st.cache_data
+
 def load_daymatches(i):
     dia = date.today() + timedelta(days=i)
     df = pd.read_csv(f"https://github.com/futpythontrader/YouTube/blob/main/Jogos_do_Dia/FootyStats/Jogos_do_Dia_FootyStats_{str(dia)}.csv?raw=true")
@@ -15,7 +14,6 @@ def load_daymatches(i):
     df["Formatted_Datetime"] = df["Datetime"].dt.strftime("%d/%m/%Y %H:%M")
     return df
 
-# @st.cache_data
 def load_histmatches():
     df = pd.read_csv("https://github.com/futpythontrader/YouTube/blob/main/Bases_de_Dados/FootyStats/Base_de_Dados_FootyStats_(2022_2024).csv?raw=true")
     df[["Date", "Time"]] = df["Date"].str.split(" ", expand=True)
@@ -81,23 +79,12 @@ def generate_classificacao(df, type):
 
     return classificacao
 
-# Configuração da página
-st.set_page_config(
-    page_title="Análise de Confrontos de Futebol",
-    page_icon="⚽",
-    layout="wide",
-)
-
 # Carregando as bases
 df_matches = load_daymatches(0)
 df_hist = load_histmatches()
 
-# Título do dashboard
-st.title("⚽ Análise Completa do Confronto de Futebol")
-
+# Sidebar
 st.sidebar.header("Selecione o Confronto")
-
-# Entrada para seleção do confronto
 
 left, middle, right = st.sidebar.columns(3)
 if left.button("Hoje", use_container_width=True):
@@ -112,16 +99,30 @@ matches = df_matches["Confronto"].value_counts().index
 match_selected = st.sidebar.selectbox("Confronto", matches)
 df_match_selected = df_matches[df_matches["Confronto"] == match_selected].iloc[0]
 
-# club1 = st.sidebar.selectbox("Clube 1", ["Nacional", "Benfica", "Porto"])
-# club2 = st.sidebar.selectbox("Clube 2", ["Nacional", "Benfica", "Porto"])
-# match_date = st.sidebar.date_input("Data do Jogo")
-# league = st.sidebar.selectbox("Campeonato", ["Primeira Liga", "Copa de Portugal"])
-# round_number = st.sidebar.number_input("Rodada", min_value=1, step=1)
+# Main
+with st.expander("Seção Fixa (expandir ou recolher)", expanded=True):
+    # Configuração da página
+    st.set_page_config(
+        page_title="Análise de Confrontos de Futebol",
+        page_icon="⚽",
+        layout="wide",
+    )
 
-# Header
-st.caption(f"{df_match_selected['Formatted_Datetime']} - {df_match_selected["League"]} (Rodada {df_match_selected["Rodada"]})")
-st.subheader(df_match_selected["Confronto"])
-st.divider()
+
+    # Título do dashboard
+    st.title("⚽ Análise Completa do Confronto de Futebol")
+
+
+    # club1 = st.sidebar.selectbox("Clube 1", ["Nacional", "Benfica", "Porto"])
+    # club2 = st.sidebar.selectbox("Clube 2", ["Nacional", "Benfica", "Porto"])
+    # match_date = st.sidebar.date_input("Data do Jogo")
+    # league = st.sidebar.selectbox("Campeonato", ["Primeira Liga", "Copa de Portugal"])
+    # round_number = st.sidebar.number_input("Rodada", min_value=1, step=1)
+
+    # Header
+    st.caption(f"{df_match_selected['Formatted_Datetime']} - {df_match_selected["League"]} (Rodada {df_match_selected["Rodada"]})")
+    st.subheader(df_match_selected["Confronto"])
+    st.divider()
 
 # st.write(f"*Data:* {str(df_match_selected["Datetime"])} | *Campeonato:* {df_match_selected["League"]} | *Rodada:* {df_match_selected["Rodada"]}")
 
