@@ -35,13 +35,13 @@ confrontos = pd.DataFrame({
 # Dividindo a página em duas colunas
 col1, col2 = st.columns(2)
 with col1:
-    col1, col2, col3, col4, col5, col6 = st.columns(6)
-    col1.metric(label="MO Home", value="2.10")
-    col2.metric(label="MO Draw", value="3.20")
-    col3.metric(label="MO Away", value="3.50")
-    col4.metric(label="Over 0.5 HT", value="1.50")
-    col5.metric(label="Over 1.5 FT", value="1.80")
-    col6.metric(label="Over 2.5 FT", value="2.10")
+    col11, col12, col13 = st.columns(3)
+    col11.metric(label="MO Home", value="2.10")
+    col12.metric(label="MO Draw", value="3.20")
+    col13.metric(label="MO Away", value="3.50")
+    col11.metric(label="Over 0.5 HT", value="1.50")
+    col12.metric(label="Over 1.5 FT", value="1.80")
+    col13.metric(label="Over 2.5 FT", value="2.10")
     # col7.metric(label="BTTS", value="1.95")
 with col2:
     st.table(confrontos)
