@@ -5,13 +5,25 @@ import datetime
 from datetime import date, timedelta
 
 def first_goal(row):
-    # Extrair os minutos de cada coluna, tratando valores vazios e minutos extras
-    home = [(int(x.split('+')[0]), 'Home') for x in row['Goals_H_Minutes'].split(',') if x]
-    away = [(int(x.split('+')[0]), 'Away') for x in row['Goals_A_Minutes'].split(',') if x]
+    try:
+        # Extrair os minutos de cada coluna, tratando valores vazios ou não numéricos
+        home = [
+            (int(x.split('+')[0]), 'Home')
+            for x in row['Goals_H_Minutes'].replace('[]', '').split(',')
+            if x.strip().isdigit() or '+' in x
+        ]
+        away = [
+            (int(x.split('+')[0]), 'Away')
+            for x in row['Goals_A_Minutes'].replace('[]', '').split(',')
+            if x.strip().isdigit() or '+' in x
+        ]
+    except AttributeError:
+        home = []
+        away = []
     
     # Combinar os minutos de ambas as colunas
     all_goals = home + away
-    
+
     # Identificar o menor minuto e sua origem
     if all_goals:
         first = min(all_goals, key=lambda x: x[0])  # Ordenar pelo minuto
