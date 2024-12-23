@@ -217,13 +217,13 @@ classificacao_visitante = generate_classificacao(df_classificacao, "AWAY")
 tab1, tab2, tab3 = st.tabs(["Geral", "Casa", "Visitante"])
 with tab1:
     # st.subheader("Geral")
-    print_dataframe(classificacao_geral, 800)
+    print_dataframe(classificacao_geral, 750)
 with tab2:
     # st.subheader("Casa")
-    print_dataframe(classificacao_casa, 800)
+    print_dataframe(classificacao_casa, 750)
 with tab3:
     # st.subheader("Visitante")
-    print_dataframe(classificacao_visitante, 800)
+    print_dataframe(classificacao_visitante, 750)
 
 # Tabela 25 e 26: Gols Casa e Visitante
 gols = pd.DataFrame({
