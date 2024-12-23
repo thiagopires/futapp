@@ -188,11 +188,11 @@ with st.spinner('Wait for it...'):
         print_dataframe(confrontos)
 
 
-    filter_ultimos_casa = (df_hist["Home"] == df_match_selected["Home"])
+    filter_ultimos_casa = (df_match_selected["Home"].isin([df_hist["Home"], df_hist["Away"]]))
     ultimos_casa = df_hist.loc[filter_ultimos_casa, ["Date", "Home", "Resultado_FT", "Away", "Primeiro_Gol"]].tail(10).sort_values(by="Date", ascending=False)
     df_ultimos_casa = ultimos_casa.style.apply(highlight_result, axis=1, type="HOME")
 
-    filter_ultimos_visitante = (df_hist["Away"] == df_match_selected["Away"])
+    filter_ultimos_visitante = (df_match_selected["Away"].isin([df_hist["Home"], df_hist["Away"]]))
     ultimos_visitante = df_hist.loc[filter_ultimos_visitante, ["Date", "Home", "Resultado_FT", "Away", "Primeiro_Gol"]].tail(10).sort_values(by="Date", ascending=False)
     df_ultimos_visitante = ultimos_visitante.style.apply(highlight_result, axis=1, type="AWAY")
 
@@ -234,7 +234,7 @@ with st.spinner('Wait for it...'):
     todos_visitante = df_hist.loc[filter_todos_visitante, ["Date", "Season", "Home", "Resultado_FT", "Away"]].sort_values(by="Date", ascending=False)
     df_todos_visitante = todos_visitante.style.apply(highlight_result, axis=1, type="AWAY")
 
-    st.header("Todos os jogos Casa/Fora")
+    st.header("Todos os jogos Casa/Fora nesta competição")
     st.caption(df_match_selected["League"])
     
     col1, col2 = st.columns(2)
