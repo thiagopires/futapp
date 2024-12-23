@@ -48,8 +48,8 @@ def load_histmatches():
     # df["Date"] = df["Date"].dt.date
     df["Formatted_Date"] = df["Date"].dt.strftime("%d/%m/%Y")
     df["Resultado_FT"] = df["Goals_H_FT"].astype(str) + "-" + df["Goals_A_FT"].astype(str)
-    df[["First_Goal_Team", "First_Goal_Minute"]] = df.apply(lambda row: pd.Series(first_goal(row)), axis=1)
-    df["Primeiro Gol"] = df["First_Goal_Minute"].astype(str) + " " + df["First_Goal_Team"].astype(str)
+    # df[["First_Goal_Team", "First_Goal_Minute"]] = df.apply(lambda row: pd.Series(first_goal(row)), axis=1)
+    df["Primeiro Gol"] = "-" # df["First_Goal_Minute"].astype(str) + " " + df["First_Goal_Team"].astype(str)
     return df
 
 def atualizar_estatisticas(row, clubes, casa=True):
