@@ -212,7 +212,7 @@ with col2:
 
 filter_ultimos_casa = df_hist["Home"] == df_match_selected["Home"]
 ultimos_casa = df_hist.loc[filter_ultimos_casa, ["Date", "Home", "Resultado_FT", "Away", "Primeiro_Gol"]].tail(10).sort_values(by="Date", ascending=False)
-df_ultimos_casa = ultimos_casa.style.apply(highlight_result, axis=1, type="home")
+df_ultimos_casa = ultimos_casa.style.apply(highlight_result, axis=1, type="HOME")
 
 filter_ultimos_visitante = df_hist["Away"] == df_match_selected["Away"]
 ultimos_visitante = df_hist.loc[filter_ultimos_visitante, ["Date", "Home", "Resultado_FT", "Away", "Primeiro_Gol"]].tail(10).sort_values(by="Date", ascending=False)
