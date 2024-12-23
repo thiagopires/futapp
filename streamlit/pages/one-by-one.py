@@ -68,7 +68,7 @@ def generate_classificacao(df, type):
     clubes = clubes.sort_values(by=["PTS", "DIFF", "GF"], ascending=False)
     clubes["Goals"] = clubes["GF"].astype(str) + ":" + clubes["GC"].astype(str)
     clubes["#"] = range(1, len(clubes) + 1)
-    clubes = clubes[["#", "Clube", "PTS", "P", "W", "D", "L", "DIFF", "Goals"]]
+    clubes = clubes[["#", "PTS", "P", "W", "D", "L", "DIFF", "Goals"]]
 
     classificacao = clubes.reset_index()
 
