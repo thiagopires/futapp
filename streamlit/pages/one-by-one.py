@@ -180,7 +180,7 @@ with col2:
     st.subheader("Confrontos diretos nos últimos 3 anos")
     print_dataframe(confrontos)
 
-filter_ultimos_casa = df_hist["Home"] == df_match_selected["Home"] & (df_hist["League"] == df_match_selected["League"])
+filter_ultimos_casa = (df_hist["Home"] == df_match_selected["Home"]) & (df_hist["League"] == df_match_selected["League"])
 ultimos_casa = df_hist.loc[filter_ultimos_casa, ["Date", "Home", "Resultado_FT", "Away", "Primeiro_Gol"]].tail(10).sort_values(by="Date", ascending=False)
 df_ultimos_casa = ultimos_casa.style.apply(highlight_result, axis=1, type="HOME")
 
