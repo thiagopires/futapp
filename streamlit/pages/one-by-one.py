@@ -192,7 +192,7 @@ with st.spinner('Wait for it...'):
     ultimos_casa = df_hist.loc[filter_ultimos_casa, ["Date", "Season", "Home", "Resultado_FT", "Away"]].tail(10).sort_values(by="Date", ascending=False)
     df_ultimos_casa = ultimos_casa.style.apply(highlight_result, axis=1, type="HOME")
 
-    filter_ultimos_visitante = (df_match_selected["Away"] == df_hist["Home"]) | (df_match_selected["Home"] == df_hist["Away"])
+    filter_ultimos_visitante = (df_match_selected["Away"] == df_hist["Home"]) | (df_match_selected["Away"] == df_hist["Away"])
     ultimos_visitante = df_hist.loc[filter_ultimos_visitante, ["Date", "Season", "Home", "Resultado_FT", "Away"]].tail(10).sort_values(by="Date", ascending=False)
     df_ultimos_visitante = ultimos_visitante.style.apply(highlight_result, axis=1, type="AWAY")
 
