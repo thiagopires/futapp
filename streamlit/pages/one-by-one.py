@@ -187,20 +187,23 @@ with st.spinner('Wait for it...'):
         st.subheader("Confrontos diretos nos últimos 3 anos")
         print_dataframe(confrontos)
 
-    filter_ultimos_casa = (df_hist["Home"] == df_match_selected["Home"]) & (df_hist["League"] == df_match_selected["League"])
+
+    filter_ultimos_casa = (df_hist["Home"] == df_match_selected["Home"])
     ultimos_casa = df_hist.loc[filter_ultimos_casa, ["Date", "Home", "Resultado_FT", "Away", "Primeiro_Gol"]].tail(10).sort_values(by="Date", ascending=False)
     df_ultimos_casa = ultimos_casa.style.apply(highlight_result, axis=1, type="HOME")
 
-    filter_ultimos_visitante = (df_hist["Away"] == df_match_selected["Away"]) & (df_hist["League"] == df_match_selected["League"])
+    filter_ultimos_visitante = (df_hist["Away"] == df_match_selected["Away"])
     ultimos_visitante = df_hist.loc[filter_ultimos_visitante, ["Date", "Home", "Resultado_FT", "Away", "Primeiro_Gol"]].tail(10).sort_values(by="Date", ascending=False)
     df_ultimos_visitante = ultimos_visitante.style.apply(highlight_result, axis=1, type="AWAY")
 
+    st.header("Últimos 10 Jogos em todas as competições")
+    
     col1, col2 = st.columns(2)
     with col1:
-        st.subheader("Últimos 10 Jogos na competição - Casa")
+        st.subheader(df_match_selected["Home"])
         print_dataframe(df_ultimos_casa)
     with col2:
-        st.subheader("Últimos 10 Jogos na competição - Visitante")
+        st.subheader(df_match_selected["Away"])
         print_dataframe(df_ultimos_visitante)
 
     st.subheader("⚽ Classificações nesta competição")
@@ -222,6 +225,25 @@ with st.spinner('Wait for it...'):
     with tab3:
         # st.subheader("Visitante")
         print_dataframe(classificacao_visitante, 740)
+
+    filter_todos_casa = (df_hist["Home"] == df_match_selected["Home"]) & (df_hist["League"] == df_match_selected["League"])
+    todos_casa = df_hist.loc[filter_todos_casa, ["Date", "Season", "Home", "Resultado_FT", "Away"]].sort_values(by="Date", ascending=False)
+    df_todos_casa = todos_casa.style.apply(highlight_result, axis=1, type="HOME")
+
+    filter_todos_visitante = (df_hist["Away"] == df_match_selected["Away"]) & (df_hist["League"] == df_match_selected["League"])
+    todos_visitante = df_hist.loc[filter_todos_visitante, ["Date", "Season", "Home", "Resultado_FT", "Away"]].sort_values(by="Date", ascending=False)
+    df_todos_visitante = todos_visitante.style.apply(highlight_result, axis=1, type="AWAY")
+
+    st.header("Todos os jogos Casa/Fora")
+    st.caption(df_match_selected["League"])
+    
+    col1, col2 = st.columns(2)
+    with col1:
+        st.subheader(df_match_selected["Home"])
+        print_dataframe(df_todos_casa)
+    with col2:
+        st.subheader(df_match_selected["Away"])
+        print_dataframe(df_todos_visitante)
 
     # Tabela 25 e 26: Gols Casa e Visitante
     gols = pd.DataFrame({
