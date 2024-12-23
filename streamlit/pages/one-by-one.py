@@ -4,8 +4,8 @@ import plotly.express as px
 import datetime
 from datetime import date, timedelta
 
-def print_dataframe(df):
-    st.dataframe(df, use_container_width=True, hide_index=True)
+def print_dataframe(df, pheight=None):
+    st.dataframe(df, height=pheight, use_container_width=True, hide_index=True)
 
 def load_daymatches(i):
     dia = date.today() + timedelta(days=i)
@@ -217,13 +217,13 @@ classificacao_visitante = generate_classificacao(df_classificacao, "AWAY")
 tab1, tab2, tab3 = st.tabs(["Geral", "Casa", "Visitante"])
 with tab1:
     # st.subheader("Geral")
-    print_dataframe(classificacao_geral)
+    print_dataframe(classificacao_geral, 800)
 with tab2:
     # st.subheader("Casa")
-    print_dataframe(classificacao_casa)
+    print_dataframe(classificacao_casa, 800)
 with tab3:
     # st.subheader("Visitante")
-    print_dataframe(classificacao_visitante)
+    print_dataframe(classificacao_visitante, 800)
 
 # Tabela 25 e 26: Gols Casa e Visitante
 gols = pd.DataFrame({
