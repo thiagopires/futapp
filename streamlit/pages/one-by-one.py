@@ -255,12 +255,12 @@ with st.spinner('Carregando...'):
     df_time_22 = pd.DataFrame(estatisticas_time_22)
     
     col1, col2 = st.columns(2)
-    with col1:
-        st.subheader(club1)
+    with col1d
+        st.subheader(df_match_selected["Home"])
         print_dataframe(df_time_1.to_dict(orient='records'))
         print_dataframe(df_time_11.to_dict(orient='records'))
     with col2:
-        st.subheader(club2)
+        st.subheader(df_match_selected["Away"])
         print_dataframe(df_time_2.to_dict(orient='records'))
         print_dataframe(df_time_22.to_dict(orient='records'))
     
