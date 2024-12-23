@@ -201,15 +201,15 @@ classificacao_geral = generate_classificacao(df_classificacao, "ALL")
 classificacao_casa = generate_classificacao(df_classificacao, "HOME")
 classificacao_visitante = generate_classificacao(df_classificacao, "AWAY")
 
-col1, col2, col3 = st.columns(3)
-with col1:
-    st.subheader("Geral")
+tab1, tab2, tab3 = st.tabs(["Geral", "Casa", "Visitante"])
+with tab1:
+    # st.subheader("Geral")
     print_dataframe(classificacao_geral)
-with col2:
-    st.subheader("Casa")
+with tab2:
+    # st.subheader("Casa")
     print_dataframe(classificacao_casa)
-with col3:
-    st.subheader("Visitante")
+with tab3:
+    # st.subheader("Visitante")
     print_dataframe(classificacao_visitante)
 
 # Tabela 25 e 26: Gols Casa e Visitante
