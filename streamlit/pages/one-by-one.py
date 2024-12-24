@@ -54,7 +54,6 @@ def load_histmatches():
     df = pd.read_csv("https://github.com/futpythontrader/YouTube/blob/main/Bases_de_Dados/FootyStats/Base_de_Dados_FootyStats_(2022_2024).csv?raw=true")
     df[["Date", "Time"]] = df["Date"].str.split(" ", expand=True)
     df["Date"] = pd.to_datetime(df["Date"])
-    # df["Date"] = df["Date"].dt.date
     df["Formatted_Date"] = df["Date"].dt.strftime("%d/%m/%Y")
     df["Resultado_FT"] = df["Goals_H_FT"].astype(str) + "-" + df["Goals_A_FT"].astype(str)
     df["Primeiro_Gol"] = df.apply(first_goal_string, axis=1)
@@ -172,7 +171,8 @@ with st.spinner('Wait for it...'):
 
     filter_confrontos = (df_hist["Home"].isin([df_match_selected["Home"], df_match_selected["Away"]])) & (df_hist["Away"].isin([df_match_selected["Home"], df_match_selected["Away"]]))
     confrontos = df_hist.loc[filter_confrontos, ["Date", "Season", "Home", "Resultado_FT", "Away"]].sort_values(by="Date", ascending=False)
-
+    df_confrontos = confrontos.style.apply(highlight_result, axis=1, type="HOME")
+    
     # Dividindo a página em duas colunas
     col1, col2 = st.columns(2)
     with col1:
@@ -186,7 +186,7 @@ with st.spinner('Wait for it...'):
         col13.metric(label="BTTS", value=df_match_selected["Odd_BTTS_Yes"])
     with col2:
         st.subheader("Confrontos diretos nos últimos 3 anos")
-        print_dataframe(confrontos)
+        print_dataframe(df_confrontos)
 
 
     filter_ultimos_casa = (df_match_selected["Home"] == df_hist["Home"]) | (df_match_selected["Home"] == df_hist["Away"])
