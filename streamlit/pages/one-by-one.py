@@ -43,7 +43,7 @@ def print_dataframe(df, pheight=None):
     st.dataframe(df, height=pheight, use_container_width=True, hide_index=True)
 
 def load_daymatches(i):
-    dia = date.today() + timedelta(days=i)
+    dia = date.today() - timedelta(hours=3) + timedelta(days=i)
     df = pd.read_csv(f"https://github.com/futpythontrader/YouTube/blob/main/Jogos_do_Dia/FootyStats/Jogos_do_Dia_FootyStats_{str(dia)}.csv?raw=true")
     df["Datetime"] = pd.to_datetime(df["Date"] + " " + df["Time"])
     df["Formatted_Datetime"] = df["Datetime"].dt.strftime("%d/%m/%Y %H:%M")
