@@ -107,11 +107,11 @@ def generate_classificacao(df, type):
     classificacao = classificacao[["#", "Clube", "PTS", "P", "W", "D", "L", "DIFF", "Goals"]]
 
     if type == 'HOME':
-        classificacao = classificacao.style.map(lambda v: 'background-color: lightyellow' if v == df_match_selected["Home"] else '')
+        classificacao = classificacao.style.map(lambda v: 'background-color: lightyellow' if v == df_match_selected["Home"] else '', subset=["Clube"])
     elif type == 'AWAY':
-        classificacao = classificacao.style.map(lambda v: 'background-color: lightyellow' if v == df_match_selected["Away"] else '')
+        classificacao = classificacao.style.map(lambda v: 'background-color: lightyellow' if v == df_match_selected["Away"] else '', subset=["Clube"])
     elif type == 'ALL':
-        classificacao = classificacao.style.map(lambda v: 'background-color: lightyellow' if (v == df_match_selected["Home"] or v == df_match_selected["Away"]) else '')
+        classificacao = classificacao.style.map(lambda v: 'background-color: lightyellow' if (v == df_match_selected["Home"] or v == df_match_selected["Away"]) else '', subset=["Clube"])
 
     return classificacao
 
@@ -190,7 +190,6 @@ with st.spinner('Wait for it...'):
         confrontos = df_hist.loc[filter_confrontos, ["Date", "Season", "Home", "Resultado_FT", "Away"]].sort_values(by="Date", ascending=False)
         df_confrontos = confrontos.style.apply(highlight_result, axis=1, highlight=df_match_selected["Home"])
         print_dataframe(df_confrontos)
-
 
     filter_ultimos_casa = (df_match_selected["Home"] == df_hist["Home"]) | (df_match_selected["Home"] == df_hist["Away"])
     ultimos_casa = df_hist.loc[filter_ultimos_casa, ["Date", "Season", "Home", "Resultado_FT", "Away"]].tail(10).sort_values(by="Date", ascending=False)
