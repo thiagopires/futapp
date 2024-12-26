@@ -107,11 +107,11 @@ def generate_classificacao(df, type):
     classificacao = classificacao[["#", "Clube", "PTS", "P", "W", "D", "L", "DIFF", "Goals"]]
 
     if type == 'HOME':
-        classificacao = classificacao.style.map(lambda v: 'background-color: yellow' if v == df_match_selected["Home"] else '', subset=["Clube"])
+        classificacao = classificacao.style.map(lambda v: 'background-color: yellow' if v == df_match_selected["Home"] else '')
     elif type == 'AWAY':
-        classificacao = classificacao.style.map(lambda v: 'background-color: yellow' if v == df_match_selected["Away"] else '', subset=["Clube"])
+        classificacao = classificacao.style.map(lambda v: 'background-color: yellow' if v == df_match_selected["Away"] else '')
     elif type == 'ALL':
-        classificacao = classificacao.style.map(lambda v: 'background-color: yellow' if (v == df_match_selected["Home"] or v == df_match_selected["Away"]) else '', subset=["Clube"])
+        classificacao = classificacao.style.map(lambda v: 'background-color: yellow' if (v == df_match_selected["Home"] or v == df_match_selected["Away"]) else '')
 
     return classificacao
 
@@ -122,22 +122,24 @@ def generate_classificacao(df, type):
         layout="wide",
     )
 
-def highlight_result(row, type):
+def highlight_result(row, highlight):
     colors = {
         'HOME': ['lightgreen','lightyellow','lightcoral'],
         'AWAY': ['lightcoral','lightyellow','lightgreen']
     }
+
+    colors = colors['HOME'] if row['Home'] == highlight else colors['AWAY']
 
     Goals = row["Resultado_FT"].split("-")
     Goals_H_FT = Goals[0]
     Goals_A_FT = Goals[1]
 
     if Goals_H_FT > Goals_A_FT:
-        return [f"background-color: {colors[type][0]}" if col == "Resultado_FT" else "" for col in row.index]
+        return [f"background-color: {colors[0]}" if col == "Resultado_FT" else "" for col in row.index]
     elif Goals_H_FT == Goals_A_FT:
-        return [f"background-color: {colors[type][1]}" if col == "Resultado_FT" else "" for col in row.index]
+        return [f"background-color: {colors[1]}" if col == "Resultado_FT" else "" for col in row.index]
     elif Goals_H_FT < Goals_A_FT:
-        return [f"background-color: {colors[type][2]}" if col == "Resultado_FT" else "" for col in row.index]
+        return [f"background-color: {colors[2]}" if col == "Resultado_FT" else "" for col in row.index]
 
 # Carregando as bases
 df_matches = load_daymatches(0)
@@ -169,9 +171,7 @@ with st.spinner('Wait for it...'):
     st.subheader(f"{df_match_selected['Formatted_Datetime']} - {df_match_selected["League"]} (Rodada {df_match_selected["Rodada"]})")
     st.divider()
 
-    filter_confrontos = (df_hist["Home"].isin([df_match_selected["Home"], df_match_selected["Away"]])) & (df_hist["Away"].isin([df_match_selected["Home"], df_match_selected["Away"]]))
-    confrontos = df_hist.loc[filter_confrontos, ["Date", "Season", "Home", "Resultado_FT", "Away"]].sort_values(by="Date", ascending=False)
-    df_confrontos = confrontos.style.apply(highlight_result, axis=1, type="HOME")
+
     
     # Dividindo a página em duas colunas
     col1, col2 = st.columns(2)
@@ -186,16 +186,19 @@ with st.spinner('Wait for it...'):
         col13.metric(label="BTTS", value=df_match_selected["Odd_BTTS_Yes"])
     with col2:
         st.subheader("Confrontos diretos nos últimos 3 anos")
+        filter_confrontos = (df_hist["Home"].isin([df_match_selected["Home"], df_match_selected["Away"]])) & (df_hist["Away"].isin([df_match_selected["Home"], df_match_selected["Away"]]))
+        confrontos = df_hist.loc[filter_confrontos, ["Date", "Season", "Home", "Resultado_FT", "Away"]].sort_values(by="Date", ascending=False)
+        df_confrontos = confrontos.style.apply(highlight_result, axis=1, highlight=df_match_selected["Home"])
         print_dataframe(df_confrontos)
 
 
     filter_ultimos_casa = (df_match_selected["Home"] == df_hist["Home"]) | (df_match_selected["Home"] == df_hist["Away"])
     ultimos_casa = df_hist.loc[filter_ultimos_casa, ["Date", "Season", "Home", "Resultado_FT", "Away"]].tail(10).sort_values(by="Date", ascending=False)
-    df_ultimos_casa = ultimos_casa.style.apply(highlight_result, axis=1, type="HOME")
+    df_ultimos_casa = ultimos_casa.style.apply(highlight_result, axis=1, highlight=df_match_selected["Home"])
 
     filter_ultimos_visitante = (df_match_selected["Away"] == df_hist["Home"]) | (df_match_selected["Away"] == df_hist["Away"])
     ultimos_visitante = df_hist.loc[filter_ultimos_visitante, ["Date", "Season", "Home", "Resultado_FT", "Away"]].tail(10).sort_values(by="Date", ascending=False)
-    df_ultimos_visitante = ultimos_visitante.style.apply(highlight_result, axis=1, type="AWAY")
+    df_ultimos_visitante = ultimos_visitante.style.apply(highlight_result, axis=1, highlight=df_match_selected["Away"])
 
     st.header("Últimos 10 Jogos em todas as competições")
     
@@ -229,11 +232,11 @@ with st.spinner('Wait for it...'):
 
     filter_todos_casa = (df_hist["Home"] == df_match_selected["Home"]) & (df_hist["League"] == df_match_selected["League"])
     todos_casa = df_hist.loc[filter_todos_casa, ["Date", "Home", "Resultado_FT", "Away", "Primeiro_Gol"]].sort_values(by="Date", ascending=False)
-    df_todos_casa = todos_casa.style.apply(highlight_result, axis=1, type="HOME")
+    df_todos_casa = todos_casa.style.apply(highlight_result, axis=1, highlight=df_match_selected["Home"])
 
     filter_todos_visitante = (df_hist["Away"] == df_match_selected["Away"]) & (df_hist["League"] == df_match_selected["League"])
     todos_visitante = df_hist.loc[filter_todos_visitante, ["Date", "Home", "Resultado_FT", "Away", "Primeiro_Gol"]].sort_values(by="Date", ascending=False)
-    df_todos_visitante = todos_visitante.style.apply(highlight_result, axis=1, type="AWAY")
+    df_todos_visitante = todos_visitante.style.apply(highlight_result, axis=1, highlight=df_match_selected["Away"])
 
     st.header("Todos os jogos Casa/Fora nesta competição")
     st.caption(df_match_selected["League"])
