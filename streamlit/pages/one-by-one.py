@@ -107,11 +107,11 @@ def generate_classificacao(df, type):
     classificacao = classificacao[["#", "Clube", "PTS", "P", "W", "D", "L", "DIFF", "Goals"]]
 
     if type == 'HOME':
-        classificacao = classificacao.style.map(lambda v: 'background-color: yellow' if v == df_match_selected["Home"] else '')
+        classificacao = classificacao.style.map(lambda v: 'background-color: lightyellow' if v == df_match_selected["Home"] else '')
     elif type == 'AWAY':
-        classificacao = classificacao.style.map(lambda v: 'background-color: yellow' if v == df_match_selected["Away"] else '')
+        classificacao = classificacao.style.map(lambda v: 'background-color: lightyellow' if v == df_match_selected["Away"] else '')
     elif type == 'ALL':
-        classificacao = classificacao.style.map(lambda v: 'background-color: yellow' if (v == df_match_selected["Home"] or v == df_match_selected["Away"]) else '')
+        classificacao = classificacao.style.map(lambda v: 'background-color: lightyellow' if (v == df_match_selected["Home"] or v == df_match_selected["Away"]) else '')
 
     return classificacao
 
