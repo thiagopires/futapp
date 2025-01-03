@@ -339,10 +339,10 @@ st.subheader("Distribuição de Gols por Minuto")
 
 col1, col2 = st.columns(2)
 with col1:
-    fig = px.bar(df_gols, x="Range", y="Arsenal", title="Gols por Minuto", orientation='h')
+    fig = px.bar(df_gols, x="Arsenal", y="Range", title="Gols por Minuto", orientation='h')
     st.plotly_chart(fig, use_container_width=True)
 with col2:
-    fig = px.bar(df_gols, x="Range", y="Ipswich", title="Gols por Minuto", orientation='h')
+    fig = px.bar(df_gols, x="Ipswich", y="Range", title="Gols por Minuto", orientation='h')
     st.plotly_chart(fig, use_container_width=True)
 
 
