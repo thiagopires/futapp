@@ -5,6 +5,8 @@ from datetime import date, datetime, timedelta
 
 SEASON_ATUAL = '2024/2025'
 
+
+
 def first_goal_string(row):
     def parse_minutes(value, team):
         # Garantir que a entrada seja uma string e remover caracteres problemáticos
@@ -153,6 +155,45 @@ def highlight_row(row, highlight):
         return ['background-color: #FFE0A6'] * len(row)
     return [''] * len(row)
 
+def gols_por_minuto(df, home, away):
+
+    # Definir os intervalos de tempo
+    ranges = [(0, 15), (16, 30), (31, 45), (46, 60), (61, 75), (76, 90)]  # Considerando acréscimos
+
+    def categorize_goals(goal_minutes):
+        """Classifica os minutos dos gols em intervalos definidos."""
+        counts = {f"{start}-{end}": 0 for start, end in ranges}
+        for minute in goal_minutes:
+            try:
+                # Remover '+x' dos acréscimos e converter para inteiro
+                minute = int(minute.split("+")[0])
+                for start, end in ranges:
+                    if start <= minute <= end:
+                        counts[f"{start}-{end}"] += 1
+                        break
+            except ValueError:
+                pass  # Ignorar valores inválidos
+        return counts
+
+    # Filtrar jogos onde Arsenal ou Ipswich aparecem em Home ou Away
+    filtered_df = df[
+        (df["Home"].isin([home, away])) |
+        (df["Away"].isin([home, away]))
+    ]
+
+    # Processar os gols para os times da casa e visitantes no DataFrame filtrado
+    home_goals = filtered_df["Goals_H_Minutes"].apply(categorize_goals)
+    away_goals = filtered_df["Goals_A_Minutes"].apply(categorize_goals)
+
+    # Somar os gols para cada intervalo
+    home_totals = pd.DataFrame(list(home_goals)).sum().rename("Home_Goals")
+    away_totals = pd.DataFrame(list(away_goals)).sum().rename("Away_Goals")
+
+    # Combinar os resultados
+    result = pd.concat([home_totals, away_totals], axis=1)
+    
+    return result
+
 # Init 
 st.set_page_config(layout="wide")
 
@@ -262,15 +303,14 @@ with col2:
     st.subheader(df_match_selected["Away"])
     print_dataframe(df_todos_visitante)
 
-# Tabela 25 e 26: Gols Casa e Visitante
-gols = pd.DataFrame({
-    "Minuto": ["0-15", "16-30", "31-45", "46-60", "61-75", "76-90"],
-    "Gols Casa": [3, 5, 2, 6, 4, 8],
-    "Gols Visitante": [2, 3, 4, 3, 6, 5]
-})
+
+
+# Tabela 25 e 26: Gols Casa e Visitanted
+df_gols = gols_por_minuto(df_hist, df_match_selected["Home"], df_match_selected["Away"])
 st.subheader("Distribuição de Gols por Minuto")
-fig = px.bar(gols, x="Minuto", y=["Gols Casa", "Gols Visitante"], barmode="group", title="Gols por Minuto")
+fig = px.bar(df_gols, x="Intervalo", y=["Home_Goals", "Away_Goals"], barmode="group", title="Gols por Minuto")
 st.plotly_chart(fig, use_container_width=True)
+
 
 # Tabela 22 e 23: Percurso Casa e Visitante
 percurso_casa = {
@@ -373,37 +413,3 @@ with col2:
 st.write("⚡ Dashboard dinâmico para análise de confrontos! ⚡")
 
 
-
-# def categorize_goals(goal_minutes):
-#     """Classifica os minutos dos gols em intervalos definidos."""
-#     counts = {f"{start}-{end}": 0 for start, end in ranges}
-#     for minute in goal_minutes:
-#         try:
-#             # Remover '+x' dos acréscimos e converter para inteiro
-#             minute = int(minute.split("+")[0])
-#             for start, end in ranges:
-#                 if start <= minute <= end:
-#                     counts[f"{start}-{end}"] += 1
-#                     break
-#         except ValueError:
-#             pass  # Ignorar valores inválidos
-#     return counts
-
-# # Filtrar jogos onde Arsenal ou Ipswich aparecem em Home ou Away
-# filtered_df = df[
-#     (df["Home"].isin(["Arsenal", "Ipswich"])) |
-#     (df["Away"].isin(["Arsenal", "Ipswich"]))
-# ]
-
-# # Processar os gols para os times da casa e visitantes no DataFrame filtrado
-# home_goals = filtered_df["Goals_H_Minutes"].apply(categorize_goals)
-# away_goals = filtered_df["Goals_A_Minutes"].apply(categorize_goals)
-
-# # Somar os gols para cada intervalo
-# home_totals = pd.DataFrame(list(home_goals)).sum().rename("Home_Goals")
-# away_totals = pd.DataFrame(list(away_goals)).sum().rename("Away_Goals")
-
-# # Combinar os resultados
-# result = pd.concat([home_totals, away_totals], axis=1)
-
-# print(result)
