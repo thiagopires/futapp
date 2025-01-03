@@ -358,45 +358,28 @@ df_long["Range"] = pd.Categorical(
     ordered=True
 )
 
+# Plotar o gráfico
+fig = px.bar(
+    df_long,
+    x="Quantidade",
+    y="Range",
+    color="Tipo Gol",
+    orientation="h",
+    title="Distribuição dos Gols por Intervalo de Tempo - Time A",
+    labels={"Quantidade": "Número de Gols", "Range": "Intervalo de Minutos"}
+)
 
+# Melhorar layout
+fig.update_layout(
+    barmode="group",
+    yaxis={"categoryorder": "array", "categoryarray": ["0-15", "16-30", "31-45", "46-60", "61-75", "76-90"]},
+)
 
 col1, col2 = st.columns(2)
 with col1:
-    # Plotar o gráfico
-    fig1 = px.bar(
-        df_long,
-        x="Quantidade",
-        y="Range",
-        color="Tipo Gol",
-        orientation="h",
-        title="Distribuição dos Gols por Intervalo de Tempo - Time A",
-        labels={"Quantidade": "Número de Gols", "Range": "Intervalo de Minutos"}
-    )
-
-    # Melhorar layout
-    fig1.update_layout(
-        barmode="group",
-        yaxis={"categoryorder": "array", "categoryarray": ["0-15", "16-30", "31-45", "46-60", "61-75", "76-90"]},
-    )
-    st.plotly_chart(fig1, use_container_width=True)
+    st.plotly_chart(fig, use_container_width=True, key="fig1")
 with col2:
-    # Plotar o gráfico
-    fig2 = px.bar(
-        df_long,
-        x="Quantidade",
-        y="Range",
-        color="Tipo Gol",
-        orientation="h",
-        title="Distribuição dos Gols por Intervalo de Tempo - Time A",
-        labels={"Quantidade": "Número de Gols", "Range": "Intervalo de Minutos"}
-    )
-
-    # Melhorar layout
-    fig2.update_layout(
-        barmode="group",
-        yaxis={"categoryorder": "array", "categoryarray": ["0-15", "16-30", "31-45", "46-60", "61-75", "76-90"]},
-    )
-    st.plotly_chart(fig2, use_container_width=True)
+    st.plotly_chart(fig, use_container_width=True, key="fig2")
 
 
 
