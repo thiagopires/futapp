@@ -361,9 +361,9 @@ st.subheader("Distribuição de Gols por Minuto")
 
 col1, col2 = st.columns(2)
 with col1:
-    st.plotly_chart(gols_por_minuto(df_match_selected["Home"]), use_container_width=True, key="fig1")
+    st.plotly_chart(gols_por_minuto(df_hist, df_match_selected["Home"]), use_container_width=True, key="fig1")
 with col2:
-    st.plotly_chart(gols_por_minuto(df_match_selected["Away"]), use_container_width=True, key="fig2")
+    st.plotly_chart(gols_por_minuto(df_hist, df_match_selected["Away"]), use_container_width=True, key="fig2")
 
 
 
