@@ -156,7 +156,6 @@ def highlight_row(row, highlight):
     return [''] * len(row)
 
 def gols_por_minuto(df, home, away):
-
     # Definir os intervalos de tempo
     ranges = [(0, 15), (16, 30), (31, 45), (46, 60), (61, 75), (76, 90)]  # Considerando acréscimos
 
@@ -181,7 +180,8 @@ def gols_por_minuto(df, home, away):
     ]
 
     # Calcular os gols totais por time, independente de Home ou Away
-    club_totals = {}
+    club_totals = {home: {f"{start}-{end}": 0 for start, end in ranges},
+                   away: {f"{start}-{end}": 0 for start, end in ranges}}
 
     for club in [home, away]:
         # Filtrar jogos do clube
@@ -195,15 +195,19 @@ def gols_por_minuto(df, home, away):
 
         # Totalizar gols e classificar em intervalos
         all_goals = pd.concat([home_goals, away_goals]).astype(str).tolist()
-        total_goals = categorize_goals(all_goals)
-        club_totals[club] = total_goals
+        categorized_goals = categorize_goals(all_goals)
+        club_totals[club].update(categorized_goals)
 
     # Converter os resultados em DataFrame para visualização
     result_df = pd.DataFrame(club_totals).T
     result_df.index.name = "Club"
-    print(result_df)
-    
-    return result_df
+
+    # Reformatar o DataFrame para exibir no formato solicitado
+    result_long = result_df.reset_index().melt(id_vars="Club", var_name="Range", value_name="Gols")
+    result_pivot = result_long.pivot(index="Range", columns="Club", values="Gols").reset_index()
+    result_pivot.rename(columns={home: home, away: away}, inplace=True)
+
+    return result_pivot
 
 # Init 
 st.set_page_config(layout="wide")
