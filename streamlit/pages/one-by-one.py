@@ -147,7 +147,7 @@ def highlight_result(row, highlight):
 
 def highlight_row(row, highlight):
     if row["Clube"] in highlight:
-        return ['background-color: lightyellow'] * len(row)
+        return ['background-color: #FFE0A6'] * len(row)
     return [''] * len(row)
 
 # Init 
