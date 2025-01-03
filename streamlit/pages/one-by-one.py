@@ -325,25 +325,64 @@ with col2:
 
 
 
-# Tabela 25 e 26: Gols Casa e Visitanted
-data1 = {
-    "Home": ["Arsenal", "Ipswich", "Arsenal"],
-    "Away": ["Ipswich", "Arsenal", "Ipswich"],
-    "Goals_H_Minutes": [["10", "20"], ["15", "50"], ["5", "80"]],
-    "Goals_A_Minutes": [["25", "55"], ["30"], ["75"]],
-}
-df1 = pd.DataFrame(data1) 
-df_gols = gols_por_minuto(df1, "Arsenal", "Ipswich")
+# Tabela 25 e 26: Gols Casa e Visitante
+
 # df_gols = gols_por_minuto(df_hist, df_match_selected["Home"], df_match_selected["Away"])
 st.subheader("Distribuição de Gols por Minuto")
 
+
+# Estrutura dos dados
+data = {
+    "Range": ["0-15", "16-30", "31-45", "46-60", "61-75", "76-90"],
+    "G.Marc_A": [2, 0, 2, 1, 0, 1],
+    "G.Sofr_A": [0, 1, 1, 3, 2, 4],
+}
+
+df = pd.DataFrame(data)
+
+# Converte para formato longo para o gráfico
+df_long = df.melt(
+    id_vars=["Range"],
+    value_vars=["G.Marc_A", "G.Sofr_A"],
+    var_name="Tipo Gol",
+    value_name="Quantidade"
+)
+
+# Separar tipo de gol (marcados ou sofridos)
+df_long["Tipo Gol"] = df_long["Tipo Gol"].str.replace("_A", "")
+
+# Ordenar o Range
+df_long["Range"] = pd.Categorical(
+    df_long["Range"],
+    categories=["0-15", "16-30", "31-45", "46-60", "61-75", "76-90"],
+    ordered=True
+)
+
+# Plotar o gráfico
+fig = px.bar(
+    df_long,
+    x="Quantidade",
+    y="Range",
+    color="Tipo Gol",
+    orientation="h",
+    title="Distribuição dos Gols por Intervalo de Tempo - Time A",
+    labels={"Quantidade": "Número de Gols", "Range": "Intervalo de Minutos"}
+)
+
+# Melhorar layout
+fig.update_layout(
+    barmode="group",
+    yaxis={"categoryorder": "array", "categoryarray": ["0-15", "16-30", "31-45", "46-60", "61-75", "76-90"]},
+)
+
+fig.show()
+
+
 col1, col2 = st.columns(2)
 with col1:
-    fig = px.bar(df_gols, x="Arsenal", y="Range", title="Gols por Minuto", orientation='h')
-    st.plotly_chart(fig, use_container_width=True)
+    fig.show()
 with col2:
-    fig = px.bar(df_gols, x="Ipswich", y="Range", title="Gols por Minuto", orientation='h')
-    st.plotly_chart(fig, use_container_width=True)
+    fig.show()
 
 
 
