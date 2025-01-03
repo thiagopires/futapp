@@ -199,13 +199,13 @@ def gols_por_minuto(df, team):
     # Converte para formato longo para o gráfico
     df_long = result_df.melt(
         id_vars=["Range"],
-        value_vars=["G.Marc_A", "G.Sofr_A"],
+        value_vars=["G.Marc", "G.Sofr"],
         var_name="Tipo Gol",
         value_name="Quantidade"
     )
 
     # Separar tipo de gol (marcados ou sofridos)
-    df_long["Tipo Gol"] = df_long["Tipo Gol"].str.replace("_A", "")
+    df_long["Tipo Gol"] = df_long["Tipo Gol"]
 
     # Ordenar o Range
     df_long["Range"] = pd.Categorical(
