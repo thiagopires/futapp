@@ -161,7 +161,6 @@ def gols_por_minuto(df, home, away):
     ranges = [(0, 15), (16, 30), (31, 45), (46, 60), (61, 75), (76, 90)]  # Considerando acréscimos
 
     def categorize_goals(goal_minutes):
-        """Classifica os minutos dos gols em intervalos definidos."""
         counts = {f"{start}-{end}": 0 for start, end in ranges}
         for minute in goal_minutes:
             try:
@@ -175,24 +174,35 @@ def gols_por_minuto(df, home, away):
                 pass  # Ignorar valores inválidos
         return counts
 
-    # Filtrar jogos onde Arsenal ou Ipswich aparecem em Home ou Away
+    # Filtrar jogos onde Arsenal ou Ipswich aparecem
     filtered_df = df[
         (df["Home"].isin([home, away])) |
         (df["Away"].isin([home, away]))
     ]
 
-    # Processar os gols para os times da casa e visitantes no DataFrame filtrado
-    home_goals = filtered_df["Goals_H_Minutes"].apply(categorize_goals)
-    away_goals = filtered_df["Goals_A_Minutes"].apply(categorize_goals)
+    # Calcular os gols totais por time, independente de Home ou Away
+    club_totals = {}
 
-    # Somar os gols para cada intervalo
-    home_totals = pd.DataFrame(list(home_goals)).sum().rename("Home_Goals")
-    away_totals = pd.DataFrame(list(away_goals)).sum().rename("Away_Goals")
+    for club in [home, away]:
+        # Filtrar jogos do clube
+        club_df = filtered_df[
+            (filtered_df["Home"] == club) | (filtered_df["Away"] == club)
+        ]
 
-    # Combinar os resultados
-    result = pd.concat([home_totals, away_totals], axis=1)
+        # Contabilizar gols como Home e Away
+        home_goals = club_df[club_df["Home"] == club]["Goals_H_Minutes"].explode().dropna()
+        away_goals = club_df[club_df["Away"] == club]["Goals_A_Minutes"].explode().dropna()
+
+        # Totalizar gols e classificar em intervalos
+        all_goals = pd.concat([home_goals, away_goals]).astype(str).tolist()
+        total_goals = categorize_goals(all_goals)
+        club_totals[club] = total_goals
+
+    # Converter os resultados em DataFrame para visualização
+    result_df = pd.DataFrame(club_totals).T
+    result_df.index.name = "Club"
     
-    return result
+    return result_df
 
 # Init 
 st.set_page_config(layout="wide")
@@ -308,7 +318,7 @@ with col2:
 # Tabela 25 e 26: Gols Casa e Visitanted
 df_gols = gols_por_minuto(df_hist, df_match_selected["Home"], df_match_selected["Away"])
 st.subheader("Distribuição de Gols por Minuto")
-fig = px.bar(df_gols, x="Intervalo", y=["Home_Goals", "Away_Goals"], barmode="group", title="Gols por Minuto")
+fig = px.bar(df_gols, x="Intervalo", y=[df_match_selected["Home"], df_match_selected["Away"]], barmode="group", title="Gols por Minuto")
 st.plotly_chart(fig, use_container_width=True)
 
 
