@@ -363,7 +363,7 @@ df_long["Range"] = pd.Categorical(
 col1, col2 = st.columns(2)
 with col1:
     # Plotar o gráfico
-    fig = px.bar(
+    fig1 = px.bar(
         df_long,
         x="Quantidade",
         y="Range",
@@ -374,14 +374,14 @@ with col1:
     )
 
     # Melhorar layout
-    fig.update_layout(
+    fig1.update_layout(
         barmode="group",
         yaxis={"categoryorder": "array", "categoryarray": ["0-15", "16-30", "31-45", "46-60", "61-75", "76-90"]},
     )
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig1, use_container_width=True)
 with col2:
     # Plotar o gráfico
-    fig = px.bar(
+    fig2 = px.bar(
         df_long,
         x="Quantidade",
         y="Range",
@@ -392,11 +392,11 @@ with col2:
     )
 
     # Melhorar layout
-    fig.update_layout(
+    fig2.update_layout(
         barmode="group",
         yaxis={"categoryorder": "array", "categoryarray": ["0-15", "16-30", "31-45", "46-60", "61-75", "76-90"]},
     )
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig2, use_container_width=True)
 
 
 
