@@ -3,6 +3,8 @@ import pandas as pd
 import plotly.express as px
 from datetime import date, datetime, timedelta
 
+SEASON_ATUAL = '2024/2025'
+
 def first_goal_string(row):
     def parse_minutes(value, team):
         # Garantir que a entrada seja uma string e remover caracteres problemáticos
@@ -222,7 +224,7 @@ with col2:
 
 st.subheader("⚽ Classificações nesta competição")
 
-filter_classificacao = (df_hist["Season"] == "2024/2025") & (df_hist["League"] == df_match_selected["League"])
+filter_classificacao = (df_hist["Season"] == SEASON_ATUAL) & (df_hist["League"] == df_match_selected["League"])
 df_classificacao = df_hist.loc[filter_classificacao, ["League","Season","Date","Rodada","Home","Away","Goals_H_FT","Goals_A_FT"]]
 
 classificacao_geral = generate_classificacao(df_classificacao, "ALL")
@@ -249,7 +251,7 @@ todos_visitante = df_hist.loc[filter_todos_visitante, ["Date", "Home", "Resultad
 df_todos_visitante = todos_visitante.style.apply(highlight_result, axis=1, highlight=df_match_selected["Away"])
 
 st.header("Todos os jogos Casa/Fora nesta competição")
-st.caption(df_match_selected["League"])
+st.caption(f'{df_match_selected["League"]} - {SEASON_ATUAL} - Época Normal')
 
 col1, col2 = st.columns(2)
 with col1:
