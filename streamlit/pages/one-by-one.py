@@ -332,11 +332,11 @@ data1 = {
     "Goals_H_Minutes": [["10", "20"], ["15", "50"], ["5", "80"]],
     "Goals_A_Minutes": [["25", "55"], ["30"], ["75"]],
 }
-df1 = pd.DataFrame(data1)
+df1 = pd.DataFrame(data1) 
 df_gols = gols_por_minuto(df1, "Arsenal", "Ipswich")
 # df_gols = gols_por_minuto(df_hist, df_match_selected["Home"], df_match_selected["Away"])
 st.subheader("Distribuição de Gols por Minuto")
-fig = px.bar(df_gols, x="Range", y=["Arsenal", "Ipswich"], barmode="group", title="Gols por Minuto")
+fig = px.bar(df_gols, x="Range", y=["Arsenal", "Ipswich"], barmode="group", title="Gols por Minuto", horizontal=True)
 st.plotly_chart(fig, use_container_width=True)
 
 
