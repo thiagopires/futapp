@@ -201,6 +201,7 @@ def gols_por_minuto(df, home, away):
     # Converter os resultados em DataFrame para visualização
     result_df = pd.DataFrame(club_totals).T
     result_df.index.name = "Club"
+    print(result_df)
     
     return result_df
 
