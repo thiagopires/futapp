@@ -323,8 +323,8 @@ with col2:
 # Tabela 25 e 26: Gols Casa e Visitanted
 df_gols = gols_por_minuto(df_hist, df_match_selected["Home"], df_match_selected["Away"])
 st.subheader("Distribuição de Gols por Minuto")
-# fig = px.bar(df_gols, x="Intervalo", y=[df_match_selected["Home"], df_match_selected["Away"]], barmode="group", title="Gols por Minuto")
-# st.plotly_chart(fig, use_container_width=True)
+fig = px.bar(df_gols, x="Range", y=[df_match_selected["Home"], df_match_selected["Away"]], barmode="group", title="Gols por Minuto")
+st.plotly_chart(fig, use_container_width=True)
 
 
 # Tabela 22 e 23: Percurso Casa e Visitante
