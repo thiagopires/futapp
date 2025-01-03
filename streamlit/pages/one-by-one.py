@@ -375,9 +375,6 @@ fig.update_layout(
     yaxis={"categoryorder": "array", "categoryarray": ["0-15", "16-30", "31-45", "46-60", "61-75", "76-90"]},
 )
 
-fig.show()
-
-
 col1, col2 = st.columns(2)
 with col1:
     fig.show()
