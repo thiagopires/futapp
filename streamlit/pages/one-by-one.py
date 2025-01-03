@@ -336,8 +336,15 @@ df1 = pd.DataFrame(data1)
 df_gols = gols_por_minuto(df1, "Arsenal", "Ipswich")
 # df_gols = gols_por_minuto(df_hist, df_match_selected["Home"], df_match_selected["Away"])
 st.subheader("Distribuição de Gols por Minuto")
-fig = px.bar(df_gols, x="Range", y=["Arsenal", "Ipswich"], barmode="group", title="Gols por Minuto", horizontal=True)
-st.plotly_chart(fig, use_container_width=True)
+
+col1, col2 = st.columns(2)
+with col1:
+    fig = px.bar(df_gols, x="Range", y=["Arsenal"], title="Gols por Minuto", horizontal=True)
+    st.plotly_chart(fig, use_container_width=True)
+with col2:
+    fig = px.bar(df_gols, x="Range", y=["Ipswich"], title="Gols por Minuto", horizontal=True)
+    st.plotly_chart(fig, use_container_width=True)
+
 
 
 # Tabela 22 e 23: Percurso Casa e Visitante
