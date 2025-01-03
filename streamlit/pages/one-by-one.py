@@ -155,61 +155,85 @@ def highlight_row(row, highlight):
         return ['background-color: #FFE0A6'] * len(row)
     return [''] * len(row)
 
-def gols_por_minuto(df, home, away):
+def gols_por_minuto(df, team):
+
     # Definir os intervalos de tempo
     ranges = [(0, 15), (16, 30), (31, 45), (46, 60), (61, 75), (76, 90)]  # Considerando acréscimos
 
     def categorize_goals(goal_minutes):
-        counts = {f"{start}-{end}": 0 for start, end in ranges}
+        # Inicializa os contadores para cada intervalo
+        counts = {f"{start}-{end}": {"G.Marc": 0, "G.Sofr": 0} for start, end in ranges}
         for minute in goal_minutes:
             try:
                 # Remover '+x' dos acréscimos e converter para inteiro
                 minute = int(minute.split("+")[0])
                 for start, end in ranges:
                     if start <= minute <= end:
-                        counts[f"{start}-{end}"] += 1
+                        counts[f"{start}-{end}"]["G.Marc"] += 1
                         break
             except ValueError:
                 pass  # Ignorar valores inválidos
         return counts
 
-    # Filtrar jogos onde Arsenal ou Ipswich aparecem
+    # Filtrar jogos onde o time aparece
     filtered_df = df[
-        (df["Home"].isin([home, away])) |
-        (df["Away"].isin([home, away]))
+        (df["Home"] == team) | (df["Away"] == team)
     ]
 
-    # Calcular os gols totais por time, independente de Home ou Away
-    club_totals = {home: {f"{start}-{end}": 0 for start, end in ranges},
-                   away: {f"{start}-{end}": 0 for start, end in ranges}}
+    # Contabilizar gols como Home e Away
+    home_goals = filtered_df[filtered_df["Home"] == team]["Goals_H_Minutes"].explode().dropna()
+    away_goals = filtered_df[filtered_df["Away"] == team]["Goals_A_Minutes"].explode().dropna()
 
-    for club in [home, away]:
-        # Filtrar jogos do clube
-        club_df = filtered_df[
-            (filtered_df["Home"] == club) | (filtered_df["Away"] == club)
-        ]
+    # Contabilizar os gols marcados e sofridos
+    all_goals = pd.concat([home_goals, away_goals]).astype(str).tolist()
+    total_goals = categorize_goals(all_goals)
 
-        # Contabilizar gols como Home e Away
-        home_goals = club_df[club_df["Home"] == club]["Goals_H_Minutes"].explode().dropna()
-        away_goals = club_df[club_df["Away"] == club]["Goals_A_Minutes"].explode().dropna()
+    # Criar o DataFrame no formato desejado
+    result_df = pd.DataFrame.from_dict(total_goals, orient="index")
+    result_df.index.name = "Range"
+    result_df.reset_index(inplace=True)
 
-        # Totalizar gols e classificar em intervalos
-        all_goals = pd.concat([home_goals, away_goals]).astype(str).tolist()
-        categorized_goals = categorize_goals(all_goals)
-        club_totals[club].update(categorized_goals)
+    # Adicionar uma coluna "Team" para identificar que é para o time específico
+    result_df["Team"] = team
 
-    # Converter os resultados em DataFrame para visualização
-    result_df = pd.DataFrame(club_totals).T
-    result_df.index.name = "Club"
+    # Converte para formato longo para o gráfico
+    df_long = result_df.melt(
+        id_vars=["Range"],
+        value_vars=["G.Marc_A", "G.Sofr_A"],
+        var_name="Tipo Gol",
+        value_name="Quantidade"
+    )
 
-    # Reformatar o DataFrame para exibir no formato solicitado
-    result_long = result_df.reset_index().melt(id_vars="Club", var_name="Range", value_name="Gols")
-    result_pivot = result_long.pivot(index="Range", columns="Club", values="Gols").reset_index()
-    result_pivot.rename(columns={home: home, away: away}, inplace=True)
+    # Separar tipo de gol (marcados ou sofridos)
+    df_long["Tipo Gol"] = df_long["Tipo Gol"].str.replace("_A", "")
 
-    print(result_pivot)
+    # Ordenar o Range
+    df_long["Range"] = pd.Categorical(
+        df_long["Range"],
+        categories=["0-15", "16-30", "31-45", "46-60", "61-75", "76-90"],
+        ordered=True
+    )
 
-    return result_pivot
+    # Plotar o gráfico
+    fig = px.bar(
+        df_long,
+        x="Quantidade",
+        y="Range",
+        color="Tipo Gol",
+        orientation="h",
+        title=f"Distribuição dos Gols por Intervalo de Tempo - {team}",
+        labels={"Quantidade": "Número de Gols", "Range": "Intervalo de Minutos"}
+    )
+
+    # Melhorar layout
+    fig.update_layout(
+        barmode="group",
+        yaxis={"categoryorder": "array", "categoryarray": ["0-15", "16-30", "31-45", "46-60", "61-75", "76-90"]},
+    )
+
+    return fig
+
+
 
 
 
@@ -331,55 +355,15 @@ with col2:
 st.subheader("Distribuição de Gols por Minuto")
 
 
-# Estrutura dos dados
-data = {
-    "Range": ["0-15", "16-30", "31-45", "46-60", "61-75", "76-90"],
-    "G.Marc_A": [2, 0, 2, 1, 0, 1],
-    "G.Sofr_A": [0, 1, 1, 3, 2, 4],
-}
 
-df = pd.DataFrame(data)
 
-# Converte para formato longo para o gráfico
-df_long = df.melt(
-    id_vars=["Range"],
-    value_vars=["G.Marc_A", "G.Sofr_A"],
-    var_name="Tipo Gol",
-    value_name="Quantidade"
-)
 
-# Separar tipo de gol (marcados ou sofridos)
-df_long["Tipo Gol"] = df_long["Tipo Gol"].str.replace("_A", "")
-
-# Ordenar o Range
-df_long["Range"] = pd.Categorical(
-    df_long["Range"],
-    categories=["0-15", "16-30", "31-45", "46-60", "61-75", "76-90"],
-    ordered=True
-)
-
-# Plotar o gráfico
-fig = px.bar(
-    df_long,
-    x="Quantidade",
-    y="Range",
-    color="Tipo Gol",
-    orientation="h",
-    title="Distribuição dos Gols por Intervalo de Tempo - Time A",
-    labels={"Quantidade": "Número de Gols", "Range": "Intervalo de Minutos"}
-)
-
-# Melhorar layout
-fig.update_layout(
-    barmode="group",
-    yaxis={"categoryorder": "array", "categoryarray": ["0-15", "16-30", "31-45", "46-60", "61-75", "76-90"]},
-)
 
 col1, col2 = st.columns(2)
 with col1:
-    st.plotly_chart(fig, use_container_width=True, key="fig1")
+    st.plotly_chart(gols_por_minuto(df_match_selected["Home"]), use_container_width=True, key="fig1")
 with col2:
-    st.plotly_chart(fig, use_container_width=True, key="fig2")
+    st.plotly_chart(gols_por_minuto(df_match_selected["Away"]), use_container_width=True, key="fig2")
 
 
 
