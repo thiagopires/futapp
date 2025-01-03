@@ -207,7 +207,12 @@ def gols_por_minuto(df, home, away):
     result_pivot = result_long.pivot(index="Range", columns="Club", values="Gols").reset_index()
     result_pivot.rename(columns={home: home, away: away}, inplace=True)
 
+    print(result_pivot)
+
     return result_pivot
+
+
+
 
 # Init 
 st.set_page_config(layout="wide")
