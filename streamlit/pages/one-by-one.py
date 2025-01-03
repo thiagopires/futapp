@@ -108,11 +108,14 @@ def generate_classificacao(df, type):
     classificacao = classificacao[["#", "Clube", "PTS", "P", "W", "D", "L", "DIFF", "Goals"]]
 
     if type == 'HOME':
-        classificacao = classificacao.style.map(lambda v: 'background-color: lightyellow' if v == df_match_selected["Home"] else '', subset=["Clube"])
+        classificacao = classificacao.style.apply(highlight_row, axis=1, highlight=[df_match_selected["Home"]])
+        # classificacao = classificacao.style.map(lambda v: 'background-color: lightyellow' if v == df_match_selected["Home"] else '', subset=["Clube"])
     elif type == 'AWAY':
-        classificacao = classificacao.style.map(lambda v: 'background-color: lightyellow' if v == df_match_selected["Away"] else '', subset=["Clube"])
+        classificacao = classificacao.style.apply(highlight_row, axis=1, highlight=[df_match_selected["Away"]])
+        # classificacao = classificacao.style.map(lambda v: 'background-color: lightyellow' if v == df_match_selected["Away"] else '', subset=["Clube"])
     elif type == 'ALL':
-        classificacao = classificacao.style.map(lambda v: 'background-color: lightyellow' if (v == df_match_selected["Home"] or v == df_match_selected["Away"]) else '', subset=["Clube"])
+        classificacao = classificacao.style.apply(highlight_row, axis=1, highlight=[df_match_selected["Home"],df_match_selected["Away"]])
+        # classificacao = classificacao.style.map(lambda v: 'background-color: lightyellow' if (v == df_match_selected["Home"] or v == df_match_selected["Away"]) else '', subset=["Clube"])
 
     return classificacao
 
@@ -141,6 +144,11 @@ def highlight_result(row, highlight):
         return [f"background-color: {colors[1]}" if col == "Resultado_FT" else "" for col in row.index]
     elif Goals_H_FT < Goals_A_FT:
         return [f"background-color: {colors[2]}" if col == "Resultado_FT" else "" for col in row.index]
+
+def highlight_row(row, highlight):
+    if row["Clube"] in highlight:
+        return ['background-color: lightyellow'] * len(row)
+    return [''] * len(row)
 
 # Init 
 st.set_page_config(layout="wide")
