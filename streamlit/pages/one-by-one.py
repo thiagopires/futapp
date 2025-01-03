@@ -377,9 +377,9 @@ fig.update_layout(
 
 col1, col2 = st.columns(2)
 with col1:
-    fig.show()
+    st.plotly_chart(fig, use_container_width=True)
 with col2:
-    fig.show()
+    st.plotly_chart(fig, use_container_width=True)
 
 
 
