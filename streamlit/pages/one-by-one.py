@@ -143,6 +143,7 @@ def highlight_result(row, highlight):
         return [f"background-color: {colors[2]}" if col == "Resultado_FT" else "" for col in row.index]
 
 # Init 
+st.set_page_config(layout="wide")
 
 if 'button' not in st.session_state:
     st.session_state.button = 0
@@ -359,3 +360,39 @@ with col2:
 
 # Outros dados e análises podem ser adicionados conforme necessário
 st.write("⚡ Dashboard dinâmico para análise de confrontos! ⚡")
+
+
+
+# def categorize_goals(goal_minutes):
+#     """Classifica os minutos dos gols em intervalos definidos."""
+#     counts = {f"{start}-{end}": 0 for start, end in ranges}
+#     for minute in goal_minutes:
+#         try:
+#             # Remover '+x' dos acréscimos e converter para inteiro
+#             minute = int(minute.split("+")[0])
+#             for start, end in ranges:
+#                 if start <= minute <= end:
+#                     counts[f"{start}-{end}"] += 1
+#                     break
+#         except ValueError:
+#             pass  # Ignorar valores inválidos
+#     return counts
+
+# # Filtrar jogos onde Arsenal ou Ipswich aparecem em Home ou Away
+# filtered_df = df[
+#     (df["Home"].isin(["Arsenal", "Ipswich"])) |
+#     (df["Away"].isin(["Arsenal", "Ipswich"]))
+# ]
+
+# # Processar os gols para os times da casa e visitantes no DataFrame filtrado
+# home_goals = filtered_df["Goals_H_Minutes"].apply(categorize_goals)
+# away_goals = filtered_df["Goals_A_Minutes"].apply(categorize_goals)
+
+# # Somar os gols para cada intervalo
+# home_totals = pd.DataFrame(list(home_goals)).sum().rename("Home_Goals")
+# away_totals = pd.DataFrame(list(away_goals)).sum().rename("Away_Goals")
+
+# # Combinar os resultados
+# result = pd.concat([home_totals, away_totals], axis=1)
+
+# print(result)
