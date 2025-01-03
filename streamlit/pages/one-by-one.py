@@ -202,7 +202,7 @@ filter_ultimos_visitante = (df_match_selected["Away"] == df_hist["Home"]) | (df_
 ultimos_visitante = df_hist.loc[filter_ultimos_visitante, ["Date", "Season", "Home", "Resultado_FT", "Away"]].sort_values(by="Date", ascending=False).head(10)
 df_ultimos_visitante = ultimos_visitante.style.apply(highlight_result, axis=1, highlight=df_match_selected["Away"])
 
-st.header("Últimos 10 Jogos em todas as competições")
+st.header(f"Últimos 10 Jogos na {df_match_selected['League']}")
 
 col1, col2 = st.columns(2)
 with col1:
