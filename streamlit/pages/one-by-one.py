@@ -219,20 +219,6 @@ def gols_por_minuto(df, clube):
     # Definir os intervalos de tempo
     ranges = [(0, 15), (16, 30), (31, 45), (46, 60), (61, 75), (76, 90)]  # Considerando acréscimos
 
-    def categorize_goals(goal_minutes):
-        counts = {f"{start}-{end}": {'G.Marc': 0, 'G.Sofr': 0} for start, end in ranges}
-        for minute in goal_minutes:
-            try:
-                # Remover '+x' dos acréscimos e converter para inteiro
-                minute = int(minute.split("+")[0])
-                for start, end in ranges:
-                    if start <= minute <= end:
-                        counts[f"{start}-{end}"]['G.Marc'] += 1
-                        break
-            except ValueError:
-                pass  # Ignorar valores inválidos
-        return counts
-
     # Filtrar jogos onde o clube é Home ou Away
     filtered_df = df[
         (df["Home"] == clube) | (df["Away"] == clube)
@@ -258,10 +244,21 @@ def gols_por_minuto(df, clube):
     result_df = pd.DataFrame.from_dict(club_totals, orient='index')
     result_df.index.name = "Range"
     result_df.reset_index(inplace=True)
-    
+        
+    # Transformar o DataFrame em formato longo
+    result_df_long = result_df.melt(
+        id_vars=["Range"], 
+        value_vars=["G.Marc", "G.Sofr"], 
+        var_name="Tipo Gol", 
+        value_name="Quantidade"
+    )
+
+    # Substituir NaN por 0 (caso haja valores faltantes)
+    result_df_long["Quantidade"] = result_df_long["Quantidade"].fillna(0)
+
     # Plotar o gráfico
     fig = px.bar(
-        result_df,
+        result_df_long,
         x="Quantidade",
         y="Range",
         color="Tipo Gol",
@@ -272,8 +269,15 @@ def gols_por_minuto(df, clube):
 
     # Melhorar layout
     fig.update_layout(
-        barmode="group",
-        yaxis={"categoryorder": "array", "categoryarray": ["0-15", "16-30", "31-45", "46-60", "61-75", "76-90"]},
+        barmode="group",  # Garante que os gráficos de barras sejam agrupados
+        yaxis={
+            "categoryorder": "array",  # Define ordem explícita
+            "categoryarray": ["0-15", "16-30", "31-45", "46-60", "61-75", "76-90"]
+        },
+        xaxis_title="Número de Gols",
+        yaxis_title="Intervalo de Minutos",
+        legend_title="Tipo de Gol",
+        template="plotly_white",  # Define um tema claro
     )
 
     return fig
