@@ -1,11 +1,10 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
-from datetime import date, datetime, timedelta
+import ast
+from datetime import datetime, timedelta
 
 SEASON_ATUAL = '2024/2025'
-
-
 
 def first_goal_string(row):
     def parse_minutes(value, team):
@@ -155,12 +154,9 @@ def highlight_row(row, highlight):
         return ['background-color: #FFE0A6'] * len(row)
     return [''] * len(row)
 
-
-import ast
-
 def calcular_gols_por_tempo(df, team_name):
     ranges = {
-        "0-15": range(0, 16),
+        "0-15":  range(0, 16),
         "16-30": range(16, 31),
         "31-45": range(31, 46),
         "46-60": range(46, 61),
@@ -221,9 +217,6 @@ def calcular_gols_por_tempo(df, team_name):
     })
 
     return df_gols
-
-
-
 
 
 # Init 
@@ -305,7 +298,7 @@ classificacao_geral = generate_classificacao(df_classificacao, "ALL")
 classificacao_casa = generate_classificacao(df_classificacao, "HOME")
 classificacao_visitante = generate_classificacao(df_classificacao, "AWAY")
 
-tab1, tab2, tab3 = st.tabs(["Geral", "Casa", "Visitante"])
+tab1, tab2, tab3 = st.columns(3) #st.tabs(["Geral", "Casa", "Visitante"])
 with tab1:
     # st.subheader("Geral")
     print_dataframe(classificacao_geral, 740)
