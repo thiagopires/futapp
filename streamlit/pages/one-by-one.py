@@ -353,8 +353,7 @@ col1, col2 = st.columns(2)
 with col1:
     # print_dataframe(home_gols_por_tempo)
     fig = px.bar(home_gols_por_tempo, 
-                 x="Intervalo", 
-                 y=['Gols Marcados','Gols Sofridos'], 
+                 y=['Intervalo', ['Gols Marcados','Gols Sofridos']], 
                  orientation="h",
                  title=f"Distribuição dos Gols por Intervalo de Tempo - {df_match_selected['Home']}"
     )
@@ -362,8 +361,7 @@ with col1:
 with col2:
     # print_dataframe(away_gols_por_tempo)
     fig = px.bar(away_gols_por_tempo, 
-                 x="Intervalo", 
-                 y=['Gols Marcados','Gols Sofridos'], 
+                 y=['Intervalo', ['Gols Marcados','Gols Sofridos']], 
                  orientation="h",
                  title=f"Distribuição dos Gols por Intervalo de Tempo - {df_match_selected['Away']}"
     )
