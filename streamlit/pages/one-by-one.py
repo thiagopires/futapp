@@ -331,17 +331,16 @@ with col2:
 st.subheader("Distribuição de Gols por Minuto")
 
 
-gols_marcados, gols_sofridos = calcular_gols_por_tempo(df_hist, df_match_selected["Home"])
+home_gols_marcados, home_gols_sofridos = calcular_gols_por_tempo(df_hist, df_match_selected["Home"])
+away_gols_marcados, away_gols_sofridos = calcular_gols_por_tempo(df_hist, df_match_selected["Away"])
 
-print("Gols Marcados:", gols_marcados)
-print("Gols Sofridos:", gols_sofridos)
-
-gols_marcados, gols_sofridos = calcular_gols_por_tempo(df_hist, df_match_selected["Away"])
-
-print("Gols Marcados:", gols_marcados)
-print("Gols Sofridos:", gols_sofridos)
-
-
+col1, col2 = st.columns(2)
+with col1:
+    st.text(home_gols_marcados)
+    st.text(home_gols_sofridos)
+with col2:
+    st.text(away_gols_marcados)
+    st.text(away_gols_sofridos)
 
 # col1, col2 = st.columns(2)
 # with col1:
