@@ -531,10 +531,10 @@ st.subheader("⚽ Estatísticas de Confrontos de Futebol")
 
 # Dados Simulados para Times
 estatisticas_time_1 = calcular_estatisticas(df_hist, df_match_selected['Home'])
-estatisticas_time_11 = calcular_estatisticas_adicionais(df_hist, df_match_selected['Home'])
+estatisticas_time_11 = calcular_estatisticas_adicionais(df_hist, df_match_selected['Home'], 'Home')
 
 estatisticas_time_2 = calcular_estatisticas(df_hist, df_match_selected['Away'])
-estatisticas_time_22 = calcular_estatisticas_adicionais(df_hist, df_match_selected['Away'])
+estatisticas_time_22 = calcular_estatisticas_adicionais(df_hist, df_match_selected['Away'], 'Away')
 
 # Converte para DataFrame
 df_time_1 = pd.DataFrame(estatisticas_time_1)
