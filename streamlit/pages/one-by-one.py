@@ -156,7 +156,6 @@ def highlight_row(row, highlight):
     return [''] * len(row)
 
 
-
 import ast
 
 def calcular_gols_por_tempo(df, team_name):
@@ -172,7 +171,13 @@ def calcular_gols_por_tempo(df, team_name):
     gols_marcados = {r: 0 for r in ranges.keys()}
     gols_sofridos = {r: 0 for r in ranges.keys()}
 
-    for _, row in df.iterrows():
+    # Filtrar apenas jogos do time (Home ou Away)
+    jogos_time = df[(df['Home'] == team_name) | (df['Away'] == team_name)]
+
+    # Considerar apenas os últimos 10 jogos (ordenados por data)
+    jogos_time = jogos_time.sort_values(by='Date', ascending=False).head(10)
+
+    for _, row in jogos_time.iterrows():
         home_team = row['Home']
         away_team = row['Away']
 
