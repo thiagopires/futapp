@@ -357,6 +357,7 @@ with col1:
                  y='Intervalo',
                  orientation="h",
                  barmode='group',
+                 text_auto=True,
                  title=f"Distribuição dos Gols por Intervalo de Tempo - {df_match_selected['Home']}"
     )
     st.plotly_chart(fig, use_container_width=True, key="fig1")
@@ -367,6 +368,7 @@ with col2:
                  y='Intervalo',
                  orientation="h",
                  barmode='group',
+                 text_auto=True,
                  title=f"Distribuição dos Gols por Intervalo de Tempo - {df_match_selected['Away']}"
     )
     st.plotly_chart(fig, use_container_width=True, key="fig2")
