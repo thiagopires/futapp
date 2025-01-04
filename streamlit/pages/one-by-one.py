@@ -351,9 +351,23 @@ away_gols_por_tempo = calcular_gols_por_tempo(df_hist, df_match_selected["Away"]
 
 col1, col2 = st.columns(2)
 with col1:
-    print_dataframe(home_gols_por_tempo)
+    # print_dataframe(home_gols_por_tempo)
+    fig = px.bar(home_gols_por_tempo, 
+                 x="Intervalo", 
+                 y=['Gols Marcados','Gols Sofridos'], 
+                 orientation="h",
+                 title=f"Distribuição dos Gols por Intervalo de Tempo - {df_match_selected['Home']}"
+    )
+    st.plotly_chart(fig, use_container_width=True, key="fig1")
 with col2:
-    print_dataframe(away_gols_por_tempo)
+    # print_dataframe(away_gols_por_tempo)
+    fig = px.bar(away_gols_por_tempo, 
+                 x="Intervalo", 
+                 y=['Gols Marcados','Gols Sofridos'], 
+                 orientation="h",
+                 title=f"Distribuição dos Gols por Intervalo de Tempo - {df_match_selected['Away']}"
+    )
+    st.plotly_chart(fig, use_container_width=True, key="fig2")
 
 # col1, col2 = st.columns(2)
 # with col1:
