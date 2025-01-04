@@ -219,7 +219,7 @@ def calcular_gols_por_tempo(df, team_name):
         "Gols Sofridos": gols_sofridos.values()
     })
 
-    return df_gols
+    return df_gols.sort_values(by='Intervalo', ascending=True)
 
 def calcular_estatisticas(df, team_name):
     # Filtrar jogos do time
@@ -288,7 +288,7 @@ def calcular_estatisticas(df, team_name):
         "Global": global_,
     }
 
-    return estatisticas_time
+    return pd.DataFrame(estatisticas_time)
 
 def calcular_estatisticas_adicionais(df, team_name, side):
     # Filtrar jogos do time
@@ -337,7 +337,7 @@ def calcular_estatisticas_adicionais(df, team_name, side):
     side_label = side.replace("Home","Casa").replace("Away","Fora")
 
     # Estrutura final
-    estatisticas_time_11 = {
+    estatisticas_adicionais_time = {
         "Categoria": [
             "Abre marcador (qualquer altura)",
             "Está a vencer ao intervalo",
@@ -348,7 +348,7 @@ def calcular_estatisticas_adicionais(df, team_name, side):
         "Global": global_,
     }
 
-    return estatisticas_time_11
+    return pd.DataFrame(estatisticas_adicionais_time)
 
 
 # Init 
@@ -530,27 +530,21 @@ with col2:
 st.subheader("⚽ Estatísticas de Confrontos de Futebol")
 
 # Dados Simulados para Times
-estatisticas_time_1 = calcular_estatisticas(df_hist, df_match_selected['Home'])
-estatisticas_time_11 = calcular_estatisticas_adicionais(df_hist, df_match_selected['Home'], 'Home')
+df_home_estatisticas = calcular_estatisticas(df_hist, df_match_selected['Home'])
+df_home_estatisticas_adicionais = calcular_estatisticas_adicionais(df_hist, df_match_selected['Home'], 'Home')
 
-estatisticas_time_2 = calcular_estatisticas(df_hist, df_match_selected['Away'])
-estatisticas_time_22 = calcular_estatisticas_adicionais(df_hist, df_match_selected['Away'], 'Away')
-
-# Converte para DataFrame
-df_time_1 = pd.DataFrame(estatisticas_time_1)
-df_time_11 = pd.DataFrame(estatisticas_time_11)
-df_time_2 = pd.DataFrame(estatisticas_time_2)
-df_time_22 = pd.DataFrame(estatisticas_time_22)
+df_away_estatisticas = calcular_estatisticas(df_hist, df_match_selected['Away'])
+df_away_estatisticas_adicionais = calcular_estatisticas_adicionais(df_hist, df_match_selected['Away'], 'Away')
 
 col1, col2 = st.columns(2)
 with col1:
     st.subheader(df_match_selected["Home"])
-    print_dataframe(df_time_1.to_dict(orient='records'))
-    print_dataframe(df_time_11.to_dict(orient='records'))
+    print_dataframe(df_home_estatisticas.to_dict(orient='records'))
+    print_dataframe(df_home_estatisticas_adicionais.to_dict(orient='records'))
 with col2:
     st.subheader(df_match_selected["Away"])
-    print_dataframe(df_time_2.to_dict(orient='records'))
-    print_dataframe(df_time_22.to_dict(orient='records'))
+    print_dataframe(df_away_estatisticas.to_dict(orient='records'))
+    print_dataframe(df_away_estatisticas_adicionais.to_dict(orient='records'))
 
 # Outros dados e análises podem ser adicionados conforme necessário
 st.write("⚡ Dashboard dinâmico para análise de confrontos! ⚡")
