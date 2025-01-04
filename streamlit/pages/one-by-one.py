@@ -170,6 +170,9 @@ def calcular_gols_por_tempo(df, team_name):
     # Filtrar apenas jogos do time (Home ou Away)
     jogos_time = df[(df['Home'] == team_name) | (df['Away'] == team_name)]
 
+    # Considerar apenas os últimos 10 jogos (ordenados por data)
+    jogos_time = jogos_time.sort_values(by='Date', ascending=False).head(10)
+
     for _, row in jogos_time.iterrows():
         home_team = row['Home']
         away_team = row['Away']
@@ -217,6 +220,134 @@ def calcular_gols_por_tempo(df, team_name):
     })
 
     return df_gols
+
+def calcular_estatisticas(df, team_name):
+    # Filtrar jogos do time
+    jogos_time = df[(df['Home'] == team_name) | (df['Away'] == team_name)].copy()
+
+    # Considerar apenas os últimos 10 jogos (ordenados por data)
+    jogos_time = jogos_time.sort_values(by='Date', ascending=False).head(10)
+    
+    # Adicionar colunas auxiliares
+    jogos_time['Gols_Marcados'] = jogos_time.apply(
+        lambda row: row['Goals_H_FT'] if row['Home'] == team_name else row['Goals_A_FT'], axis=1)
+    jogos_time['Gols_Sofridos'] = jogos_time.apply(
+        lambda row: row['Goals_A_FT'] if row['Home'] == team_name else row['Goals_H_FT'], axis=1)
+    jogos_time['Total_Gols'] = jogos_time['Gols_Marcados'] + jogos_time['Gols_Sofridos']
+    jogos_time['Sem_Sofrer_Gols'] = jogos_time['Gols_Sofridos'] == 0
+    jogos_time['Sem_Marcar_Gols'] = jogos_time['Gols_Marcados'] == 0
+    jogos_time['Mais_de_2_5'] = jogos_time['Total_Gols'] > 2.5
+    jogos_time['Menos_de_2_5'] = jogos_time['Total_Gols'] <= 2.5
+
+    # Separar jogos em casa e fora
+    jogos_casa = jogos_time[jogos_time['Home'] == team_name]
+    jogos_fora = jogos_time[jogos_time['Away'] == team_name]
+
+    # Função auxiliar para calcular métricas
+    def calcular_metricas(jogos):
+        total_jogos = len(jogos)
+        if total_jogos == 0:
+            return [0, 0, 0, "0%", "0%", "0%", "0%"]
+        
+        media_gols_marcados = jogos['Gols_Marcados'].mean()
+        media_gols_sofridos = jogos['Gols_Sofridos'].mean()
+        media_total_gols = jogos['Total_Gols'].mean()
+        sem_sofrer_gols = jogos['Sem_Sofrer_Gols'].mean() * 100
+        sem_marcar_gols = jogos['Sem_Marcar_Gols'].mean() * 100
+        mais_de_2_5 = jogos['Mais_de_2_5'].mean() * 100
+        menos_de_2_5 = jogos['Menos_de_2_5'].mean() * 100
+
+        return [
+            round(media_gols_marcados, 2),
+            round(media_gols_sofridos, 2),
+            round(media_total_gols, 2),
+            f"{round(sem_sofrer_gols)}%",
+            f"{round(sem_marcar_gols)}%",
+            f"{round(mais_de_2_5)}%",
+            f"{round(menos_de_2_5)}%"
+        ]
+
+    # Calcular métricas
+    casa = calcular_metricas(jogos_casa)
+    fora = calcular_metricas(jogos_fora)
+    global_ = calcular_metricas(jogos_time)
+
+    # Estrutura final
+    estatisticas_time = {
+        "Categoria": [
+            "Média de gols marcados por jogo",
+            "Média de gols sofridos por jogo",
+            "Média de gols marcados + sofridos",
+            "Jogos sem sofrer gols",
+            "Jogos sem marcar gols",
+            "Jogos com Mais de 2,5 Gols",
+            "Jogos com Menos de 2,5 Gols"
+        ],
+        "Casa": casa,
+        "Fora": fora,
+        "Global": global_,
+    }
+
+    return estatisticas_time
+
+def calcular_estatisticas_adicionais(df, team_name):
+    # Filtrar jogos do time
+    jogos_time = df[(df['Home'] == team_name) | (df['Away'] == team_name)].copy()
+
+    # Considerar apenas os últimos 10 jogos (ordenados por data)
+    jogos_time = jogos_time.sort_values(by='Date', ascending=False).head(10)
+
+    # Adicionar colunas auxiliares
+    jogos_time['Abre_Marcador'] = jogos_time.apply(
+        lambda row: (row['Home'] == team_name and row['Goals_H_FT'] > 0) or 
+                    (row['Away'] == team_name and row['Goals_A_FT'] > 0), axis=1)
+    jogos_time['Vence_Intervalo'] = jogos_time.apply(
+        lambda row: (row['Home'] == team_name and row['Goals_H_HT'] > row['Goals_A_HT']) or 
+                    (row['Away'] == team_name and row['Goals_A_HT'] > row['Goals_H_HT']), axis=1)
+    jogos_time['Vence_Final'] = jogos_time.apply(
+        lambda row: (row['Home'] == team_name and row['Goals_H_FT'] > row['Goals_A_FT']) or 
+                    (row['Away'] == team_name and row['Goals_A_FT'] > row['Goals_H_FT']), axis=1)
+    jogos_time['Reviravolta'] = jogos_time.apply(
+        lambda row: ((row['Home'] == team_name and row['Goals_A_HT'] > row['Goals_H_HT'] and row['Goals_H_FT'] > row['Goals_A_FT']) or
+                     (row['Away'] == team_name and row['Goals_H_HT'] > row['Goals_A_HT'] and row['Goals_A_FT'] > row['Goals_H_FT'])), axis=1)
+
+    # Separar jogos em casa
+    jogos_casa = jogos_time[jogos_time['Home'] == team_name]
+
+    # Função auxiliar para calcular as estatísticas adicionais
+    def calcular_adicionais(jogos, total_jogos):
+        if total_jogos == 0:
+            return ["0 em 0 (0%)"] * 4
+
+        abre_marcador = jogos['Abre_Marcador'].sum()
+        vence_intervalo = jogos['Vence_Intervalo'].sum()
+        vence_final = jogos['Vence_Final'].sum()
+        reviravoltas = jogos['Reviravolta'].sum()
+
+        return [
+            f"{abre_marcador} em {total_jogos} ({round((abre_marcador / total_jogos) * 100)}%)",
+            f"{vence_intervalo} em {total_jogos} ({round((vence_intervalo / total_jogos) * 100)}%)",
+            f"{vence_final} em {total_jogos} ({round((vence_final / total_jogos) * 100)}%)",
+            f"{reviravoltas} em {total_jogos} ({round((reviravoltas / total_jogos) * 100)}%)"
+        ]
+
+    # Calcular estatísticas
+    casa = calcular_adicionais(jogos_casa, len(jogos_casa))
+    global_ = calcular_adicionais(jogos_time, len(jogos_time))
+
+    # Estrutura final
+    estatisticas_time_11 = {
+        "Categoria": [
+            "Abre marcador (qualquer altura)",
+            "Está a vencer ao intervalo",
+            "Vence no final",
+            "Reviravoltas"
+        ],
+        "Casa": casa,
+        "Global": global_,
+    }
+
+    return estatisticas_time_11
 
 
 # Init 
@@ -332,9 +463,7 @@ with col2:
 
 # Tabela 25 e 26: Gols Casa e Visitante
 
-# df_gols = gols_por_minuto(df_hist, df_match_selected["Home"], df_match_selected["Away"])
 st.subheader("Distribuição de Gols por Minuto")
-
 
 home_gols_por_tempo = calcular_gols_por_tempo(df_hist.loc[(df_hist["Season"] == SEASON_ATUAL)], df_match_selected["Home"])
 away_gols_por_tempo = calcular_gols_por_tempo(df_hist.loc[(df_hist["Season"] == SEASON_ATUAL)], df_match_selected["Away"])
@@ -348,7 +477,7 @@ with col1:
                  orientation="h",
                  barmode='group',
                  text_auto=True,
-                 title=f"Distribuição dos Gols por Intervalo de Tempo - {df_match_selected['Home']}"
+                 title=df_match_selected['Home']
     )
     st.plotly_chart(fig, use_container_width=True, key="fig1")
 with col2:
@@ -359,7 +488,7 @@ with col2:
                  orientation="h",
                  barmode='group',
                  text_auto=True,
-                 title=f"Distribuição dos Gols por Intervalo de Tempo - {df_match_selected['Away']}"
+                 title=df_match_selected['Away']
     )
     st.plotly_chart(fig, use_container_width=True, key="fig2")
 
@@ -372,85 +501,39 @@ with col2:
 
 
 # Tabela 22 e 23: Percurso Casa e Visitante
-percurso_casa = {
-    "Sequência de Vitórias": 1,
-    "Sequência de Empates": 0,
-    "Sequência de Derrotas": 3,
-    "Não ganha há": 7,
-    "Não empata há": 1,
-    "Não perde há": 3,
-}
-percurso_visitante = {
-    "Sequência de Vitórias": 2,
-    "Sequência de Empates": 1,
-    "Sequência de Derrotas": 0,
-    "Não ganha há": 1,
-    "Não empata há": 2,
-    "Não perde há": 5,
-}
-col1, col2 = st.columns(2)
-with col1:
-    st.subheader("Percurso - Casa")
-    st.json(percurso_casa)
-with col2:
-    st.subheader("Percurso - Visitante")
-    st.json(percurso_visitante)    
+# percurso_casa = {
+#     "Sequência de Vitórias": 1,
+#     "Sequência de Empates": 0,
+#     "Sequência de Derrotas": 3,
+#     "Não ganha há": 7,
+#     "Não empata há": 1,
+#     "Não perde há": 3,
+# }
+# percurso_visitante = {
+#     "Sequência de Vitórias": 2,
+#     "Sequência de Empates": 1,
+#     "Sequência de Derrotas": 0,
+#     "Não ganha há": 1,
+#     "Não empata há": 2,
+#     "Não perde há": 5,
+# }
+# col1, col2 = st.columns(2)
+# with col1:
+#     st.subheader("Percurso - Casa")
+#     st.json(percurso_casa)
+# with col2:
+#     st.subheader("Percurso - Visitante")
+#     st.json(percurso_visitante)    
 
 # Título
 st.subheader("⚽ Estatísticas de Confrontos de Futebol")
 
 # Dados Simulados para Times
-estatisticas_time_1 = {
-    "Categoria": [
-        "Média de gols marcados por jogo",
-        "Média de gols sofridos por jogo",
-        "Média de gols marcados + sofridos",
-        "Jogos sem sofrer gols",
-        "Jogos sem marcar gols",
-        "Jogos com Mais de 2,5 Gols",
-        "Jogos com Menos de 2,5 Gols"
-    ],
-    "Casa": [2.83, 0.5, 3.33, "67%", "-", "67%", "33%"],
-    "Fora": [3.13, 1.13, 4.26, "38%", "-", "75%", "25%"],
-    "Global": [3.0, 0.86, 3.86, "50%", "-", "71%", "29%"],
-}
+estatisticas_time_1 = calcular_estatisticas(df_hist, df_match_selected['Home'])
+estatisticas_time_11 = calcular_estatisticas_adicionais(df_hist, df_match_selected['Home'])
 
-estatisticas_time_11 = {
-    "Categoria": [
-        "Abre marcador (qualquer altura)",
-        "Está a vencer ao intervalo",
-        "Vence no final",
-        "Reviravoltas"
-    ],
-    "Casa": ["5 em 6 (83%)", "3 em 5 (60%)", "5 em 5 (100%)", "0 em 1 (0%)"],
-    "Global": ["10 em 15 (67%)", "6 em 10 (60%)", "8 em 8 (80%)", "1 em 5 (20%)"]
-}
-
-estatisticas_time_2 = {
-    "Categoria": [
-        "Média de gols marcados por jogo",
-        "Média de gols sofridos por jogo",
-        "Média de gols marcados + sofridos",
-        "Jogos sem sofrer gols",
-        "Jogos sem marcar gols",
-        "Jogos com Mais de 2,5 Gols",
-        "Jogos com Menos de 2,5 Gols"
-    ],
-    "Casa": [2.83, 0.5, 3.33, "67%", "-", "67%", "33%"],
-    "Fora": [3.13, 1.13, 4.26, "38%", "-", "75%", "25%"],
-    "Global": [3.0, 0.86, 3.86, "50%", "-", "71%", "29%"],
-}
-
-estatisticas_time_22 = {
-    "Categoria": [
-        "Abre marcador (qualquer altura)",
-        "Está a vencer ao intervalo",
-        "Vence no final",
-        "Reviravoltas"
-    ],
-    "Casa": ["5 em 6 (83%)", "3 em 5 (60%)", "5 em 5 (100%)", "0 em 1 (0%)"],
-    "Global": ["10 em 15 (67%)", "6 em 10 (60%)", "8 em 8 (80%)", "1 em 5 (20%)"]
-}
+estatisticas_time_2 = calcular_estatisticas(df_hist, df_match_selected['Away'])
+estatisticas_time_22 = calcular_estatisticas_adicionais(df_hist, df_match_selected['Away'])
 
 # Converte para DataFrame
 df_time_1 = pd.DataFrame(estatisticas_time_1)
