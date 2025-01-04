@@ -344,7 +344,7 @@ def calcular_estatisticas_adicionais(df, team_name, side):
             "Vence no final",
             "Reviravoltas"
         ],
-        side_label: jogos_side,
+        f"{side_label}": jogos_side,
         "Global": global_,
     }
 
