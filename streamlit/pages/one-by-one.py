@@ -174,9 +174,6 @@ def calcular_gols_por_tempo(df, team_name):
     # Filtrar apenas jogos do time (Home ou Away)
     jogos_time = df[(df['Home'] == team_name) | (df['Away'] == team_name)]
 
-    # Considerar apenas os últimos 10 jogos (ordenados por data)
-    jogos_time = jogos_time.sort_values(by='Date', ascending=False).head(10)
-
     for _, row in jogos_time.iterrows():
         home_team = row['Home']
         away_team = row['Away']
