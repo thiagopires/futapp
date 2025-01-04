@@ -298,7 +298,7 @@ classificacao_geral = generate_classificacao(df_classificacao, "ALL")
 classificacao_casa = generate_classificacao(df_classificacao, "HOME")
 classificacao_visitante = generate_classificacao(df_classificacao, "AWAY")
 
-tab1, tab2, tab3 = st.columns(3) #st.tabs(["Geral", "Casa", "Visitante"])
+tab1, tab2, tab3 = st.tabs(["Geral", "Casa", "Visitante"])
 with tab1:
     # st.subheader("Geral")
     print_dataframe(classificacao_geral, 740)
