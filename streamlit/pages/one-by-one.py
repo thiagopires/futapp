@@ -331,10 +331,10 @@ def calcular_estatisticas_adicionais(df, team_name, side):
             f"{reviravoltas} em {total_jogos} ({round((reviravoltas / total_jogos) * 100)}%)"
         ]
 
-    # Calcular estatísticas
-    side = calcular_adicionais(jogos_side, len(jogos_side))
+    # Calcular estatísticas    
     global_ = calcular_adicionais(jogos_time, len(jogos_time))
-    side_label = side.replace("Home","Casa").replace("Away", "Fora")
+    side_data = calcular_adicionais(jogos_side, len(jogos_side))
+    side_label = side.replace("Home","Casa").replace("Away","Fora")
 
     # Estrutura final
     estatisticas_time_11 = {
@@ -344,7 +344,7 @@ def calcular_estatisticas_adicionais(df, team_name, side):
             "Vence no final",
             "Reviravoltas"
         ],
-        side_label: side,
+        side_label: side_data,
         "Global": global_,
     }
 
