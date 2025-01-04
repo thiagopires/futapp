@@ -217,11 +217,13 @@ def calcular_gols_por_tempo(df, team_name):
                     if minuto in range_values:
                         gols_sofridos[intervalo] += 1
 
-    return gols_marcados, gols_sofridos
+    df_gols = pd.DataFrame({
+        "Intervalo": gols_marcados.keys(),
+        "Gols Marcados": gols_marcados.values(),
+        "Gols Sofridos": gols_sofridos.values()
+    })
 
-
-
-
+    return df_gols
 
 
 
@@ -344,16 +346,14 @@ with col2:
 st.subheader("Distribuição de Gols por Minuto")
 
 
-home_gols_marcados, home_gols_sofridos = calcular_gols_por_tempo(df_hist, df_match_selected["Home"])
-away_gols_marcados, away_gols_sofridos = calcular_gols_por_tempo(df_hist, df_match_selected["Away"])
+home_gols_por_tempo = calcular_gols_por_tempo(df_hist, df_match_selected["Home"])
+away_gols_por_tempo = calcular_gols_por_tempo(df_hist, df_match_selected["Away"])
 
 col1, col2 = st.columns(2)
 with col1:
-    st.text(home_gols_marcados)
-    st.text(home_gols_sofridos)
+    print_dataframe(home_gols_por_tempo)
 with col2:
-    st.text(away_gols_marcados)
-    st.text(away_gols_sofridos)
+    print_dataframe(away_gols_por_tempo)
 
 # col1, col2 = st.columns(2)
 # with col1:
