@@ -346,8 +346,8 @@ with col2:
 st.subheader("Distribuição de Gols por Minuto")
 
 
-home_gols_por_tempo = calcular_gols_por_tempo(df_hist, df_match_selected["Home"])
-away_gols_por_tempo = calcular_gols_por_tempo(df_hist, df_match_selected["Away"])
+home_gols_por_tempo = calcular_gols_por_tempo(df_hist.loc[(df_hist["Season"] == SEASON_ATUAL)], df_match_selected["Home"])
+away_gols_por_tempo = calcular_gols_por_tempo(df_hist.loc[(df_hist["Season"] == SEASON_ATUAL)], df_match_selected["Away"])
 
 col1, col2 = st.columns(2)
 with col1:
