@@ -290,7 +290,7 @@ def calcular_estatisticas(df, team_name):
 
     return estatisticas_time
 
-def calcular_estatisticas_adicionais(df, team_name):
+def calcular_estatisticas_adicionais(df, team_name, side):
     # Filtrar jogos do time
     jogos_time = df[(df['Home'] == team_name) | (df['Away'] == team_name)].copy()
 
@@ -312,7 +312,7 @@ def calcular_estatisticas_adicionais(df, team_name):
                      (row['Away'] == team_name and row['Goals_H_HT'] > row['Goals_A_HT'] and row['Goals_A_FT'] > row['Goals_H_FT'])), axis=1)
 
     # Separar jogos em casa
-    jogos_casa = jogos_time[jogos_time['Home'] == team_name]
+    jogos_side = jogos_time[jogos_time[side] == team_name]
 
     # Função auxiliar para calcular as estatísticas adicionais
     def calcular_adicionais(jogos, total_jogos):
@@ -332,8 +332,9 @@ def calcular_estatisticas_adicionais(df, team_name):
         ]
 
     # Calcular estatísticas
-    casa = calcular_adicionais(jogos_casa, len(jogos_casa))
+    side = calcular_adicionais(jogos_side, len(jogos_side))
     global_ = calcular_adicionais(jogos_time, len(jogos_time))
+    side_label = "Casa" if side == 'Home' else 'Away'
 
     # Estrutura final
     estatisticas_time_11 = {
@@ -343,7 +344,7 @@ def calcular_estatisticas_adicionais(df, team_name):
             "Vence no final",
             "Reviravoltas"
         ],
-        "Casa": casa,
+        side_label: jogos_side,
         "Global": global_,
     }
 
