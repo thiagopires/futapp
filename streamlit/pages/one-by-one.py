@@ -157,10 +157,9 @@ def highlight_row(row, highlight):
 
 
 
+import ast
 
 def calcular_gols_por_tempo(df, team_name):
-
-    # Definindo os intervalos de tempo
     ranges = {
         "0-15": range(0, 16),
         "16-30": range(16, 31),
@@ -170,41 +169,50 @@ def calcular_gols_por_tempo(df, team_name):
         "76-90": range(76, 91),
     }
 
-    # Inicializando os contadores
     gols_marcados = {r: 0 for r in ranges.keys()}
     gols_sofridos = {r: 0 for r in ranges.keys()}
 
-    # Iterando sobre as linhas do dataframe
     for _, row in df.iterrows():
         home_team = row['Home']
         away_team = row['Away']
-        
-        # Processando gols do time da casa (Home)
+
+        # Função para ajustar minutos com '+' (exemplo: '45+3' -> 45)
+        def ajustar_minuto(minuto):
+            if '+' in minuto:
+                return int(minuto.split('+')[0])
+            return int(minuto)
+
+        # Processando gols do time da casa
         if team_name == home_team:
-            for minuto in eval(row['Goals_H_Minutes']):
+            home_minutes = [ajustar_minuto(m) for m in ast.literal_eval(row['Goals_H_Minutes'])]
+            away_minutes = [ajustar_minuto(m) for m in ast.literal_eval(row['Goals_A_Minutes'])]
+
+            for minuto in home_minutes:
                 for intervalo, range_values in ranges.items():
                     if minuto in range_values:
                         gols_marcados[intervalo] += 1
             
-            for minuto in eval(row['Goals_A_Minutes']):
+            for minuto in away_minutes:
                 for intervalo, range_values in ranges.items():
                     if minuto in range_values:
                         gols_sofridos[intervalo] += 1
 
-        # Processando gols do time visitante (Away)
+        # Processando gols do time visitante
         elif team_name == away_team:
-            for minuto in eval(row['Goals_A_Minutes']):
+            away_minutes = [ajustar_minuto(m) for m in ast.literal_eval(row['Goals_A_Minutes'])]
+            home_minutes = [ajustar_minuto(m) for m in ast.literal_eval(row['Goals_H_Minutes'])]
+
+            for minuto in away_minutes:
                 for intervalo, range_values in ranges.items():
                     if minuto in range_values:
                         gols_marcados[intervalo] += 1
-
-            for minuto in eval(row['Goals_H_Minutes']):
+            
+            for minuto in home_minutes:
                 for intervalo, range_values in ranges.items():
                     if minuto in range_values:
                         gols_sofridos[intervalo] += 1
 
     return gols_marcados, gols_sofridos
-
 
 
 
