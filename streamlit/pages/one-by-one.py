@@ -280,12 +280,18 @@ def gols_por_minuto(df, clube):
 
 def update_goal_counts(goal_minutes, club_totals, goal_type):
     for minute in goal_minutes:
-        minute = int(minute.split("+")[0]) if "+" in str(minute) else int(minute)
-        for start, end in [(0, 15), (16, 30), (31, 45), (46, 60), (61, 75), (76, 90)]:
-            if start <= minute <= end:
-                club_totals[f"{start}-{end}"][goal_type] += 1
-                break
+        try:
+            # Validar e converter o minuto
+            minute = int(minute.split("+")[0]) if "+" in str(minute) else int(minute)
+            for start, end in [(0, 15), (16, 30), (31, 45), (46, 60), (61, 75), (76, 90)]:
+                if start <= minute <= end:
+                    club_totals[f"{start}-{end}"][goal_type] += 1
+                    break
+        except (ValueError, TypeError):
+            # Ignorar entradas inválidas
+            continue
     return club_totals
+
 
 # Exemplo de uso:
 # df = seu DataFrame de jogos
