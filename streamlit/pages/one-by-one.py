@@ -334,7 +334,7 @@ def calcular_estatisticas_adicionais(df, team_name, side):
     # Calcular estatísticas
     side = calcular_adicionais(jogos_side, len(jogos_side))
     global_ = calcular_adicionais(jogos_time, len(jogos_time))
-    side_label = "Casa" if side == 'Home' else 'Away'
+    side_label = "Casa" if side == 'Home' else 'Fora'
 
     # Estrutura final
     estatisticas_time_11 = {
