@@ -360,13 +360,15 @@ if 'button' not in st.session_state:
 # Sidebar
 st.sidebar.header("Selecione o Confronto")
 
-left, middle, right = st.sidebar.columns(3)
-if left.button("Hoje", use_container_width=True):
-    st.session_state.button = -1
-if middle.button("Amanhã", use_container_width=True):
+hoje, amanha, damanha, ontem = st.sidebar.columns(4)
+if hoje.button("Hoje", use_container_width=True):
     st.session_state.button = 0
-if right.button("D.Amanhã", use_container_width=True):
+if amanha.button("Amanhã", use_container_width=True):
     st.session_state.button = 1
+if damanha.button("D.Amanhã", use_container_width=True):
+    st.session_state.button = 2
+if ontem.button("Ontem", use_container_width=True):
+    st.session_state.button = -1
 
 df_matches = load_daymatches()
 df_hist = load_histmatches()
