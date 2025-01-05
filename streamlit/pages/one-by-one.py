@@ -355,18 +355,18 @@ def calcular_estatisticas_adicionais(df, team_name, side):
 st.set_page_config(layout="wide")
 
 if 'button' not in st.session_state:
-    st.session_state.button = 0
+    st.session_state.button = -1
 
 # Sidebar
 st.sidebar.header("Selecione o Confronto")
 
 left, middle, right = st.sidebar.columns(3)
 if left.button("Hoje", use_container_width=True):
-    st.session_state.button = 0
+    st.session_state.button = -1
 if middle.button("Amanhã", use_container_width=True):
-    st.session_state.button = 1
+    st.session_state.button = 0
 if right.button("D.Amanhã", use_container_width=True):
-    st.session_state.button = 2
+    st.session_state.button = 1
 
 df_matches = load_daymatches()
 df_hist = load_histmatches()
