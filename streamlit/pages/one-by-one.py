@@ -389,7 +389,7 @@ df_hist = load_histmatches()
 matches = df_matches["Confronto"].value_counts().index
 
 match_selected = st.dataframe(df_matches, on_select="rerun", use_container_width=True, hide_index=True)
-print_dataframe(df_matches)
+# print_dataframe(df_matches)
 
 # match_selected = st.sidebar.selectbox("Confronto", matches)
 
