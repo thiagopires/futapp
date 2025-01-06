@@ -354,8 +354,8 @@ def calcular_estatisticas_adicionais(df, team_name, side):
 # Init 
 st.set_page_config(layout="wide")
 
-if 'button' not in st.session_state:
-    st.session_state.button = 0
+# if 'button' not in st.session_state:
+#     st.session_state.button = 0
 
 # Sidebar
 st.sidebar.header("Selecione o Confronto")
@@ -372,6 +372,16 @@ st.sidebar.header("Selecione o Confronto")
 # if ontem.button("Ontem", use_container_width=True):
 #     st.session_state.button = -1
 
+dia_da_semana = st.radio(
+    "",
+    ["Hoje", "Amanhã", "D.Amanhã", "Ontem"],
+)
+match dia_da_semana:
+    case 'Hoje': st.session_state.button = 0
+    case 'Amanhã': st.session_state.button = 1
+    case 'D.Amanhã': st.session_state.button = 2
+    case 'Ontem': st.session_state.button = -1
+
 df_matches = load_daymatches()
 df_hist = load_histmatches()
 
@@ -383,11 +393,6 @@ df_match_selected = df_matches[df_matches["Confronto"].str.contains(match_select
 
 # Título do dashboard
 st.title("⚽ Análise Completa do Confronto de Futebol")
-
-st.session_state.button = st.radio(
-    "",
-    ["Hoje", "Amanhã", "D.Amanhã", "Ontem"],
-)
 
 # Header
 st.header(f'{df_match_selected["Confronto"].split("-")[1]}')
