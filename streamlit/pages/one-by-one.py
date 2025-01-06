@@ -388,10 +388,11 @@ df_hist = load_histmatches()
 
 matches = df_matches["Confronto"].value_counts().index
 
+match_selected = st.dataframe(df_matches, on_select="rerun", use_container_width=True, hide_index=True)
 print_dataframe(df_matches)
 
+# match_selected = st.sidebar.selectbox("Confronto", matches)
 
-match_selected = st.sidebar.selectbox("Confronto", matches)
 df_match_selected = df_matches[df_matches["Confronto"].str.contains(match_selected, na=False)].iloc[0]
 
 # Título do dashboard
