@@ -52,6 +52,7 @@ def load_daymatches(i):
     df = pd.read_csv(f"https://github.com/futpythontrader/YouTube/blob/main/Jogos_do_Dia/FootyStats/Jogos_do_Dia_FootyStats_{dia}.csv?raw=true")
     df["Datetime"] = pd.to_datetime(df["Date"] + " " + df["Time"])
     df["Formatted_Datetime"] = df["Datetime"].dt.strftime("%d/%m/%Y %H:%M")
+    df["Confronto"] = df["Time"] + " - " + df["Home"] + " vs. " + df["Away"]
     return df
 
 def load_histmatches():
@@ -385,10 +386,12 @@ match dia_da_semana:
 df_matches = load_daymatches(dia)
 df_hist = load_histmatches()
 
-df_matches["Confronto"] = df_matches["Time"] + " - " + df_matches["Home"] + " vs. " + df_matches["Away"]
 matches = df_matches["Confronto"].value_counts().index
-match_selected = st.sidebar.selectbox("Confronto", matches)
 
+print_dataframe(matches)
+
+
+match_selected = st.sidebar.selectbox("Confronto", matches)
 df_match_selected = df_matches[df_matches["Confronto"].str.contains(match_selected, na=False)].iloc[0]
 
 # Título do dashboard
