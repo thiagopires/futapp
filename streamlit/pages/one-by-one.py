@@ -45,8 +45,8 @@ def print_dataframe(df, pheight=None):
         ])
     st.dataframe(df, height=pheight, use_container_width=True, hide_index=True)
 
-def load_daymatches():
-    i = st.session_state.button
+def load_daymatches(i):
+    # i = st.session_state.button
     dia = (datetime.now()- timedelta(hours=3) + timedelta(days=i)).strftime("%Y-%m-%d")
     print(dia)
     df = pd.read_csv(f"https://github.com/futpythontrader/YouTube/blob/main/Jogos_do_Dia/FootyStats/Jogos_do_Dia_FootyStats_{dia}.csv?raw=true")
@@ -377,12 +377,12 @@ dia_da_semana = st.radio(
     ["Hoje", "Amanhã", "D.Amanhã", "Ontem"],
 )
 match dia_da_semana:
-    case 'Hoje': st.session_state.button = 0
-    case 'Amanhã': st.session_state.button = 1
-    case 'D.Amanhã': st.session_state.button = 2
-    case 'Ontem': st.session_state.button = -1
+    case 'Hoje': dia = 0
+    case 'Amanhã': dia = 1
+    case 'D.Amanhã': dia = 2
+    case 'Ontem': dia = -1
 
-df_matches = load_daymatches()
+df_matches = load_daymatches(dia)
 df_hist = load_histmatches()
 
 df_matches["Confronto"] = df_matches["Time"] + " - " + df_matches["Home"] + " vs. " + df_matches["Away"]
