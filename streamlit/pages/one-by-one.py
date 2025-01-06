@@ -355,7 +355,7 @@ def calcular_estatisticas_adicionais(df, team_name, side):
 st.set_page_config(layout="wide")
 
 if 'button' not in st.session_state:
-    st.session_state.button = -1
+    st.session_state.button = 0
 
 # Sidebar
 st.sidebar.header("Selecione o Confronto")
