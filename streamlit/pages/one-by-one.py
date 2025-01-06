@@ -360,17 +360,17 @@ if 'button' not in st.session_state:
 # Sidebar
 st.sidebar.header("Selecione o Confronto")
 
-hoje, amanha = st.sidebar.columns(2)
-if hoje.button("Hoje", use_container_width=True):
-    st.session_state.button = 0
-if amanha.button("Amanhã", use_container_width=True):
-    st.session_state.button = 1
+# hoje, amanha = st.sidebar.columns(2)
+# if hoje.button("Hoje", use_container_width=True):
+#     st.session_state.button = 0
+# if amanha.button("Amanhã", use_container_width=True):
+#     st.session_state.button = 1
 
-damanha, ontem = st.sidebar.columns(2)
-if damanha.button("D.Amanhã", use_container_width=True):
-    st.session_state.button = 2
-if ontem.button("Ontem", use_container_width=True):
-    st.session_state.button = -1
+# damanha, ontem = st.sidebar.columns(2)
+# if damanha.button("D.Amanhã", use_container_width=True):
+#     st.session_state.button = 2
+# if ontem.button("Ontem", use_container_width=True):
+#     st.session_state.button = -1
 
 df_matches = load_daymatches()
 df_hist = load_histmatches()
@@ -383,6 +383,11 @@ df_match_selected = df_matches[df_matches["Confronto"].str.contains(match_select
 
 # Título do dashboard
 st.title("⚽ Análise Completa do Confronto de Futebol")
+
+st.session_state.button = st.radio(
+    "",
+    ["Hoje", "Amanhã", "D.Amanhã", "Ontem"],
+)
 
 # Header
 st.header(f'{df_match_selected["Confronto"].split("-")[1]}')
