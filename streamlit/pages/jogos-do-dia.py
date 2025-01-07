@@ -390,7 +390,7 @@ df_hist = load_histmatches()
 
 match_selected = st.dataframe(df_matches, on_select="rerun", selection_mode="single-row", use_container_width=True, hide_index=True)
 
-if not match_selected:
+if not match_selected.get('selection').get('rows'):
     exit()
 
 match_selected_id = match_selected.get('selection').get('rows')[0]
