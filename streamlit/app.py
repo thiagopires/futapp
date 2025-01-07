@@ -6,7 +6,7 @@ pd.set_option('display.max_rows', None)
 
 st.set_page_config(layout="wide")
 
-st.title("Web App Football Data!")
+st.title("Web App Football Data")
 
 st.sidebar.header("Filtros")
 selected_league = st.sidebar.selectbox('Escolha uma liga', ['England','Germany','Italy','Spain','France'])
@@ -46,6 +46,6 @@ df.columns = ['League','Date','Time','Home','Away','Goals_H_HT','Goals_A_HT','Re
 
 df = drop_reset_index(df)
 
-st.subheader(f"Dataframe!: {selected_league} - {selected_season}")
+st.subheader(f"Dataframe: {selected_league} - {selected_season}")
 
 st.dataframe(df)
