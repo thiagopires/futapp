@@ -493,15 +493,14 @@ if match_selected.get('selection').get('rows'):
 
     col1, col2 = st.columns(2)
     with col1:
-        # print_dataframe(home_gols_por_tempo)
         fig = px.bar(home_gols_por_tempo, 
                     x='Quantidade',
                     y='Intervalo',
                     orientation="h",
                     color='Tipo de Gol',
                     color_discrete_map={
-                        'Gols Marcados': 'green',
-                        'Gols Sofridos': 'red'
+                        'Gols Marcados': 'light-green',
+                        'Gols Sofridos': 'light-red'
                     },
                     barmode='group',
                     text_auto=True,
@@ -509,11 +508,15 @@ if match_selected.get('selection').get('rows'):
         )
         st.plotly_chart(fig, use_container_width=True, key="fig1")
     with col2:
-        # print_dataframe(away_gols_por_tempo)
-        fig = px.bar(away_gols_por_tempo, 
-                    x=['Gols Marcados','Gols Sofridos'],
+        fig = px.bar(home_gols_por_tempo, 
+                    x='Quantidade',
                     y='Intervalo',
                     orientation="h",
+                    color='Tipo de Gol',
+                    color_discrete_map={
+                        'Gols Marcados': 'light-green',
+                        'Gols Sofridos': 'light-red'
+                    },
                     barmode='group',
                     text_auto=True,
                     title=df_match_selected['Away']
