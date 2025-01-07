@@ -346,7 +346,7 @@ def calcular_estatisticas_adicionais(df, team_name, side):
 # Init 
 st.set_page_config(layout="wide")
 
-st.title("Jogos do dia")
+st.title("⚽ Jogos do dia")
 
 data_analise = st.date_input("Data da Análise", datetime.today())
 df_matches = load_daymatches(data_analise)

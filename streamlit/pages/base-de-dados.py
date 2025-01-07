@@ -6,7 +6,7 @@ pd.set_option('display.max_rows', None)
 
 st.set_page_config(layout="wide")
 
-st.title("Web App Football Data")
+st.title("⚽ Base de dados")
 
 st.sidebar.header("Filtros")
 selected_league = st.sidebar.selectbox('Escolha uma liga', ['England','Germany','Italy','Spain','France'])
