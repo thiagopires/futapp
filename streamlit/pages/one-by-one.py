@@ -389,12 +389,12 @@ df_hist = load_histmatches()
 matches = df_matches["Confronto"].value_counts().index
 
 match_selected = st.dataframe(df_matches, on_select="rerun", selection_mode="single-row", use_container_width=True, hide_index=True)
-# print_dataframe(df_matches)
+match_selected_id = match_selected.get('selection').get('rows')[0]
 
 # match_selected = st.sidebar.selectbox("Confronto", matches)
 st.text(match_selected)
 
-df_match_selected = df_matches[df_matches["Confronto"].str.contains(match_selected, na=False)].iloc[0]
+df_match_selected = df_matches.iloc[match_selected_id]
 
 # Título do dashboard
 st.title("⚽ Análise Completa do Confronto de Futebol")
