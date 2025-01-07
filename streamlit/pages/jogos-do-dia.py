@@ -475,12 +475,11 @@ if match_selected.get('selection').get('rows'):
 
     col1, col2 = st.columns(2)
     with col1:
-        st.subheader(df_match_selected["Home"])
+        st.subheader(f"{df_match_selected['Home']} em casa")
         print_dataframe(df_todos_casa)
     with col2:
-        st.subheader(df_match_selected["Away"])
+        st.subheader(f"{df_match_selected['Away']} como visitante")
         print_dataframe(df_todos_visitante)
-
 
 
     # Tabela 25 e 26: Gols Casa e Visitante
@@ -494,7 +493,7 @@ if match_selected.get('selection').get('rows'):
     with col1:
         # print_dataframe(home_gols_por_tempo)
         fig = px.bar(home_gols_por_tempo, 
-                    x=['Gols Marcados','Gols Sofridos'],
+                    x=['Gols Sofridos','Gols Marcados'],
                     y='Intervalo',
                     orientation="h",
                     barmode='group',
