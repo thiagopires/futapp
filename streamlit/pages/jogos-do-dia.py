@@ -391,9 +391,6 @@ matches = df_matches["Confronto"].value_counts().index
 match_selected = st.dataframe(df_matches, on_select="rerun", selection_mode="single-row", use_container_width=True, hide_index=True)
 match_selected_id = match_selected.get('selection').get('rows')[0]
 
-# match_selected = st.sidebar.selectbox("Confronto", matches)
-st.text(match_selected)
-
 df_match_selected = df_matches.iloc[match_selected_id]
 
 # Título do dashboard
