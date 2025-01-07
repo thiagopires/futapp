@@ -387,6 +387,7 @@ df_hist = load_histmatches()
 
 # Dataframe
 
+st.subheader(f"Selecione o jogo:")
 match_selected = st.dataframe(
       df_matches[['League','Rodada','Time','Home','Away','Odd_H_FT','Odd_D_FT','Odd_A_FT','Odd_Over05_HT','Odd_Over15_FT','Odd_Over25_FT','Odd_BTTS_Yes']]
     , on_select="rerun"
