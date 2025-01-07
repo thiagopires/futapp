@@ -6,7 +6,7 @@ pd.set_option('display.max_rows', None)
 
 st.set_page_config(layout="wide")
 
-st.title("Web App Football Data")
+st.title("Web App Football Data!")
 
 st.sidebar.header("Filtros")
 selected_league = st.sidebar.selectbox('Escolha uma liga', ['England','Germany','Italy','Spain','France'])
@@ -18,7 +18,6 @@ def drop_reset_index(df):
     df.index += 1
     return df
 
-@st.cache_data
 def load_data(league, season):
 
   match league:
