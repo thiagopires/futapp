@@ -493,35 +493,35 @@ if match_selected.get('selection').get('rows'):
 
     col1, col2 = st.columns(2)
     with col1:
-        fig1 = px.bar(home_gols_por_tempo, 
+        fig = px.bar(home_gols_por_tempo, 
                     x='Quantidade',
                     y='Intervalo',
                     orientation="h",
                     color='Tipo de Gol',
                     color_discrete_map={
                         'Gols Marcados': 'lightgreen',
-                        'Gols Sofridos': 'lightred'
+                        'Gols Sofridos': 'lightcoral'
                     },
                     barmode='group',
                     text_auto=True,
                     title=df_match_selected['Home']
         )
-        st.plotly_chart(fig1, use_container_width=True, key="fig1")
+        st.plotly_chart(fig, use_container_width=True, key="fig1")
     with col2:
-        fig2 = px.bar(away_gols_por_tempo, 
+        fig = px.bar(away_gols_por_tempo, 
                     x='Quantidade',
                     y='Intervalo',
                     orientation="h",
                     color='Tipo de Gol',
                     color_discrete_map={
                         'Gols Marcados': 'lightgreen',
-                        'Gols Sofridos': 'lightred'
+                        'Gols Sofridos': 'lightcoral'
                     },
                     barmode='group',
                     text_auto=True,
                     title=df_match_selected['Away']
         )
-        st.plotly_chart(fig2, use_container_width=True, key="fig2")
+        st.plotly_chart(fig, use_container_width=True, key="fig2")
 
     # col1, col2 = st.columns(2)
     # with col1:
