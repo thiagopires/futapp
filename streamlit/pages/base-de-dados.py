@@ -36,6 +36,16 @@ def first_goal_string(row):
     else:
         return '-'  # Caso não haja gols
 
+def print_dataframe(df, styled_df=None):
+    if isinstance(styled_df, pd.io.formats.style.Styler):
+        styled_df = styled_df.set_properties(**{'text-align': 'center'})
+        styled_df = styled_df.set_table_styles([
+            {'selector': 'th', 'props': [('text-align', 'center')]}
+        ])
+        st.dataframe(styled_df, height=len(df)*38, use_container_width=True, hide_index=True)
+    else:
+        st.dataframe(df, use_container_width=True, hide_index=True)
+
 def load_histmatches():
     df1 = pd.read_csv("https://github.com/futpythontrader/YouTube/blob/main/Bases_de_Dados/FootyStats/Base_de_Dados_FootyStats_(2022_2024).csv?raw=true")
     #df2 = pd.read_csv("https://github.com/futpythontrader/YouTube/blob/main/Bases_de_Dados/FootyStats/Base_de_Dados_FootyStats_(2006_2021).csv?raw=true")
@@ -71,7 +81,7 @@ leagues.insert(0, 'Todas as Ligas')
 selected_leagues = st.multiselect(
     "Filtrar por Liga",
     leagues,
-    ['Todas as Ligas'],
+    [leagues[0]],
 )
 
 seasons = sorted(df_hist['Season'].unique())
@@ -80,9 +90,13 @@ seasons.insert(0, 'Todas as Temporadas')
 selected_seasons = st.multiselect(
     "Filtrar por Temporada",
     seasons,
-    ['Todas as Temporadas'],
+    [seasons[0]]
 )
 
+st.write(selected_leagues)
+st.write(selected_seasons)
+
+print_dataframe(df_hist)
 
 ### football-data.co.uk ###
 
