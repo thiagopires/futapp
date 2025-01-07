@@ -100,7 +100,7 @@ if not selected_leagues or "Todas as Ligas" in selected_leagues:
     filtered_df = df_hist
 else:
     # Filtra o DataFrame pelos valores selecionados
-    filtered_df = df_hist[df_hist['Leagues'].isin(selected_leagues)]
+    filtered_df = df_hist[df_hist['League'].isin(selected_leagues)]
 
 st.dataframe(filtered_df)
 # print_dataframe(filtered_df)
