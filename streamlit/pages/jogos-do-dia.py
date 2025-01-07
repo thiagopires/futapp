@@ -376,7 +376,7 @@ option_map = {
     -1: "Ontem"
 }
 selection = st.segmented_control(
-    "Tool",
+    "Selecione o dia ",
     options=option_map.keys(),
     format_func=lambda option: option_map[option],
     selection_mode="single",
@@ -389,6 +389,10 @@ df_hist = load_histmatches()
 # Dataframe
 
 match_selected = st.dataframe(df_matches, on_select="rerun", selection_mode="single-row", use_container_width=True, hide_index=True)
+
+if not match_selected:
+    exit()
+
 match_selected_id = match_selected.get('selection').get('rows')[0]
 
 df_match_selected = df_matches.iloc[match_selected_id]
