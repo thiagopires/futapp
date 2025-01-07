@@ -39,8 +39,8 @@ def first_goal_string(row):
 
 def print_dataframe(df, styled_df=None):
     if isinstance(styled_df, pd.io.formats.style.Styler):
-        df = df.set_properties(**{'text-align': 'center'})
-        df = df.set_table_styles([
+        styled_df = styled_df.set_properties(**{'text-align': 'center'})
+        styled_df = styled_df.set_table_styles([
             {'selector': 'th', 'props': [('text-align', 'center')]}
         ])
     st.dataframe(styled_df, height=len(df)*37, use_container_width=True, hide_index=True)
