@@ -368,7 +368,7 @@ if match_selected.get('selection').get('rows'):
 
     # Título do dashboard
     st.divider()
-    st.title("⚽ Análise Completa do Confronto de Futebol")
+    # st.title("⚽ Análise Completa do Confronto de Futebol")
 
     # Header
     st.header(f'{df_match_selected["Confronto"].split("-")[1]}')
