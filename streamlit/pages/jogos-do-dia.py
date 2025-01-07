@@ -37,13 +37,13 @@ def first_goal_string(row):
     else:
         return '-'  # Caso não haja gols
 
-def print_dataframe(df, pheight=None):
-    if isinstance(df, pd.io.formats.style.Styler):
+def print_dataframe(df, styled_df=None):
+    if isinstance(styled_df, pd.io.formats.style.Styler):
         df = df.set_properties(**{'text-align': 'center'})
         df = df.set_table_styles([
             {'selector': 'th', 'props': [('text-align', 'center')]}
         ])
-    st.dataframe(df, height=len(df)*37, use_container_width=True, hide_index=True)
+    st.dataframe(styled_df, height=len(df)*37, use_container_width=True, hide_index=True)
 
 def load_daymatches(i):
     # i = st.session_state.button
@@ -109,27 +109,17 @@ def generate_classificacao(df, type):
     clubes["#"] = range(1, len(clubes) + 1)
     clubes["DIFF"] = clubes["DIFF"].apply(lambda x: f"+{x}" if x > 0 else str(x))
 
-    classificacao = clubes.reset_index()
-    classificacao = classificacao[["#", "Clube", "PTS", "P", "W", "D", "L", "DIFF", "Goals"]]
+    df = clubes.reset_index()
+    df = df[["#", "Clube", "PTS", "P", "W", "D", "L", "DIFF", "Goals"]]
 
     if type == 'HOME':
-        classificacao = classificacao.style.apply(highlight_row, axis=1, highlight=[df_match_selected["Home"]])
-        # classificacao = classificacao.style.map(lambda v: 'background-color: lightyellow' if v == df_match_selected["Home"] else '', subset=["Clube"])
+        styled_df = df.style.apply(highlight_row, axis=1, highlight=[df_match_selected["Home"]])        
     elif type == 'AWAY':
-        classificacao = classificacao.style.apply(highlight_row, axis=1, highlight=[df_match_selected["Away"]])
-        # classificacao = classificacao.style.map(lambda v: 'background-color: lightyellow' if v == df_match_selected["Away"] else '', subset=["Clube"])
+        styled_df = df.style.apply(highlight_row, axis=1, highlight=[df_match_selected["Away"]])
     elif type == 'ALL':
-        classificacao = classificacao.style.apply(highlight_row, axis=1, highlight=[df_match_selected["Home"],df_match_selected["Away"]])
-        # classificacao = classificacao.style.map(lambda v: 'background-color: lightyellow' if (v == df_match_selected["Home"] or v == df_match_selected["Away"]) else '', subset=["Clube"])
+        styled_df = df.style.apply(highlight_row, axis=1, highlight=[df_match_selected["Home"],df_match_selected["Away"]])
 
-    return classificacao
-
-    # Configuração da página
-    st.set_page_config(
-        page_title="Análise de Confrontos de Futebol",
-        page_icon="⚽",
-        layout="wide",
-    )
+    return df, styled_df
 
 def highlight_result(row, highlight):
     colors = {
@@ -450,20 +440,20 @@ if match_selected.get('selection').get('rows'):
     filter_classificacao = (df_hist["Season"] == SEASON_ATUAL) & (df_hist["League"] == df_match_selected["League"])
     df_classificacao = df_hist.loc[filter_classificacao, ["League","Season","Date","Rodada","Home","Away","Goals_H_FT","Goals_A_FT"]]
 
-    classificacao_geral = generate_classificacao(df_classificacao, "ALL")
-    classificacao_casa = generate_classificacao(df_classificacao, "HOME")
-    classificacao_visitante = generate_classificacao(df_classificacao, "AWAY")
+    classificacao_geral, styled_classificacao_geral = generate_classificacao(df_classificacao, "ALL")
+    classificacao_casa, styled_classificacao_casa = generate_classificacao(df_classificacao, "HOME")
+    classificacao_visitante, styled_classificacao_visitante = generate_classificacao(df_classificacao, "AWAY")
 
     tab1, tab2, tab3 = st.tabs(["Geral", "Casa", "Visitante"])
     with tab1:
         # st.subheader("Geral")
-        print_dataframe(classificacao_geral, 740)
+        print_dataframe(classificacao_geral, styled_classificacao_geral)
     with tab2:
         # st.subheader("Casa")
-        print_dataframe(classificacao_casa, 740)
+        print_dataframe(classificacao_casa, styled_classificacao_casa)
     with tab3:
         # st.subheader("Visitante")
-        print_dataframe(classificacao_visitante, 740)
+        print_dataframe(classificacao_visitante, styled_classificacao_visitante)
 
     filter_todos_casa = (df_hist["Home"] == df_match_selected["Home"]) & (df_hist["League"] == df_match_selected["League"]) & (df_hist["Season"] == SEASON_ATUAL)
     todos_casa = df_hist.loc[filter_todos_casa, ["Date", "Home", "Resultado_FT", "Away", "Primeiro_Gol"]].sort_values(by="Date", ascending=False)
