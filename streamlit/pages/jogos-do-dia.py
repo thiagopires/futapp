@@ -392,11 +392,11 @@ if match_selected.get('selection').get('rows'):
         print_dataframe(df_confrontos)
 
     filter_ultimos_casa = (df_match_selected["Home"] == df_hist["Home"]) | (df_match_selected["Home"] == df_hist["Away"])
-    ultimos_casa = df_hist.loc[filter_ultimos_casa, ["Date", "Season", "Home", "Resultado_FT", "Away"]].sort_values(by="Date", ascending=False).head(10)
+    ultimos_casa = df_hist.loc[filter_ultimos_casa, ["Formatted_Date", "Season", "Home", "Resultado_FT", "Away"]].sort_values(by="Formatted_Date", ascending=False).head(10)
     df_ultimos_casa = ultimos_casa.style.apply(highlight_result, axis=1, highlight=df_match_selected["Home"])
 
     filter_ultimos_visitante = (df_match_selected["Away"] == df_hist["Home"]) | (df_match_selected["Away"] == df_hist["Away"])
-    ultimos_visitante = df_hist.loc[filter_ultimos_visitante, ["Date", "Season", "Home", "Resultado_FT", "Away"]].sort_values(by="Date", ascending=False).head(10)
+    ultimos_visitante = df_hist.loc[filter_ultimos_visitante, ["Formatted_Date", "Season", "Home", "Resultado_FT", "Away"]].sort_values(by="Formatted_Date", ascending=False).head(10)
     df_ultimos_visitante = ultimos_visitante.style.apply(highlight_result, axis=1, highlight=df_match_selected["Away"])
 
     st.header(f"Últimos 10 Jogos na {df_match_selected['League']}")
@@ -427,11 +427,11 @@ if match_selected.get('selection').get('rows'):
         print_dataframe(classificacao_visitante, styled_classificacao_visitante)
 
     filter_todos_casa = (df_hist["Home"] == df_match_selected["Home"]) & (df_hist["League"] == df_match_selected["League"]) & (df_hist["Season"] == SEASON_ATUAL)
-    todos_casa = df_hist.loc[filter_todos_casa, ["Date", "Home", "Resultado_FT", "Away", "Primeiro_Gol"]].sort_values(by="Date", ascending=False)
+    todos_casa = df_hist.loc[filter_todos_casa, ["Formatted_Date", "Home", "Resultado_FT", "Away", "Primeiro_Gol"]].sort_values(by="Formatted_Date", ascending=False)
     df_todos_casa = todos_casa.style.apply(highlight_result, axis=1, highlight=df_match_selected["Home"])
 
     filter_todos_visitante = (df_hist["Away"] == df_match_selected["Away"]) & (df_hist["League"] == df_match_selected["League"]) & (df_hist["Season"] == SEASON_ATUAL)
-    todos_visitante = df_hist.loc[filter_todos_visitante, ["Date", "Home", "Resultado_FT", "Away", "Primeiro_Gol"]].sort_values(by="Date", ascending=False)
+    todos_visitante = df_hist.loc[filter_todos_visitante, ["Formatted_Date", "Home", "Resultado_FT", "Away", "Primeiro_Gol"]].sort_values(by="Formatted_Date", ascending=False)
     df_todos_visitante = todos_visitante.style.apply(highlight_result, axis=1, highlight=df_match_selected["Away"])
 
     st.header("Todos os jogos Casa/Fora nesta competição")
