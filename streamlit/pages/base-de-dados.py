@@ -71,7 +71,7 @@ leagues = leagues.insert(0, 'Todas as Ligas')
 selected_leagues = st.multiselect(
     "Filtrar por Liga",
     leagues,
-    [leagues[0]],
+    leagues[0],
 )
 
 seasons = sorted(df_hist['Season'].unique())
@@ -80,7 +80,7 @@ seasons = leagues.insert(0, 'Todas as Temporadas')
 selected_seasons = st.multiselect(
     "Filtrar por Temporada",
     seasons,
-    [seasons[0]],
+    seasons[0],
 )
 
 
