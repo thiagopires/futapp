@@ -112,12 +112,14 @@ def generate_classificacao(df, type):
     classificacao_df = clubes[["#", "Clube", "PTS", "P", "W", "D", "L", "DIFF", "Goals"]]
     styled_df = classificacao_df.copy()
 
-    if type == 'HOME':
-        styled_df = styled_df.style.apply(highlight_row, axis=1, highlight=[df_match_selected["Home"]])        
-    elif type == 'AWAY':
-        styled_df = styled_df.style.apply(highlight_row, axis=1, highlight=[df_match_selected["Away"]])
-    elif type == 'ALL':
-        styled_df = styled_df.style.apply(highlight_row, axis=1, highlight=[df_match_selected["Home"],df_match_selected["Away"]])
+    # if type == 'HOME':
+    #     styled_df = styled_df.style.apply(highlight_row, axis=1, highlight=[df_match_selected["Home"]])        
+    # elif type == 'AWAY':
+    #     styled_df = styled_df.style.apply(highlight_row, axis=1, highlight=[df_match_selected["Away"]])
+    # elif type == 'ALL':
+    #     styled_df = styled_df.style.apply(highlight_row, axis=1, highlight=[df_match_selected["Home"],df_match_selected["Away"]])
+
+    styled_df = styled_df.style.apply(highlight_row, axis=1, highlight=[df_match_selected["Home"],df_match_selected["Away"]])
 
     return classificacao_df, styled_df
 
