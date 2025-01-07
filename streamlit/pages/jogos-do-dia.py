@@ -369,14 +369,11 @@ st.set_page_config(layout="wide")
 # if ontem.button("Ontem", use_container_width=True):
 #     st.session_state.button = -1
 
-option_map = {
-    0: "Hoje",
-    1: "Amanhã",
-    2: "D.Amanhã",
-    -1: "Ontem"
-}
+st.title("Jogos do dia")
+
+option_map = {0: "Hoje", 1: "Amanhã", 2: "D.Amanhã", -1: "Ontem"}
 selection = st.segmented_control(
-    "Selecione o dia:",
+    "Dia da Analise:",
     options=option_map.keys(),
     format_func=lambda option: option_map[option],
     selection_mode="single",
@@ -388,14 +385,18 @@ df_hist = load_histmatches()
 
 # Dataframe
 
-match_selected = st.dataframe(df_matches, on_select="rerun", selection_mode="single-row", use_container_width=True, hide_index=True)
+match_selected = st.dataframe(
+      df_matches[['League','Time','Home','Away','Odd_H_FT','Odd_D_FT','Odd_A_FT','Odd_Over05_HT','Odd_Over15_FT','Odd_Over25_FT','Odd_BTTS_Yes']]
+    , on_select="rerun"
+    , selection_mode="single-row"
+    , use_container_width=True
+    , hide_index=True
+)
 
 if not match_selected.get('selection').get('rows'):
     exit()
 
-match_selected_id = match_selected.get('selection').get('rows')[0]
-
-df_match_selected = df_matches.iloc[match_selected_id]
+df_match_selected = df_matches.iloc[match_selected.get('selection').get('rows')[0]]
 
 # Título do dashboard
 st.title("⚽ Análise Completa do Confronto de Futebol")
