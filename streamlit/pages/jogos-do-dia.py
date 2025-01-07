@@ -351,15 +351,11 @@ def calcular_estatisticas_adicionais(df, team_name, side):
 
     return pd.DataFrame(estatisticas_adicionais_time)
 
-
 # Init 
 st.set_page_config(layout="wide")
 
-# if 'button' not in st.session_state:
-#     st.session_state.button = 0
-
-# Sidebar
-st.sidebar.header("Selecione o Confronto")
+# # Sidebar
+# st.sidebar.header("Selecione o Confronto")
 
 # hoje, amanha = st.sidebar.columns(2)
 # if hoje.button("Hoje", use_container_width=True):
@@ -373,20 +369,24 @@ st.sidebar.header("Selecione o Confronto")
 # if ontem.button("Ontem", use_container_width=True):
 #     st.session_state.button = -1
 
-dia_da_semana = st.radio(
-    "",
-    ["Hoje", "Amanhã", "D.Amanhã", "Ontem"],
+option_map = {
+    0: "Hoje",
+    1: "Amanhã",
+    2: "D.Amanhã",
+    -1: "Ontem"
+}
+selection = st.segmented_control(
+    "Tool",
+    options=option_map.keys(),
+    format_func=lambda option: option_map[option],
+    selection_mode="single",
 )
-match dia_da_semana:
-    case 'Hoje': dia = 0
-    case 'Amanhã': dia = 1
-    case 'D.Amanhã': dia = 2
-    case 'Ontem': dia = -1
+dia = 0 if selection is None else option_map[selection]
 
 df_matches = load_daymatches(dia)
 df_hist = load_histmatches()
 
-matches = df_matches["Confronto"].value_counts().index
+# Dataframe
 
 match_selected = st.dataframe(df_matches, on_select="rerun", selection_mode="single-row", use_container_width=True, hide_index=True)
 match_selected_id = match_selected.get('selection').get('rows')[0]
