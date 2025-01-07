@@ -508,7 +508,7 @@ if match_selected.get('selection').get('rows'):
         )
         st.plotly_chart(fig, use_container_width=True, key="fig1")
     with col2:
-        fig = px.bar(home_gols_por_tempo, 
+        fig = px.bar(away_gols_por_tempo, 
                     x='Quantidade',
                     y='Intervalo',
                     orientation="h",
