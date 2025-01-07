@@ -47,6 +47,6 @@ df.columns = ['League','Date','Time','Home','Away','Goals_H_HT','Goals_A_HT','Re
 
 df = drop_reset_index(df)
 
-st.subheader(f"Dataframe: {selected_league} - {selected_season}")
+st.subheader(f"Dataframe!: {selected_league} - {selected_season}")
 
 st.dataframe(df)
