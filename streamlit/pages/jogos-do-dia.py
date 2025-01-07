@@ -111,13 +111,14 @@ def generate_classificacao(df, type):
 
     df = clubes.reset_index()
     df = df[["#", "Clube", "PTS", "P", "W", "D", "L", "DIFF", "Goals"]]
+    styled_df = df
 
     if type == 'HOME':
-        styled_df = df.style.apply(highlight_row, axis=1, highlight=[df_match_selected["Home"]])        
+        styled_df = styled_df.style.apply(highlight_row, axis=1, highlight=[df_match_selected["Home"]])        
     elif type == 'AWAY':
-        styled_df = df.style.apply(highlight_row, axis=1, highlight=[df_match_selected["Away"]])
+        styled_df = styled_df.style.apply(highlight_row, axis=1, highlight=[df_match_selected["Away"]])
     elif type == 'ALL':
-        styled_df = df.style.apply(highlight_row, axis=1, highlight=[df_match_selected["Home"],df_match_selected["Away"]])
+        styled_df = styled_df.style.apply(highlight_row, axis=1, highlight=[df_match_selected["Home"],df_match_selected["Away"]])
 
     return df, styled_df
 
@@ -446,13 +447,10 @@ if match_selected.get('selection').get('rows'):
 
     tab1, tab2, tab3 = st.tabs(["Geral", "Casa", "Visitante"])
     with tab1:
-        # st.subheader("Geral")
         print_dataframe(classificacao_geral, styled_classificacao_geral)
     with tab2:
-        # st.subheader("Casa")
         print_dataframe(classificacao_casa, styled_classificacao_casa)
     with tab3:
-        # st.subheader("Visitante")
         print_dataframe(classificacao_visitante, styled_classificacao_visitante)
 
     filter_todos_casa = (df_hist["Home"] == df_match_selected["Home"]) & (df_hist["League"] == df_match_selected["League"]) & (df_hist["Season"] == SEASON_ATUAL)
