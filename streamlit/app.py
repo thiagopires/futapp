@@ -1,6 +1,8 @@
 import streamlit as st
 import pandas as pd
-import numpy as np
+
+pd.set_option('display.max_columns', None)
+pd.set_option('display.max_rows', None)
 
 st.set_page_config(layout="wide")
 
@@ -9,6 +11,12 @@ st.title("Web App Football Data")
 st.sidebar.header("Filtros")
 selected_league = st.sidebar.selectbox('Escolha uma liga', ['England','Germany','Italy','Spain','France'])
 selected_season = st.sidebar.selectbox('Escolha uma temporada', ['2024/2025','2023/2024','2022/2023','2021/2022','2020/2021'])
+
+def drop_reset_index(df):
+    df = df.dropna()
+    df = df.reset_index(drop=True)
+    df.index += 1
+    return df
 
 @st.cache_data
 def load_data(league, season):
@@ -30,6 +38,14 @@ def load_data(league, season):
   return data
 
 df = load_data(selected_league, selected_season)
+
+df = df[['Div','Date','Time','HomeTeam','AwayTeam','HTHG','HTAG','HTR','FTHG','FTAG','FTR',
+'BFEH','BFED','BFEA','BFE>2.5','BFE<2.5','AHh','BFEAHH','BFEAHA']]
+
+df.columns = ['League','Date','Time','Home','Away','Goals_H_HT','Goals_A_HT','Result_HT','Goals_H_FT','Goals_A_FT','Result_FT',
+'Odd_H_Open','Odd_D_Open','Odd_A_Open','Odd_Over25_Open','Odd_Under25_Open','Asian_Handicap_Open','Odd_AHH_Open','Odd_AHA_Open']
+
+df = drop_reset_index(df)
 
 st.subheader(f"Dataframe: {selected_league} - {selected_season}")
 
