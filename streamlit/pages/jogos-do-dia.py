@@ -109,9 +109,9 @@ def generate_classificacao(df, type):
     clubes["#"] = range(1, len(clubes) + 1)
     clubes["DIFF"] = clubes["DIFF"].apply(lambda x: f"+{x}" if x > 0 else str(x))
 
-    df = clubes.reset_index()
-    df = df[["#", "Clube", "PTS", "P", "W", "D", "L", "DIFF", "Goals"]]
-    styled_df = df
+    clubes = clubes.reset_index()
+    classificacao_df = clubes[["#", "Clube", "PTS", "P", "W", "D", "L", "DIFF", "Goals"]]
+    styled_df = clubes[["#", "Clube", "PTS", "P", "W", "D", "L", "DIFF", "Goals"]]
 
     if type == 'HOME':
         styled_df = styled_df.style.apply(highlight_row, axis=1, highlight=[df_match_selected["Home"]])        
@@ -120,7 +120,7 @@ def generate_classificacao(df, type):
     elif type == 'ALL':
         styled_df = styled_df.style.apply(highlight_row, axis=1, highlight=[df_match_selected["Home"],df_match_selected["Away"]])
 
-    return df, styled_df
+    return classificacao_df, styled_df
 
 def highlight_result(row, highlight):
     colors = {
