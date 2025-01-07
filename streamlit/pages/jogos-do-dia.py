@@ -47,11 +47,9 @@ def print_dataframe(df, styled_df=None):
     else:
         st.dataframe(df, use_container_width=True, hide_index=True)
 
-def load_daymatches(i):
-    # i = st.session_state.button
-    dia = (datetime.now()- timedelta(hours=3) + timedelta(days=i)).strftime("%Y-%m-%d")
-    print(dia)
-    df = pd.read_csv(f"https://github.com/futpythontrader/YouTube/blob/main/Jogos_do_Dia/FootyStats/Jogos_do_Dia_FootyStats_{dia}.csv?raw=true")
+def load_daymatches(dt):
+    # dia = (datetime.now()- timedelta(hours=3) + timedelta(days=i)).strftime("%Y-%m-%d")
+    df = pd.read_csv(f"https://github.com/futpythontrader/YouTube/blob/main/Jogos_do_Dia/FootyStats/Jogos_do_Dia_FootyStats_{dt}.csv?raw=true")
     df["Datetime"] = pd.to_datetime(df["Date"] + " " + df["Time"])
     df["Formatted_Datetime"] = df["Datetime"].dt.strftime("%d/%m/%Y %H:%M")
     df["Confronto"] = df["Time"] + " - " + df["Home"] + " vs. " + df["Away"]
@@ -349,33 +347,20 @@ def calcular_estatisticas_adicionais(df, team_name, side):
 # Init 
 st.set_page_config(layout="wide")
 
-# # Sidebar
-# st.sidebar.header("Selecione o Confronto")
-
-# hoje, amanha = st.sidebar.columns(2)
-# if hoje.button("Hoje", use_container_width=True):
-#     st.session_state.button = 0
-# if amanha.button("Amanhã", use_container_width=True):
-#     st.session_state.button = 1
-
-# damanha, ontem = st.sidebar.columns(2)
-# if damanha.button("D.Amanhã", use_container_width=True):
-#     st.session_state.button = 2
-# if ontem.button("Ontem", use_container_width=True):
-#     st.session_state.button = -1
-
 st.title("Jogos do dia")
 
-option_map = {0: "Hoje", 1: "Amanhã", 2: "D.Amanhã", -1: "Ontem"}
-selection = st.segmented_control(
-    "Dia da Analise:",
-    options=option_map.keys(),
-    format_func=lambda option: option_map[option],
-    selection_mode="single",
-)
-dia = 0 if selection is None else selection
+# option_map = {0: "Hoje", 1: "Amanhã", 2: "D.Amanhã", -1: "Ontem"}
+# selection = st.segmented_control(
+#     "Dia da Analise:",
+#     options=option_map.keys(),
+#     format_func=lambda option: option_map[option],
+#     selection_mode="single",
+# )
+# dia = 0 if selection is None else selection
 
-df_matches = load_daymatches(dia)
+data_analise = st.date_input("Data da Análise", datetime.today())
+
+df_matches = load_daymatches(data_analise)
 df_hist = load_histmatches()
 
 # Dataframe
@@ -401,8 +386,6 @@ if match_selected.get('selection').get('rows'):
     st.header(f'{df_match_selected["Confronto"].split("-")[1]}')
     st.subheader(f"{df_match_selected['Formatted_Datetime']} - {df_match_selected["League"]} (Rodada {df_match_selected["Rodada"]})")
 
-
-    # Dividindo a página em duas colunas
     col1, col2 = st.columns(2)
     with col1:
         st.subheader("Odds")
@@ -473,9 +456,6 @@ if match_selected.get('selection').get('rows'):
     with col2:
         st.subheader(f"{df_match_selected['Away']} como visitante")
         print_dataframe(df_todos_visitante)
-
-
-    # Tabela 25 e 26: Gols Casa e Visitante
 
     st.subheader("Distribuição de Gols por Minuto (últimos 10 jogos)")
 
