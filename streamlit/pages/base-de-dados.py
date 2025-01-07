@@ -93,7 +93,7 @@ selected_seasons = st.multiselect(
     [seasons[0]]
 )
 
-df_hist = df_hist[(df_hist['Date'] >= data_inicial) & (df_hist['Date'] <= data_final)]
+df_hist = df_hist[(df_hist['Date'] >= pd.to_datetime(data_inicial)) & (df_hist['Date'] <= pd.to_datetime(data_final))]
 
 if not selected_leagues or "Todas as Ligas" in selected_leagues:
     # Não aplica filtro, retorna o DataFrame completo
