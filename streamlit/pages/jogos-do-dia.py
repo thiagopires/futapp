@@ -499,8 +499,8 @@ if match_selected.get('selection').get('rows'):
                     orientation="h",
                     color='Tipo de Gol',
                     color_discrete_map={
-                        'Gols Marcados': 'light-green',
-                        'Gols Sofridos': 'light-red'
+                        'Gols Marcados': 'lightgreen',
+                        'Gols Sofridos': 'lightred'
                     },
                     barmode='group',
                     text_auto=True,
@@ -514,8 +514,8 @@ if match_selected.get('selection').get('rows'):
                     orientation="h",
                     color='Tipo de Gol',
                     color_discrete_map={
-                        'Gols Marcados': 'light-green',
-                        'Gols Sofridos': 'light-red'
+                        'Gols Marcados': 'lightgreen',
+                        'Gols Sofridos': 'lightred'
                     },
                     barmode='group',
                     text_auto=True,
