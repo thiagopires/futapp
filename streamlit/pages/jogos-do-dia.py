@@ -386,7 +386,7 @@ df_hist = load_histmatches()
 # Dataframe
 
 match_selected = st.dataframe(
-      df_matches[['League','Time','Home','Away','Odd_H_FT','Odd_D_FT','Odd_A_FT','Odd_Over05_HT','Odd_Over15_FT','Odd_Over25_FT','Odd_BTTS_Yes']]
+      df_matches[['League','Rodada','Time','Home','Away','Odd_H_FT','Odd_D_FT','Odd_A_FT','Odd_Over05_HT','Odd_Over15_FT','Odd_Over25_FT','Odd_BTTS_Yes']]
     , on_select="rerun"
     , selection_mode="single-row"
     , use_container_width=True
@@ -398,12 +398,13 @@ if match_selected.get('selection').get('rows'):
     df_match_selected = df_matches.iloc[match_selected.get('selection').get('rows')[0]]
 
     # Título do dashboard
+    st.divider()
     st.title("⚽ Análise Completa do Confronto de Futebol")
 
     # Header
     st.header(f'{df_match_selected["Confronto"].split("-")[1]}')
     st.subheader(f"{df_match_selected['Formatted_Datetime']} - {df_match_selected["League"]} (Rodada {df_match_selected["Rodada"]})")
-    st.divider()
+
 
     # Dividindo a página em duas colunas
     col1, col2 = st.columns(2)
@@ -544,7 +545,7 @@ if match_selected.get('selection').get('rows'):
     #     st.json(percurso_casa)
     # with col2:
     #     st.subheader("Percurso - Visitante")
-    #     st.json(percurso_visitante)    
+    #     st.json(percurso_visitante)
 
     # Título
     st.subheader("⚽ Estatísticas de Confrontos de Futebol")
