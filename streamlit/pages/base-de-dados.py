@@ -63,7 +63,7 @@ col1, col2 = st.columns(2)
 with col1:
   data_inicial = st.date_input("Data Inicial", datetime.date(2022, 2, 10))
 with col2:
-  data_final = st.date_input("Data Final", datetime.today())
+  data_final = st.date_input("Data Final", datetime.datetime.today())
 
 leagues = sorted(df_hist['League'].unique())
 leagues = leagues.insert(0, 'Todas as Ligas')
