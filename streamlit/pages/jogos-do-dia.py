@@ -45,7 +45,7 @@ def print_dataframe(df, styled_df=None):
         ])
         st.dataframe(styled_df, height=len(df)*37, use_container_width=True, hide_index=True)
     else:
-        st.dataframe(styled_df, use_container_width=True, hide_index=True)
+        st.dataframe(df, use_container_width=True, hide_index=True)
 
 def load_daymatches(i):
     # i = st.session_state.button
