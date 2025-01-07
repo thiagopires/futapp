@@ -43,7 +43,7 @@ def print_dataframe(df, styled_df=None):
         styled_df = styled_df.set_table_styles([
             {'selector': 'th', 'props': [('text-align', 'center')]}
         ])
-        st.dataframe(styled_df, height=len(df)*40, use_container_width=True, hide_index=True)
+        st.dataframe(styled_df, height=len(df)*38, use_container_width=True, hide_index=True)
     else:
         st.dataframe(df, use_container_width=True, hide_index=True)
 
