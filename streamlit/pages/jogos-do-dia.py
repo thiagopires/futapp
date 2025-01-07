@@ -48,7 +48,6 @@ def print_dataframe(df, styled_df=None):
         st.dataframe(df, use_container_width=True, hide_index=True)
 
 def load_daymatches(dt):
-    # dia = (datetime.now()- timedelta(hours=3) + timedelta(days=i)).strftime("%Y-%m-%d")
     df = pd.read_csv(f"https://github.com/futpythontrader/YouTube/blob/main/Jogos_do_Dia/FootyStats/Jogos_do_Dia_FootyStats_{dt}.csv?raw=true")
     df["Datetime"] = pd.to_datetime(df["Date"] + " " + df["Time"])
     df["Formatted_Datetime"] = df["Datetime"].dt.strftime("%d/%m/%Y %H:%M")
@@ -211,9 +210,7 @@ def calcular_gols_por_tempo(df, team_name):
         "Gols Sofridos": gols_sofridos.values()
     }).sort_values(by='Intervalo', ascending=False)
 
-    return df_gols.melt(id_vars='Intervalo', 
-                        var_name='Tipo de Gol', 
-                        value_name='Quantidade')
+    return df_gols.melt(id_vars='Intervalo', var_name='Tipo de Gol', value_name='Quantidade')
 
 def calcular_estatisticas(df, team_name):
     # Filtrar jogos do time
@@ -349,22 +346,11 @@ st.set_page_config(layout="wide")
 
 st.title("Jogos do dia")
 
-# option_map = {0: "Hoje", 1: "Amanhã", 2: "D.Amanhã", -1: "Ontem"}
-# selection = st.segmented_control(
-#     "Dia da Analise:",
-#     options=option_map.keys(),
-#     format_func=lambda option: option_map[option],
-#     selection_mode="single",
-# )
-# dia = 0 if selection is None else selection
-
 data_analise = st.date_input("Data da Análise", datetime.today())
-
 df_matches = load_daymatches(data_analise)
 df_hist = load_histmatches()
 
 # Dataframe
-
 st.subheader(f"Selecione o jogo:")
 match_selected = st.dataframe(
       df_matches[['League','Rodada','Time','Home','Away','Odd_H_FT','Odd_D_FT','Odd_A_FT','Odd_Over05_HT','Odd_Over15_FT','Odd_Over25_FT','Odd_BTTS_Yes']]
@@ -384,7 +370,7 @@ if match_selected.get('selection').get('rows'):
 
     # Header
     st.header(f'{df_match_selected["Confronto"].split("-")[1]}')
-    st.subheader(f"{df_match_selected['Formatted_Datetime']} - {df_match_selected["League"]} (Rodada {df_match_selected["Rodada"]})")
+    st.write(f"{df_match_selected['Formatted_Datetime']} - {df_match_selected["League"]} (Rodada {df_match_selected["Rodada"]})")
 
     col1, col2 = st.columns(2)
     with col1:
@@ -493,14 +479,6 @@ if match_selected.get('selection').get('rows'):
                     title=df_match_selected['Away']
         )
         st.plotly_chart(fig, use_container_width=True, key="fig2")
-
-    # col1, col2 = st.columns(2)
-    # with col1:
-    #     st.plotly_chart(gols_por_minuto(df_hist, df_match_selected["Home"]), use_container_width=True, key="fig1")
-    # with col2:
-    #     st.plotly_chart(gols_por_minuto(df_hist, df_match_selected["Away"]), use_container_width=True, key="fig2")
-
-
 
     # Tabela 22 e 23: Percurso Casa e Visitante
     # percurso_casa = {
