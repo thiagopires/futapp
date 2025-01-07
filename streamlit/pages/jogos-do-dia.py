@@ -43,7 +43,7 @@ def print_dataframe(df, pheight=None):
         df = df.set_table_styles([
             {'selector': 'th', 'props': [('text-align', 'center')]}
         ])
-    st.dataframe(df, height=pheight, use_container_width=True, hide_index=True)
+    st.dataframe(df, len(df)*37, use_container_width=True, hide_index=True)
 
 def load_daymatches(i):
     # i = st.session_state.button
