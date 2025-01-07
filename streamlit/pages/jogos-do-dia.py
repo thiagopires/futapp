@@ -376,12 +376,12 @@ option_map = {
     -1: "Ontem"
 }
 selection = st.segmented_control(
-    "Selecione o dia ",
+    "Selecione o dia:",
     options=option_map.keys(),
     format_func=lambda option: option_map[option],
     selection_mode="single",
 )
-dia = 0 if selection is None else option_map[selection]
+dia = 0 if selection is None else selection
 
 df_matches = load_daymatches(dia)
 df_hist = load_histmatches()
