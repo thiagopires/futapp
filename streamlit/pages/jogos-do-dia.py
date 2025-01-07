@@ -493,9 +493,14 @@ if match_selected.get('selection').get('rows'):
     with col1:
         # print_dataframe(home_gols_por_tempo)
         fig = px.bar(home_gols_por_tempo, 
-                    x=['Gols Sofridos','Gols Marcados'],
+                    x='Quantidade',
                     y='Intervalo',
                     orientation="h",
+                    color='Tipo de Gol',
+                    color_discrete_map={
+                        'Gols Marcados': 'green',
+                        'Gols Sofridos': 'red'
+                    },
                     barmode='group',
                     text_auto=True,
                     title=df_match_selected['Home']
