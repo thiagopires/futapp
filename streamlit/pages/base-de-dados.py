@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas as pd
-from datetime import datetime
+import datetime
 
 pd.set_option('display.max_columns', None)
 pd.set_option('display.max_rows', None)
