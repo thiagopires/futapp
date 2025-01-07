@@ -486,7 +486,7 @@ if match_selected.get('selection').get('rows'):
 
     # Tabela 25 e 26: Gols Casa e Visitante
 
-    st.subheader("Distribuição de Gols por Minuto")
+    st.subheader("Distribuição de Gols por Minuto (últimos 10 jogos)")
 
     home_gols_por_tempo = calcular_gols_por_tempo(df_hist.loc[(df_hist["Season"] == SEASON_ATUAL)], df_match_selected["Home"])
     away_gols_por_tempo = calcular_gols_por_tempo(df_hist.loc[(df_hist["Season"] == SEASON_ATUAL)], df_match_selected["Away"])
@@ -557,7 +557,7 @@ if match_selected.get('selection').get('rows'):
     #     st.json(percurso_visitante)
 
     # Título
-    st.subheader("⚽ Estatísticas de Confrontos de Futebol")
+    st.subheader("⚽ Estatísticas de gols (últimos 10 jogos)")
 
     # Dados Simulados para Times
     df_home_estatisticas = calcular_estatisticas(df_hist, df_match_selected['Home'])
