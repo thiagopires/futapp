@@ -4,4 +4,4 @@ st.set_page_config(layout="wide")
 
 st.title("Web App Football Data")
 
-st.write("Escolha um módulo na sidebar. Bons greens!")
+st.write("Escolha um módulo na sidebar.")
