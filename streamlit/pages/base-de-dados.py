@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas as pd
-import datetime
+from datetime import datetime, date
 
 pd.set_option('display.max_columns', None)
 pd.set_option('display.max_rows', None)
@@ -61,9 +61,9 @@ df_hist = load_histmatches()
 
 col1, col2 = st.columns(2)
 with col1:
-  data_inicial = st.date_input("Data Inicial", datetime.date(2022, 2, 10))
+  data_inicial = st.date_input("Data Inicial", date(2022, 2, 10))
 with col2:
-  data_final = st.date_input("Data Final", datetime.datetime.today())
+  data_final = st.date_input("Data Final", datetime.today())
 
 leagues = sorted(df_hist['League'].unique())
 leagues = leagues.insert(0, 'Todas as Ligas')
@@ -71,7 +71,7 @@ leagues = leagues.insert(0, 'Todas as Ligas')
 selected_leagues = st.multiselect(
     "Filtrar por Liga",
     leagues,
-    leagues[0],
+    ['Todas as Ligas'],
 )
 
 seasons = sorted(df_hist['Season'].unique())
@@ -80,7 +80,7 @@ seasons = leagues.insert(0, 'Todas as Temporadas')
 selected_seasons = st.multiselect(
     "Filtrar por Temporada",
     seasons,
-    seasons[0],
+    ['Todas as Temporadas'],
 )
 
 
