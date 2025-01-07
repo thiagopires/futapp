@@ -96,7 +96,14 @@ selected_seasons = st.multiselect(
 st.write(selected_leagues)
 st.write(selected_seasons)
 
-print_dataframe(df_hist)
+if not selected_leagues or "Todas as Ligas" in selected_leagues:
+    # Não aplica filtro, retorna o DataFrame completo
+    filtered_df = df_hist
+else:
+    # Filtra o DataFrame pelos valores selecionados
+    filtered_df = df_hist[df_hist['Leagues'].isin(selected_leagues)]
+
+print_dataframe(filtered_df)
 
 ### football-data.co.uk ###
 
