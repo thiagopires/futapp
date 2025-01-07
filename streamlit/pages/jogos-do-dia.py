@@ -111,7 +111,7 @@ def generate_classificacao(df, type):
 
     clubes = clubes.reset_index()
     classificacao_df = clubes[["#", "Clube", "PTS", "P", "W", "D", "L", "DIFF", "Goals"]]
-    styled_df = clubes[["#", "Clube", "PTS", "P", "W", "D", "L", "DIFF", "Goals"]]
+    styled_df = classificacao_df.copy()
 
     if type == 'HOME':
         styled_df = styled_df.style.apply(highlight_row, axis=1, highlight=[df_match_selected["Home"]])        
