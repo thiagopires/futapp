@@ -41,7 +41,7 @@ st.divider()
 
 st.subheader("Jogos que atendem a esses filtros")
 
-df_matches = df_matches[[
+df_matches = df_matches.loc[
     (df_matches["Odd_H_FT"] >= odd_h_min) &
     (df_matches["Odd_H_FT"] <= odd_h_max) &
 
@@ -56,6 +56,6 @@ df_matches = df_matches[[
 
     (df_matches["Odd_BTTS_Yes"] >= odd_btts_min) &
     (df_matches["Odd_BTTS_Yes"] <= odd_btts_max)
-]]
+]
 
 print_dataframe(df_matches)
