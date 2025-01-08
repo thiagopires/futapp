@@ -66,6 +66,7 @@ def load_histmatches():
     df["Formatted_Date"] = df["Date"].dt.strftime("%d/%m/%Y")
     df["Resultado_FT"] = df["Goals_H_FT"].astype(str) + "-" + df["Goals_A_FT"].astype(str)
     df["Primeiro_Gol"] = df.apply(first_goal_string, axis=1)
+    df['Placar'] = f"{str(df['Goals_H_FT'])}x{str(df['Goals_A_FT'])}"
     return df
 
 def atualizar_estatisticas(row, clubes, casa=True):
