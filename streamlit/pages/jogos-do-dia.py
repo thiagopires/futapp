@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 import ast
-from datetime import datetime, timedelta
+from datetime import datetime
 
 SEASON_ATUAL = '2024/2025'
 
