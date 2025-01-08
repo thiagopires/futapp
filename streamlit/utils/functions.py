@@ -81,7 +81,7 @@ def atualizar_estatisticas(row, clubes, casa=True):
     clubes.loc[clube, "PTS"] += pontos
     clubes.loc[clube, "DIFF"] += gols_favor - gols_contra
 
-def generate_classificacao(df, type):
+def generate_classificacao(df, df_match_selected, type):
     # Calculando o resultado do jogo
     df["Home_Win"] = df["Goals_H_FT"] > df["Goals_A_FT"]
     df["Away_Win"] = df["Goals_H_FT"] < df["Goals_A_FT"]

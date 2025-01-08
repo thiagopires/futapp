@@ -79,9 +79,9 @@ if match_selected.get('selection').get('rows'):
     filter_classificacao = (df_hist["Season"] == SEASON_ATUAL) & (df_hist["League"] == df_match_selected["League"])
     df_classificacao = df_hist.loc[filter_classificacao, ["League","Season","Date","Rodada","Home","Away","Goals_H_FT","Goals_A_FT"]]
 
-    classificacao_geral, styled_classificacao_geral = generate_classificacao(df_classificacao, "ALL")
-    classificacao_casa, styled_classificacao_casa = generate_classificacao(df_classificacao, "HOME")
-    classificacao_visitante, styled_classificacao_visitante = generate_classificacao(df_classificacao, "AWAY")
+    classificacao_geral, styled_classificacao_geral = generate_classificacao(df_classificacao, df_match_selected, "ALL")
+    classificacao_casa, styled_classificacao_casa = generate_classificacao(df_classificacao, df_match_selected, "HOME")
+    classificacao_visitante, styled_classificacao_visitante = generate_classificacao(df_classificacao, df_match_selected, "AWAY")
 
     tab1, tab2, tab3 = st.tabs(["Geral", "Casa", "Visitante"])
     with tab1:
