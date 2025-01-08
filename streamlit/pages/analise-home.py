@@ -18,22 +18,22 @@ st.divider()
 
 st.subheader("Filtro de Odds")
 
-col1, col2, col3, col4, col5 = st.columns(5)
-with col1:
-    odd_h_min = st.text_input("Odd_H_Min", "1.10")
-    odd_h_max = st.text_input("Odd_H_Max", "100.00")
-with col2:
-    odd_d_min = st.text_input("Odd_D_Min", "1.10")
-    odd_d_max = st.text_input("Odd_D_Max", "100.00")
-with col3:
-    odd_a_min = st.text_input("Odd_A_Min", "1.10")
-    odd_a_max = st.text_input("Odd_A_Max", "100.00")
-with col4:
-    odd_over25_ft_min = st.text_input("Odd_Over25_FT_Min", "1.10")
-    odd_over25_ft_max = st.text_input("Odd_Over25_FT_Max", "100.00")
-with col5:
-    odd_btts_min = st.text_input("Odd_BTTS_Min", "1.10")
-    odd_btts_max = st.text_input("Odd_BTTS_Max", "100.00")
+# col1, col2, col3, col4, col5 = st.columns(5)
+# with col1:
+#     odd_h_min = st.text_input("Odd_H_Min", "1.10")
+#     odd_h_max = st.text_input("Odd_H_Max", "100.00")
+# with col2:
+#     odd_d_min = st.text_input("Odd_D_Min", "1.10")
+#     odd_d_max = st.text_input("Odd_D_Max", "100.00")
+# with col3:
+#     odd_a_min = st.text_input("Odd_A_Min", "1.10")
+#     odd_a_max = st.text_input("Odd_A_Max", "100.00")
+# with col4:
+#     odd_over25_ft_min = st.text_input("Odd_Over25_FT_Min", "1.10")
+#     odd_over25_ft_max = st.text_input("Odd_Over25_FT_Max", "100.00")
+# with col5:
+#     odd_btts_min = st.text_input("Odd_BTTS_Min", "1.10")
+#     odd_btts_max = st.text_input("Odd_BTTS_Max", "100.00")
 
 st.subheader("Outros Filtros")
 
@@ -41,8 +41,8 @@ st.divider()
 
 st.subheader("Jogos que atendem a esses filtros")
 
-st.write(f"odd_h_min: {odd_h_min}")
-st.write(f"odd_h_max: {odd_h_max}")
+# st.write(f"odd_h_min: {odd_h_min}")
+# st.write(f"odd_h_max: {odd_h_max}")
 
 # df_matches = df_matches.loc[
 #     (df_matches["Odd_H_FT"] >= float(odd_h_min)) &
