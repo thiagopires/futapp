@@ -59,3 +59,13 @@ df_matches = df_matches.loc[
 ]
 
 print_dataframe(df_matches)
+
+st.divider()
+
+st.subheader("Selecione o Mandante e o Placar para a análise")
+
+col1, col2 = st.columns(2)
+with col1:
+    mandante = st.selectbox("Escolha o Mandante", df_matches['Home'])
+with col2:
+    placar = st.selectbox("Escolha o Placar", ['0x0','0x1','0x2','0x3','1x0','1x1','1x2','1x3','2x0','2x1','2x2','2x3','3x3'])
