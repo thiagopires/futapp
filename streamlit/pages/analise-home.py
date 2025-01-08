@@ -70,9 +70,9 @@ with col1:
 with col2:
     placar = st.selectbox("Escolha o Placar", ['0x0','0x1','0x2','0x3','1x0','1x1','1x2','1x3','2x0','2x1','2x2','2x3','3x3'])
 
-df_hist.loc[(df_hist['Home'] == mandante) & (df_hist['Placar'] == placar)]
+# df_hist.loc[(df_hist['Home'] == mandante) & (df_hist['Placar'] == placar)]
 
-if len(df_hist) > 0:
-    st.dataframe(df_hist)
-else:
-    st.write("Sem jogos com este placar.")
+# if len(df_hist) > 0:
+#     st.dataframe(df_hist)
+# else:
+#     st.write("Sem jogos com este placar.")
