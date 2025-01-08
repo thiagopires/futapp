@@ -1,7 +1,6 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
-from datetime import datetime
 
 from utils.functions import *
 
@@ -14,7 +13,7 @@ st.title("⚽ Jogos do dia")
 
 SEASON_ATUAL = '2024/2025'
 
-data_analise = st.date_input("Data da Análise", datetime.today())
+data_analise = st.date_input("Data da Análise", get_today())
 df_matches = load_daymatches(data_analise)
 df_hist = load_histmatches()
 
