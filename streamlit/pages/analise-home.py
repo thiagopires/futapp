@@ -58,7 +58,7 @@ df_matches = df_matches.loc[
     (df_matches["Odd_BTTS_Yes"] <= odd_btts_max)
 ]
 
-print_dataframe(df_matches)
+st.dataframe(df_matches)
 
 st.divider()
 
@@ -73,6 +73,6 @@ with col2:
 df_hist.loc[(df_hist['Home'] == mandante) & (df_hist['Placar'] == placar)]
 
 if len(df_hist) > 0:
-    print_dataframe(df_hist)
+    st.dataframe(df_hist)
 else:
     st.write("Sem jogos com este placar.")
