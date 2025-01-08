@@ -36,3 +36,26 @@ with col5:
     odd_btts_max = st.number_input("Odd_BTTS_Max", value=100.00, min_value=1.10, max_value=100.00)
 
 st.subheader("Outros Filtros")
+
+st.divider()
+
+st.subheader("Jogos que atendem a esses filtros")
+
+df_matches = df_matches[[
+    (df_matches["Odd_H_FT"] >= odd_h_min) &
+    (df_matches["Odd_H_FT"] <= odd_h_max) &
+
+    (df_matches["Odd_D_FT"] >= odd_d_min) &
+    (df_matches["Odd_D_FT"] <= odd_d_max) &
+
+    (df_matches["Odd_A_FT"] >= odd_a_min) &
+    (df_matches["Odd_A_FT"] <= odd_a_max) &
+
+    (df_matches["Odd_Over25_FT"] >= odd_over25_ft_min) &
+    (df_matches["Odd_Over25_FT"] <= odd_over25_ft_max) &
+
+    (df_matches["Odd_BTTS_Yes"] >= odd_btts_min) &
+    (df_matches["Odd_BTTS_Yes"] <= odd_btts_max)
+]]
+
+print_dataframe(df_matches)
