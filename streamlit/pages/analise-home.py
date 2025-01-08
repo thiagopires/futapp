@@ -1,31 +1,15 @@
 import streamlit as st
 import pandas as pd
-import plotly.express as px
-import ast
 from datetime import datetime
+
+from utils.functions import *
 
 pd.set_option('display.max_columns', None)
 pd.set_option('display.max_rows', None)
-
-def load_daymatches(dt):
-    df = pd.read_csv(f"https://github.com/futpythontrader/YouTube/blob/main/Jogos_do_Dia/FootyStats/Jogos_do_Dia_FootyStats_{dt}.csv?raw=true")
-    df["Datetime"] = pd.to_datetime(df["Date"] + " " + df["Time"])
-    df["Formatted_Datetime"] = df["Datetime"].dt.strftime("%d/%m/%Y %H:%M")
-    df["Confronto"] = df["Time"] + " - " + df["Home"] + " vs. " + df["Away"]
-    return df
-
-def load_histmatches():
-    df = pd.read_csv("https://github.com/futpythontrader/YouTube/blob/main/Bases_de_Dados/FootyStats/Base_de_Dados_FootyStats_(2022_2024).csv?raw=true")
-    df[["Date", "Time"]] = df["Date"].str.split(" ", expand=True)
-    df["Date"] = pd.to_datetime(df["Date"])
-    df["Formatted_Date"] = df["Date"].dt.strftime("%d/%m/%Y")
-    df["Resultado_FT"] = df["Goals_H_FT"].astype(str) + "-" + df["Goals_A_FT"].astype(str)
-    df["Primeiro_Gol"] = df.apply(first_goal_string, axis=1)
-    return df
-
 st.set_page_config(layout="wide")
-
 st.title("⚽ Análise Home")
+
+# Init
 
 data_analise = st.date_input("Data da Análise", datetime.today())
 df_matches = load_daymatches(data_analise)

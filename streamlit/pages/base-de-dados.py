@@ -2,70 +2,12 @@ import streamlit as st
 import pandas as pd
 from datetime import datetime, date
 
+from utils.functions import *
+
 pd.set_option('display.max_columns', None)
 pd.set_option('display.max_rows', None)
-
-def first_goal_string(row):
-    def parse_minutes(value, team):
-        # Garantir que a entrada seja uma string e remover caracteres problemáticos
-        value = str(value).replace("[", "").replace("]", "").replace("'", "")
-        # Dividir em minutos e processar apenas números válidos
-        return [
-            (int(x.split('+')[0]), team)
-            for x in value.split(',')
-            if x.strip().isdigit() or '+' in x
-        ]
-
-    try:
-        # Extrair e processar minutos para Home e Away
-        home = parse_minutes(row['Goals_H_Minutes'], 'Home')
-        away = parse_minutes(row['Goals_A_Minutes'], 'Away')
-    except Exception as e:
-        # Tratar casos de erro inesperado
-        print(f"Erro ao processar linha: {row}. Detalhes: {e}")
-        home = []
-        away = []
-
-    # Combinar os minutos de ambas as colunas
-    all_goals = home + away
-
-    # Identificar o menor minuto e sua origem
-    if all_goals:
-        first = min(all_goals, key=lambda x: x[0])  # Ordenar pelo minuto
-        return f"{first[0]}' {first[1]}"  # Formatar como "minuto' origem"
-    else:
-        return '-'  # Caso não haja gols
-
-def print_dataframe(df, styled_df=None):
-    if isinstance(styled_df, pd.io.formats.style.Styler):
-        styled_df = styled_df.set_properties(**{'text-align': 'center'})
-        styled_df = styled_df.set_table_styles([
-            {'selector': 'th', 'props': [('text-align', 'center')]}
-        ])
-        st.dataframe(styled_df, height=len(df)*38, use_container_width=True, hide_index=True)
-    else:
-        st.dataframe(df, use_container_width=True, hide_index=True)
-
-def load_histmatches():
-    df1 = pd.read_csv("https://github.com/futpythontrader/YouTube/blob/main/Bases_de_Dados/FootyStats/Base_de_Dados_FootyStats_(2022_2024).csv?raw=true")
-    #df2 = pd.read_csv("https://github.com/futpythontrader/YouTube/blob/main/Bases_de_Dados/FootyStats/Base_de_Dados_FootyStats_(2006_2021).csv?raw=true")
-
-    #df = pd.concat([df1, df2], ignore_index=True)
-    df = df1
-
-    df[["Date", "Time"]] = df["Date"].str.split(" ", expand=True)
-    df["Date"] = pd.to_datetime(df["Date"])
-    df["Formatted_Date"] = df["Date"].dt.strftime("%d/%m/%Y")
-    df["Resultado_FT"] = df["Goals_H_FT"].astype(str) + "-" + df["Goals_A_FT"].astype(str)
-    df["Primeiro_Gol"] = df.apply(first_goal_string, axis=1)
-
-    return df
-
 st.set_page_config(layout="wide")
-
 st.title("⚽ Base de dados")
-
-
 
 ### FootyStats ###
 
