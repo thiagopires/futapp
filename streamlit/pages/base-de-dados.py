@@ -65,6 +65,8 @@ st.set_page_config(layout="wide")
 
 st.title("⚽ Base de dados")
 
+
+
 ### FootyStats ###
 
 df_hist = load_histmatches()
@@ -75,35 +77,28 @@ with col1:
 with col2:
   data_final = st.date_input("Data Final", datetime.today())
 
+df_hist = df_hist[(df_hist['Date'] >= pd.to_datetime(data_inicial)) & (df_hist['Date'] <= pd.to_datetime(data_final))]
+
 leagues = sorted(df_hist['League'].unique())
 leagues.insert(0, 'Todas as Ligas')
 
-selected_leagues = st.multiselect(
-    "Filtrar por Liga",
-    leagues,
-    [leagues[0]],
-)
+selected_leagues = st.multiselect("Filtrar por Liga", leagues, [leagues[0]])
 
-df_hist = df_hist[(df_hist['Date'] >= pd.to_datetime(data_inicial)) & (df_hist['Date'] <= pd.to_datetime(data_final))]
-
-if not selected_leagues or "Todas as Ligas" in selected_leagues:
-    # Não aplica filtro, retorna o DataFrame completo
-    df_hist = df_hist
-else:
-    # Filtra o DataFrame pelos valores selecionados
+if not (not selected_leagues or "Todas as Ligas" in selected_leagues):
     df_hist = df_hist[df_hist['League'].isin(selected_leagues)]
 
 seasons = sorted(df_hist['Season'].unique())
 seasons.insert(0, 'Todas as Temporadas')
 
-selected_seasons = st.multiselect(
-    "Filtrar por Temporada",
-    seasons,
-    [seasons[0]]
-)
+selected_seasons = st.multiselect("Filtrar por Temporada", seasons, [seasons[0]])
+
+if not (not selected_seasons or "Todas as Temporadas" in selected_seasons):
+    df_hist = df_hist[df_hist['Season'].isin(selected_seasons)]
 
 st.dataframe(df_hist)
 # print_dataframe(filtered_df)
+
+
 
 ### football-data.co.uk ###
 
