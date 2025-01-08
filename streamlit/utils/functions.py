@@ -1,6 +1,12 @@
 import streamlit as st
 import pandas as pd
 import ast
+from datetime import datetime, timedelta
+
+def get_today():
+    now = datetime.now()
+    adjusted_time = now - timedelta(hours=3)
+    return adjusted_time.date()
 
 def first_goal_string(row):
     def parse_minutes(value, team):
