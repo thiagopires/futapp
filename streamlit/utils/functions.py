@@ -8,37 +8,6 @@ def get_today():
     adjusted_time = now - timedelta(hours=3)
     return adjusted_time.date()
 
-def first_goal_string(row):
-    def parse_minutes(value, team):
-        # Garantir que a entrada seja uma string e remover caracteres problemáticos
-        value = str(value).replace("[", "").replace("]", "").replace("'", "")
-        # Dividir em minutos e processar apenas números válidos
-        return [
-            (int(x.split('+')[0]), team)
-            for x in value.split(',')
-            if x.strip().isdigit() or '+' in x
-        ]
-
-    try:
-        # Extrair e processar minutos para Home e Away
-        home = parse_minutes(row['Goals_H_Minutes'], 'Home')
-        away = parse_minutes(row['Goals_A_Minutes'], 'Away')
-    except Exception as e:
-        # Tratar casos de erro inesperado
-        print(f"Erro ao processar linha: {row}. Detalhes: {e}")
-        home = []
-        away = []
-
-    # Combinar os minutos de ambas as colunas
-    all_goals = home + away
-
-    # Identificar o menor minuto e sua origem
-    if all_goals:
-        first = min(all_goals, key=lambda x: x[0])  # Ordenar pelo minuto
-        return f"{first[0]}' {first[1]}"  # Formatar como "minuto' origem"
-    else:
-        return '-'  # Caso não haja gols
-
 def print_dataframe(df, styled_df=None):
     if isinstance(styled_df, pd.io.formats.style.Styler):
         styled_df = styled_df.set_properties(**{'text-align': 'center'})
@@ -57,6 +26,38 @@ def load_daymatches(dt):
     return df
 
 def load_histmatches():
+
+    def first_goal_string(row):
+        def parse_minutes(value, team):
+            # Garantir que a entrada seja uma string e remover caracteres problemáticos
+            value = str(value).replace("[", "").replace("]", "").replace("'", "")
+            # Dividir em minutos e processar apenas números válidos
+            return [
+                (int(x.split('+')[0]), team)
+                for x in value.split(',')
+                if x.strip().isdigit() or '+' in x
+            ]
+
+        try:
+            # Extrair e processar minutos para Home e Away
+            home = parse_minutes(row['Goals_H_Minutes'], 'Home')
+            away = parse_minutes(row['Goals_A_Minutes'], 'Away')
+        except Exception as e:
+            # Tratar casos de erro inesperado
+            print(f"Erro ao processar linha: {row}. Detalhes: {e}")
+            home = []
+            away = []
+
+        # Combinar os minutos de ambas as colunas
+        all_goals = home + away
+
+        # Identificar o menor minuto e sua origem
+        if all_goals:
+            first = min(all_goals, key=lambda x: x[0])  # Ordenar pelo minuto
+            return f"{first[0]}' {first[1]}"  # Formatar como "minuto' origem"
+        else:
+            return '-'  # Caso não haja gols
+    
     df = pd.read_csv("https://github.com/futpythontrader/YouTube/blob/main/Bases_de_Dados/FootyStats/Base_de_Dados_FootyStats_(2022_2024).csv?raw=true")
     df[["Date", "Time"]] = df["Date"].str.split(" ", expand=True)
     df["Date"] = pd.to_datetime(df["Date"])
