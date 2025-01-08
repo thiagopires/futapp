@@ -38,8 +38,6 @@ if not (not selected_seasons or "Todas as Temporadas" in selected_seasons):
     df_hist = df_hist[df_hist['Season'].isin(selected_seasons)]
 
 st.dataframe(df_hist)
-# print_dataframe(filtered_df)
-
 
 
 ### football-data.co.uk ###

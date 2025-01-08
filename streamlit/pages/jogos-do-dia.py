@@ -31,9 +31,7 @@ if match_selected.get('selection').get('rows'):
 
     df_match_selected = df_matches.iloc[match_selected.get('selection').get('rows')[0]]
 
-    # Título do dashboard
     st.divider()
-    # st.title("⚽ Análise Completa do Confronto de Futebol")
 
     # Header
     st.header(f'{df_match_selected["Confronto"].split("-")[1]}')
@@ -194,5 +192,3 @@ if match_selected.get('selection').get('rows'):
 
     # Outros dados e análises podem ser adicionados conforme necessário
     st.write("⚡ Dashboard dinâmico para análise de confrontos! ⚡")
-
-
