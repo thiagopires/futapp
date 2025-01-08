@@ -41,33 +41,36 @@ st.divider()
 
 st.subheader("Jogos que atendem a esses filtros")
 
-df_matches = df_matches.loc[
-    (df_matches["Odd_H_FT"] >= odd_h_min) &
-    (df_matches["Odd_H_FT"] <= odd_h_max) &
+st.write(f"odd_h_min: {odd_h_min}")
+st.write(f"odd_h_max: {odd_h_max}")
 
-    (df_matches["Odd_D_FT"] >= odd_d_min) &
-    (df_matches["Odd_D_FT"] <= odd_d_max) &
+# df_matches = df_matches.loc[
+#     (df_matches["Odd_H_FT"] >= odd_h_min) &
+#     (df_matches["Odd_H_FT"] <= odd_h_max) &
 
-    (df_matches["Odd_A_FT"] >= odd_a_min) &
-    (df_matches["Odd_A_FT"] <= odd_a_max) &
+#     (df_matches["Odd_D_FT"] >= odd_d_min) &
+#     (df_matches["Odd_D_FT"] <= odd_d_max) &
 
-    (df_matches["Odd_Over25_FT"] >= odd_over25_ft_min) &
-    (df_matches["Odd_Over25_FT"] <= odd_over25_ft_max) &
+#     (df_matches["Odd_A_FT"] >= odd_a_min) &
+#     (df_matches["Odd_A_FT"] <= odd_a_max) &
 
-    (df_matches["Odd_BTTS_Yes"] >= odd_btts_min) &
-    (df_matches["Odd_BTTS_Yes"] <= odd_btts_max)
-]
+#     (df_matches["Odd_Over25_FT"] >= odd_over25_ft_min) &
+#     (df_matches["Odd_Over25_FT"] <= odd_over25_ft_max) &
 
-st.dataframe(df_matches)
+#     (df_matches["Odd_BTTS_Yes"] >= odd_btts_min) &
+#     (df_matches["Odd_BTTS_Yes"] <= odd_btts_max)
+# ]
+
+# st.dataframe(df_matches)
 
 st.divider()
 
 st.subheader("Selecione o Mandante e o Placar para a análise")
 
-col1, col2 = st.columns(2)
-with col1:
+colb1, colb2 = st.columns(2)
+with colb1:
     mandante = st.selectbox("Escolha o Mandante", df_matches['Home'])
-with col2:
+with colb2:
     placar = st.selectbox("Escolha o Placar", ['0x0','0x1','0x2','0x3','1x0','1x1','1x2','1x3','2x0','2x1','2x2','2x3','3x3'])
 
 # df_hist.loc[(df_hist['Home'] == mandante) & (df_hist['Placar'] == placar)]
