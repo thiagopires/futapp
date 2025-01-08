@@ -4,6 +4,9 @@ import plotly.express as px
 import ast
 from datetime import datetime
 
+pd.set_option('display.max_columns', None)
+pd.set_option('display.max_rows', None)
+
 SEASON_ATUAL = '2024/2025'
 
 def first_goal_string(row):
