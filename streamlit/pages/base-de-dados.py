@@ -19,7 +19,7 @@ with col1:
 with col2:
   data_final = st.date_input("Data Final", get_today())
 
-df_hist = df_hist[(df_hist['Date'] >= pd.to_datetime(data_inicial)) & (df_hist['Date'] <= pd.to_datetime(data_final))]
+# df_hist = df_hist[(df_hist['Date'] >= pd.to_datetime(data_inicial)) & (df_hist['Date'] <= pd.to_datetime(data_final))]
 
 leagues = sorted(df_hist['League'].unique())
 leagues.insert(0, 'Todas as Ligas')
