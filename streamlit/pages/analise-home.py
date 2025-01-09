@@ -73,12 +73,12 @@ with colb1:
 with colb2:
     placar = st.selectbox("Escolha o Placar", ['0x0','0x1','0x2','0x3','1x0','1x1','1x2','1x3','2x0','2x1','2x2','2x3','3x3'])
 
-df_hist.loc[(df_hist['Home'] == mandante) & (df_hist['Resultado_FT'].replace("-","x") == placar)]
+df_hist_mandante_placar = df_hist.loc[(df_hist['Home'] == mandante) & (df_hist['Resultado_FT'].replace("-","x") == placar)]
 
 st.write(f"mandante: {mandante}")
 st.write(f"placar: {placar}")
 
-if len(df_hist) > 0:
-    print_dataframe(df_hist)
+if len(df_hist_mandante_placar) > 0:
+    print_dataframe(df_hist_mandante_placar)
 else:
     st.write("Sem jogos com este placar.")
