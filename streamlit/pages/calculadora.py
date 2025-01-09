@@ -1,5 +1,4 @@
 import streamlit as st
-import pyperclip
 
 from utils.functions import *
 
@@ -19,8 +18,16 @@ with col_cashout:
             stake_lay = stake_back/odd_lay*odd_back
             st.write(f"Stake de Lay: {str(round(stake_lay, 2))}")
             st.write(f"Perda/Lucro: {str(round(stake_lay-stake_back, 2))}")
-            if st.button("Copiar stake"):
-                pyperclip.copy(str(round(stake_lay, 2)))
+            # if st.button("Copiar stake"):
+            #     pyperclip.copy(str(round(stake_lay, 2)))
+            
+            copy_button = f"""
+                <button onclick="navigator.clipboard.writeText('{str(round(stake_lay, 2))}')">
+                    Copiar stake
+                </button>
+            """
+            st.markdown(copy_button, unsafe_allow_html=True)
+
     with tab_lb:
         odd_lay = st.number_input("Odd Lay",key="lb_odd_lay")
         responsabilidade_lay = st.number_input("Responsabilidade Lay", key="lb_responsabilidade_lay")
@@ -32,8 +39,15 @@ with col_cashout:
             lucro_perda = round((stake_back * (odd_back - 1)) - responsabilidade_lay, 2)
             st.write(f"Stake de Back: {str(round(stake_back, 2))}")
             st.write(f"Perda/Lucro: {str(lucro_perda)}")
-            if st.button("Copiar stake"):
-                pyperclip.copy(str(round(stake_back, 2)))
+            # if st.button("Copiar stake"):
+            #     pyperclip.copy(str(round(stake_back, 2)))
+
+            copy_button = f"""
+                <button onclick="navigator.clipboard.writeText('{str(round(stake_lay, 2))}')">
+                    Copiar stake
+                </button>
+            """
+            st.markdown(copy_button, unsafe_allow_html=True)
 
 with col_freebet:
     st.header("Freebet")
