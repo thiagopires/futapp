@@ -78,6 +78,6 @@ df_hist_mandante_placar = df_hist.loc[
 ]
 
 if len(df_hist_mandante_placar) > 0:
-    print_dataframe(df_hist_mandante_placar)
+    print_dataframe(df_hist_mandante_placar[['League','Rodada','Time','Home','Away','Odd_H_FT','Odd_D_FT','Odd_A_FT','Odd_Over05_HT','Odd_Over15_FT','Odd_Over25_FT','Odd_BTTS_Yes']])
 else:
     st.write("Sem jogos com este placar.")
