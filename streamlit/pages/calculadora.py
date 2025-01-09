@@ -41,7 +41,7 @@ with col_cashout:
             container = st.container(border=True)
             container.code(str(round(stake_back, 2)), language="text")
 
-            st.write(f"Perda/Lucro: {str(lucro_perda)}")
+            st.write(f"Perda/Lucro:")
             container = st.container(border=True)
             container.code(str(lucro_perda), language="text")
 
