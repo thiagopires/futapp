@@ -9,9 +9,7 @@ pd.set_option('display.max_rows', None)
 st.set_page_config(layout="wide")
 st.title("⚽ Jogos do dia")
 
-# Init 
-
-SEASON_ATUAL = '2024/2025'
+# Init
 
 data_analise = st.date_input("Data da Análise", get_today())
 df_matches = load_daymatches(data_analise)

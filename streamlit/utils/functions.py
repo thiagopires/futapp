@@ -3,6 +3,10 @@ import pandas as pd
 import ast
 from datetime import datetime, timedelta
 
+def get_season():
+    SEASON_ATUAL = '2024/2025'
+    return SEASON_ATUAL
+
 def get_today():
     now = datetime.now()
     adjusted_time = now - timedelta(hours=3)

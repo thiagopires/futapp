@@ -71,7 +71,11 @@ with colb1:
 with colb2:
     placar = st.selectbox("Escolha o Placar", ['0x0','0x1','0x2','0x3','1x0','1x1','1x2','1x3','2x0','2x1','2x2','2x3','3x3'])
 
-df_hist_mandante_placar = df_hist.loc[(df_hist['Home'] == mandante) & (df_hist['Resultado_FT'].str.replace("-","x") == placar)]
+df_hist_mandante_placar = df_hist.loc[
+    (df_hist['Home'] == mandante) & 
+    (df_hist['Resultado_FT'].str.replace("-","x") == placar) &
+    (df_hist['Season'] == get_season())
+]
 
 if len(df_hist_mandante_placar) > 0:
     print_dataframe(df_hist_mandante_placar)
