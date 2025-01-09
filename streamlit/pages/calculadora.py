@@ -21,6 +21,7 @@ with col_cashout:
             # if st.button("Copiar stake"):
             #     pyperclip.copy(str(round(stake_lay, 2)))
             
+            st.code(str(round(stake_lay, 2)), language="text")
             copy_button = f"""
                 <button onclick="navigator.clipboard.writeText('{str(round(stake_lay, 2))}')">
                     Copiar stake
@@ -42,8 +43,9 @@ with col_cashout:
             # if st.button("Copiar stake"):
             #     pyperclip.copy(str(round(stake_back, 2)))
 
+            st.code(str(round(stake_back, 2)), language="text")
             copy_button = f"""
-                <button onclick="navigator.clipboard.writeText('{str(round(stake_lay, 2))}')">
+                <button onclick="navigator.clipboard.writeText('{str(round(stake_back, 2))}')">
                     Copiar stake
                 </button>
             """
