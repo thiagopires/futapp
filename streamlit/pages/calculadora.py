@@ -14,15 +14,15 @@ with col_cashout:
 
     # Aba Back/Lay
     with tab_bl:
-        st.session_state['bl_odd_back'] = st.number_input("Odd Back", key="bl_odd_back")
-        st.session_state['bl_stake_back'] = st.number_input("Stake Back", key="bl_stake_back")
-        st.session_state['bl_odd_lay'] = st.number_input("Odd Lay", key="bl_odd_lay")
+        st.number_input("Odd Back", key="bl_odd_back")
+        st.number_input("Stake Back", key="bl_stake_back")
+        st.number_input("Odd Lay", key="bl_odd_lay")
 
     # Aba Lay/Back
     with tab_lb:
-        st.session_state['lb_odd_lay'] = st.number_input("Odd Lay", key="lb_odd_lay")
-        st.session_state['lb_responsabilidade_lay'] = st.number_input("Responsabilidade Lay", key="lb_responsabilidade_lay")
-        st.session_state['lb_odd_back'] = st.number_input("Odd Back", key="lb_odd_back")
+        st.number_input("Odd Lay", key="lb_odd_lay")
+        st.number_input("Responsabilidade Lay", key="lb_responsabilidade_lay")
+        st.number_input("Odd Back", key="lb_odd_back")
 
 with col_resultado:
 
