@@ -20,7 +20,7 @@ with col_cashout:
             st.write(f"Stake de Lay: {str(round(stake_lay, 2))}")
             st.write(f"Perda/Lucro: {str(round(stake_lay-stake_back, 2))}")
             if st.button("Copiar stake"):
-                pyperclip.copy(round(stake_lay, 2))
+                pyperclip.copy(str(round(stake_lay, 2)))
     with tab_lb:
         odd_lay = st.number_input("Odd Lay",key="lb_odd_lay")
         responsabilidade_lay = st.number_input("Responsabilidade Lay", key="lb_responsabilidade_lay")
@@ -33,7 +33,7 @@ with col_cashout:
             st.write(f"Stake de Back: {str(round(stake_back, 2))}")
             st.write(f"Perda/Lucro: {str(lucro_perda)}")
             if st.button("Copiar stake"):
-                pyperclip.copy(round(stake_back, 2))
+                pyperclip.copy(str(round(stake_back, 2)))
 
 with col_freebet:
     st.header("Freebet")
