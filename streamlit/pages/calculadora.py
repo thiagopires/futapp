@@ -10,9 +10,9 @@ with col_cashout:
     st.header("Cashout")
     tab_bl, tab_lb = st.tabs(["Back/Lay","Lay/Back"])
     with tab_bl:
-        odd_back = st.number_input("Odd Back", key="bl_odd_back", placeholder=None)
-        stake_back = st.number_input("Stake Back", key="bl_stake_back", placeholder=None)
-        odd_lay = st.number_input("Odd Lay", key="bl_odd_lay", placeholder=None)
+        odd_back = st.number_input("Odd Back", key="bl_odd_back", placeholder="")
+        stake_back = st.number_input("Stake Back", key="bl_stake_back", placeholder="")
+        odd_lay = st.number_input("Odd Lay", key="bl_odd_lay", placeholder="")
 
         if odd_back and stake_back and odd_lay:
             stake_lay = stake_back/odd_lay*odd_back
@@ -28,9 +28,9 @@ with col_cashout:
   
 
     with tab_lb:
-        odd_lay = st.number_input("Odd Lay",key="lb_odd_lay", placeholder=None)
-        responsabilidade_lay = st.number_input("Responsabilidade Lay", key="lb_responsabilidade_lay", placeholder=None)
-        odd_back = st.number_input("Odd Back", key="lb_odd_back", placeholder=None)
+        odd_lay = st.number_input("Odd Lay",key="lb_odd_lay", placeholder="")
+        responsabilidade_lay = st.number_input("Responsabilidade Lay", key="lb_responsabilidade_lay", placeholder="")
+        odd_back = st.number_input("Odd Back", key="lb_odd_back", placeholder="")
 
         if odd_lay and responsabilidade_lay and odd_back:
             stake_lay = responsabilidade_lay / (odd_lay - 1)
