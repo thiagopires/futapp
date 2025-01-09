@@ -22,7 +22,7 @@ with col_cashout:
 
 with col_freebet:
     st.write("ok")
-    
+
     if odd_back and stake_back and odd_lay:
         stake_lay = stake_back/odd_lay*odd_back
         lucro_perda = str(round(stake_lay-stake_back, 2))
@@ -46,4 +46,7 @@ with col_freebet:
 
         st.write(f"Perda/Lucro:")
         container4 = st.container(border=True)
-        container4.code(str(lucro_perda), language="text")        
+        container4.code(str(lucro_perda), language="text") 
+
+    st.write(odd_back)   
+    st.write(odd_lay)    
