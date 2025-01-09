@@ -17,7 +17,6 @@ def print_dataframe(df, styled_df=None):
     else:
         st.dataframe(df, use_container_width=True, hide_index=True)
 
-@st.cache_data
 def load_histmatches():
 
     def first_goal_string(row):
@@ -93,7 +92,7 @@ selected_seasons = st.multiselect("Filtrar por Temporada", seasons, [seasons[0]]
 if not (not selected_seasons or "Todas as Temporadas" in selected_seasons):
     df_hist = df_hist[df_hist['Season'].isin(selected_seasons)]
 
-print_dataframe(df_hist)
+st.dataframe(df_hist)
 
 
 ### football-data.co.uk ###

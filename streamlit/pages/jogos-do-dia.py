@@ -19,7 +19,6 @@ def print_dataframe(df, styled_df=None):
     else:
         st.dataframe(df, use_container_width=True, hide_index=True)
 
-@st.cache_data
 def load_daymatches(dt):
     df = pd.read_csv(f"https://github.com/futpythontrader/YouTube/blob/main/Jogos_do_Dia/FootyStats/Jogos_do_Dia_FootyStats_{dt}.csv?raw=true")
     df["Datetime"] = pd.to_datetime(df["Date"] + " " + df["Time"])
@@ -27,7 +26,6 @@ def load_daymatches(dt):
     df["Confronto"] = df["Time"] + " - " + df["Home"] + " vs. " + df["Away"]
     return df
 
-@st.cache_data
 def load_histmatches():
 
     def first_goal_string(row):
