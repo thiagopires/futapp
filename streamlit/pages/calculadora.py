@@ -2,8 +2,16 @@ import streamlit as st
 
 from utils.functions import *
 
+def clear_state(keys):
+    for key in keys:
+        if key in st.session_state:
+            del st.session_state[key]
+
 st.set_page_config(layout="wide")
 st.title("⚽ Calculadora")
+
+if "active_tab" not in st.session_state:
+    st.session_state["active_tab"] = "Back/Lay"
 
 col_cashout, col_resultado = st.columns(2)
 
@@ -14,12 +22,20 @@ with col_cashout:
 
     # Aba Back/Lay
     with tab_bl:
+        if st.session_state["active_tab"] != "Back/Lay":
+            st.session_state["active_tab"] = "Back/Lay"
+            clear_state(["lb_odd_lay", "lb_responsabilidade_lay", "lb_odd_back"])
+
         st.number_input("Odd Back", key="bl_odd_back")
         st.number_input("Stake Back", key="bl_stake_back")
         st.number_input("Odd Lay", key="bl_odd_lay")
 
     # Aba Lay/Back
     with tab_lb:
+        if st.session_state["active_tab"] != "Lay/Back":
+            st.session_state["active_tab"] = "Lay/Back"
+            clear_state(["bl_odd_back", "bl_stake_back", "bl_odd_lay"])
+
         st.number_input("Odd Lay", key="lb_odd_lay")
         st.number_input("Responsabilidade Lay", key="lb_responsabilidade_lay")
         st.number_input("Odd Back", key="lb_odd_back")
