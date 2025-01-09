@@ -10,18 +10,18 @@ with col_cashout:
     st.header("Cashout")
     tab_bl, tab_lb = st.tabs(["Back/Lay","Lay/Back"])
     with tab_bl:
-        odd_back = st.number_input("Odd Back", key="bl_odd_back", min_value=1.01, max_value=1000.00)
-        stake_back = st.number_input("Stake Back", key="bl_stake_back", min_value=1.00, max_value=9999.99)
-        odd_lay = st.number_input("Odd Lay", key="bl_odd_lay", min_value=1.01, max_value=1000.00)
+        odd_back = st.number_input("Odd Back", key="bl_odd_back")
+        stake_back = st.number_input("Stake Back", key="bl_stake_back")
+        odd_lay = st.number_input("Odd Lay", key="bl_odd_lay")
 
         if odd_back and stake_back and odd_lay:
             stake_lay = stake_back/odd_lay*odd_back
             st.write(f"Stake de Lay: {str(round(stake_lay, 2))}")
             st.write(f"Perda/Lucro: {str(round(stake_lay-stake_back, 2))}")
     with tab_lb:
-        odd_lay = st.number_input("Odd Lay",key="lb_odd_lay", min_value=1.01, max_value=1000.00)
-        responsabilidade_lay = st.number_input("Responsabilidade Lay", key="lb_responsabilidade_lay", min_value=1.00, max_value=9999.99)
-        odd_back = st.number_input("Odd Back", key="lb_odd_back", min_value=1.01, max_value=1000.00)
+        odd_lay = st.number_input("Odd Lay",key="lb_odd_lay")
+        responsabilidade_lay = st.number_input("Responsabilidade Lay", key="lb_responsabilidade_lay")
+        odd_back = st.number_input("Odd Back", key="lb_odd_back")
 
         if odd_lay and responsabilidade_lay and odd_back:
             stake_lay = responsabilidade_lay / (odd_lay - 1)
