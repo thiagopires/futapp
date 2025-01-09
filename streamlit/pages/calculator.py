@@ -22,7 +22,7 @@ with col_cashout:
         if odd_lay and responsabilidade_lay and odd_back:
             stake_lay = responsabilidade_lay / (odd_lay - 1)
             stake_back = stake_lay * odd_lay / odd_back
-            lucro_perda = round(responsabilidade_lay - (stake_back * (odd_back - 1)), 2)
+            lucro_perda = round((stake_back * (odd_back - 1)) - responsabilidade_lay, 2)
             st.write(f"Stake de Back: {str(round(stake_back, 2))}")
             st.write(f"Perda/Lucro: {str(lucro_perda)}")
 
