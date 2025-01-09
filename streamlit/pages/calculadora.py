@@ -17,7 +17,6 @@ col_cashout, col_resultado = st.columns(2)
 # Coluna de Cashout
 with col_cashout:
     st.header("Cashout")
-    tab_bl, tab_lb = st.tabs(["Back/Lay", "Lay/Back"])
 
     if aba == "Back/Lay":
         clear_state(["lb_odd_lay", "lb_responsabilidade_lay", "lb_odd_back"])
