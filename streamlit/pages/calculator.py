@@ -12,8 +12,8 @@ with col_cashout:
 
         if odd_back and stake_back and odd_lay:
             stake_lay = stake_back/odd_lay*odd_back
-            st.write(f"Stake de Lay: {str(stake_lay)}")
-            st.write(f"Perda/Lucro: {str(stake_lay-stake_back)}")
+            st.write(f"Stake de Lay: R$ {str(round(stake_lay, 2))}")
+            st.write(f"Perda/Lucro: R$ {str(round(stake_lay-stake_back, 2))}")
     with tab_lb:
         odd_lay = st.number_input("Odd Lay",key="lb_odd_lay", min_value=1.01, max_value=1000.00)
         responsabilidade_lay = st.number_input("Responsabilidade Lay", key="lb_responsabilidade_lay", min_value=1.00, max_value=9999.99)
@@ -24,7 +24,7 @@ with col_cashout:
             stake_back = stake_lay * odd_lay / odd_back
             lucro_perda = round(responsabilidade_lay - (stake_back * (odd_back - 1)), 2)
             st.write(f"Stake de Back: {str(round(stake_back, 2))}")
-            st.write(f"Perda/Lucro: {str(lucro_perda)}")
+            st.write(f"Perda/Lucro: R$ {str(lucro_perda)}")
 
 with col_freebet:
     st.write("ok")
