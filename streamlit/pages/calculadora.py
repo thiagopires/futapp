@@ -21,18 +21,19 @@ with col_cashout:
         odd_back = st.number_input("Odd Back", key="lb_odd_back")
 
 with col_freebet:
+    st.write("ok")
     
     if odd_back and stake_back and odd_lay:
         stake_lay = stake_back/odd_lay*odd_back
         lucro_perda = str(round(stake_lay-stake_back, 2))
 
         st.write(f"Stake de Lay:")           
-        container = st.container(border=True)
-        container.code(str(round(stake_lay, 2)), language="text")
+        container1 = st.container(border=True)
+        container1.code(str(round(stake_lay, 2)), language="text")
         
         st.write(f"Perda/Lucro:")
-        container = st.container(border=True)
-        container.code(str(lucro_perda), language="text")
+        container2 = st.container(border=True)
+        container2.code(str(lucro_perda), language="text")
 
     if odd_lay and responsabilidade_lay and odd_back:
         stake_lay = responsabilidade_lay / (odd_lay - 1)
@@ -40,9 +41,9 @@ with col_freebet:
         lucro_perda = round((stake_back * (odd_back - 1)) - responsabilidade_lay, 2)
         
         st.write(f"Stake de Back:")
-        container = st.container(border=True)
-        container.code(str(round(stake_back, 2)), language="text")
+        container3 = st.container(border=True)
+        container3.code(str(round(stake_back, 2)), language="text")
 
         st.write(f"Perda/Lucro:")
-        container = st.container(border=True)
-        container.code(str(lucro_perda), language="text")        
+        container4 = st.container(border=True)
+        container4.code(str(lucro_perda), language="text")        
