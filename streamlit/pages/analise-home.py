@@ -63,7 +63,7 @@ def load_histmatches():
     df["Formatted_Date"] = df["Date"].dt.strftime("%d/%m/%Y")
     df["Resultado_FT"] = df["Goals_H_FT"].astype(str) + "-" + df["Goals_A_FT"].astype(str)
     df["Primeiro_Gol"] = df.apply(first_goal_string, axis=1)
-    df['Placar'] = f"{str(df['Goals_H_FT'])}x{str(df['Goals_A_FT'])}"
+    # df['Placar'] = f"{str(df['Goals_H_FT'])}x{str(df['Goals_A_FT'])}"
     return df
 
 pd.set_option('display.max_columns', None)
@@ -136,7 +136,7 @@ with colb1:
 with colb2:
     placar = st.selectbox("Escolha o Placar", ['0x0','0x1','0x2','0x3','1x0','1x1','1x2','1x3','2x0','2x1','2x2','2x3','3x3'])
 
-df_hist.loc[(df_hist['Home'] == mandante) & (df_hist['Placar'] == placar)]
+df_hist.loc[(df_hist['Home'] == mandante) & (df_hist['Resultado_FT'].replace("-","x") == placar)]
 
 if len(df_hist) > 0:
     print_dataframe(df_hist)
