@@ -59,7 +59,7 @@ df_matches = df_matches.loc[
     (df_matches["Odd_BTTS_Yes"] <= odd_btts_max)
 ]
 
-print_dataframe(df_matches)
+print_dataframe(df_matches[['League','Rodada','Time','Home','Away','Odd_H_FT','Odd_D_FT','Odd_A_FT','Odd_Over05_HT','Odd_Over15_FT','Odd_Over25_FT','Odd_BTTS_Yes']])
 
 st.divider()
 
