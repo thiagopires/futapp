@@ -75,6 +75,9 @@ with colb2:
 
 df_hist.loc[(df_hist['Home'] == mandante) & (df_hist['Resultado_FT'].replace("-","x") == placar)]
 
+st.write(f"mandante: {mandante}")
+st.write(f"placar: {placar}")
+
 if len(df_hist) > 0:
     print_dataframe(df_hist)
 else:
