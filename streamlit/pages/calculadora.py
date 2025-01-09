@@ -2,16 +2,15 @@ import streamlit as st
 
 from utils.functions import *
 
-
-aba = st.radio("Selecione a aba", ["Back/Lay", "Lay/Back"], key="active_tab")
+st.set_page_config(layout="wide")
+st.title("⚽ Calculadora")
 
 def clear_state(keys):
     for key in keys:
         if key in st.session_state:
             del st.session_state[key]
 
-st.set_page_config(layout="wide")
-st.title("⚽ Calculadora")
+aba = st.radio("Selecione a aba", ["Back/Lay", "Lay/Back"], key="active_tab")
 
 col_cashout, col_resultado = st.columns(2)
 
