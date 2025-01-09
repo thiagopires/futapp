@@ -13,6 +13,8 @@ st.title("⚽ Calculadora")
 if "active_tab" not in st.session_state:
     st.session_state["active_tab"] = "Back/Lay"
 
+st.write(st.session_state["active_tab"])
+
 col_cashout, col_resultado = st.columns(2)
 
 # Coluna de Cashout
