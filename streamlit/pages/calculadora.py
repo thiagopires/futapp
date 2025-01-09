@@ -7,6 +7,7 @@ st.title("⚽ Calculadora")
 
 col_cashout, col_freebet = st.columns(2)
 with col_cashout:
+    st.header("Cashout")
     tab_bl, tab_lb = st.tabs(["Back/Lay","Lay/Back"])
     with tab_bl:
         odd_back = st.number_input("Odd Back", key="bl_odd_back", min_value=1.01, max_value=1000.00)
@@ -30,4 +31,5 @@ with col_cashout:
             st.write(f"Perda/Lucro: {str(lucro_perda)}")
 
 with col_freebet:
+    st.header("Freebet")
     st.write("ok")
