@@ -16,18 +16,16 @@ with col_cashout:
 
         if odd_back and stake_back and odd_lay:
             stake_lay = stake_back/odd_lay*odd_back
-            st.write(f"Stake de Lay: {str(round(stake_lay, 2))}")
-            st.write(f"Perda/Lucro: {str(round(stake_lay-stake_back, 2))}")
-            # if st.button("Copiar stake"):
-            #     pyperclip.copy(str(round(stake_lay, 2)))
+            lucro_perda = str(round(stake_lay-stake_back, 2))
+
+            st.write(f"Stake de Lay:")           
+            container = st.container(border=True)
+            container.code(str(round(stake_lay, 2)), language="text")
             
-            st.code(str(round(stake_lay, 2)), language="text")
-            copy_button = f"""
-                <button onclick="navigator.clipboard.writeText('{str(round(stake_lay, 2))}')">
-                    Copiar stake
-                </button>
-            """
-            st.markdown(copy_button, unsafe_allow_html=True)
+            st.write(f"Perda/Lucro:")
+            container = st.container(border=True)
+            container.code(str(lucro_perda), language="text")
+  
 
     with tab_lb:
         odd_lay = st.number_input("Odd Lay",key="lb_odd_lay")
@@ -38,18 +36,14 @@ with col_cashout:
             stake_lay = responsabilidade_lay / (odd_lay - 1)
             stake_back = stake_lay * odd_lay / odd_back
             lucro_perda = round((stake_back * (odd_back - 1)) - responsabilidade_lay, 2)
-            st.write(f"Stake de Back: {str(round(stake_back, 2))}")
-            st.write(f"Perda/Lucro: {str(lucro_perda)}")
-            # if st.button("Copiar stake"):
-            #     pyperclip.copy(str(round(stake_back, 2)))
+            
+            st.write(f"Stake de Back:")
+            container = st.container(border=True)
+            container.code(str(round(stake_back, 2)), language="text")
 
-            st.code(str(round(stake_back, 2)), language="text")
-            copy_button = f"""
-                <button onclick="navigator.clipboard.writeText('{str(round(stake_back, 2))}')">
-                    Copiar stake
-                </button>
-            """
-            st.markdown(copy_button, unsafe_allow_html=True)
+            st.write(f"Perda/Lucro: {str(lucro_perda)}")
+            container = st.container(border=True)
+            container.code(str(lucro_perda), language="text")
 
 with col_freebet:
     st.header("Freebet")
