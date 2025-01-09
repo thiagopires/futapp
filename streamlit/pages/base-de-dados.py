@@ -7,7 +7,7 @@ def get_today():
     adjusted_time = now - timedelta(hours=3)
     return adjusted_time.date()
 
-def print_dataframe(df, styled_df=None):
+def print_dataframe(df, styled_df=pd.Dataframe({})):
     if isinstance(styled_df, pd.io.formats.style.Styler):
         styled_df = styled_df.set_properties(**{'text-align': 'center'})
         styled_df = styled_df.set_table_styles([
