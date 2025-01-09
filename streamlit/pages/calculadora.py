@@ -2,6 +2,9 @@ import streamlit as st
 
 from utils.functions import *
 
+st.set_page_config(layout="wide")
+st.title("⚽ Calculadora")
+
 col_cashout, col_freebet = st.columns(2)
 with col_cashout:
     tab_bl, tab_lb = st.tabs(["Back/Lay","Lay/Back"])
