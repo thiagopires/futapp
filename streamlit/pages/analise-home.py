@@ -87,21 +87,21 @@ st.divider()
 col1, col2, col3, col4, col5, col6, col7 = st.columns(7)
 
 with col1:
-    st.button("Profit Acumulado")
+    st.button("Profit Acumulado", use_container_width=True)
 with col2:
-    st.button("Ponto de Saída Punter")
-    st.button("Ocorrências Gerais")
+    st.button("Ponto de Saída Punter", use_container_width=True)
+    st.button("Ocorrências Gerais", use_container_width=True)
 with col3:
-    st.button("Ponto de Saída Trader")
-    st.button("Ponto de Revisão")
+    st.button("Ponto de Saída Trader", use_container_width=True)
+    st.button("Ponto de Revisão", use_container_width=True)
 with col4:
-    st.button("Últimos 5 jogos")
-    st.button("Confronto Direto")
+    st.button("Últimos 5 jogos", use_container_width=True)
+    st.button("Confronto Direto", use_container_width=True)
 with col5:
-    st.button("Temporada Atual")
-    st.button("Temporada Anterior")
+    st.button("Temporada Atual", use_container_width=True)
+    st.button("Temporada Anterior", use_container_width=True)
 with col6:
-    st.button("Match Odds - Back")
-    st.button("Match Odds - Lay")
+    st.button("Match Odds - Back", use_container_width=True)
+    st.button("Match Odds - Lay", use_container_width=True)
 with col7:
-    st.button("Over 2.5 FT / BTTS")
+    st.button("Over 2.5 FT / BTTS", use_container_width=True)
