@@ -141,7 +141,7 @@ colb1, colb2 = st.columns(2)
 with colb1:
     mandante = st.selectbox("Escolha o Mandante", df_matches['Home'])
 with colb2:
-    placar = st.selectbox("Escolha o Placar", ['0x0','0x1','0x2','0x3','1x0','1x1','1x2','1x3','2x0','2x1','2x2','2x3','3x3'])
+    placar = st.selectbox("Escolha o Placar", ['0x0','0x1','0x2','0x3','1x0','1x1','1x2','1x3','2x0','2x1','2x2','2x3','3x0','3x1','3x2','3x3'])
 
 df_hist_mandante_placar = df_hist.loc[
     (df_hist['Home'] == mandante) & 
