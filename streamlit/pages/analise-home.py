@@ -119,12 +119,26 @@ if st.session_state['active_button'] == "Over 2.5 FT / BTTS":
     st.subheader(f"Over 2.5 FT nos jogos do {mandante}")
     st.write(f"Jogos anteriores do {mandante} que bateram o Over 2.5 FT")
 
+    over25 = []
+
     df_hist_mandante_over25 = df_hist.loc[
-        (df_hist['Home'] == mandante) & 
-        (df_hist['TotalGoals_FT'] > 2.5)
+        (df_hist['Home'] == mandante)
     ]
+    over25['Jogos Analisados'] = str(len(df_hist_mandante_over25))
+
+    df_hist_mandante_over25 = df_hist_mandante_over25.loc[
+        (df_hist['Total_Goals_FT'] == mandante)
+    ]
+    over25['Jogos Over 2.5 FT'] = str(len(df_hist_mandante_over25))
+    over25['Winrate'] = f"{str(round(over25['Jogos Over 2.5 FT'] / over25['Jogos Analisados'] * 100,2))}%"
+    over25['Profit Acumulado'] = "Em desenvolvimento"
+
+    string_over25 = ""
+    for key, value in over25.items():
+        string_over25.append(f"{key}: {value}, ")
 
     if len(df_hist_mandante_over25) > 0:
+        st.write(string_over25)
         print_dataframe(df_hist_mandante_over25[['League','Rodada','Time','Home','Away','Odd_Over25_FT','Goals_H_FT','Goals_A_FT']])
     else:
         st.write("Sem jogos.")
