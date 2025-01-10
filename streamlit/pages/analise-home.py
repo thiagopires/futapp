@@ -121,21 +121,23 @@ if st.session_state['active_button'] == "Over 2.5 FT / BTTS":
     st.write(f"Jogos anteriores do {mandante} que bateram o Over 2.5 FT")
 
     over25 = {}
-
+    
     df_hist_mandante_over25 = df_hist.loc[(df_hist['Home'] == mandante)]
+
+    df_hist_mandante_over25['Profit_Over25'] = -1  # Valor padrão
+    df_hist_mandante_over25.loc[df_hist_mandante_over25['TotalGoals_FT'] > 2.5, 'Profit_Over25'] = df_hist_mandante_over25['Odd_Over25_FT'] - 1
+    
     over25['Jogos analisados'] = len(df_hist_mandante_over25)
 
     df_hist_mandante_over25 = df_hist_mandante_over25.loc[(df_hist['TotalGoals_FT'] > 2.5)]
     over25['Jogos Over 2.5 FT'] = len(df_hist_mandante_over25)
-    
-    df_hist_mandante_over25['Profit_Over25'] = df_hist_mandante_over25['Odd_Over25_FT']-1
-
 
     if over25['Jogos analisados'] > 0:
         over25['Winrate'] = f"{round((over25['Jogos Over 2.5 FT'] / over25['Jogos analisados']) * 100, 2)}%"
     else:
         over25['Winrate'] = "0.0%"
-    over25['Profit Acumulado'] = "Em desenvolvimento"
+
+    over25['Profit Acumulado'] = df_hist_mandante_over25['Profit_Over25'].sum()
 
     string_over25 = ""
     for key, value in over25.items():
