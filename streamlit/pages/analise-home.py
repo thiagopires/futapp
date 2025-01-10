@@ -84,8 +84,9 @@ df_hist_mandante_placar = df_hist.loc[
 
 st.divider()
 
-col1, col2, col3, col4, col5, col6, col7 = st.columns(7)
+st.session_state['active_button'] = ""
 
+col1, col2, col3, col4, col5, col6, col7 = st.columns(7)
 with col1:
     if st.button("Profit Acumulado", use_container_width=True):
         st.session_state['active_button'] = "Profit Acumulado"
