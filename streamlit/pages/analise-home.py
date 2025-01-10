@@ -80,16 +80,16 @@ with col5:
     st.session_state['odd_btts_max'] = st.number_input("Odd_BTTS_Max", value=2.00, min_value=1.10, max_value=1000.00)
 with col6:
     if st.button("Limpar filtros"):
-        st.session_state['odd_h_min'] = 1.10
-        st.session_state['odd_h_max'] = 1000.00
-        st.session_state['odd_d_min'] = 1.10
-        st.session_state['odd_d_max'] = 1000.00
-        st.session_state['odd_a_min'] = 1.10
-        st.session_state['odd_a_max'] = 1000.00
-        st.session_state['odd_over25_ft_min'] = 1.10
-        st.session_state['odd_over25_ft_max'] = 1000.00
-        st.session_state['odd_btts_min'] = 1.10
-        st.session_state['odd_btts_max'] = 1000.00
+        st.session_state.odd_h_min = 1.10
+        st.session_state.odd_h_max = 1000.00
+        st.session_state.odd_d_min = 1.10
+        st.session_state.odd_d_max = 1000.00
+        st.session_state.odd_a_min = 1.10
+        st.session_state.odd_a_max = 1000.00
+        st.session_state.odd_over25_ft_min = 1.10
+        st.session_state.odd_over25_ft_max = 1000.00
+        st.session_state.odd_btts_min = 1.10
+        st.session_state.odd_btts_max = 1000.00
 
 st.divider()
 
@@ -97,20 +97,20 @@ st.subheader("Jogos que atendem a esses filtros")
 
 
 df_matches = df_matches.loc[
-    (df_matches["Odd_H_FT"] >= st.session_state['odd_h_min']) &
-    (df_matches["Odd_H_FT"] <= st.session_state['odd_h_max']) &
+    (df_matches["Odd_H_FT"] >= st.session_state.odd_h_min) &
+    (df_matches["Odd_H_FT"] <= st.session_state.odd_h_max) &
 
-    (df_matches["Odd_D_FT"] >= st.session_state['odd_d_min']) &
-    (df_matches["Odd_D_FT"] <= st.session_state['odd_d_max']) &
+    (df_matches["Odd_D_FT"] >= st.session_state.odd_d_min) &
+    (df_matches["Odd_D_FT"] <= st.session_state.odd_d_max) &
 
-    (df_matches["Odd_A_FT"] >= st.session_state['odd_a_min']) &
-    (df_matches["Odd_A_FT"] <= st.session_state['odd_a_max']) &
+    (df_matches["Odd_A_FT"] >= st.session_state.odd_a_min) &
+    (df_matches["Odd_A_FT"] <= st.session_state.odd_a_max) &
 
-    (df_matches["Odd_Over25_FT"] >= st.session_state['odd_over25_ft_min']) &
-    (df_matches["Odd_Over25_FT"] <= st.session_state['odd_over25_ft_max']) &
+    (df_matches["Odd_Over25_FT"] >= st.session_state.odd_over25_ft_min) &
+    (df_matches["Odd_Over25_FT"] <= st.session_state.odd_over25_ft_max) &
 
-    (df_matches["Odd_BTTS_Yes"] >= st.session_state['odd_btts_min']) &
-    (df_matches["Odd_BTTS_Yes"] <= st.session_state['odd_btts_max'])
+    (df_matches["Odd_BTTS_Yes"] >= st.session_state.odd_btts_min) &
+    (df_matches["Odd_BTTS_Yes"] <= st.session_state.odd_btts_max)
 ]
 
 print_dataframe(df_matches[['League','Rodada','Time','Home','Away','Odd_H_FT','Odd_D_FT','Odd_A_FT','Odd_Over05_HT','Odd_Over15_FT','Odd_Over25_FT','Odd_BTTS_Yes']])
