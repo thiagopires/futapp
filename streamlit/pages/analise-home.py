@@ -133,8 +133,8 @@ if st.session_state['active_button'] == "Over 2.5 FT / BTTS":
 
     df_hist_mandante_btts = df_hist.loc[
         (df_hist['Home'] == mandante) & 
-        (df_hist['Odd_H_FT'] >= 1) &
-        (df_hist['Odd_A_FT'] >= 1)
+        (df_hist['Goals_H_FT'] >= 1) &
+        (df_hist['Goals_A_FT'] >= 1)
     ]
 
     if len(df_hist_mandante_btts) > 0:
