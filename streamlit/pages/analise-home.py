@@ -8,6 +8,50 @@ pd.set_option('display.max_rows', None)
 st.set_page_config(layout="wide")
 st.title("⚽ Análise Home")
 
+def aba_over25(df_hist, team, side):
+    dict = {}
+    df = df_hist.loc[(df_hist[side] == team)]
+    
+    dict['Jogos analisados'] = len(df)
+
+    df['Profit_Over25'] = -1
+    df.loc[df['TotalGoals_FT'] > 2.5, 'Profit_Over25'] = round(df['Odd_Over25_FT']-1, 2)
+
+    dict['Profit Acumulado'] = f"{str(round(df['Profit_Over25'].sum(), 2))} unidades"
+
+    df = df.loc[(df_hist['TotalGoals_FT'] > 2.5)]
+    dict['Jogos Over 2.5 FT'] = len(df)
+
+    dict['Winrate'] = f"{round((dict['Jogos Over 2.5 FT'] / dict['Jogos analisados']) * 100, 2)}%" if dict['Jogos analisados'] > 0 else "0.0%"
+ 
+    if len(df) > 0:
+        st.write(f"Jogos analisados: {dict['Jogos analisados']} — Jogos Over 2.5 FT: {dict['Jogos Over 2.5 FT']} — Winrate: {dict['Winrate']} — Profit Acumulado: {dict['Profit Acumulado']}")
+        print_dataframe(df[['League','Rodada','Time','Home','Away','Odd_Over25_FT','Goals_H_FT','Goals_A_FT','Profit_Over25']])
+    else:
+        st.write("Sem jogos.")
+
+def aba_btts(df_hist, team, side):
+    dict = {}
+    df = df_hist.loc[(df_hist[side] == team)]
+    
+    dict['Jogos analisados'] = len(df)
+
+    df['Profit_BTTS'] = -1
+    df.loc[(df['Goals_H_FT'] >= 1) & (df['Goals_A_FT'] >= 1), 'Profit_BTTS'] = round(df['Odd_BTTS_Yes']-1, 2)
+
+    dict['Profit Acumulado'] = f"{str(round(df['Profit_BTTS'].sum(), 2))} unidades"
+
+    df = df.loc[(df['Goals_H_FT'] >= 1) & (df['Goals_A_FT'] >= 1)]
+    dict['Jogos BTTS'] = len(df)
+
+    dict['Winrate'] = f"{round((dict['Jogos BTTS'] / dict['Jogos analisados']) * 100, 2)}%" if dict['Jogos analisados'] > 0 else "0.0%"
+ 
+    if len(df) > 0:
+        st.write(f"Jogos analisados: {dict['Jogos analisados']} — Jogos BTTS: {dict['Jogos BTTS']} — Winrate: {dict['Winrate']} — Profit Acumulado: {dict['Profit Acumulado']}")
+        print_dataframe(df[['League','Rodada','Time','Home','Away','Odd_BTTS_Yes','Goals_H_FT','Goals_A_FT','Profit_BTTS']])
+    else:
+        st.write("Sem jogos.")
+
 # Init
 
 data_analise = st.date_input("Data da Análise", get_today())
@@ -118,44 +162,20 @@ with col7:
 if st.session_state['active_button'] == "Over 2.5 FT / BTTS":
             
     st.subheader(f"Over 2.5 FT nos jogos do {mandante}")
-    st.write(f"Jogos anteriores do {mandante} que bateram o Over 2.5 FT")
-    
-    df_hist_mandante_over25 = df_hist.loc[(df_hist['Home'] == mandante)]
-
-    over25 = {}
-    
-    over25['Jogos analisados'] = len(df_hist_mandante_over25)
-
-    df_hist_mandante_over25['Profit_Over25'] = -1
-    df_hist_mandante_over25.loc[df_hist_mandante_over25['TotalGoals_FT'] > 2.5, 'Profit_Over25'] = round(df_hist_mandante_over25['Odd_Over25_FT']-1 ,2)
-
-    over25['Profit Acumulado'] = f"{str(round(df_hist_mandante_over25['Profit_Over25'].sum(), 2))} unidades"
-
-    df_hist_mandante_over25 = df_hist_mandante_over25.loc[(df_hist['TotalGoals_FT'] > 2.5)]
-    over25['Jogos Over 2.5 FT'] = len(df_hist_mandante_over25)
-
-    over25['Winrate'] = f"{round((over25['Jogos Over 2.5 FT'] / over25['Jogos analisados']) * 100, 2)}%" if over25['Jogos analisados'] > 0 else "0.0%"
- 
-    string_over25 = ""
-    for key, value in over25.items(): string_over25 += f"{key}: {str(value)}  — "
-    string_over25 = string_over25[:-2]
-
-    if len(df_hist_mandante_over25) > 0:
-        st.write(f"Jogos analisados: {over25['Jogos analisados']} — Jogos Over 2.5 FT: {over25['Jogos Over 2.5 FT']} — Winrate: {over25['Winrate']} — Profit Acumulado: {over25['Profit Acumulado']}")
-        print_dataframe(df_hist_mandante_over25[['League','Rodada','Time','Home','Away','Odd_Over25_FT','Goals_H_FT','Goals_A_FT','Profit_Over25']])
-    else:
-        st.write("Sem jogos.")
+    st.write(f"Jogos anteriores do {mandante} que bateram o Over 2.5 FT")    
+    aba_over25(df_hist, mandante, "Home")
 
     st.subheader(f"BTTS nos jogos do {mandante}")
     st.write(f"Jogos anteriores do {mandante} que bateram o BTTS")
+    aba_btts(df_hist, mandante, "Home")
 
-    df_hist_mandante_btts = df_hist.loc[
-        (df_hist['Home'] == mandante) & 
-        (df_hist['Goals_H_FT'] >= 1) &
-        (df_hist['Goals_A_FT'] >= 1)
-    ]
+    # df_hist_mandante_btts = df_hist.loc[
+    #     (df_hist['Home'] == mandante) & 
+    #     (df_hist['Goals_H_FT'] >= 1) &
+    #     (df_hist['Goals_A_FT'] >= 1)
+    # ]
 
-    if len(df_hist_mandante_btts) > 0:
-        print_dataframe(df_hist_mandante_btts[['League','Rodada','Time','Home','Away','Odd_BTTS_Yes','Goals_H_FT','Goals_A_FT']])
-    else:
-        st.write("Sem jogos.")
+    # if len(df_hist_mandante_btts) > 0:
+    #     print_dataframe(df_hist_mandante_btts[['League','Rodada','Time','Home','Away','Odd_BTTS_Yes','Goals_H_FT','Goals_A_FT']])
+    # else:
+    #     st.write("Sem jogos.")
