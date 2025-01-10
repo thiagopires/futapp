@@ -141,7 +141,7 @@ if st.session_state['active_button'] == "Over 2.5 FT / BTTS":
     string_over25 = string_over25[:-2]
 
     if len(df_hist_mandante_over25) > 0:
-        st.write(f"Jogos analisados: {over25['Jogos analisados']} — Jogos Over 2.5 FT: {over25['Jogos Over 2.5 FT']} — Winrate: {over25['Winrate']} — ")
+        st.write(f"Jogos analisados: {over25['Jogos analisados']} — Jogos Over 2.5 FT: {over25['Jogos Over 2.5 FT']} — Winrate: {over25['Winrate']} — Profit Acumulado: {over25['Profit Acumulado']}")
         print_dataframe(df_hist_mandante_over25[['League','Rodada','Time','Home','Away','Odd_Over25_FT','Goals_H_FT','Goals_A_FT','Profit_Over25']])
     else:
         st.write("Sem jogos.")
