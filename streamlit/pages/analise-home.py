@@ -52,34 +52,8 @@ def aba_btts(df_hist, team, side):
     else:
         st.write("Sem jogos.")
 
-# Init
-
-data_analise = st.date_input("Data da Análise", get_today())
-df_matches = load_daymatches(data_analise)
-df_hist = load_histmatches()
-
-st.divider()
-
-st.subheader("Filtro de Odds")
-
-col1, col2, col3, col4, col5, col6 = st.columns(6)
-with col1:
-    st.session_state['odd_h_min'] = st.number_input("Odd_H_Min", value=1.40, min_value=1.10, max_value=1000.00)
-    st.session_state['odd_h_max'] = st.number_input("Odd_H_Max", value=2.00, min_value=1.10, max_value=1000.00)
-with col2:
-    st.session_state['odd_d_min'] = st.number_input("Odd_D_Min", value=2.50, min_value=1.10, max_value=1000.00)
-    st.session_state['odd_d_max'] = st.number_input("Odd_D_Max", value=10.00, min_value=1.10, max_value=1000.00)
-with col3:
-    st.session_state['odd_a_min'] = st.number_input("Odd_A_Min", value=4.00, min_value=1.10, max_value=1000.00)
-    st.session_state['odd_a_max'] = st.number_input("Odd_A_Max", value=50.00, min_value=1.10, max_value=1000.00)
-with col4:
-    st.session_state['odd_over25_ft_min'] = st.number_input("Odd_Over25_FT_Min", value=1.30, min_value=1.10, max_value=1000.00)
-    st.session_state['odd_over25_ft_max'] = st.number_input("Odd_Over25_FT_Max", value=2.00, min_value=1.10, max_value=1000.00)
-with col5:
-    st.session_state['odd_btts_min'] = st.number_input("Odd_BTTS_Min", value=1.30, min_value=1.10, max_value=1000.00)
-    st.session_state['odd_btts_max'] = st.number_input("Odd_BTTS_Max", value=2.00, min_value=1.10, max_value=1000.00)
-with col6:
-    if st.button("Limpar filtros"):
+def set_odds_filtros(reset=False):
+    if reset:
         st.session_state.odd_h_min = 1.10
         st.session_state.odd_h_max = 1000.00
         st.session_state.odd_d_min = 1.10
@@ -90,11 +64,56 @@ with col6:
         st.session_state.odd_over25_ft_max = 1000.00
         st.session_state.odd_btts_min = 1.10
         st.session_state.odd_btts_max = 1000.00
+    else:
+        st.session_state.odd_h_min = 1.40
+        st.session_state.odd_h_max = 2.00
+        st.session_state.odd_d_min = 2.50
+        st.session_state.odd_d_max = 10.00
+        st.session_state.odd_a_min = 4.00
+        st.session_state.odd_a_max = 50.00
+        st.session_state.odd_over25_ft_min = 1.30
+        st.session_state.odd_over25_ft_max = 2.00
+        st.session_state.odd_btts_min = 1.30
+        st.session_state.odd_btts_max = 2.00
+
+# Init
+
+data_analise = st.date_input("Data da Análise", get_today())
+df_matches = load_daymatches(data_analise)
+df_hist = load_histmatches()
+
 
 st.divider()
 
-st.subheader("Jogos que atendem a esses filtros")
 
+st.subheader("Filtro de Odds")
+set_odds_filtros(False)
+
+col1, col2, col3, col4, col5, col6 = st.columns(6)
+with col1:
+    st.number_input("Odd_H_Min", value=st.session_state.odd_h_min, min_value=1.10, max_value=1000.00, key="odd_h_min")
+    st.number_input("Odd_H_Max", value=st.session_state.odd_h_max, min_value=1.10, max_value=1000.00, key="odd_h_max")
+with col2:
+    st.number_input("Odd_D_Min", value=st.session_state.odd_d_min, min_value=1.10, max_value=1000.00, key="odd_d_min")
+    st.number_input("Odd_D_Max", value=st.session_state.odd_d_max, min_value=1.10, max_value=1000.00, key="odd_d_max")
+with col3:
+    st.number_input("Odd_A_Min", value=st.session_state.odd_a_min, min_value=1.10, max_value=1000.00, key="odd_a_min")
+    st.number_input("Odd_A_Max", value=st.session_state.odd_a_max, min_value=1.10, max_value=1000.00, key="odd_a_max")
+with col4:
+    st.number_input("Odd_Over25_FT_Min", value=st.session_state.odd_over25_ft_min, min_value=1.10, max_value=1000.00, key="odd_over25_ft_min")
+    st.number_input("Odd_Over25_FT_Max", value=st.session_state.odd_over25_ft_max, min_value=1.10, max_value=1000.00, key="odd_over25_ft_max")
+with col5:
+    st.number_input("Odd_BTTS_Min", value=st.session_state.odd_btts_min, min_value=1.10, max_value=1000.00, key="odd_btts_min")
+    st.number_input("Odd_BTTS_Max", value=st.session_state.odd_btts_max, min_value=1.10, max_value=1000.00, key="odd_btts_max")
+with col6:
+    if st.button("Limpar filtros"):
+        set_odds_filtros(True)
+
+
+st.divider()
+
+
+st.subheader("Jogos que atendem a esses filtros")
 
 df_matches = df_matches.loc[
     (df_matches["Odd_H_FT"] >= st.session_state.odd_h_min) &
