@@ -10,8 +10,10 @@ st.title("⚽ Análise Home")
 
 def aba_over25(df_hist, team, side):
     dict = {}
-    df = df_hist.loc[(df_hist[side] == team) and ((df_hist['Season'] == get_current_season()) | (df_hist['Season'] == get_last_season()))]
-    
+    df = df_hist.loc[
+        (df_hist[side] == team) & 
+        ((df_hist['Season'] == get_current_season()) | (df_hist['Season'] == get_last_season()))
+    ]
     dict['Jogos analisados'] = len(df)
 
     df['Profit_Over25'] = -1
@@ -32,8 +34,10 @@ def aba_over25(df_hist, team, side):
 
 def aba_btts(df_hist, team, side):
     dict = {}
-    df = df_hist.loc[(df_hist[side] == team) and ((df_hist['Season'] == get_current_season()) | (df_hist['Season'] == get_last_season()))]
-    
+    df = df_hist.loc[
+        (df_hist[side] == team) & 
+        ((df_hist['Season'] == get_current_season()) | (df_hist['Season'] == get_last_season()))
+    ]
     dict['Jogos analisados'] = len(df)
 
     df['Profit_BTTS'] = -1
