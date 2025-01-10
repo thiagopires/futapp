@@ -3,9 +3,13 @@ import pandas as pd
 import ast
 from datetime import datetime, timedelta
 
-def get_season():
-    SEASON_ATUAL = '2024/2025'
-    return SEASON_ATUAL
+def get_current_season():
+    SEASON = '2024/2025'
+    return SEASON
+
+def get_last_season():
+    SEASON = '2023/2024'
+    return SEASON
 
 def get_today():
     now = datetime.now()

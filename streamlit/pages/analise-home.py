@@ -10,7 +10,7 @@ st.title("⚽ Análise Home")
 
 def aba_over25(df_hist, team, side):
     dict = {}
-    df = df_hist.loc[(df_hist[side] == team)]
+    df = df_hist.loc[(df_hist[side] == team) and ((df_hist['Season'] == get_current_season()) | (df_hist['Season'] == get_last_season()))]
     
     dict['Jogos analisados'] = len(df)
 
@@ -32,7 +32,7 @@ def aba_over25(df_hist, team, side):
 
 def aba_btts(df_hist, team, side):
     dict = {}
-    df = df_hist.loc[(df_hist[side] == team)]
+    df = df_hist.loc[(df_hist[side] == team) and ((df_hist['Season'] == get_current_season()) | (df_hist['Season'] == get_last_season()))]
     
     dict['Jogos analisados'] = len(df)
 
@@ -143,11 +143,11 @@ with colb1:
 with colb2:
     placar = st.selectbox("Escolha o Placar", ['0x0','0x1','0x2','0x3','1x0','1x1','1x2','1x3','2x0','2x1','2x2','2x3','3x0','3x1','3x2','3x3'])
 
-df_hist_mandante_placar = df_hist.loc[
-    (df_hist['Home'] == mandante) & 
-    (df_hist['Resultado_FT'].str.replace("-","x") == placar) &
-    (df_hist['Season'] == get_season()) # vrificar
-]
+# df_hist_mandante_placar = df_hist.loc[
+#     (df_hist['Home'] == mandante) & 
+#     (df_hist['Resultado_FT'].str.replace("-","x") == placar) &
+#     (df_hist['Season'] == get_current_season()) # vrificar
+# ]
 
 # if len(df_hist_mandante_placar) > 0:
 #     print_dataframe(df_hist_mandante_placar[['League','Rodada','Time','Home','Away','Odd_H_FT','Odd_D_FT','Odd_A_FT','Odd_Over05_HT','Odd_Over15_FT','Odd_Over25_FT','Odd_BTTS_Yes']])

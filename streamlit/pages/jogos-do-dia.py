@@ -72,7 +72,7 @@ if match_selected.get('selection').get('rows'):
 
     st.subheader("⚽ Classificações nesta competição")
 
-    filter_classificacao = (df_hist["Season"] == get_season()) & (df_hist["League"] == df_match_selected["League"])
+    filter_classificacao = (df_hist["Season"] == get_current_season()) & (df_hist["League"] == df_match_selected["League"])
     df_classificacao = df_hist.loc[filter_classificacao, ["League","Season","Date","Rodada","Home","Away","Goals_H_FT","Goals_A_FT"]]
 
     classificacao_geral, styled_classificacao_geral = generate_classificacao(df_classificacao, df_match_selected, "ALL")
@@ -87,16 +87,16 @@ if match_selected.get('selection').get('rows'):
     with tab3:
         print_dataframe(classificacao_visitante, styled_classificacao_visitante)
 
-    filter_todos_casa = (df_hist["Home"] == df_match_selected["Home"]) & (df_hist["League"] == df_match_selected["League"]) & (df_hist["Season"] == get_season())
+    filter_todos_casa = (df_hist["Home"] == df_match_selected["Home"]) & (df_hist["League"] == df_match_selected["League"]) & (df_hist["Season"] == get_current_season())
     todos_casa = df_hist.loc[filter_todos_casa, ["Date", "Home", "Resultado_FT", "Away", "Primeiro_Gol"]].sort_values(by="Date", ascending=False)
     df_todos_casa = todos_casa.style.apply(highlight_result, axis=1, highlight=df_match_selected["Home"])
 
-    filter_todos_visitante = (df_hist["Away"] == df_match_selected["Away"]) & (df_hist["League"] == df_match_selected["League"]) & (df_hist["Season"] == get_season())
+    filter_todos_visitante = (df_hist["Away"] == df_match_selected["Away"]) & (df_hist["League"] == df_match_selected["League"]) & (df_hist["Season"] == get_current_season())
     todos_visitante = df_hist.loc[filter_todos_visitante, ["Date", "Home", "Resultado_FT", "Away", "Primeiro_Gol"]].sort_values(by="Date", ascending=False)
     df_todos_visitante = todos_visitante.style.apply(highlight_result, axis=1, highlight=df_match_selected["Away"])
 
     st.header("Todos os jogos Casa/Fora nesta competição")
-    st.caption(f'{df_match_selected["League"]} - {get_season()} - Época Normal')
+    st.caption(f'{df_match_selected["League"]} - {get_current_season()} - Época Normal')
 
     col1, col2 = st.columns(2)
     with col1:
@@ -108,8 +108,8 @@ if match_selected.get('selection').get('rows'):
 
     st.subheader("Distribuição de Gols por Minuto (últimos 10 jogos)")
 
-    home_gols_por_tempo = calcular_gols_por_tempo(df_hist.loc[(df_hist["Season"] == get_season())], df_match_selected["Home"])
-    away_gols_por_tempo = calcular_gols_por_tempo(df_hist.loc[(df_hist["Season"] == get_season())], df_match_selected["Away"])
+    home_gols_por_tempo = calcular_gols_por_tempo(df_hist.loc[(df_hist["Season"] == get_current_season())], df_match_selected["Home"])
+    away_gols_por_tempo = calcular_gols_por_tempo(df_hist.loc[(df_hist["Season"] == get_current_season())], df_match_selected["Away"])
 
     col1, col2 = st.columns(2)
     with col1:
