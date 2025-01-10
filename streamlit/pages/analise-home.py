@@ -54,27 +54,27 @@ def aba_btts(df_hist, team, side):
 
 def set_odds_filtros(reset=False):
     if reset:
-        st.session_state.odd_h_min = 1.10
-        st.session_state.odd_h_max = 1000.00
-        st.session_state.odd_d_min = 1.10
-        st.session_state.odd_d_max = 1000.00
-        st.session_state.odd_a_min = 1.10
-        st.session_state.odd_a_max = 1000.00
-        st.session_state.odd_over25_ft_min = 1.10
-        st.session_state.odd_over25_ft_max = 1000.00
-        st.session_state.odd_btts_min = 1.10
-        st.session_state.odd_btts_max = 1000.00
+        st.session_state['odd_h_min'] = 1.10
+        st.session_state['odd_h_max'] = 1000.00
+        st.session_state['odd_d_min'] = 1.10
+        st.session_state['odd_d_max'] = 1000.00
+        st.session_state['odd_a_min'] = 1.10
+        st.session_state['odd_a_max'] = 1000.00
+        st.session_state['odd_over25_ft_min'] = 1.10
+        st.session_state['odd_over25_ft_max'] = 1000.00
+        st.session_state['odd_btts_min'] = 1.10
+        st.session_state['odd_btts_max'] = 1000.00
     else:
-        st.session_state.odd_h_min = 1.40
-        st.session_state.odd_h_max = 2.00
-        st.session_state.odd_d_min = 2.50
-        st.session_state.odd_d_max = 10.00
-        st.session_state.odd_a_min = 4.00
-        st.session_state.odd_a_max = 50.00
-        st.session_state.odd_over25_ft_min = 1.30
-        st.session_state.odd_over25_ft_max = 2.00
-        st.session_state.odd_btts_min = 1.30
-        st.session_state.odd_btts_max = 2.00
+        st.session_state['odd_h_min'] = 1.40
+        st.session_state['odd_h_max'] = 2.00
+        st.session_state['odd_d_min'] = 2.50
+        st.session_state['odd_d_max'] = 10.00
+        st.session_state['odd_a_min'] = 4.00
+        st.session_state['odd_a_max'] = 50.00
+        st.session_state['odd_over25_ft_min'] = 1.30
+        st.session_state['odd_over25_ft_max'] = 2.00
+        st.session_state['odd_btts_min'] = 1.30
+        st.session_state['odd_btts_max'] = 2.00
 
 # Init
 
