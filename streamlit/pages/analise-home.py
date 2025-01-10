@@ -105,7 +105,7 @@ with col6:
     st.button("Match Odds - Lay", use_container_width=True)
 with col7:
     if st.button("Over 2.5 FT / BTTS", use_container_width=True):
-        active_button = "Over 2.5 FT / BTTS"
+        st.session_state['active_button'] = "Over 2.5 FT / BTTS"
         
         
         
@@ -113,7 +113,7 @@ with col7:
         
         
         
-if active_button == "Over 2.5 FT / BTTS":
+if st.session_state['active_button'] == "Over 2.5 FT / BTTS":
             
     st.subheader(f"Over 2.5 FT nos jogos do {mandante}")
     st.write(f"Jogos anteriores do {mandante} que bateram o Over 2.5 FT")
