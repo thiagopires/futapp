@@ -105,29 +105,39 @@ with col6:
     st.button("Match Odds - Lay", use_container_width=True)
 with col7:
     if st.button("Over 2.5 FT / BTTS", use_container_width=True):
-        st.subheader(f"Over 2.5 FT nos jogos do {mandante}")
-        st.write(f"Jogos anteriores do {mandante} que bateram o Over 2.5 FT")
+        active_button = "Over 2.5 FT / BTTS"
+        
+        
+        
+        
+        
+        
+        
+if active_button == "Over 2.5 FT / BTTS":
+            
+    st.subheader(f"Over 2.5 FT nos jogos do {mandante}")
+    st.write(f"Jogos anteriores do {mandante} que bateram o Over 2.5 FT")
 
-        df_hist_mandante_over25 = df_hist.loc[
-            (df_hist['Home'] == mandante) & 
-            (df_hist['TotalGoals_FT'] > 2.5)
-        ]
+    df_hist_mandante_over25 = df_hist.loc[
+        (df_hist['Home'] == mandante) & 
+        (df_hist['TotalGoals_FT'] > 2.5)
+    ]
 
-        if len(df_hist_mandante_over25) > 0:
-            print_dataframe(df_hist_mandante_over25[['League','Rodada','Time','Home','Away','Odd_Over25_FT','Odd_H_FT','Odd_A_FT',]])
-        else:
-            st.write("Sem jogos.")
+    if len(df_hist_mandante_over25) > 0:
+        print_dataframe(df_hist_mandante_over25[['League','Rodada','Time','Home','Away','Odd_Over25_FT','Odd_H_FT','Odd_A_FT',]])
+    else:
+        st.write("Sem jogos.")
 
-        st.subheader(f"BTTS nos jogos do {mandante}")
-        st.write(f"Jogos anteriores do {mandante} que bateram o BTTS")
+    st.subheader(f"BTTS nos jogos do {mandante}")
+    st.write(f"Jogos anteriores do {mandante} que bateram o BTTS")
 
-        df_hist_mandante_btts = df_hist.loc[
-            (df_hist['Home'] == mandante) & 
-            (df_hist['Odd_H_FT'] >= 1) &
-            (df_hist['Odd_A_FT'] >= 1)
-        ]
+    df_hist_mandante_btts = df_hist.loc[
+        (df_hist['Home'] == mandante) & 
+        (df_hist['Odd_H_FT'] >= 1) &
+        (df_hist['Odd_A_FT'] >= 1)
+    ]
 
-        if len(df_hist_mandante_btts) > 0:
-            print_dataframe(df_hist_mandante_btts[['League','Rodada','Time','Home','Away','Odd_BTTS_Yes','Odd_H_FT','Odd_A_FT',]])
-        else:
-            st.write("Sem jogos.")
+    if len(df_hist_mandante_btts) > 0:
+        print_dataframe(df_hist_mandante_btts[['League','Rodada','Time','Home','Away','Odd_BTTS_Yes','Odd_H_FT','Odd_A_FT',]])
+    else:
+        st.write("Sem jogos.")
