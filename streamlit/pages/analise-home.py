@@ -64,6 +64,7 @@ def set_odds_filtros(reset=False):
         st.session_state['odd_over25_ft_max'] = 1000.00
         st.session_state['odd_btts_min'] = 1.10
         st.session_state['odd_btts_max'] = 1000.00
+        st.experimental_rerun()
     else:
         st.session_state['odd_h_min'] = 1.40
         st.session_state['odd_h_max'] = 2.00
