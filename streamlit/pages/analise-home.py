@@ -62,7 +62,19 @@ st.divider()
 
 st.subheader("Filtro de Odds")
 
-col1, col2, col3, col4, col5, col6 = st.columns(6)
+if st.button("Limpar filtros"):
+    odd_h_min = 1.10
+    odd_h_max = 1000.00
+    odd_d_min = 1.10
+    odd_d_max = 1000.00
+    odd_a_min = 1.10
+    odd_a_max = 1000.00
+    odd_over25_ft_min = 1.10
+    odd_over25_ft_max = 1000.00
+    odd_btts_min = 1.10
+    odd_btts_max = 1000.00
+
+col1, col2, col3, col4, col5 = st.columns(5)
 with col1:
     odd_h_min = st.number_input("Odd_H_Min", value=1.40, min_value=1.10, max_value=1000.00)
     odd_h_max = st.number_input("Odd_H_Max", value=2.00, min_value=1.10, max_value=1000.00)
@@ -76,22 +88,8 @@ with col4:
     odd_over25_ft_min = st.number_input("Odd_Over25_FT_Min", value=1.30, min_value=1.10, max_value=1000.00)
     odd_over25_ft_max = st.number_input("Odd_Over25_FT_Max", value=2.00, min_value=1.10, max_value=1000.00)
 with col5:
-    odd_btts_min = st.number_input("Odd_BTTS_Min", value=1.30, min_value=1.10, max_value=100.00)
-    odd_btts_max = st.number_input("Odd_BTTS_Max", value=2.00, min_value=1.10, max_value=100.00)
-with col6:
-    if st.button("Limpar filtros"):
-        odd_h_min = 1.10
-        odd_h_max = 1000.00
-        odd_d_min = 1.10
-        odd_d_max = 1000.00
-        odd_a_min = 1.10
-        odd_a_max = 1000.00
-        odd_over25_ft_min = 1.10
-        odd_over25_ft_max = 1000.00
-        odd_btts_min = 1.10
-        odd_btts_max = 1000.00
-
-st.subheader("Outros Filtros")
+    odd_btts_min = st.number_input("Odd_BTTS_Min", value=1.30, min_value=1.10, max_value=1000.00)
+    odd_btts_max = st.number_input("Odd_BTTS_Max", value=2.00, min_value=1.10, max_value=1000.00)
 
 st.divider()
 
