@@ -64,20 +64,20 @@ st.subheader("Filtro de Odds")
 
 col1, col2, col3, col4, col5, col6 = st.columns(6)
 with col1:
-    st.session_state['odd_h_min'] = st.number_input("Odd_H_Min", value=1.40, min_value=1.10, max_value=1000.00, key="odd_h_min")
-    st.session_state['odd_h_max'] = st.number_input("Odd_H_Max", value=2.00, min_value=1.10, max_value=1000.00, key="odd_h_max")
+    st.session_state['odd_h_min'] = st.number_input("Odd_H_Min", value=1.40, min_value=1.10, max_value=1000.00)
+    st.session_state['odd_h_max'] = st.number_input("Odd_H_Max", value=2.00, min_value=1.10, max_value=1000.00)
 with col2:
-    st.session_state['odd_d_min'] = st.number_input("Odd_D_Min", value=2.50, min_value=1.10, max_value=1000.00, key="odd_d_min")
-    st.session_state['odd_d_max'] = st.number_input("Odd_D_Max", value=10.00, min_value=1.10, max_value=1000.00, key="odd_d_max")
+    st.session_state['odd_d_min'] = st.number_input("Odd_D_Min", value=2.50, min_value=1.10, max_value=1000.00)
+    st.session_state['odd_d_max'] = st.number_input("Odd_D_Max", value=10.00, min_value=1.10, max_value=1000.00)
 with col3:
-    st.session_state['odd_a_min'] = st.number_input("Odd_A_Min", value=4.00, min_value=1.10, max_value=1000.00, key="odd_a_min")
-    st.session_state['odd_a_max'] = st.number_input("Odd_A_Max", value=50.00, min_value=1.10, max_value=1000.00, key="odd_a_max")
+    st.session_state['odd_a_min'] = st.number_input("Odd_A_Min", value=4.00, min_value=1.10, max_value=1000.00)
+    st.session_state['odd_a_max'] = st.number_input("Odd_A_Max", value=50.00, min_value=1.10, max_value=1000.00)
 with col4:
-    st.session_state['odd_over25_ft_min'] = st.number_input("Odd_Over25_FT_Min", value=1.30, min_value=1.10, max_value=1000.00, key="odd_over25_ft_min")
-    st.session_state['odd_over25_ft_max'] = st.number_input("Odd_Over25_FT_Max", value=2.00, min_value=1.10, max_value=1000.00, key="odd_over25_ft_max")
+    st.session_state['odd_over25_ft_min'] = st.number_input("Odd_Over25_FT_Min", value=1.30, min_value=1.10, max_value=1000.00)
+    st.session_state['odd_over25_ft_max'] = st.number_input("Odd_Over25_FT_Max", value=2.00, min_value=1.10, max_value=1000.00)
 with col5:
-    st.session_state['odd_btts_min'] = st.number_input("Odd_BTTS_Min", value=1.30, min_value=1.10, max_value=1000.00, key="odd_btts_min")
-    st.session_state['odd_btts_max'] = st.number_input("Odd_BTTS_Max", value=2.00, min_value=1.10, max_value=1000.00, key="odd_btts_max")
+    st.session_state['odd_btts_min'] = st.number_input("Odd_BTTS_Min", value=1.30, min_value=1.10, max_value=1000.00)
+    st.session_state['odd_btts_max'] = st.number_input("Odd_BTTS_Max", value=2.00, min_value=1.10, max_value=1000.00)
 with col6:
     if st.button("Limpar filtros"):
         st.session_state['odd_h_min'] = 1.10
