@@ -77,7 +77,31 @@ df_hist_mandante_placar = df_hist.loc[
     (df_hist['Season'] == get_season())
 ]
 
-if len(df_hist_mandante_placar) > 0:
-    print_dataframe(df_hist_mandante_placar[['League','Rodada','Time','Home','Away','Odd_H_FT','Odd_D_FT','Odd_A_FT','Odd_Over05_HT','Odd_Over15_FT','Odd_Over25_FT','Odd_BTTS_Yes']])
-else:
-    st.write("Sem jogos com este placar.")
+# if len(df_hist_mandante_placar) > 0:
+#     print_dataframe(df_hist_mandante_placar[['League','Rodada','Time','Home','Away','Odd_H_FT','Odd_D_FT','Odd_A_FT','Odd_Over05_HT','Odd_Over15_FT','Odd_Over25_FT','Odd_BTTS_Yes']])
+# else:
+#     st.write("Sem jogos com este placar.")
+
+st.divider()
+
+col1, col2, col3, col4, col5, col6, col7 = st.columns(7)
+
+with col1:
+    st.button("Profit Acumulado")
+with col2:
+    st.button("Ponto de Saída Punter")
+    st.button("Ocorrências Gerais")
+with col3:
+    st.button("Ponto de Saída Trader")
+    st.button("Ponto de Revisão")
+with col4:
+    st.button("Últimos 5 jogos")
+    st.button("Confronto Direto")
+with col5:
+    st.button("Temporada Atual")
+    st.button("Temporada Anterior")
+with col6:
+    st.button("Match Odds - Back")
+    st.button("Match Odds - Lay")
+with col7:
+    st.button("Over 2.5 FT / BTTS")
