@@ -128,7 +128,13 @@ if st.session_state['active_button'] == "Over 2.5 FT / BTTS":
     df_hist_mandante_over25 = df_hist_mandante_over25.loc[(df_hist['TotalGoals_FT'] > 2.5)]
     over25['Jogos Over 2.5 FT'] = len(df_hist_mandante_over25)
     
-    over25['Winrate'] = f"{str(round(over25['Jogos Over 2.5 FT'] / over25['Jogos analisados'] * 100,2))}%"
+    df_hist_mandante_over25['Profit_Over25'] = df_hist_mandante_over25['Odd_Over25_FT']-1
+
+
+    if over25['Jogos analisados'] > 0:
+        over25['Winrate'] = f"{round((over25['Jogos Over 2.5 FT'] / over25['Jogos analisados']) * 100, 2)}%"
+    else:
+        over25['Winrate'] = "0.0%"
     over25['Profit Acumulado'] = "Em desenvolvimento"
 
     string_over25 = ""
