@@ -133,7 +133,7 @@ if st.session_state['active_button'] == "Over 2.5 FT / BTTS":
 
     string_over25 = ""
     for key, value in over25.items():
-        string_over25.append(f"{key}: {str(value)}, ")
+        string_over25 += f"{key}: {str(value)}, "
 
     if len(df_hist_mandante_over25) > 0:
         st.write(string_over25)
