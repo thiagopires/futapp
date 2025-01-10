@@ -124,7 +124,7 @@ if st.session_state['active_button'] == "Over 2.5 FT / BTTS":
     ]
 
     if len(df_hist_mandante_over25) > 0:
-        print_dataframe(df_hist_mandante_over25[['League','Rodada','Time','Home','Away','Odd_Over25_FT','Goals_H_FT','Goals_A_FT',]])
+        print_dataframe(df_hist_mandante_over25[['League','Rodada','Time','Home','Away','Odd_Over25_FT','Goals_H_FT','Goals_A_FT']])
     else:
         st.write("Sem jogos.")
 
@@ -138,6 +138,6 @@ if st.session_state['active_button'] == "Over 2.5 FT / BTTS":
     ]
 
     if len(df_hist_mandante_btts) > 0:
-        print_dataframe(df_hist_mandante_btts[['League','Rodada','Time','Home','Away','Odd_BTTS_Yes','Odd_H_FT','Odd_A_FT',]])
+        print_dataframe(df_hist_mandante_btts[['League','Rodada','Time','Home','Away','Odd_BTTS_Yes','Goals_H_FT','Goals_A_FT']])
     else:
         st.write("Sem jogos.")
