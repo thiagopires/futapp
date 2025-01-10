@@ -91,7 +91,7 @@ set_odds_filtros(False)
 if st.button("Limpar filtros"):
     set_odds_filtros(True)
 
-col1, col2, col3, col4, col5 = st.columns(6)
+col1, col2, col3, col4, col5 = st.columns(5)
 with col1:
     st.number_input("Odd_H_Min", value=st.session_state.odd_h_min, min_value=1.10, max_value=1000.00, key="odd_h_min")
     st.number_input("Odd_H_Max", value=st.session_state.odd_h_max, min_value=1.10, max_value=1000.00, key="odd_h_max")
