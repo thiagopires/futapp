@@ -129,7 +129,7 @@ if st.session_state['active_button'] == "Over 2.5 FT / BTTS":
     
     over25['Jogos analisados'] = len(df_hist_mandante_over25)
 
-    df_hist_mandante_over25 = df_hist_mandante_over25.loc[(df_hist['TotalGoals_FT'] > 2.5)]
+    # df_hist_mandante_over25 = df_hist_mandante_over25.loc[(df_hist['TotalGoals_FT'] > 2.5)]
     over25['Jogos Over 2.5 FT'] = len(df_hist_mandante_over25)
 
     if over25['Jogos analisados'] > 0:
