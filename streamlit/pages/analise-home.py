@@ -56,6 +56,17 @@ def aba_btts(df_hist, team, side):
     else:
         st.write("Sem jogos.")
 
+def aba_ult10(df_hist, team, side):
+    df = df_hist.loc[
+        (team == df_hist[side]), 
+        ['Date','Season','Home','Away','Goals_H_HT','Goals_A_HT','Goals_H_FT','Goals_A_FT','Odd_H_FT','Odd_D_FT','Odd_A_FT','Odd_Over25_FT','Odd_BTTS_Yes']
+    ].sort_values(by="Date", ascending=False).head(10)
+    
+    if len(df) > 0:
+        print_dataframe(df)
+    else:
+        st.write("Sem jogos.")
+
 def set_odds_filtros(reset=False):
     if reset:
         st.session_state['odd_h_min'] = 1.10
@@ -173,7 +184,7 @@ with col3:
     st.button("Ponto de Saída Trader", use_container_width=True)
     st.button("Ponto de Revisão", use_container_width=True)
 with col4:
-    st.button("Últimos 5 jogos", use_container_width=True)
+    st.button("Últimos 10 jogos", use_container_width=True)
     st.button("Confronto Direto", use_container_width=True)
 with col5:
     st.button("Temporada Atual", use_container_width=True)
@@ -196,6 +207,14 @@ if st.session_state['active_button'] == "Over 2.5 FT / BTTS":
     st.subheader(f"BTTS nos jogos do {mandante}")
     st.write(f"Jogos anteriores do {mandante} que bateram o BTTS")
     aba_btts(df_hist, mandante, "Home")
+
+elif st.session_state['active_button'] == "Últimos 10 jogos":
+
+    st.subheader(f"Últimos 10 jogos do {mandante} como Mandante")
+    aba_ult10(df_hist, mandante, "Home")
+
+    st.subheader(f"Últimos 10 jogos do {mandante} como Visitante")
+    aba_ult10(df_hist, mandante, "Away")
 
     # df_hist_mandante_btts = df_hist.loc[
     #     (df_hist['Home'] == mandante) & 
