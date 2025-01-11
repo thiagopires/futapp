@@ -160,7 +160,7 @@ with colb2:
 
 df_match_selected = df_matches.loc[(df_matches['Home'] == mandante)]
 
-st.text(df_match_selected['Away'])
+st.text(df_match_selected.iloc[0]['Away'])
 
 # df_hist_mandante_placar = df_hist.loc[
 #     (df_hist['Home'] == mandante) & 
