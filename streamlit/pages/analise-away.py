@@ -80,6 +80,17 @@ def set_odds_filtros(reset=False):
         if "odd_btts_min" not in st.session_state: st.session_state['odd_btts_min'] = 1.30
         if "odd_btts_max" not in st.session_state: st.session_state['odd_btts_max'] = 2.00
 
+def aba_ult10(df_hist, team, side):
+    df = df_hist.loc[
+        (team == df_hist[side]), 
+        ['Date','Season','Home','Away','Goals_H_HT','Goals_A_HT','Goals_H_FT','Goals_A_FT','Odd_H_FT','Odd_D_FT','Odd_A_FT','Odd_Over25_FT','Odd_BTTS_Yes']
+    ].sort_values(by="Date", ascending=False).head(10)
+    
+    if len(df) > 0:
+        print_dataframe(df)
+    else:
+        st.write("Sem jogos.")
+
 # Init
 
 data_analise = st.date_input("Data da Análise", get_today())
@@ -173,7 +184,7 @@ with col3:
     st.button("Ponto de Saída Trader", use_container_width=True)
     st.button("Ponto de Revisão", use_container_width=True)
 with col4:
-    st.button("Últimos 5 jogos", use_container_width=True)
+    st.button("Últimos 10 jogos", use_container_width=True)
     st.button("Confronto Direto", use_container_width=True)
 with col5:
     st.button("Temporada Atual", use_container_width=True)
@@ -207,3 +218,11 @@ if st.session_state['active_button'] == "Over 2.5 FT / BTTS":
     #     print_dataframe(df_hist_mandante_btts[['League','Rodada','Time','Home','Away','Odd_BTTS_Yes','Goals_H_FT','Goals_A_FT']])
     # else:
     #     st.write("Sem jogos.")
+
+elif st.session_state['active_button'] == "Últimos 10 jogos":
+
+    st.subheader(f"Últimos 10 jogos do {visitante} como Mandante")
+    aba_ult10(df_hist, visitante, "Home")
+
+    st.subheader(f"Últimos 10 jogos do {visitante} como Visitante")
+    aba_ult10(df_hist, visitante, "Away")
