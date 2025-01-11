@@ -158,6 +158,8 @@ with colb1:
 with colb2:
     placar = st.selectbox("Escolha o Placar", ['0x0','0x1','0x2','0x3','1x0','1x1','1x2','1x3','2x0','2x1','2x2','2x3','3x0','3x1','3x2','3x3'])
 
+df_match_selected = df_matches.loc[(df_matches['Away'] == visitante)]
+
 # df_hist_mandante_placar = df_hist.loc[
 #     (df_hist['Away'] == visitante) & 
 #     (df_hist['Resultado_FT'].str.replace("-","x") == placar) &
@@ -222,8 +224,8 @@ if st.session_state['active_button'] == "Over 2.5 FT / BTTS":
 
 elif st.session_state['active_button'] == "Últimos 10 jogos":
 
-    st.subheader(f"Últimos 10 jogos do {visitante} como Mandante")
-    aba_ult10(df_hist, visitante, "Home")
+    st.subheader(f"Últimos 10 jogos do {df_match_selected["Home"]} como Mandante")
+    aba_ult10(df_hist, df_match_selected["Home"], "Home")
 
     st.subheader(f"Últimos 10 jogos do {visitante} como Visitante")
     aba_ult10(df_hist, visitante, "Away")
