@@ -184,7 +184,8 @@ with col3:
     st.button("Ponto de Saída Trader", use_container_width=True)
     st.button("Ponto de Revisão", use_container_width=True)
 with col4:
-    st.button("Últimos 10 jogos", use_container_width=True)
+    if st.button("Últimos 10 jogos", use_container_width=True):
+        st.session_state['active_button'] = "Últimos 10 jogos"
     st.button("Confronto Direto", use_container_width=True)
 with col5:
     st.button("Temporada Atual", use_container_width=True)
