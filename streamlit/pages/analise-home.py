@@ -158,9 +158,7 @@ with colb1:
 with colb2:
     placar = st.selectbox("Escolha o Placar", ['0x0','0x1','0x2','0x3','1x0','1x1','1x2','1x3','2x0','2x1','2x2','2x3','3x0','3x1','3x2','3x3'])
 
-df_match_selected = df_matches.loc[(df_matches['Home'] == mandante)]
-
-st.text(df_match_selected.iloc[0]['Away'])
+visitante = df_matches.loc[(df_matches['Home'] == mandante)].iloc[0]["Away"]
 
 # df_hist_mandante_placar = df_hist.loc[
 #     (df_hist['Home'] == mandante) & 
@@ -218,8 +216,8 @@ elif st.session_state['active_button'] == "Últimos 10 jogos":
     st.subheader(f"Últimos 10 jogos do {mandante} como Mandante")
     aba_ult10(df_hist, mandante, "Home")
 
-    st.subheader(f"Últimos 10 jogos do {df_match_selected['Away']} como Visitante")
-    aba_ult10(df_hist, df_match_selected['Away'], "Away")
+    st.subheader(f"Últimos 10 jogos do {visitante} como Visitante")
+    aba_ult10(df_hist, visitante, "Away")
 
     # df_hist_mandante_btts = df_hist.loc[
     #     (df_hist['Home'] == mandante) & 
