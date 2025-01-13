@@ -4,7 +4,7 @@ import plotly.express as px
 
 from utils.functions import *
 
-if st.session_state.authenticated == False:
+if "authenticated" not in st.session_state or st.session_state.authenticated == False:
     st.write("Faça o login")
 else:
     pd.set_option('display.max_columns', None)

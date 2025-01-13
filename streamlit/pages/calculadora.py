@@ -2,7 +2,7 @@ import streamlit as st
 
 from utils.functions import *
 
-if st.session_state.authenticated == False:
+if "authenticated" not in st.session_state or st.session_state.authenticated == False:
     st.write("Faça o login")
 else:
     st.set_page_config(layout="wide")
