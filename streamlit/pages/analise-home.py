@@ -119,7 +119,7 @@ else:
         filter = (df['Goals_H_FT'] == df['Goals_A_FT'])
 
         df['Profit_Back_Draw'] = -1    
-        df.loc[filter, 'Profit_Back_Draw'] = round(df['Odd_H_FT']-1, 2)
+        df.loc[filter, 'Profit_Back_Draw'] = round(df['Odd_D_FT']-1, 2)
 
         dict['Profit Acumulado'] = f"{str(round(df['Profit_Back_Draw'].sum(), 2))} unidades"
 
