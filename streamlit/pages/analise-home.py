@@ -3,12 +3,14 @@ import pandas as pd
 
 from utils.functions import *
 
+pd.set_option('display.max_columns', None)
+pd.set_option('display.max_rows', None)
+st.set_page_config(layout="wide")
+
 if "authenticated" not in st.session_state or st.session_state.authenticated == False:
     st.write("Faça o login")
 else:
-    pd.set_option('display.max_columns', None)
-    pd.set_option('display.max_rows', None)
-    st.set_page_config(layout="wide")
+
     st.title("⚽ Análise Home")
 
     def aba_over25(df_hist, team, side):
@@ -305,34 +307,34 @@ else:
 
             if st.session_state['active_button'] == "Over 2.5 FT / BTTS":
                         
-                st.subheader(f"Over 2.5 FT nos jogos do {mandante}")
-                st.write(f"Jogos anteriores do {mandante} que bateram o Over 2.5 FT")    
+                st.write(f"**Over 2.5 FT nos jogos do {mandante}")
+                st.write(f"Jogos anteriores do {mandante} que bateram o Over 2.5 FT**")    
                 aba_over25(df_hist, mandante, "Home")
 
-                st.subheader(f"BTTS nos jogos do {mandante}")
-                st.write(f"Jogos anteriores do {mandante} que bateram o BTTS")
+                st.write(f"**BTTS nos jogos do {mandante}")
+                st.write(f"Jogos anteriores do {mandante} que bateram o BTTS**")
                 aba_btts(df_hist, mandante, "Home")
 
             elif st.session_state['active_button'] == "Últimos 10 jogos":
 
-                st.subheader(f"Últimos 10 jogos do {mandante} como Mandante")
+                st.write(f"**Últimos 10 jogos do {mandante} como Mandante**")
                 aba_ult10(df_hist, mandante, "Home")
 
-                st.subheader(f"Últimos 10 jogos do {visitante} como Visitante")
+                st.write(f"**Últimos 10 jogos do {visitante} como Visitante**")
                 aba_ult10(df_hist, visitante, "Away")
 
             elif st.session_state['active_button'] == "Confronto Direto":
-                st.subheader(f"Confronto direto - Temporadas passadas")
+                st.write(f"**Confronto direto - Temporadas passadas**")
                 aba_confrontodireto(df_hist, mandante, visitante)
 
             elif st.session_state['active_button'] == "Match Odds - Back":
-                st.subheader(f"Back Home (Apostar no {mandante})")
+                st.write(f"**Back Home (Apostar no {mandante})")
                 aba_back_home(df_hist, mandante)
 
-                st.subheader(f"Back Draw (Apostar no Empate nos jogos do {mandante})")
+                st.write(f"**Back Draw (Apostar no Empate nos jogos do {mandante})**")
                 aba_back_draw(df_hist, mandante)
 
-                st.subheader(f"Back Away (Apostar no Adversário do {mandante})")
+                st.write(f"**Back Away (Apostar no Adversário do {mandante})**")
                 aba_back_away(df_hist, mandante)
 
             # df_hist_mandante_btts = df_hist.loc[

@@ -3,12 +3,12 @@ import pandas as pd
 
 from utils.functions import *
 
+
+
 if "authenticated" not in st.session_state or st.session_state.authenticated == False:
     st.write("Faça o login")
 else:
-    pd.set_option('display.max_columns', None)
-    pd.set_option('display.max_rows', None)
-    st.set_page_config(layout="wide")
+
     st.title("⚽ Análise Away")
 
     def aba_over25(df_hist, team, side):
@@ -206,7 +206,7 @@ else:
         
     if st.session_state['active_button'] == "Over 2.5 FT / BTTS":
                 
-        st.subheader(f"Over 2.5 FT nos jogos do {visitante}")
+        st.write(f"**Over 2.5 FT nos jogos do {visitante}**")
         st.write(f"Jogos anteriores do {visitante} que bateram o Over 2.5 FT")    
         aba_over25(df_hist, visitante, "Away")
 
@@ -227,8 +227,8 @@ else:
 
     elif st.session_state['active_button'] == "Últimos 10 jogos":
 
-        st.subheader(f"Últimos 10 jogos do {df_match_selected["Home"]} como Mandante")
+        st.write(f"**Últimos 10 jogos do {df_match_selected["Home"]} como Mandante**")
         aba_ult10(df_hist, df_match_selected["Home"], "Home")
 
-        st.subheader(f"Últimos 10 jogos do {visitante} como Visitante")
+        st.write(f"**Últimos 10 jogos do {visitante} como Visitante**")
         aba_ult10(df_hist, visitante, "Away")
