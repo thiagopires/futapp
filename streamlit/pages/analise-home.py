@@ -311,7 +311,7 @@ else:
                 st.write(f"**Jogos anteriores do {mandante} que bateram o Over 2.5 FT**")    
                 aba_over25(df_hist, mandante, "Home")
 
-                st.write(f"**BTTS nos jogos do {mandante}")
+                st.write(f"**BTTS nos jogos do {mandante}**")
                 st.write(f"**Jogos anteriores do {mandante} que bateram o BTTS**")
                 aba_btts(df_hist, mandante, "Home")
 
