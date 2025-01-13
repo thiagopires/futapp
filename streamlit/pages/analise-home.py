@@ -171,8 +171,7 @@ with colb2:
     placar = st.selectbox("Escolha o Placar", ['0x0','0x1','0x2','0x3','1x0','1x1','1x2','1x3','2x0','2x1','2x2','2x3','3x0','3x1','3x2','3x3'])
 
 df_match_selected = df_matches.loc[(df_matches['Home'] == mandante)]
-if len(df_match_selected) > 0:
-    visitante = df_match_selected.iloc[0]["Away"]
+
 
 # df_hist_mandante_placar = df_hist.loc[
 #     (df_hist['Home'] == mandante) & 
@@ -215,28 +214,32 @@ with col7:
         st.session_state['active_button'] = "Over 2.5 FT / BTTS"
         
 ###
-     
-if st.session_state['active_button'] == "Over 2.5 FT / BTTS":
-            
-    st.subheader(f"Over 2.5 FT nos jogos do {mandante}")
-    st.write(f"Jogos anteriores do {mandante} que bateram o Over 2.5 FT")    
-    aba_over25(df_hist, mandante, "Home")
 
-    st.subheader(f"BTTS nos jogos do {mandante}")
-    st.write(f"Jogos anteriores do {mandante} que bateram o BTTS")
-    aba_btts(df_hist, mandante, "Home")
+if len(df_match_selected) > 0:
 
-elif st.session_state['active_button'] == "Últimos 10 jogos":
+    visitante = df_match_selected.iloc[0]["Away"]
 
-    st.subheader(f"Últimos 10 jogos do {mandante} como Mandante")
-    aba_ult10(df_hist, mandante, "Home")
+    if st.session_state['active_button'] == "Over 2.5 FT / BTTS":
+                
+        st.subheader(f"Over 2.5 FT nos jogos do {mandante}")
+        st.write(f"Jogos anteriores do {mandante} que bateram o Over 2.5 FT")    
+        aba_over25(df_hist, mandante, "Home")
 
-    st.subheader(f"Últimos 10 jogos do {visitante} como Visitante")
-    aba_ult10(df_hist, visitante, "Away")
+        st.subheader(f"BTTS nos jogos do {mandante}")
+        st.write(f"Jogos anteriores do {mandante} que bateram o BTTS")
+        aba_btts(df_hist, mandante, "Home")
 
-elif st.session_state['active_button'] == "Confronto Direto":
-    st.subheader(f"Confronto direto - Temporadas passadas")
-    aba_confrontodireto(df_hist, mandante, visitante)
+    elif st.session_state['active_button'] == "Últimos 10 jogos":
+
+        st.subheader(f"Últimos 10 jogos do {mandante} como Mandante")
+        aba_ult10(df_hist, mandante, "Home")
+
+        st.subheader(f"Últimos 10 jogos do {visitante} como Visitante")
+        aba_ult10(df_hist, visitante, "Away")
+
+    elif st.session_state['active_button'] == "Confronto Direto":
+        st.subheader(f"Confronto direto - Temporadas passadas")
+        aba_confrontodireto(df_hist, mandante, visitante)
 
     # df_hist_mandante_btts = df_hist.loc[
     #     (df_hist['Home'] == mandante) & 
