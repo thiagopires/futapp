@@ -2,6 +2,46 @@ import streamlit as st
 
 st.set_page_config(layout="wide")
 
-st.title("Web App Football Data")
+USERS = {
+    "admin": "1234",
+    "user": "abcd"
+}
 
-st.write("Escolha um módulo na sidebar.")
+def authenticate(username, password):
+    return USERS.get(username) == password
+
+if "authenticated" not in st.session_state:
+    st.session_state.authenticated = False
+
+if not st.session_state.authenticated:
+    st.title("Login")
+
+    username = st.text_input("Usuário", key="username")
+    password = st.text_input("Senha", type="password", key="password")
+    login_button = st.button("Entrar")
+
+    if login_button:
+        if authenticate(username, password):
+            st.session_state.authenticated = True
+            st.success("Login realizado com sucesso!")
+            st.experimental_rerun()
+        else:
+            st.error("Usuário ou senha incorretos.")
+else:
+    st.title("Página Principal")
+    st.write("Você está autenticado!")
+
+    # Botão para logout
+    if st.button("Logout"):
+        st.session_state.authenticated = False
+        st.experimental_rerun()
+
+
+
+# import streamlit as st
+
+# st.set_page_config(layout="wide")
+
+# st.title("Web App Football Data")
+
+# st.write("Escolha um módulo na sidebar.")
