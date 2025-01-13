@@ -16,8 +16,8 @@ if "authenticated" not in st.session_state:
 if not st.session_state.authenticated:
     st.title("Login")
 
-    username = st.text_input("Usuário", key="username")
-    password = st.text_input("Senha", type="password", key="password")
+    username = st.text_input("Usuário", value="admin", key="username")
+    password = st.text_input("Senha", value="1234", type="password", key="password")
     login_button = st.button("Entrar")
 
     if login_button:
@@ -34,7 +34,7 @@ else:
     # Botão para logout
     if st.button("Logout"):
         st.session_state.authenticated = False
-        st.experimental_rerun()
+        # st.experimental_rerun()
 
 
 
