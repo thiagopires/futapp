@@ -307,12 +307,12 @@ else:
 
             if st.session_state['active_button'] == "Over 2.5 FT / BTTS":
                         
-                st.write(f"**Over 2.5 FT nos jogos do {mandante}")
-                st.write(f"Jogos anteriores do {mandante} que bateram o Over 2.5 FT**")    
+                st.write(f"**Over 2.5 FT nos jogos do {mandante}**")
+                st.write(f"**Jogos anteriores do {mandante} que bateram o Over 2.5 FT**")    
                 aba_over25(df_hist, mandante, "Home")
 
                 st.write(f"**BTTS nos jogos do {mandante}")
-                st.write(f"Jogos anteriores do {mandante} que bateram o BTTS**")
+                st.write(f"**Jogos anteriores do {mandante} que bateram o BTTS**")
                 aba_btts(df_hist, mandante, "Home")
 
             elif st.session_state['active_button'] == "Últimos 10 jogos":
