@@ -100,8 +100,8 @@ def aba_back_home(df_hist, team):
     dict['Winrate'] = f"{round((dict[f'Jogos vencidos pelo {team}'] / dict['Jogos analisados']) * 100, 2)}%" if dict['Jogos analisados'] > 0 else "0.0%"
  
     if len(df) > 0:
-        st.write(f"Jogos analisados: {dict['Jogos analisados']} — Jogos Over 2.5 FT: {dict[f'Jogos vencidos pelo {team}']} — Winrate: {dict['Winrate']} — Profit Acumulado: {dict['Profit Acumulado']}")
-        print_dataframe(df[['League','Season','Date','Home','Away','Odd_Over25_FT','Goals_H_FT','Goals_A_FT','Profit_Back_Home']])
+        st.write(f"Jogos analisados: {dict['Jogos analisados']} — Jogos vencidos pelo {team}: {dict[f'Jogos vencidos pelo {team}']} — Winrate: {dict['Winrate']} — Profit Acumulado: {dict['Profit Acumulado']}")
+        print_dataframe(df[['League','Season','Date','Home','Away','Odd_H_FT','Odd_D_FT','Odd_A_FT','Goals_H_FT','Goals_A_FT','Profit_Back_Home']])
     else:
         st.write("Sem jogos.")
 
@@ -270,7 +270,7 @@ if len(df_match_selected) > 0:
         aba_confrontodireto(df_hist, mandante, visitante)
 
     elif st.session_state['active_button'] == "Match Odds - Back":
-        st.subheader(f"Match Odds - Backs")
+        st.subheader(f"Back Home (Apostar no {mandante})")
         aba_back_home(df_hist, mandante)
 
     # df_hist_mandante_btts = df_hist.loc[
