@@ -328,7 +328,7 @@ else:
                 aba_confrontodireto(df_hist, mandante, visitante)
 
             elif st.session_state['active_button'] == "Match Odds - Back":
-                st.write(f"**Back Home (Apostar no {mandante})")
+                st.write(f"**Back Home (Apostar no {mandante})**")
                 aba_back_home(df_hist, mandante)
 
                 st.write(f"**Back Draw (Apostar no Empate nos jogos do {mandante})**")
