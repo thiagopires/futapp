@@ -67,6 +67,18 @@ def aba_ult10(df_hist, team, side):
     else:
         st.write("Sem jogos.")
 
+def aba_confrontodireto(df_hist, home, away):
+    filter = (df_hist["Home"].isin([home, away])) & (df_hist["Away"].isin([home, away]))
+    df = df_hist.loc[
+        filter, 
+        ['Date','Season','Home','Away','Goals_H_HT','Goals_A_HT','Goals_H_FT','Goals_A_FT','Odd_H_FT','Odd_D_FT','Odd_A_FT','Odd_Over25_FT','Odd_BTTS_Yes']
+    ].sort_values(by="Date", ascending=False)
+    
+    if len(df) > 0:
+        print_dataframe(df)
+    else:
+        st.write("Sem jogos.")
+
 def set_odds_filtros(reset=False):
     if reset:
         st.session_state['odd_h_min'] = 1.10
@@ -188,7 +200,8 @@ with col3:
 with col4:
     if st.button("Últimos 10 jogos", use_container_width=True):
         st.session_state['active_button'] = "Últimos 10 jogos"
-    st.button("Confronto Direto", use_container_width=True)
+    if st.button("Confronto Direto", use_container_width=True):
+        st.session_state['active_button'] = "Confronto Direto"
 with col5:
     st.button("Temporada Atual", use_container_width=True)
     st.button("Temporada Anterior", use_container_width=True)
@@ -218,6 +231,10 @@ elif st.session_state['active_button'] == "Últimos 10 jogos":
 
     st.subheader(f"Últimos 10 jogos do {visitante} como Visitante")
     aba_ult10(df_hist, visitante, "Away")
+
+elif st.session_state['active_button'] == "Confronto Direto":
+    st.subheader(f"Confronto direto - Temporadas passadas")
+    aba_confrontodireto(df_hist, mandante, visitante)
 
     # df_hist_mandante_btts = df_hist.loc[
     #     (df_hist['Home'] == mandante) & 
