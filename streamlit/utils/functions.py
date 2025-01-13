@@ -35,7 +35,7 @@ def load_daymatches(dt):
     return df
 
 @st.cache_data
-def load_histmatches():
+def load_histmatches(dt=None):
 
     def first_goal_string(row):
         def parse_minutes(value, team):
@@ -69,6 +69,7 @@ def load_histmatches():
             return '-'  # Caso não haja gols
     
     df = pd.read_csv("https://github.com/futpythontrader/YouTube/blob/main/Bases_de_Dados/FootyStats/Base_de_Dados_FootyStats_(2022_2024).csv?raw=true")
+    if dt: df = df.loc[(df["Date"] < dt)]
     df[["Date", "Time"]] = df["Date"].str.split(" ", expand=True)
     df["Date"] = pd.to_datetime(df["Date"])
     df["Formatted_Date"] = df["Date"].dt.strftime("%d/%m/%Y")

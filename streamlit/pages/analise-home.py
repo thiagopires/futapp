@@ -162,7 +162,7 @@ else:
 
     data_analise = st.date_input("Data da Análise", get_today())
     df_matches = load_daymatches(data_analise)
-    df_hist = load_histmatches()
+    df_hist = load_histmatches(data_analise)
 
 
     st.divider()
