@@ -108,6 +108,32 @@ else:
         else:
             st.write("Sem jogos.")
 
+    def aba_back_draw(df_hist, team):
+        dict = {}
+        df = df_hist.loc[
+            (df_hist["Home"] == team) & 
+            ((df_hist['Season'] == get_current_season()) | (df_hist['Season'] == get_last_season()))
+        ]
+        dict['Jogos analisados'] = len(df)
+
+        filter = (df['Goals_H_FT'] == df['Goals_A_FT'])
+
+        df['Profit_Back_Draw'] = -1    
+        df.loc[filter, 'Profit_Back_Draw'] = round(df['Odd_H_FT']-1, 2)
+
+        dict['Profit Acumulado'] = f"{str(round(df['Profit_Back_Draw'].sum(), 2))} unidades"
+
+        df = df.loc[filter]
+        dict[f'Jogos empatados pelo {team}'] = len(df)
+
+        dict['Winrate'] = f"{round((dict[f'Jogos empatados pelo {team}'] / dict['Jogos analisados']) * 100, 2)}%" if dict['Jogos analisados'] > 0 else "0.0%"
+    
+        if len(df) > 0:
+            st.write(f"Jogos analisados: {dict['Jogos analisados']} — Jogos empatados pelo {team}: {dict[f'Jogos empatados pelo {team}']} — Winrate: {dict['Winrate']} — Profit Acumulado: {dict['Profit Acumulado']}")
+            print_dataframe(df[['League','Season','Date','Home','Away','Odd_H_FT','Odd_D_FT','Odd_A_FT','Goals_H_FT','Goals_A_FT','Profit_Back_Draw']])
+        else:
+            st.write("Sem jogos.")
+
     def set_odds_filtros(reset=False):
         if reset:
             st.session_state['odd_h_min'] = 1.10
@@ -276,6 +302,9 @@ else:
             elif st.session_state['active_button'] == "Match Odds - Back":
                 st.subheader(f"Back Home (Apostar no {mandante})")
                 aba_back_home(df_hist, mandante)
+
+                st.subheader(f"Back Draw (Apostar no Empate nos jogos do {mandante})")
+                aba_back_draw(df_hist, mandante)
 
             # df_hist_mandante_btts = df_hist.loc[
             #     (df_hist['Home'] == mandante) & 
