@@ -24,7 +24,7 @@ if not st.session_state.authenticated:
         if authenticate(username, password):
             st.session_state.authenticated = True
             st.success("Login realizado com sucesso!")
-            st.experimental_rerun()
+            # st.experimental_rerun()
         else:
             st.error("Usuário ou senha incorretos.")
 else:
