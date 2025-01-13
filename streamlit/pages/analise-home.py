@@ -170,7 +170,9 @@ with colb1:
 with colb2:
     placar = st.selectbox("Escolha o Placar", ['0x0','0x1','0x2','0x3','1x0','1x1','1x2','1x3','2x0','2x1','2x2','2x3','3x0','3x1','3x2','3x3'])
 
-visitante = df_matches.loc[(df_matches['Home'] == mandante)].iloc[0]["Away"]
+df_match_selected = df_matches.loc[(df_matches['Home'] == mandante)]
+if len(df_match_selected) > 0:
+    visitante = df_match_selected.iloc[0]["Away"]
 
 # df_hist_mandante_placar = df_hist.loc[
 #     (df_hist['Home'] == mandante) & 
