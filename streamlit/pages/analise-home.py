@@ -271,23 +271,23 @@ else:
         st.session_state['active_button'] = ""
 
         col1, col2, col3, col4, col5, col6, col7 = st.columns(7)
-        with col1:
-            if st.button("Profit Acumulado", use_container_width=True):
-                st.session_state['active_button'] = "Profit Acumulado"
-        with col2:
-            st.button("Ponto de Saída Punter", use_container_width=True)
-            st.button("Ocorrências Gerais", use_container_width=True)
-        with col3:
-            st.button("Ponto de Saída Trader", use_container_width=True)
-            st.button("Ponto de Revisão", use_container_width=True)
+        # with col1:
+        #     if st.button("Profit Acumulado", use_container_width=True):
+        #         st.session_state['active_button'] = "Profit Acumulado"
+        # with col2:
+        #     st.button("Ponto de Saída Punter", use_container_width=True)
+        #     st.button("Ocorrências Gerais", use_container_width=True)
+        # with col3:
+        #     st.button("Ponto de Saída Trader", use_container_width=True)
+        #     st.button("Ponto de Revisão", use_container_width=True)
         with col4:
             if st.button("Últimos 10 jogos", use_container_width=True):
                 st.session_state['active_button'] = "Últimos 10 jogos"
             if st.button("Confronto Direto", use_container_width=True):
                 st.session_state['active_button'] = "Confronto Direto"
-        with col5:
-            st.button("Temporada Atual", use_container_width=True)
-            st.button("Temporada Anterior", use_container_width=True)
+        # with col5:
+        #     st.button("Temporada Atual", use_container_width=True)
+        #     st.button("Temporada Anterior", use_container_width=True)
         with col6:
             if st.button("Match Odds - Back", use_container_width=True):
                 st.session_state['active_button'] = "Match Odds - Back"
