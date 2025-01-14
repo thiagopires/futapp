@@ -3,8 +3,13 @@
 
 # from utils.functions import *
 
+# if "authenticated" not in st.session_state or st.session_state.authenticated == False:
+#     st.write("Faça o login")
+# else:
 
+#     st.title("⚽ Análise Away")
 
+<<<<<<< HEAD
 # if "authenticated" not in st.session_state or st.session_state.authenticated == False:
 #     st.write("Faça o login")
 # else:
@@ -27,6 +32,24 @@
 #         df = df.loc[(df_hist['TotalGoals_FT'] > 2.5)]
 #         dict['Jogos Over 2.5 FT'] = len(df)
 
+=======
+#     def aba_over25(df_hist, team, side):
+#         dict = {}
+#         df = df_hist.loc[
+#             (df_hist[side] == team) & 
+#             ((df_hist['Season'] == get_current_season()) | (df_hist['Season'] == get_last_season()))
+#         ]
+#         dict['Jogos analisados'] = len(df)
+
+#         df['Profit_Over25'] = -1
+#         df.loc[df['TotalGoals_FT'] > 2.5, 'Profit_Over25'] = round(df['Odd_Over25_FT']-1, 2)
+
+#         dict['Profit Acumulado'] = f"{str(round(df['Profit_Over25'].sum(), 2))} unidades"
+
+#         df = df.loc[(df_hist['TotalGoals_FT'] > 2.5)]
+#         dict['Jogos Over 2.5 FT'] = len(df)
+
+>>>>>>> ca0e7b545bf1a631a3402bdeb0143fc479a98737
 #         dict['Winrate'] = f"{round((dict['Jogos Over 2.5 FT'] / dict['Jogos analisados']) * 100, 2)}%" if dict['Jogos analisados'] > 0 else "0.0%"
     
 #         if len(df) > 0:
@@ -212,7 +235,11 @@
 
 #         st.subheader(f"BTTS nos jogos do {visitante}")
 #         st.write(f"Jogos anteriores do {visitante} que bateram o BTTS")
+<<<<<<< HEAD
 #         aba_btts(df_hist, visitante, "Away")
+=======
+#        aba_btts(df_hist, visitante, "Away")
+>>>>>>> ca0e7b545bf1a631a3402bdeb0143fc479a98737
 
 #         # df_hist_mandante_btts = df_hist.loc[
 #         #     (df_hist['Home'] == mandante) & 
@@ -231,4 +258,8 @@
 #         aba_ult10(df_hist, df_match_selected["Home"], "Home")
 
 #         st.write(f"**Últimos 10 jogos do {visitante} como Visitante**")
+<<<<<<< HEAD
 #         aba_ult10(df_hist, visitante, "Away")
+=======
+#         aba_ult10(df_hist, visitante, "Away")
+>>>>>>> ca0e7b545bf1a631a3402bdeb0143fc479a98737
