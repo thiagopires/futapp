@@ -147,10 +147,10 @@ else:
         else:
             st.write("Sem jogos.")
 
-    def aba_back_home(df_hist, team):
+    def aba_back_home(df_hist, team, side):
         dict = {}
         df = df_hist.loc[
-            (df_hist["Home"] == team) & 
+            (df_hist[side] == team) & 
             ((df_hist['Season'] == get_current_season()) | (df_hist['Season'] == get_last_season()))
         ]
         dict['Jogos analisados'] = len(df)
@@ -173,10 +173,10 @@ else:
         else:
             st.write("Sem jogos.")
 
-    def aba_back_draw(df_hist, team):
+    def aba_back_draw(df_hist, team, side):
         dict = {}
         df = df_hist.loc[
-            (df_hist["Home"] == team) & 
+            (df_hist[side] == team) & 
             ((df_hist['Season'] == get_current_season()) | (df_hist['Season'] == get_last_season()))
         ]
         dict['Jogos analisados'] = len(df)
@@ -199,10 +199,10 @@ else:
         else:
             st.write("Sem jogos.")
 
-    def aba_back_away(df_hist, team):
+    def aba_back_away(df_hist, team, side):
         dict = {}
         df = df_hist.loc[
-            (df_hist["Home"] == team) & 
+            (df_hist[side] == team) & 
             ((df_hist['Season'] == get_current_season()) | (df_hist['Season'] == get_last_season()))
         ]
         dict['Jogos analisados'] = len(df)
@@ -224,6 +224,85 @@ else:
             print_dataframe(df[['League','Season','Date','Home','Away','Odd_H_FT','Odd_D_FT','Odd_A_FT','Goals_H_FT','Goals_A_FT','Profit_Back_Away']])
         else:
             st.write("Sem jogos.")
+
+    def aba_lay_home(df_hist, team, side):
+        dict = {}
+        df = df_hist.loc[
+            (df_hist[side] == team) & 
+            ((df_hist['Season'] == get_current_season()) | (df_hist['Season'] == get_last_season()))
+        ]
+        dict['Jogos analisados'] = len(df)
+
+        filter = (df['Goals_H_FT'] <= df['Goals_A_FT'])
+
+        df['Profit_Back_Home'] = -1    
+        df.loc[filter, 'Profit_Back_Home'] = round(df['Odd_H_FT']-1, 2)
+
+        dict['Profit Acumulado'] = f"{str(round(df['Profit_Back_Home'].sum(), 2))} unidades"
+
+        df = df.loc[filter]
+        dict[f'Jogos vencidos pelo {team}'] = len(df)
+
+        dict['Winrate'] = f"{round((dict[f'Jogos vencidos pelo {team}'] / dict['Jogos analisados']) * 100, 2)}%" if dict['Jogos analisados'] > 0 else "0.0%"
+    
+        if len(df) > 0:
+            st.write(f"Jogos analisados: {dict['Jogos analisados']} — Jogos vencidos pelo {team}: {dict[f'Jogos vencidos pelo {team}']} — Winrate: {dict['Winrate']} — Profit Acumulado: {dict['Profit Acumulado']}")
+            print_dataframe(df[['League','Season','Date','Home','Away','Odd_H_FT','Odd_D_FT','Odd_A_FT','Goals_H_FT','Goals_A_FT','Profit_Back_Home']])
+        else:
+            st.write("Sem jogos.")
+
+    def aba_lay_draw(df_hist, team, side):
+        dict = {}
+        df = df_hist.loc[
+            (df_hist[side] == team) & 
+            ((df_hist['Season'] == get_current_season()) | (df_hist['Season'] == get_last_season()))
+        ]
+        dict['Jogos analisados'] = len(df)
+
+        filter = (df['Goals_H_FT'] != df['Goals_A_FT'])
+
+        df['Profit_Back_Draw'] = -1    
+        df.loc[filter, 'Profit_Back_Draw'] = round(df['Odd_D_FT']-1, 2)
+
+        dict['Profit Acumulado'] = f"{str(round(df['Profit_Back_Draw'].sum(), 2))} unidades"
+
+        df = df.loc[filter]
+        dict[f'Jogos empatados pelo {team}'] = len(df)
+
+        dict['Winrate'] = f"{round((dict[f'Jogos empatados pelo {team}'] / dict['Jogos analisados']) * 100, 2)}%" if dict['Jogos analisados'] > 0 else "0.0%"
+    
+        if len(df) > 0:
+            st.write(f"Jogos analisados: {dict['Jogos analisados']} — Jogos empatados pelo {team}: {dict[f'Jogos empatados pelo {team}']} — Winrate: {dict['Winrate']} — Profit Acumulado: {dict['Profit Acumulado']}")
+            print_dataframe(df[['League','Season','Date','Home','Away','Odd_H_FT','Odd_D_FT','Odd_A_FT','Goals_H_FT','Goals_A_FT','Profit_Back_Draw']])
+        else:
+            st.write("Sem jogos.")
+
+    def aba_lay_away(df_hist, team, side):
+        dict = {}
+        df = df_hist.loc[
+            (df_hist[side] == team) & 
+            ((df_hist['Season'] == get_current_season()) | (df_hist['Season'] == get_last_season()))
+        ]
+        dict['Jogos analisados'] = len(df)
+
+        filter = (df['Goals_H_FT'] >= df['Goals_A_FT'])
+
+        df['Profit_Back_Away'] = -1    
+        df.loc[filter, 'Profit_Back_Away'] = round(df['Odd_A_FT']-1, 2)
+
+        dict['Profit Acumulado'] = f"{str(round(df['Profit_Back_Away'].sum(), 2))} unidades"
+
+        df = df.loc[filter]
+        dict[f'Jogos perdidos pelo {team}'] = len(df)
+
+        dict['Winrate'] = f"{round((dict[f'Jogos perdidos pelo {team}'] / dict['Jogos analisados']) * 100, 2)}%" if dict['Jogos analisados'] > 0 else "0.0%"
+    
+        if len(df) > 0:
+            st.write(f"Jogos analisados: {dict['Jogos analisados']} — Jogos perdidos pelo {team}: {dict[f'Jogos perdidos pelo {team}']} — Winrate: {dict['Winrate']} — Profit Acumulado: {dict['Profit Acumulado']}")
+            print_dataframe(df[['League','Season','Date','Home','Away','Odd_H_FT','Odd_D_FT','Odd_A_FT','Goals_H_FT','Goals_A_FT','Profit_Back_Away']])
+        else:
+            st.write("Sem jogos.")
+
 
     def set_odds_filtros(reset=False):
         if reset:
@@ -394,6 +473,16 @@ else:
 
                 st.write(f"**Back Away (Apostar no Adversário do {mandante})**")
                 aba_back_away(df_hist, mandante)
+
+            elif st.session_state['active_button'] == "Match Odds - Lay":
+                st.write(f"**Lay Home (Apostar contra o {mandante})**")
+                aba_lay_home(df_hist, mandante)
+
+                st.write(f"**Lay Draw (Apostar cintra o Empate nos jogos do {mandante})**")
+                aba_lay_draw(df_hist, mandante)
+
+                st.write(f"**Lay Away (Apostar contra o Adversário do {mandante})**")
+                aba_lay_away(df_hist, mandante)
 
             # elif any(item in st.session_state['active_button'] for item in ["", "Ponto de Saída Punter"]):
             elif st.session_state['active_button'] == "Ponto de Saída Punter":
