@@ -72,6 +72,27 @@ else:
         else:
             st.write("Sem jogos.")
 
+    def aba_ponto_de_saida_punter(df_hist, team, side, score):
+
+        df = df_hist.loc[
+            (df_hist[side] == team) & 
+            ((df_hist['Season'] == get_current_season()) | (df_hist['Season'] == get_last_season()))
+        ]
+        jogos_analisados = len(df)
+    
+        df = df.loc[
+            (score.replace("x","-") == df_hist['Resultado_FT']), 
+            ['Date','Season','Home','Away','Goals_H_HT','Goals_A_HT','Goals_H_FT','Goals_A_FT','Odd_H_FT','Odd_D_FT','Odd_A_FT','Odd_Over25_FT','Odd_BTTS_Yes']
+        ].sort_values(by="Date", ascending=False)
+        
+        if len(df) > 0:
+            print_dataframe(df)
+        else:
+            st.write(f"Não houveam jogos anteriores do {mandante} terminados em {placar}")
+
+        st.write("Ponto de Saída: ")
+        st.write(f"Jogos Analisados: {jogos_analisados}")
+
     def aba_confrontodireto(df_hist, home, away):
         filter = (df_hist["Home"].isin([home, away])) & (df_hist["Away"].isin([home, away]))
         df = df_hist.loc[
@@ -276,8 +297,9 @@ else:
         # with col1:
         #     if st.button("Profit Acumulado", use_container_width=True):
         #         st.session_state['active_button'] = "Profit Acumulado"
-        # with col2:
-        #     st.button("Ponto de Saída Punter", use_container_width=True)
+        with col2:
+            if st.button("Ponto de Saída Punter", use_container_width=True):
+                st.session_state['active_button'] = "Ponto de Saída Punter"
         #     st.button("Ocorrências Gerais", use_container_width=True)
         # with col3:
         #     st.button("Ponto de Saída Trader", use_container_width=True)
@@ -336,6 +358,13 @@ else:
 
                 st.write(f"**Back Away (Apostar no Adversário do {mandante})**")
                 aba_back_away(df_hist, mandante)
+
+            elif ["","Ponto de Saída Punter"] in st.session_state['active_button']:
+                
+                st.write("**Análise dos jogos anteriores terminados no placar selecionado**")
+                st.write(f"Jogos anteriores do {mandante} terminados em {placar}")
+                aba_ponto_de_saida_punter(df_hist, mandante, "Home", placar)
+                
 
             # df_hist_mandante_btts = df_hist.loc[
             #     (df_hist['Home'] == mandante) & 
