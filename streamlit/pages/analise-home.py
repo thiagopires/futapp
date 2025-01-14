@@ -359,7 +359,7 @@ else:
                 st.write(f"**Back Away (Apostar no Adversário do {mandante})**")
                 aba_back_away(df_hist, mandante)
 
-            elif ["","Ponto de Saída Punter"] in st.session_state['active_button']:
+            elif any(item in st.session_state['active_button'] for item in ["", "Ponto de Saída Punter"]):
                 
                 st.write("**Análise dos jogos anteriores terminados no placar selecionado**")
                 st.write(f"Jogos anteriores do {mandante} terminados em {placar}")
