@@ -254,8 +254,4 @@
 #         aba_ult10(df_hist, df_match_selected["Home"], "Home")
 
 #         st.write(f"**Últimos 10 jogos do {visitante} como Visitante**")
-<<<<<<< HEAD
 #         aba_ult10(df_hist, visitante, "Away")
-=======
-#         aba_ult10(df_hist, visitante, "Away")
->>>>>>> ca0e7b545bf1a631a3402bdeb0143fc479a98737
