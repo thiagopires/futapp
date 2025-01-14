@@ -147,7 +147,9 @@ else:
             if st.button("Placares Singulares", use_container_width=True):
                 st.session_state['active_button'] = "Placares Singulares"
                 
-        ###
+        
+        st.divider()
+
 
         if len(df_match_selected) > 0:
 
