@@ -72,7 +72,7 @@ else:
         else:
             st.write("Sem jogos.")
 
-    def aba_ponto_de_saida_2t(df_hist, team, side, score):
+    def aba_ponto_de_saida_punter(df_hist, team, side, score):
 
         df = df_hist.loc[
             (df_hist[side] == team) & 
@@ -88,12 +88,33 @@ else:
         if len(df) > 0:
             print_dataframe(df)
         else:
-            st.write(f"Não houveam jogos anteriores do {mandante} terminados em {placar}")
+            st.write(f"Não houve jogos anteriores do {mandante} terminados em {placar}")
 
         st.write("Ponto de Saída: ")
         st.write(f"Jogos Analisados: {jogos_analisados}")
 
-    def aba_ponto_de_revisao_1t(df_hist, team, side, score):
+    def aba_ponto_de_saida_trader(df_hist, team, side, score):
+
+        df = df_hist.loc[
+            (df_hist[side] == team) & 
+            ((df_hist['Season'] == get_current_season()) | (df_hist['Season'] == get_last_season()))
+        ]
+        jogos_analisados = len(df)
+    
+        df = df.loc[
+            (score.replace("x","-") == df_hist['Resultado_75']), 
+            ['Date','Season','Home','Away','Goals_H_HT','Goals_A_HT','Goals_H_FT','Goals_A_FT','Odd_H_FT','Odd_D_FT','Odd_A_FT','Odd_Over25_FT','Odd_BTTS_Yes']
+        ].sort_values(by="Date", ascending=False)
+        
+        if len(df) > 0:
+            print_dataframe(df)
+        else:
+            st.write(f"Não houve jogos anteriores do {mandante} que estavam em {placar} no minuto 75")
+
+        st.write("Ponto de Saída: ")
+        st.write(f"Jogos Analisados: {jogos_analisados}")
+
+    def aba_ponto_de_revisao_ht(df_hist, team, side, score):
 
         df = df_hist.loc[
             (df_hist[side] == team) & 
@@ -109,7 +130,7 @@ else:
         if len(df) > 0:
             print_dataframe(df)
         else:
-            st.write(f"Não houveam jogos anteriores do {mandante} no intervalo em {placar}")
+            st.write(f"Não houve jogos anteriores do {mandante} no intervalo em {placar}")
 
         st.write("Ponto de Saída: ")
         st.write(f"Jogos Analisados: {jogos_analisados}")
@@ -319,13 +340,14 @@ else:
         #     if st.button("Profit Acumulado", use_container_width=True):
         #         st.session_state['active_button'] = "Profit Acumulado"
         with col2:
-            if st.button("Ponto de Saída (2o. tempo)", use_container_width=True):
-                st.session_state['active_button'] = "Ponto de Saída (2o. tempo)"
+            if st.button("Ponto de Saída Punter", use_container_width=True):
+                st.session_state['active_button'] = "Ponto de Saída Punter"
         #     st.button("Ocorrências Gerais", use_container_width=True)
         with col3:
-        #     st.button("Ponto de Saída Trader", use_container_width=True)
-              if st.button("Ponto de Revisão (1o. tempo)", use_container_width=True):
-                  st.session_state['active_button'] = "Ponto de Revisão (1o. tempo)"
+            if st.button("Ponto de Saída Trader", use_container_width=True):
+                st.session_state['active_button'] = "Ponto de Saída Trader"
+            if st.button("Ponto de Revisão HT", use_container_width=True):
+                  st.session_state['active_button'] = "Ponto de Revisão HT"
         with col4:
             if st.button("Últimos 10 jogos", use_container_width=True):
                 st.session_state['active_button'] = "Últimos 10 jogos"
@@ -381,18 +403,22 @@ else:
                 st.write(f"**Back Away (Apostar no Adversário do {mandante})**")
                 aba_back_away(df_hist, mandante)
 
-            # elif any(item in st.session_state['active_button'] for item in ["", "Ponto de Saída (2o. tempo)"]):
-            elif st.session_state['active_button'] == "Ponto de Saída (2o. tempo)":
+            # elif any(item in st.session_state['active_button'] for item in ["", "Ponto de Saída Punter"]):
+            elif st.session_state['active_button'] == "Ponto de Saída Punter":
     
                 st.write("**Análise dos jogos anteriores terminados no placar selecionado**")
                 st.write(f"Jogos anteriores do {mandante} terminados em {placar}")
-                aba_ponto_de_saida_2t(df_hist, mandante, "Home", placar)
+                aba_ponto_de_saida_punter(df_hist, mandante, "Home", placar)
                 
-            elif st.session_state['active_button'] == "Ponto de Revisão (1o. tempo)":
+            elif st.session_state['active_button'] == "Ponto de Revisão HT":
                 
                 st.write("**Análise dos jogos anteriores no intervalo com o placar selecionado**")
                 st.write(f"Jogos anteriores do {mandante} que terminaram em {placar} no HT.")
-                aba_ponto_de_revisao_1t(df_hist, mandante, "Home", placar)
+                aba_ponto_de_revisao_ht(df_hist, mandante, "Home", placar)
+
+            elif st.session_state['active_button'] == "Ponto de Saída Trader":
+
+                aba_ponto_de_saida_trader(df_hist, mandante, "Home", placar)
             
 
             # df_hist_mandante_btts = df_hist.loc[

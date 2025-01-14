@@ -68,6 +68,17 @@ def load_histmatches(dt=None):
         else:
             return '-'  # Caso não haja gols
     
+    def calcular_resultado_75(row):
+        # Processar os minutos para casa e visitante
+        gols_home = [int(minuto.split('+')[0]) for minuto in eval(row['Goals_H_Minutes']) if int(minuto.split('+')[0]) <= 75]
+        gols_away = [int(minuto.split('+')[0]) for minuto in eval(row['Goals_A_Minutes']) if int(minuto.split('+')[0]) <= 75]
+
+        # Contar os gols marcados até o minuto 75
+        gols_home_75 = len(gols_home)
+        gols_away_75 = len(gols_away)
+
+        return f"{gols_home_75}-{gols_away_75}"
+
     df = pd.read_csv("https://github.com/futpythontrader/YouTube/blob/main/Bases_de_Dados/FootyStats/Base_de_Dados_FootyStats_(2022_2024).csv?raw=true")
     df[["Date", "Time"]] = df["Date"].str.split(" ", expand=True)
     df["Date"] = pd.to_datetime(df["Date"])
@@ -75,6 +86,7 @@ def load_histmatches(dt=None):
     df["Formatted_Date"] = df["Date"].dt.strftime("%d/%m/%Y")
     df["Resultado_HT"] = df["Goals_H_HT"].astype(str) + "-" + df["Goals_A_HT"].astype(str)
     df["Resultado_FT"] = df["Goals_H_FT"].astype(str) + "-" + df["Goals_A_FT"].astype(str)
+    df['Resultado_75'] = df.apply(calcular_resultado_75, axis=1)
     df["Primeiro_Gol"] = df.apply(first_goal_string, axis=1)
 
     return df
