@@ -485,19 +485,16 @@ else:
                 
             elif st.session_state['active_button'] == "Ponto de Revisão HT":
                 
-                st.write("**Análise dos jogos anteriores no intervalo com o placar selecionado**")
                 st.write(f"Jogos anteriores do **{mandante}** que terminaram em **{placar}** no HT.")
                 aba_ponto_de_revisao_ht(df_hist, mandante, "Home", placar)
 
             elif st.session_state['active_button'] == "Ponto de Saída Trader":
                 
-                st.write("**Análise dos jogos anteriores no minuto 75 com o placar selecionado**")
                 st.write(f"Jogos anteriores do **{mandante}** que estavam em **{placar}** no minuto 75.")
                 aba_ponto_de_saida_trader(df_hist, mandante, "Home", placar)
 
             elif any(item == st.session_state['active_button'] for item in ["", "Ponto de Saída Punter"]):
             # elif st.session_state['active_button'] == "Ponto de Saída Punter":
     
-                st.write("**Análise dos jogos anteriores terminados no placar selecionado**")
                 st.write(f"Jogos anteriores do **{mandante}** terminados em **{placar}**")
                 aba_ponto_de_saida_punter(df_hist, mandante, "Home", placar)
