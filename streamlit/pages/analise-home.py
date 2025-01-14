@@ -8,7 +8,8 @@ pd.set_option('display.max_rows', None)
 st.set_page_config(layout="wide")
 
 if "authenticated" not in st.session_state or st.session_state.authenticated == False:
-    st.write("Faça o login")
+    st.write("Faça o login na página app.")
+    st.experimental_set_query_params(page="app")
 else:
 
     st.title("⚽ Análise Home")
