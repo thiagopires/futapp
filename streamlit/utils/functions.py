@@ -73,6 +73,7 @@ def load_histmatches(dt=None):
     df["Date"] = pd.to_datetime(df["Date"])
     if dt: df = df.loc[(df["Date"] < pd.to_datetime(dt))]
     df["Formatted_Date"] = df["Date"].dt.strftime("%d/%m/%Y")
+    df["Resultado_HT"] = df["Goals_H_HT"].astype(str) + "-" + df["Goals_A_HT"].astype(str)
     df["Resultado_FT"] = df["Goals_H_FT"].astype(str) + "-" + df["Goals_A_FT"].astype(str)
     df["Primeiro_Gol"] = df.apply(first_goal_string, axis=1)
 

@@ -235,11 +235,7 @@
 
 #         st.subheader(f"BTTS nos jogos do {visitante}")
 #         st.write(f"Jogos anteriores do {visitante} que bateram o BTTS")
-<<<<<<< HEAD
 #         aba_btts(df_hist, visitante, "Away")
-=======
-#        aba_btts(df_hist, visitante, "Away")
->>>>>>> ca0e7b545bf1a631a3402bdeb0143fc479a98737
 
 #         # df_hist_mandante_btts = df_hist.loc[
 #         #     (df_hist['Home'] == mandante) & 
