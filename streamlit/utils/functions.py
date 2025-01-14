@@ -370,3 +370,293 @@ def calcular_estatisticas_adicionais(df, team_name, side):
     }
 
     return pd.DataFrame(estatisticas_adicionais_time)
+
+def aba_over25(df_hist, team, side):
+    dict = {}
+    df = df_hist.loc[
+        (df_hist[side] == team) & 
+        ((df_hist['Season'] == get_current_season()) | (df_hist['Season'] == get_last_season()))
+    ]
+    dict['Jogos analisados'] = len(df)
+
+    df['Profit_Over25'] = -1
+    df.loc[df['TotalGoals_FT'] > 2.5, 'Profit_Over25'] = round(df['Odd_Over25_FT']-1, 2)
+
+    dict['Profit Acumulado'] = f"{str(round(df['Profit_Over25'].sum(), 2))} unidades"
+
+    df = df.loc[(df_hist['TotalGoals_FT'] > 2.5)]
+    dict['Jogos Over 2.5 FT'] = len(df)
+
+    dict['Winrate'] = f"{round((dict['Jogos Over 2.5 FT'] / dict['Jogos analisados']) * 100, 2)}%" if dict['Jogos analisados'] > 0 else "0.0%"
+
+    if len(df) > 0:
+        st.write(f"Jogos analisados: {dict['Jogos analisados']} — Jogos Over 2.5 FT: {dict['Jogos Over 2.5 FT']} — Winrate: {dict['Winrate']} — Profit Acumulado: {dict['Profit Acumulado']}")
+        print_dataframe(df[['League','Season','Date','Home','Away','Odd_Over25_FT','Goals_H_FT','Goals_A_FT','Profit_Over25']])
+    else:
+        st.write("Sem jogos.")
+
+def aba_btts(df_hist, team, side):
+    dict = {}
+    df = df_hist.loc[
+        (df_hist[side] == team) & 
+        ((df_hist['Season'] == get_current_season()) | (df_hist['Season'] == get_last_season()))
+    ]
+    dict['Jogos analisados'] = len(df)
+
+    df['Profit_BTTS'] = -1
+    df.loc[(df['Goals_H_FT'] >= 1) & (df['Goals_A_FT'] >= 1), 'Profit_BTTS'] = round(df['Odd_BTTS_Yes']-1, 2)
+
+    dict['Profit Acumulado'] = f"{str(round(df['Profit_BTTS'].sum(), 2))} unidades"
+
+    df = df.loc[(df['Goals_H_FT'] >= 1) & (df['Goals_A_FT'] >= 1)]
+    dict['Jogos BTTS'] = len(df)
+
+    dict['Winrate'] = f"{round((dict['Jogos BTTS'] / dict['Jogos analisados']) * 100, 2)}%" if dict['Jogos analisados'] > 0 else "0.0%"
+
+    if len(df) > 0:
+        st.write(f"Jogos analisados: {dict['Jogos analisados']} — Jogos BTTS: {dict['Jogos BTTS']} — Winrate: {dict['Winrate']} — Profit Acumulado: {dict['Profit Acumulado']}")
+        print_dataframe(df[['League','Season','Date','Home','Away','Odd_BTTS_Yes','Goals_H_FT','Goals_A_FT','Profit_BTTS']])
+    else:
+        st.write("Sem jogos.")
+
+def aba_ult10(df_hist, team, side):
+    df = df_hist.loc[
+        (team == df_hist[side]), 
+        ['Date','Season','Home','Away','Goals_H_HT','Goals_A_HT','Goals_H_FT','Goals_A_FT','Odd_H_FT','Odd_D_FT','Odd_A_FT','Odd_Over25_FT','Odd_BTTS_Yes']
+    ].sort_values(by="Date", ascending=False).head(10)
+    
+    if len(df) > 0:
+        print_dataframe(df)
+    else:
+        st.write("Sem jogos.")
+
+def aba_ponto_de_saida_punter(df_hist, team, side, score):
+
+    df = df_hist.loc[
+        (df_hist[side] == team) & 
+        ((df_hist['Season'] == get_current_season()) | (df_hist['Season'] == get_last_season()))
+    ]
+    jogos_analisados = len(df)
+
+    df = df.loc[
+        (score.replace("x","-") == df_hist['Resultado_FT']), 
+        ['Date','Season','Home','Away','Goals_H_HT','Goals_A_HT','Goals_H_FT','Goals_A_FT','Odd_H_FT','Odd_D_FT','Odd_A_FT','Odd_Over25_FT','Odd_BTTS_Yes']
+    ].sort_values(by="Date", ascending=False)
+    
+    if len(df) > 0:
+        print_dataframe(df)
+    else:
+        st.write(f"Não houve jogos anteriores do {team} terminados em {score}")
+
+    st.write("Ponto de Saída: ")
+    st.write(f"Jogos Analisados: {jogos_analisados}")
+
+def aba_ponto_de_saida_trader(df_hist, team, side, score):
+
+    df = df_hist.loc[
+        (df_hist[side] == team) & 
+        ((df_hist['Season'] == get_current_season()) | (df_hist['Season'] == get_last_season()))
+    ]
+    jogos_analisados = len(df)
+
+    df = df.loc[
+        (score.replace("x","-") == df_hist['Resultado_75']), 
+        ['Date','Season','Home','Away','Goals_H_HT','Goals_A_HT','Goals_H_FT','Goals_A_FT','Odd_H_FT','Odd_D_FT','Odd_A_FT','Odd_Over25_FT','Odd_BTTS_Yes']
+    ].sort_values(by="Date", ascending=False)
+    
+    if len(df) > 0:
+        print_dataframe(df)
+    else:
+        st.write(f"Não houve jogos anteriores do {team} que estavam em {score} no minuto 75")
+
+    st.write("Ponto de Saída: ")
+    st.write(f"Jogos Analisados: {jogos_analisados}")
+
+def aba_ponto_de_revisao_ht(df_hist, team, side, score):
+
+    df = df_hist.loc[
+        (df_hist[side] == team) & 
+        ((df_hist['Season'] == get_current_season()) | (df_hist['Season'] == get_last_season()))
+    ]
+    jogos_analisados = len(df)
+
+    df = df.loc[
+        (score.replace("x","-") == df_hist['Resultado_HT']), 
+        ['Date','Season','Home','Away','Goals_H_HT','Goals_A_HT','Goals_H_FT','Goals_A_FT','Odd_H_FT','Odd_D_FT','Odd_A_FT','Odd_Over25_FT','Odd_BTTS_Yes']
+    ].sort_values(by="Date", ascending=False)
+    
+    if len(df) > 0:
+        print_dataframe(df)
+    else:
+        st.write(f"Não houve jogos anteriores do {team} no intervalo em {score}")
+
+    st.write("Ponto de Saída: ")
+    st.write(f"Jogos Analisados: {jogos_analisados}")
+
+def aba_confrontodireto(df_hist, home, away):
+    filter = (df_hist["Home"].isin([home, away])) & (df_hist["Away"].isin([home, away]))
+    df = df_hist.loc[
+        filter, 
+        ['Date','Season','Home','Away','Goals_H_HT','Goals_A_HT','Goals_H_FT','Goals_A_FT','Odd_H_FT','Odd_D_FT','Odd_A_FT','Odd_Over25_FT','Odd_BTTS_Yes']
+    ].sort_values(by="Date", ascending=False)
+    
+    if len(df) > 0:
+        print_dataframe(df)
+    else:
+        st.write("Sem jogos.")
+
+def aba_back_home(df_hist, team, side):
+    dict = {}
+    df = df_hist.loc[
+        (df_hist[side] == team) & 
+        ((df_hist['Season'] == get_current_season()) | (df_hist['Season'] == get_last_season()))
+    ]
+    dict['Jogos analisados'] = len(df)
+
+    filter = (df['Goals_H_FT'] > df['Goals_A_FT'])
+
+    df['Profit_Back_Home'] = -1    
+    df.loc[filter, 'Profit_Back_Home'] = round(df['Odd_H_FT']-1, 2)
+
+    dict['Profit Acumulado'] = f"{str(round(df['Profit_Back_Home'].sum(), 2))} unidades"
+
+    df = df.loc[filter]
+    dict[f'Jogos vencidos pelo {team}'] = len(df)
+
+    dict['Winrate'] = f"{round((dict[f'Jogos vencidos pelo {team}'] / dict['Jogos analisados']) * 100, 2)}%" if dict['Jogos analisados'] > 0 else "0.0%"
+
+    if len(df) > 0:
+        st.write(f"Jogos analisados: {dict['Jogos analisados']} — Jogos vencidos pelo {team}: {dict[f'Jogos vencidos pelo {team}']} — Winrate: {dict['Winrate']} — Profit Acumulado: {dict['Profit Acumulado']}")
+        print_dataframe(df[['League','Season','Date','Home','Away','Odd_H_FT','Odd_D_FT','Odd_A_FT','Goals_H_FT','Goals_A_FT','Profit_Back_Home']])
+    else:
+        st.write("Sem jogos.")
+
+def aba_back_draw(df_hist, team, side):
+    dict = {}
+    df = df_hist.loc[
+        (df_hist[side] == team) & 
+        ((df_hist['Season'] == get_current_season()) | (df_hist['Season'] == get_last_season()))
+    ]
+    dict['Jogos analisados'] = len(df)
+
+    filter = (df['Goals_H_FT'] == df['Goals_A_FT'])
+
+    df['Profit_Back_Draw'] = -1    
+    df.loc[filter, 'Profit_Back_Draw'] = round(df['Odd_D_FT']-1, 2)
+
+    dict['Profit Acumulado'] = f"{str(round(df['Profit_Back_Draw'].sum(), 2))} unidades"
+
+    df = df.loc[filter]
+    dict[f'Jogos empatados pelo {team}'] = len(df)
+
+    dict['Winrate'] = f"{round((dict[f'Jogos empatados pelo {team}'] / dict['Jogos analisados']) * 100, 2)}%" if dict['Jogos analisados'] > 0 else "0.0%"
+
+    if len(df) > 0:
+        st.write(f"Jogos analisados: {dict['Jogos analisados']} — Jogos empatados pelo {team}: {dict[f'Jogos empatados pelo {team}']} — Winrate: {dict['Winrate']} — Profit Acumulado: {dict['Profit Acumulado']}")
+        print_dataframe(df[['League','Season','Date','Home','Away','Odd_H_FT','Odd_D_FT','Odd_A_FT','Goals_H_FT','Goals_A_FT','Profit_Back_Draw']])
+    else:
+        st.write("Sem jogos.")
+
+def aba_back_away(df_hist, team, side):
+    dict = {}
+    df = df_hist.loc[
+        (df_hist[side] == team) & 
+        ((df_hist['Season'] == get_current_season()) | (df_hist['Season'] == get_last_season()))
+    ]
+    dict['Jogos analisados'] = len(df)
+
+    filter = (df['Goals_H_FT'] < df['Goals_A_FT'])
+
+    df['Profit_Back_Away'] = -1    
+    df.loc[filter, 'Profit_Back_Away'] = round(df['Odd_A_FT']-1, 2)
+
+    dict['Profit Acumulado'] = f"{str(round(df['Profit_Back_Away'].sum(), 2))} unidades"
+
+    df = df.loc[filter]
+    dict[f'Jogos perdidos pelo {team}'] = len(df)
+
+    dict['Winrate'] = f"{round((dict[f'Jogos perdidos pelo {team}'] / dict['Jogos analisados']) * 100, 2)}%" if dict['Jogos analisados'] > 0 else "0.0%"
+
+    if len(df) > 0:
+        st.write(f"Jogos analisados: {dict['Jogos analisados']} — Jogos perdidos pelo {team}: {dict[f'Jogos perdidos pelo {team}']} — Winrate: {dict['Winrate']} — Profit Acumulado: {dict['Profit Acumulado']}")
+        print_dataframe(df[['League','Season','Date','Home','Away','Odd_H_FT','Odd_D_FT','Odd_A_FT','Goals_H_FT','Goals_A_FT','Profit_Back_Away']])
+    else:
+        st.write("Sem jogos.")
+
+def aba_lay_home(df_hist, team, side):
+    dict = {}
+    df = df_hist.loc[
+        (df_hist[side] == team) & 
+        ((df_hist['Season'] == get_current_season()) | (df_hist['Season'] == get_last_season()))
+    ]
+    dict['Jogos analisados'] = len(df)
+
+    filter = (df['Goals_H_FT'] <= df['Goals_A_FT'])
+
+    df['Profit_Back_Home'] = -1    
+    df.loc[filter, 'Profit_Back_Home'] = round(df['Odd_DC_X2']-1, 2)
+
+    dict['Profit Acumulado'] = f"{str(round(df['Profit_Back_Home'].sum(), 2))} unidades"
+
+    df = df.loc[filter]
+    dict[f'Jogos não vencidos pelo {team}'] = len(df)
+
+    dict['Winrate'] = f"{round((dict[f'Jogos não vencidos pelo {team}'] / dict['Jogos analisados']) * 100, 2)}%" if dict['Jogos analisados'] > 0 else "0.0%"
+
+    if len(df) > 0:
+        st.write(f"Jogos analisados: {dict['Jogos analisados']} — Jogos não vencidos pelo {team}: {dict[f'Jogos não vencidos pelo {team}']} — Winrate: {dict['Winrate']} — Profit Acumulado: {dict['Profit Acumulado']}")
+        print_dataframe(df[['League','Season','Date','Home','Away','Odd_DC_1X','Odd_DC_12','Odd_DC_X2','Goals_H_FT','Goals_A_FT','Profit_Back_Home']])
+    else:
+        st.write("Sem jogos.")
+
+def aba_lay_draw(df_hist, team, side):
+    dict = {}
+    df = df_hist.loc[
+        (df_hist[side] == team) & 
+        ((df_hist['Season'] == get_current_season()) | (df_hist['Season'] == get_last_season()))
+    ]
+    dict['Jogos analisados'] = len(df)
+
+    filter = (df['Goals_H_FT'] != df['Goals_A_FT'])
+
+    df['Profit_Back_Draw'] = -1    
+    df.loc[filter, 'Profit_Back_Draw'] = round(df['Odd_DC_12']-1, 2)
+
+    dict['Profit Acumulado'] = f"{str(round(df['Profit_Back_Draw'].sum(), 2))} unidades"
+
+    df = df.loc[filter]
+    dict[f'Jogos não empatados pelo {team}'] = len(df)
+
+    dict['Winrate'] = f"{round((dict[f'Jogos não empatados pelo {team}'] / dict['Jogos analisados']) * 100, 2)}%" if dict['Jogos analisados'] > 0 else "0.0%"
+
+    if len(df) > 0:
+        st.write(f"Jogos analisados: {dict['Jogos analisados']} — Jogos não empatados pelo {team}: {dict[f'Jogos não empatados pelo {team}']} — Winrate: {dict['Winrate']} — Profit Acumulado: {dict['Profit Acumulado']}")
+        print_dataframe(df[['League','Season','Date','Home','Away','Odd_DC_1X','Odd_DC_12','Odd_DC_X2','Goals_H_FT','Goals_A_FT','Profit_Back_Draw']])
+    else:
+        st.write("Sem jogos.")
+
+def aba_lay_away(df_hist, team, side):
+    dict = {}
+    df = df_hist.loc[
+        (df_hist[side] == team) & 
+        ((df_hist['Season'] == get_current_season()) | (df_hist['Season'] == get_last_season()))
+    ]
+    dict['Jogos analisados'] = len(df)
+
+    filter = (df['Goals_H_FT'] >= df['Goals_A_FT'])
+
+    df['Profit_Back_Away'] = -1    
+    df.loc[filter, 'Profit_Back_Away'] = round(df['Odd_DC_1X']-1, 2)
+
+    dict['Profit Acumulado'] = f"{str(round(df['Profit_Back_Away'].sum(), 2))} unidades"
+
+    df = df.loc[filter]
+    dict[f'Jogos não vencidos pelo Adversário do {team}'] = len(df)
+
+    dict['Winrate'] = f"{round((dict[f'Jogos não vencidos pelo Adversário do {team}'] / dict['Jogos analisados']) * 100, 2)}%" if dict['Jogos analisados'] > 0 else "0.0%"
+
+    if len(df) > 0:
+        st.write(f"Jogos analisados: {dict['Jogos analisados']} — Jogos não vencidos pelo Adversário do {team}: {dict[f'Jogos não vencidos pelo Adversário do {team}']} — Winrate: {dict['Winrate']} — Profit Acumulado: {dict['Profit Acumulado']}")
+        print_dataframe(df[['League','Season','Date','Home','Away','Odd_DC_1X','Odd_DC_12','Odd_DC_X2','Goals_H_FT','Goals_A_FT','Profit_Back_Away']])
+    else:
+        st.write("Sem jogos.")
