@@ -5,7 +5,7 @@ from datetime import date
 from utils.functions import *
 
 if "authenticated" not in st.session_state or st.session_state.authenticated == False:
-    st.write("Faça o login")
+    st.write("Faça o login na página 'app'.")
 else:
     pd.set_option('display.max_columns', None)
     pd.set_option('display.max_rows', None)

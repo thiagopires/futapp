@@ -3,7 +3,7 @@ import streamlit as st
 from utils.functions import *
 
 if "authenticated" not in st.session_state or st.session_state.authenticated == False:
-    st.write("Faça o login")
+    st.write("Faça o login na página 'app'.")
 else:
     st.set_page_config(layout="wide")
     st.title("⚽ Calculadora")
