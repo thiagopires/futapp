@@ -24,7 +24,7 @@ if not st.session_state.authenticated:
         if authenticate(username, password):
             st.session_state.authenticated = True
             st.success("Login realizado com sucesso!")
-            # st.experimental_rerun()
+            st.info("Escolha um módulo no menu lateral.")
         else:
             st.error("Usuário ou senha incorretos.")
 else:
@@ -34,7 +34,6 @@ else:
     # Botão para logout
     if st.button("Logout"):
         st.session_state.authenticated = False
-        # st.experimental_rerun()
 
 
 
