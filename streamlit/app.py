@@ -28,19 +28,9 @@ if not st.session_state.authenticated:
         else:
             st.error("Usuário ou senha incorretos.")
 else:
-    st.title("Página Principal")
+    st.title("Web App Football Data")
     st.write("Você está autenticado!")
 
     # Botão para logout
     if st.button("Logout"):
         st.session_state.authenticated = False
-
-
-
-# import streamlit as st
-
-# st.set_page_config(layout="wide")
-
-# st.title("Web App Football Data")
-
-# st.write("Escolha um módulo na sidebar.")
