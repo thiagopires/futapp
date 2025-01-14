@@ -438,8 +438,15 @@ def aba_ponto_de_saida_punter(df_hist, team, side, score):
     ]
     jogos_analisados = len(df)
 
+    if score == 'Goleada_H':
+        filter = (df_hist['Goals_H_FT'] >= 4 & df_hist['Goals_H_FT'] > df_hist['Goals_A_FT'])
+    elif score == 'Goleada_A':
+        filter = (df_hist['Goals_A_FT'] >= 4 & df_hist['Goals_A_FT'] > df_hist['Goals_H_FT'])
+    else:
+        filter = (score.replace("x","-") == df_hist['Resultado_FT'])
+
     df = df.loc[
-        (score.replace("x","-") == df_hist['Resultado_FT']), 
+        filter, 
         ['Date','Season','Home','Away','Goals_H_HT','Goals_A_HT','Goals_H_FT','Goals_A_FT','Odd_H_FT','Odd_D_FT','Odd_A_FT','Odd_Over25_FT','Odd_BTTS_Yes']
     ].sort_values(by="Date", ascending=False)
     
@@ -459,8 +466,15 @@ def aba_ponto_de_saida_trader(df_hist, team, side, score):
     ]
     jogos_analisados = len(df)
 
+    if score == 'Goleada_H':
+        filter = (df_hist['Goals_H_FT'] >= 4 & df_hist['Goals_H_FT'] > df_hist['Goals_A_FT'])
+    elif score == 'Goleada_A':
+        filter = (df_hist['Goals_A_FT'] >= 4 & df_hist['Goals_A_FT'] > df_hist['Goals_H_FT'])
+    else:
+        filter = (score.replace("x","-") == df_hist['Resultado_75'])
+
     df = df.loc[
-        (score.replace("x","-") == df_hist['Resultado_75']), 
+        filter, 
         ['Date','Season','Home','Away','Goals_H_HT','Goals_A_HT','Goals_H_FT','Goals_A_FT','Odd_H_FT','Odd_D_FT','Odd_A_FT','Odd_Over25_FT','Odd_BTTS_Yes']
     ].sort_values(by="Date", ascending=False)
     
@@ -480,8 +494,15 @@ def aba_ponto_de_revisao_ht(df_hist, team, side, score):
     ]
     jogos_analisados = len(df)
 
+    if score == 'Goleada_H':
+        filter = (df_hist['Goals_H_FT'] >= 4 & df_hist['Goals_H_FT'] > df_hist['Goals_A_FT'])
+    elif score == 'Goleada_A':
+        filter = (df_hist['Goals_A_FT'] >= 4 & df_hist['Goals_A_FT'] > df_hist['Goals_H_FT'])
+    else:
+        filter = (score.replace("x","-") == df_hist['Resultado_HT'])
+
     df = df.loc[
-        (score.replace("x","-") == df_hist['Resultado_HT']), 
+        filter, 
         ['Date','Season','Home','Away','Goals_H_HT','Goals_A_HT','Goals_H_FT','Goals_A_FT','Odd_H_FT','Odd_D_FT','Odd_A_FT','Odd_Over25_FT','Odd_BTTS_Yes']
     ].sort_values(by="Date", ascending=False)
     
@@ -660,3 +681,76 @@ def aba_lay_away(df_hist, team, side):
         print_dataframe(df[['League','Season','Date','Home','Away','Odd_DC_1X','Odd_DC_12','Odd_DC_X2','Goals_H_FT','Goals_A_FT','Profit_Back_Away']])
     else:
         st.write("Sem jogos.")
+
+def resultados_singulares(df_hist, team, side):
+
+    df = df_hist.loc[
+        (df_hist[side] == team) & 
+        ((df_hist['Season'] == get_current_season()) | (df_hist['Season'] == get_last_season()))
+    ]
+
+    # Lista de resultados possíveis
+    resultados_possiveis = [
+        f"{h}x{a}" for h in range(4) for a in range(4)
+    ] + ["Goleada_H", "Goleada_A"]
+
+    # Extrair resultados finais
+    resultados_ocorridos = []
+    for _, row in df.iterrows():
+        placar = f"{row['Goals_H_FT']}x{row['Goals_A_FT']}"
+        resultados_ocorridos.append(placar)
+        
+        # Verificar goleadas
+        if row['Goals_H_FT'] >= 4 and row['Goals_H_FT'] > row['Goals_A_FT']:
+            resultados_ocorridos.append("Goleada_H")
+        elif row['Goals_A_FT'] >= 4 and row['Goals_A_FT'] > row['Goals_H_FT']:
+            resultados_ocorridos.append("Goleada_A")
+
+    # Identificar resultados ausentes
+    resultados_ausentes = set(resultados_possiveis) - set(resultados_ocorridos)
+
+    # Classificar resultados ausentes como singulares
+    resultados_singulares = [f"O Placar {r} é SINGULAR" for r in resultados_ausentes]
+
+    for resultado in resultados_singulares:
+        st.write(resultado)
+
+
+def analise_ocorrencia_placar(df_hist, home, away, score):
+
+    df_home = df_hist.loc[
+        (df_hist["Home"] == home) & 
+        ((df_hist['Season'] == get_current_season()) | (df_hist['Season'] == get_last_season()))
+    ]
+
+    df_away = df_hist.loc[
+        (df_hist["Away"] == away) & 
+        ((df_hist['Season'] == get_current_season()) | (df_hist['Season'] == get_last_season()))
+    ]
+
+    if score == 'Goleada_H':
+        filter = (df_hist['Goals_H_FT'] >= 4 & df_hist['Goals_H_FT'] > df_hist['Goals_A_FT'])
+    elif score == 'Goleada_A':
+        filter = (df_hist['Goals_A_FT'] >= 4 & df_hist['Goals_A_FT'] > df_hist['Goals_H_FT'])
+    else:
+        filter = (score.replace("x","-") == df_hist['Resultado_FT'])
+
+    # Calcular ocorrências para o Home
+    total_jogos = len(df_home)
+    ocorrencias_home = df_home[filter].shape[0]
+
+    # Calcular ocorrências para o Away
+    ocorrencias_away = df_away[filter].shape[0]
+
+    # Calcular ocorrências totais (confronto)
+    ocorrencias_total = ocorrencias_home + ocorrencias_away
+
+    # Calcular porcentagens
+    porcentagem_home = (ocorrencias_home / total_jogos) * 100 if total_jogos > 0 else 0
+    porcentagem_away = (ocorrencias_away / total_jogos) * 100 if total_jogos > 0 else 0
+    porcentagem_total = (ocorrencias_total / total_jogos) * 100 if total_jogos > 0 else 0
+
+    # Retornar resultados formatados
+    st.write(f"Placar {score} com {porcentagem_home:.2f} % de ocorrência para o Home (Pesquisa desde 2021)\n")
+    st.write(f"Placar {score} com {porcentagem_away:.2f} % de ocorrência para o Away (Pesquisa desde 2021)\n")
+    st.write(f"Placar {score} com {porcentagem_total:.2f} % de ocorrência para o Confronto (Pesquisa desde 2021)")

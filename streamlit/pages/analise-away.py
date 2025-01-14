@@ -105,7 +105,7 @@ else:
         with colb1:
             visitante = st.selectbox("Escolha o Visitante", df_matches['Away'])
         with colb2:
-            placar = st.selectbox("Escolha o Placar", ['0x0','0x1','0x2','0x3','1x0','1x1','1x2','1x3','2x0','2x1','2x2','2x3','3x0','3x1','3x2','3x3'])
+            placar = st.selectbox("Escolha o Placar", ['0x0','0x1','0x2','0x3','1x0','1x1','1x2','1x3','2x0','2x1','2x2','2x3','3x0','3x1','3x2','3x3','Goleada_H','Goleada_A'])
 
         df_match_selected = df_matches.loc[(df_matches['Away'] == visitante)]
 
@@ -144,6 +144,8 @@ else:
         with col7:
             if st.button("Over 2.5 FT / BTTS", use_container_width=True):
                 st.session_state['active_button'] = "Over 2.5 FT / BTTS"
+            if st.button("Placares Singulares", use_container_width=True):
+                st.session_state['active_button'] = "Placares Singulares"
                 
         ###
 
@@ -202,6 +204,15 @@ else:
                 
                 st.write(f"**Jogos anteriores do {visitante} que estavam em {placar} no minuto 75.**")
                 aba_ponto_de_saida_trader(df_hist, visitante, "Away", placar)
+            
+            elif st.session_state['active_button'] == "Placares Singulares":
+                
+                st.write(f"**Singulares**")
+                st.write(f"Resultados que não ocorreram para o {visitante} nas últimas temporadas")
+                resultados_singulares(df_hist, visitante, "Away")
+                
+                st.write(f"**Análise de Ocorrência dos Placares**")
+                analise_ocorrencia_placar(df_hist, mandante, visitante, placar)
 
             elif any(item == st.session_state['active_button'] for item in ["", "Ponto de Saída Punter"]):
             # elif st.session_state['active_button'] == "Ponto de Saída Punter":
