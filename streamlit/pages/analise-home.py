@@ -236,7 +236,7 @@ else:
         filter = (df['Goals_H_FT'] <= df['Goals_A_FT'])
 
         df['Profit_Back_Home'] = -1    
-        df.loc[filter, 'Profit_Back_Home'] = round(df['Odd_H_FT']-1, 2)
+        df.loc[filter, 'Profit_Back_Home'] = round(df['Odd_X2']-1, 2)
 
         dict['Profit Acumulado'] = f"{str(round(df['Profit_Back_Home'].sum(), 2))} unidades"
 
@@ -247,7 +247,7 @@ else:
     
         if len(df) > 0:
             st.write(f"Jogos analisados: {dict['Jogos analisados']} — Jogos não vencidos pelo {team}: {dict[f'Jogos não vencidos pelo {team}']} — Winrate: {dict['Winrate']} — Profit Acumulado: {dict['Profit Acumulado']}")
-            print_dataframe(df[['League','Season','Date','Home','Away','Odd_H_FT','Odd_D_FT','Odd_A_FT','Goals_H_FT','Goals_A_FT','Profit_Back_Home']])
+            print_dataframe(df[['League','Season','Date','Home','Away','Odd_1X','Odd_12','Odd_X2','Goals_H_FT','Goals_A_FT','Profit_Back_Home']])
         else:
             st.write("Sem jogos.")
 
@@ -262,7 +262,7 @@ else:
         filter = (df['Goals_H_FT'] != df['Goals_A_FT'])
 
         df['Profit_Back_Draw'] = -1    
-        df.loc[filter, 'Profit_Back_Draw'] = round(df['Odd_D_FT']-1, 2)
+        df.loc[filter, 'Profit_Back_Draw'] = round(df['Odd_12']-1, 2)
 
         dict['Profit Acumulado'] = f"{str(round(df['Profit_Back_Draw'].sum(), 2))} unidades"
 
@@ -273,7 +273,7 @@ else:
     
         if len(df) > 0:
             st.write(f"Jogos analisados: {dict['Jogos analisados']} — Jogos não empatados pelo {team}: {dict[f'Jogos não empatados pelo {team}']} — Winrate: {dict['Winrate']} — Profit Acumulado: {dict['Profit Acumulado']}")
-            print_dataframe(df[['League','Season','Date','Home','Away','Odd_H_FT','Odd_D_FT','Odd_A_FT','Goals_H_FT','Goals_A_FT','Profit_Back_Draw']])
+            print_dataframe(df[['League','Season','Date','Home','Away','Odd_1X','Odd_12','Odd_X2','Goals_H_FT','Goals_A_FT','Profit_Back_Draw']])
         else:
             st.write("Sem jogos.")
 
@@ -288,7 +288,7 @@ else:
         filter = (df['Goals_H_FT'] >= df['Goals_A_FT'])
 
         df['Profit_Back_Away'] = -1    
-        df.loc[filter, 'Profit_Back_Away'] = round(df['Odd_A_FT']-1, 2)
+        df.loc[filter, 'Profit_Back_Away'] = round(df['Odd_1X']-1, 2)
 
         dict['Profit Acumulado'] = f"{str(round(df['Profit_Back_Away'].sum(), 2))} unidades"
 
@@ -299,7 +299,7 @@ else:
     
         if len(df) > 0:
             st.write(f"Jogos analisados: {dict['Jogos analisados']} — Jogos não vencidos pelo Adversário do {team}: {dict[f'Jogos não vencidos pelo Adversário do {team}']} — Winrate: {dict['Winrate']} — Profit Acumulado: {dict['Profit Acumulado']}")
-            print_dataframe(df[['League','Season','Date','Home','Away','Odd_H_FT','Odd_D_FT','Odd_A_FT','Goals_H_FT','Goals_A_FT','Profit_Back_Away']])
+            print_dataframe(df[['League','Season','Date','Home','Away','Odd_1X','Odd_12','Odd_X2','Goals_H_FT','Goals_A_FT','Profit_Back_Away']])
         else:
             st.write("Sem jogos.")
 
