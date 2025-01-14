@@ -439,9 +439,9 @@ def aba_ponto_de_saida_punter(df_hist, team, side, score):
     jogos_analisados = len(df)
 
     if score == 'Goleada_H':
-        filter = (df_hist['Goals_H_FT'] >= 4 & df_hist['Goals_H_FT'] > df_hist['Goals_A_FT'])
+        filter = (df_hist['Goals_H_FT'] >= 4 & (df_hist['Goals_H_FT'] > df_hist['Goals_A_FT']))
     elif score == 'Goleada_A':
-        filter = (df_hist['Goals_A_FT'] >= 4 & df_hist['Goals_A_FT'] > df_hist['Goals_H_FT'])
+        filter = (df_hist['Goals_A_FT'] >= 4 & (df_hist['Goals_A_FT'] > df_hist['Goals_H_FT']))
     else:
         filter = (score.replace("x","-") == df_hist['Resultado_FT'])
 
@@ -467,9 +467,9 @@ def aba_ponto_de_saida_trader(df_hist, team, side, score):
     jogos_analisados = len(df)
 
     if score == 'Goleada_H':
-        filter = (df_hist['Goals_H_FT'] >= 4 & df_hist['Goals_H_FT'] > df_hist['Goals_A_FT'])
+        filter = (df_hist['Goals_H_FT'] >= 4 & (df_hist['Goals_H_FT'] > df_hist['Goals_A_FT']))
     elif score == 'Goleada_A':
-        filter = (df_hist['Goals_A_FT'] >= 4 & df_hist['Goals_A_FT'] > df_hist['Goals_H_FT'])
+        filter = (df_hist['Goals_A_FT'] >= 4 & (df_hist['Goals_A_FT'] > df_hist['Goals_H_FT']))
     else:
         filter = (score.replace("x","-") == df_hist['Resultado_75'])
 
@@ -495,9 +495,9 @@ def aba_ponto_de_revisao_ht(df_hist, team, side, score):
     jogos_analisados = len(df)
 
     if score == 'Goleada_H':
-        filter = (df_hist['Goals_H_FT'] >= 4 & df_hist['Goals_H_FT'] > df_hist['Goals_A_FT'])
+        filter = (df_hist['Goals_H_FT'] >= 4 & (df_hist['Goals_H_FT'] > df_hist['Goals_A_FT']))
     elif score == 'Goleada_A':
-        filter = (df_hist['Goals_A_FT'] >= 4 & df_hist['Goals_A_FT'] > df_hist['Goals_H_FT'])
+        filter = (df_hist['Goals_A_FT'] >= 4 & (df_hist['Goals_A_FT'] > df_hist['Goals_H_FT']))
     else:
         filter = (score.replace("x","-") == df_hist['Resultado_HT'])
 
@@ -727,6 +727,11 @@ def analise_ocorrencia_placar(df_hist, home, away, score):
         ((df_hist['Season'] == get_current_season()) | (df_hist['Season'] == get_last_season()))
     ]
 
+    df_confronto = df_hist.loc[
+        (df_hist["Home"] == home) & (df_hist["Away"] == away)
+        ((df_hist['Season'] == get_current_season()) | (df_hist['Season'] == get_last_season()))
+    ]
+
     if score == 'Goleada_H':
         filter = (df_hist['Goals_H_FT'] >= 4 & df_hist['Goals_H_FT'] > df_hist['Goals_A_FT'])
     elif score == 'Goleada_A':
@@ -735,19 +740,21 @@ def analise_ocorrencia_placar(df_hist, home, away, score):
         filter = (score.replace("x","-") == df_hist['Resultado_FT'])
 
     # Calcular ocorrências para o Home
-    total_jogos = len(df_home)
+    total_jogos_home = len(df_home)
     ocorrencias_home = df_home[filter].shape[0]
 
     # Calcular ocorrências para o Away
+    total_jogos_away = len(df_home)
     ocorrencias_away = df_away[filter].shape[0]
 
     # Calcular ocorrências totais (confronto)
-    ocorrencias_total = ocorrencias_home + ocorrencias_away
+    total_jogos_confronto = len(df_home)
+    ocorrencias_confronto = df_confronto[filter].shape[0]
 
     # Calcular porcentagens
-    porcentagem_home = (ocorrencias_home / total_jogos) * 100 if total_jogos > 0 else 0
-    porcentagem_away = (ocorrencias_away / total_jogos) * 100 if total_jogos > 0 else 0
-    porcentagem_total = (ocorrencias_total / total_jogos) * 100 if total_jogos > 0 else 0
+    porcentagem_home = (ocorrencias_home / total_jogos_home) * 100 if total_jogos_home > 0 else 0
+    porcentagem_away = (ocorrencias_away / total_jogos_away) * 100 if total_jogos_away > 0 else 0
+    porcentagem_total = (ocorrencias_confronto / total_jogos_confronto) * 100 if total_jogos_confronto > 0 else 0
 
     # Retornar resultados formatados
     st.write(f"Placar {score} com {porcentagem_home:.2f} % de ocorrência para o Home (Pesquisa desde 2021)\n")
