@@ -210,7 +210,7 @@ else:
             elif st.session_state['active_button'] == "Placares Singulares":
                 
                 st.write(f"**Singulares**")
-                st.write(f"Resultados que não ocorreram para o {mandante} nas últimas temporadas")
+                st.write(f"**Resultados que não ocorreram para o {mandante} nas últimas temporadas**")
                 resultados_singulares(df_hist, mandante, "Home")
                 
                 st.write(f"**Análise de Ocorrência dos Placares**")
