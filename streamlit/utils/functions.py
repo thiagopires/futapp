@@ -439,9 +439,9 @@ def aba_ponto_de_saida_punter(df_hist, team, side, score):
     jogos_analisados = len(df)
 
     if score == 'Goleada_H':
-        filter = ((df_hist['Goals_H_FT']) >= 4 & (df_hist['Goals_H_FT'] > df_hist['Goals_A_FT']))
+        filter = ((df_hist['Goals_H_FT'] >= 4) & (df_hist['Goals_H_FT'] > df_hist['Goals_A_FT']))
     elif score == 'Goleada_A':
-        filter = ((df_hist['Goals_A_FT']) >= 4 & (df_hist['Goals_A_FT'] > df_hist['Goals_H_FT']))
+        filter = ((df_hist['Goals_A_FT'] >= 4) & (df_hist['Goals_A_FT'] > df_hist['Goals_H_FT']))
     else:
         filter = (score.replace("x","-") == df_hist['Resultado_FT'])
 
@@ -467,9 +467,9 @@ def aba_ponto_de_saida_trader(df_hist, team, side, score):
     jogos_analisados = len(df)
 
     if score == 'Goleada_H':
-        filter = ((df_hist['Goals_H_FT']) >= 4 & (df_hist['Goals_H_FT'] > df_hist['Goals_A_FT']))
+        filter = ((df_hist['Goals_H_FT'] >= 4) & (df_hist['Goals_H_FT'] > df_hist['Goals_A_FT']))
     elif score == 'Goleada_A':
-        filter = ((df_hist['Goals_A_FT']) >= 4 & (df_hist['Goals_A_FT'] > df_hist['Goals_H_FT']))
+        filter = ((df_hist['Goals_A_FT'] >= 4) & (df_hist['Goals_A_FT'] > df_hist['Goals_H_FT']))
     else:
         filter = (score.replace("x","-") == df_hist['Resultado_75'])
 
@@ -495,9 +495,9 @@ def aba_ponto_de_revisao_ht(df_hist, team, side, score):
     jogos_analisados = len(df)
 
     if score == 'Goleada_H':
-        filter = ((df_hist['Goals_H_FT']) >= 4 & (df_hist['Goals_H_FT'] > df_hist['Goals_A_FT']))
+        filter = ((df_hist['Goals_H_FT'] >= 4) & (df_hist['Goals_H_FT'] > df_hist['Goals_A_FT']))
     elif score == 'Goleada_A':
-        filter = ((df_hist['Goals_A_FT']) >= 4 & (df_hist['Goals_A_FT'] > df_hist['Goals_H_FT']))
+        filter = ((df_hist['Goals_A_FT'] >= 4) & (df_hist['Goals_A_FT'] > df_hist['Goals_H_FT']))
     else:
         filter = (score.replace("x","-") == df_hist['Resultado_HT'])
 
@@ -733,9 +733,9 @@ def analise_ocorrencia_placar(df_hist, home, away, score):
     ]
 
     if score == 'Goleada_H':
-        filter = ((df_hist['Goals_H_FT']) >= 4 & (df_hist['Goals_H_FT'] > df_hist['Goals_A_FT']))
+        filter = ((df_hist['Goals_H_FT'] >= 4) & (df_hist['Goals_H_FT'] > df_hist['Goals_A_FT']))
     elif score == 'Goleada_A':
-        filter = ((df_hist['Goals_A_FT']) >= 4 & (df_hist['Goals_A_FT'] > df_hist['Goals_H_FT']))
+        filter = ((df_hist['Goals_A_FT'] >= 4) & (df_hist['Goals_A_FT'] > df_hist['Goals_H_FT']))
     else:
         filter = (score.replace("x","-") == df_hist['Resultado_FT'])
 
