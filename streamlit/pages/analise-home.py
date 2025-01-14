@@ -273,7 +273,7 @@ else:
     
         if len(df) > 0:
             st.write(f"Jogos analisados: {dict['Jogos analisados']} — Jogos não empatados pelo {team}: {dict[f'Jogos não empatados pelo {team}']} — Winrate: {dict['Winrate']} — Profit Acumulado: {dict['Profit Acumulado']}")
-            print_dataframe(df[['League','Season','Date','Home','Away','Odd_DC_1X','DC_','Odd_DC_X2','Goals_H_FT','Goals_A_FT','Profit_Back_Draw']])
+            print_dataframe(df[['League','Season','Date','Home','Away','Odd_DC_1X','Odd_DC_12','Odd_DC_X2','Goals_H_FT','Goals_A_FT','Profit_Back_Draw']])
         else:
             st.write("Sem jogos.")
 
