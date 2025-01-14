@@ -149,7 +149,7 @@ else:
 
         if len(df_match_selected) > 0:
 
-            visitante = df_match_selected.iloc[0]["Home"]
+            mandante = df_match_selected.iloc[0]["Home"]
 
             if st.session_state['active_button'] == "Over 2.5 FT / BTTS":
                         
@@ -163,8 +163,8 @@ else:
 
             elif st.session_state['active_button'] == "Últimos 10 jogos":
 
-                st.write(f"**Últimos 10 jogos do {visitante} como Mandante**")
-                aba_ult10(df_hist, visitante, "Home")
+                st.write(f"**Últimos 10 jogos do {mandante} como Mandante**")
+                aba_ult10(df_hist, mandante, "Home")
 
                 st.write(f"**Últimos 10 jogos do {visitante} como Visitante**")
                 aba_ult10(df_hist, visitante, "Away")
