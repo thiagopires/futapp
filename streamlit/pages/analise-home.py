@@ -306,7 +306,9 @@ else:
 
     print_dataframe(df_matches[['League','Rodada','Time','Home','Away','Odd_H_FT','Odd_D_FT','Odd_A_FT','Odd_Over05_HT','Odd_Over15_FT','Odd_Over25_FT','Odd_BTTS_Yes']])
 
+
     st.divider()
+
 
     st.subheader("Selecione o Mandante e o Placar para a análise")
     
@@ -320,18 +322,8 @@ else:
         df_match_selected = df_matches.loc[(df_matches['Home'] == mandante)]
 
 
-        # df_hist_mandante_placar = df_hist.loc[
-        #     (df_hist['Home'] == mandante) & 
-        #     (df_hist['Resultado_FT'].str.replace("-","x") == placar) &
-        #     (df_hist['Season'] == get_current_season()) # vrificar
-        # ]
-
-        # if len(df_hist_mandante_placar) > 0:
-        #     print_dataframe(df_hist_mandante_placar[['League','Rodada','Time','Home','Away','Odd_H_FT','Odd_D_FT','Odd_A_FT','Odd_Over05_HT','Odd_Over15_FT','Odd_Over25_FT','Odd_BTTS_Yes']])
-        # else:
-        #     st.write("Sem jogos com este placar.")
-
         st.divider()
+
 
         st.session_state['active_button'] = ""
 
@@ -417,7 +409,9 @@ else:
                 aba_ponto_de_revisao_ht(df_hist, mandante, "Home", placar)
 
             elif st.session_state['active_button'] == "Ponto de Saída Trader":
-
+                
+                st.write("**Análise dos jogos anteriores no minuto 75 com o placar selecionado**")
+                st.write(f"Jogos anteriores do {mandante} que estavam em {placar} no minuto 75.")
                 aba_ponto_de_saida_trader(df_hist, mandante, "Home", placar)
             
 
