@@ -466,23 +466,23 @@ else:
 
             elif st.session_state['active_button'] == "Match Odds - Back":
                 st.write(f"**Back Home (Apostar no {mandante})**")
-                aba_back_home(df_hist, mandante)
+                aba_back_home(df_hist, mandante, "Home")
 
                 st.write(f"**Back Draw (Apostar no Empate nos jogos do {mandante})**")
-                aba_back_draw(df_hist, mandante)
+                aba_back_draw(df_hist, mandante, "Home")
 
                 st.write(f"**Back Away (Apostar no Adversário do {mandante})**")
-                aba_back_away(df_hist, mandante)
+                aba_back_away(df_hist, mandante, "Home")
 
             elif st.session_state['active_button'] == "Match Odds - Lay":
                 st.write(f"**Lay Home (Apostar contra o {mandante})**")
-                aba_lay_home(df_hist, mandante)
+                aba_lay_home(df_hist, mandante, "Home")
 
                 st.write(f"**Lay Draw (Apostar cintra o Empate nos jogos do {mandante})**")
-                aba_lay_draw(df_hist, mandante)
+                aba_lay_draw(df_hist, mandante, "Home")
 
                 st.write(f"**Lay Away (Apostar contra o Adversário do {mandante})**")
-                aba_lay_away(df_hist, mandante)
+                aba_lay_away(df_hist, mandante, "Home")
 
             # elif any(item in st.session_state['active_button'] for item in ["", "Ponto de Saída Punter"]):
             elif st.session_state['active_button'] == "Ponto de Saída Punter":
