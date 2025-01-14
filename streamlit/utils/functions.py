@@ -715,7 +715,6 @@ def resultados_singulares(df_hist, team, side):
     for resultado in resultados_singulares:
         st.write(resultado)
 
-
 def analise_ocorrencia_placar(df_hist, home, away, score):
 
     df_home = df_hist.loc[
