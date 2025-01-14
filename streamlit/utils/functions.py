@@ -34,7 +34,7 @@ def load_daymatches(dt):
     df["Confronto"] = df["Time"] + " - " + df["Home"] + " vs. " + df["Away"]
     return df
 
-@st.cache_data
+# @st.cache_data
 def load_histmatches(dt=None):
 
     def first_goal_string(row):
