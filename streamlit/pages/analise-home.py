@@ -13,30 +13,6 @@ else:
 
     st.title("⚽ Análise Home")
 
-    def set_odds_filtros(reset=False):
-        if reset:
-            st.session_state['odd_h_min'] = 1.10
-            st.session_state['odd_h_max'] = 1000.00
-            st.session_state['odd_d_min'] = 1.10
-            st.session_state['odd_d_max'] = 1000.00
-            st.session_state['odd_a_min'] = 1.10
-            st.session_state['odd_a_max'] = 1000.00
-            st.session_state['odd_over25_ft_min'] = 1.10
-            st.session_state['odd_over25_ft_max'] = 1000.00
-            st.session_state['odd_btts_min'] = 1.10
-            st.session_state['odd_btts_max'] = 1000.00
-        else:
-            if "odd_h_min" not in st.session_state: st.session_state['odd_h_min'] = 1.40
-            if "odd_h_max" not in st.session_state: st.session_state['odd_h_max'] = 2.00
-            if "odd_d_min" not in st.session_state: st.session_state['odd_d_min'] = 2.50
-            if "odd_d_max" not in st.session_state: st.session_state['odd_d_max'] = 10.00
-            if "odd_a_min" not in st.session_state: st.session_state['odd_a_min'] = 4.00
-            if "odd_a_max" not in st.session_state: st.session_state['odd_a_max'] = 50.00
-            if "odd_over25_ft_min" not in st.session_state: st.session_state['odd_over25_ft_min'] = 1.30
-            if "odd_over25_ft_max" not in st.session_state: st.session_state['odd_over25_ft_max'] = 2.00
-            if "odd_btts_min" not in st.session_state: st.session_state['odd_btts_min'] = 1.30
-            if "odd_btts_max" not in st.session_state: st.session_state['odd_btts_max'] = 2.00
-
     # Init
 
     data_analise = st.date_input("Data da Análise", get_today())
@@ -48,7 +24,7 @@ else:
 
 
     st.subheader("Filtro de Odds")
-    set_odds_filtros(True)
+    # set_odds_filtros(True)
     if st.button("Limpar filtros"):
         set_odds_filtros(True)
 
