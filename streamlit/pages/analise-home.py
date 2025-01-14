@@ -303,7 +303,6 @@ else:
         else:
             st.write("Sem jogos.")
 
-
     def set_odds_filtros(reset=False):
         if reset:
             st.session_state['odd_h_min'] = 1.10
@@ -484,8 +483,8 @@ else:
                 st.write(f"**Lay Away (Apostar contra o Adversário do {mandante})**")
                 aba_lay_away(df_hist, mandante, "Home")
 
-            # elif any(item in st.session_state['active_button'] for item in ["", "Ponto de Saída Punter"]):
-            elif st.session_state['active_button'] == "Ponto de Saída Punter":
+            elif any(item in st.session_state['active_button'] for item in ["", "Ponto de Saída Punter"]):
+            # elif st.session_state['active_button'] == "Ponto de Saída Punter":
     
                 st.write("**Análise dos jogos anteriores terminados no placar selecionado**")
                 st.write(f"Jogos anteriores do {mandante} terminados em {placar}")
