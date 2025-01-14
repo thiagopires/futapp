@@ -241,12 +241,12 @@ else:
         dict['Profit Acumulado'] = f"{str(round(df['Profit_Back_Home'].sum(), 2))} unidades"
 
         df = df.loc[filter]
-        dict[f'Jogos vencidos pelo {team}'] = len(df)
+        dict[f'Jogos não vencidos pelo {team}'] = len(df)
 
         dict['Winrate'] = f"{round((dict[f'Jogos vencidos pelo {team}'] / dict['Jogos analisados']) * 100, 2)}%" if dict['Jogos analisados'] > 0 else "0.0%"
     
         if len(df) > 0:
-            st.write(f"Jogos analisados: {dict['Jogos analisados']} — Jogos vencidos pelo {team}: {dict[f'Jogos vencidos pelo {team}']} — Winrate: {dict['Winrate']} — Profit Acumulado: {dict['Profit Acumulado']}")
+            st.write(f"Jogos analisados: {dict['Jogos analisados']} — Jogos não vencidos pelo {team}: {dict[f'Jogos não vencidos pelo {team}']} — Winrate: {dict['Winrate']} — Profit Acumulado: {dict['Profit Acumulado']}")
             print_dataframe(df[['League','Season','Date','Home','Away','Odd_H_FT','Odd_D_FT','Odd_A_FT','Goals_H_FT','Goals_A_FT','Profit_Back_Home']])
         else:
             st.write("Sem jogos.")
@@ -267,12 +267,12 @@ else:
         dict['Profit Acumulado'] = f"{str(round(df['Profit_Back_Draw'].sum(), 2))} unidades"
 
         df = df.loc[filter]
-        dict[f'Jogos empatados pelo {team}'] = len(df)
+        dict[f'Jogos não empatados pelo {team}'] = len(df)
 
         dict['Winrate'] = f"{round((dict[f'Jogos empatados pelo {team}'] / dict['Jogos analisados']) * 100, 2)}%" if dict['Jogos analisados'] > 0 else "0.0%"
     
         if len(df) > 0:
-            st.write(f"Jogos analisados: {dict['Jogos analisados']} — Jogos empatados pelo {team}: {dict[f'Jogos empatados pelo {team}']} — Winrate: {dict['Winrate']} — Profit Acumulado: {dict['Profit Acumulado']}")
+            st.write(f"Jogos analisados: {dict['Jogos analisados']} — Jogos não empatados pelo {team}: {dict[f'Jogos não empatados pelo {team}']} — Winrate: {dict['Winrate']} — Profit Acumulado: {dict['Profit Acumulado']}")
             print_dataframe(df[['League','Season','Date','Home','Away','Odd_H_FT','Odd_D_FT','Odd_A_FT','Goals_H_FT','Goals_A_FT','Profit_Back_Draw']])
         else:
             st.write("Sem jogos.")
@@ -293,12 +293,12 @@ else:
         dict['Profit Acumulado'] = f"{str(round(df['Profit_Back_Away'].sum(), 2))} unidades"
 
         df = df.loc[filter]
-        dict[f'Jogos perdidos pelo {team}'] = len(df)
+        dict[f'Jogos não vencidos pelo Adversário do {team}'] = len(df)
 
         dict['Winrate'] = f"{round((dict[f'Jogos perdidos pelo {team}'] / dict['Jogos analisados']) * 100, 2)}%" if dict['Jogos analisados'] > 0 else "0.0%"
     
         if len(df) > 0:
-            st.write(f"Jogos analisados: {dict['Jogos analisados']} — Jogos perdidos pelo {team}: {dict[f'Jogos perdidos pelo {team}']} — Winrate: {dict['Winrate']} — Profit Acumulado: {dict['Profit Acumulado']}")
+            st.write(f"Jogos analisados: {dict['Jogos analisados']} — Jogos não vencidos pelo Adversário do {team}: {dict[f'Jogos não vencidos pelo Adversário do {team}']} — Winrate: {dict['Winrate']} — Profit Acumulado: {dict['Profit Acumulado']}")
             print_dataframe(df[['League','Season','Date','Home','Away','Odd_H_FT','Odd_D_FT','Odd_A_FT','Goals_H_FT','Goals_A_FT','Profit_Back_Away']])
         else:
             st.write("Sem jogos.")
