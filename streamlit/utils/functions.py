@@ -728,7 +728,7 @@ def analise_ocorrencia_placar(df_hist, home, away, score):
     ]
 
     df_confronto = df_hist.loc[
-        (df_hist["Home"] == home) & (df_hist["Away"] == away)
+        (df_hist["Home"] == home) & (df_hist["Away"] == away) &
         ((df_hist['Season'] == get_current_season()) | (df_hist['Season'] == get_last_season()))
     ]
 
