@@ -32,6 +32,10 @@ def load_daymatches(dt):
     df["Datetime"] = pd.to_datetime(df["Date"] + " " + df["Time"])
     df["Formatted_Datetime"] = df["Datetime"].dt.strftime("%d/%m/%Y %H:%M")
     df["Confronto"] = df["Time"] + " - " + df["Home"] + " vs. " + df["Away"]
+
+    filter = (df_hist["Home"].isin(['Celtic','Freiburg','Liverpool'])) & (df_hist["Away"].isin(['Celtic','Freiburg','Liverpool']))
+    df = df[filter]
+
     return df
 
 @st.cache_data
