@@ -31,7 +31,7 @@ else:
         }
 
         # Criar lista formatada para o selectbox
-        operadores_formatados = [f"{simbolo} ({descricao})" for simbolo, descricao in operadores_opcoes.items()]
+        operadores_formatados = [f"{descricao} ({simbolo})" for simbolo, descricao in operadores_opcoes.items()]
 
         # Selectbox para escolher o operador condicional
         operador_selecionado = st.selectbox("Operador", operadores_formatados, key="operador")
