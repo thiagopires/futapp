@@ -18,7 +18,7 @@ else:
 
     col1, col2, col3, col4 = st.columns(4)
     with col1:
-        indicador = st.selectbox("Indicador", df_hist.columns, key="indicador")
+        indicador = st.selectbox("Indicador", df_hist.columns[7:], key="indicador")
 
     with col2:
         operadores_opcoes = {
