@@ -40,7 +40,19 @@ else:
         valor = st.text_input("Digite o valor:", key="valor")
 
     with col4:
-        st.button("Salvar")
+        if st.button("Salvar"):
+            if operador_selecionado == 'igual (=)':
+                df_hist = df_hist[(df_hist[indicador] == float(valor))]
+            if operador_selecionado == 'maior que (>)':
+                df_hist = df_hist[(df_hist[indicador] > float(valor))]
+            if operador_selecionado == 'menor que (<)':
+                df_hist = df_hist[(df_hist[indicador] < float(valor))]
+            if operador_selecionado == 'maior ou igual (>=)':
+                df_hist = df_hist[(df_hist[indicador] >= float(valor))]
+            if operador_selecionado == 'menor ou igual (<=)':
+                df_hist = df_hist[(df_hist[indicador] <= float(valor))]
+            if operador_selecionado == 'diferente de (!=)':
+                df_hist = df_hist[(df_hist[indicador] != float(valor))]
 
     col1, col2 = st.columns(2)
     with col1:
