@@ -18,6 +18,10 @@ else:
     df_matches = load_daymatches(data_analise)
     df_hist = load_histmatches()
 
+    # test
+    df_matches_filter = load_daymatches(data_analise, ['Celtic','Freiburg','Liverpool'])
+    st.dataframe(df_matches_filter)
+
     # Dataframe
     st.subheader(f"Selecione o jogo:")
     match_selected = st.dataframe(
