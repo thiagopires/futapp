@@ -27,14 +27,15 @@ def print_dataframe(df, styled_df=None):
         st.dataframe(styled_df, height=len(df)*38, use_container_width=True, hide_index=True)       
 
 @st.cache_data
-def load_daymatches(dt):
+def load_daymatches(dt, filter_teams=None):
     df = pd.read_csv(f"https://github.com/futpythontrader/YouTube/blob/main/Jogos_do_Dia/FootyStats/Jogos_do_Dia_FootyStats_{dt}.csv?raw=true")
     df["Datetime"] = pd.to_datetime(df["Date"] + " " + df["Time"])
     df["Formatted_Datetime"] = df["Datetime"].dt.strftime("%d/%m/%Y %H:%M")
     df["Confronto"] = df["Time"] + " - " + df["Home"] + " vs. " + df["Away"]
 
-    filter = (df["Home"].isin(['Celtic','Freiburg','Liverpool'])) | (df["Away"].isin(['Celtic','Freiburg','Liverpool']))
-    df = df[filter]
+    if filter_teams:
+        filter = (df["Home"].isin(filter_teams)) | (df["Away"].isin(filter_teams))
+        df = df[filter]
 
     return df
 
