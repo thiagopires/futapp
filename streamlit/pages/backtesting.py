@@ -44,7 +44,7 @@ else:
         df_hist = df_hist[df_hist['League'].isin(selected_leagues)]
 
     with st.expander("Filtros"):
-        for i in range(1,6):
+        for i in range(1,7):
             cola, colb, colc = st.columns(3)
             with cola: st.selectbox("Indicador", indicadores, key=f"indicador_{i}")
             with colb: st.selectbox("Operador", operadores_formatados, key=f"operador_{i}")
@@ -57,7 +57,7 @@ else:
 
     if st.button("Executar"):
 
-        for i in range(1,6):
+        for i in range(1,7):
             indicador = st.session_state[f'indicador_{i}']
             operador_selecionado = st.session_state[f'operador_{i}']
             valor = st.session_state[f'valor_{i}']
