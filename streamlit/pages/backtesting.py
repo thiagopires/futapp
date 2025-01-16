@@ -45,18 +45,18 @@ else:
 
             if valor != "":
                 st.write(f"{indicador} {operador_selecionado} {valor}")
-                
-                if operador_selecionado == 'igual (=)':
+
+                if operador_selecionado == 'Igual (=)':
                     df_hist = df_hist[(df_hist[indicador] == float(valor))]
-                if operador_selecionado == 'maior que (>)':
+                if operador_selecionado == 'Maior que (>)':
                     df_hist = df_hist[(df_hist[indicador] > float(valor))]
-                if operador_selecionado == 'menor que (<)':
+                if operador_selecionado == 'Menor que (<)':
                     df_hist = df_hist[(df_hist[indicador] < float(valor))]
-                if operador_selecionado == 'maior ou igual (>=)':
+                if operador_selecionado == 'Maior ou igual (>=)':
                     df_hist = df_hist[(df_hist[indicador] >= float(valor))]
-                if operador_selecionado == 'menor ou igual (<=)':
+                if operador_selecionado == 'Menor ou igual (<=)':
                     df_hist = df_hist[(df_hist[indicador] <= float(valor))]
-                if operador_selecionado == 'diferente de (!=)':
+                if operador_selecionado == 'Diferente de (!=)':
                     df_hist = df_hist[(df_hist[indicador] != float(valor))]
 
         print_dataframe(df_hist)
