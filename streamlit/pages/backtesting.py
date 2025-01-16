@@ -27,7 +27,7 @@ else:
     operadores_formatados = [f"{descricao} ({simbolo})" for simbolo, descricao in operadores_opcoes.items()]  
 
     for i in range(1,6):
-        cola, colb, colc = st.columns(4)
+        cola, colb, colc = st.columns(3)
         with cola: indicador = st.selectbox("Indicador", df_hist.columns[7:], key=f"indicador_{i}")
         with colb: operador_selecionado = st.selectbox("Operador", operadores_formatados, key=f"operador_{i}")
         with colc: valor = st.text_input("Digite o valor:", key=f"valor_{i}")
