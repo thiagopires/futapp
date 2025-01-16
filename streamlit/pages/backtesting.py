@@ -52,7 +52,8 @@ else:
 
     metodo = st.selectbox("Método", [
         'Back Casa',
-        'Lay Visitante'
+        'Lay Visitante',
+        'Lay Casa'
     ])
 
     condicao = st.radio("Condição", ["Favorito/Zebra", "Zebra/Favorito"])
@@ -91,6 +92,12 @@ else:
                     filter = (df_hist['Goals_H_FT'] >= df_hist['Goals_A_FT'])
                     df_hist['Profit'] = -1    
                     df_hist.loc[filter, 'Profit'] = round(df_hist['Odd_DC_1X']-1, 2)
+                    df_hist.loc[filter, "Status_Metodo"] = "GREEN"
+
+                if metodo == 'Lay Casa':
+                    filter = (df_hist['Goals_H_FT'] <= df_hist['Goals_A_FT'])
+                    df_hist['Profit'] = -1    
+                    df_hist.loc[filter, 'Profit'] = round(df_hist['Odd_DC_X2']-1, 2)
                     df_hist.loc[filter, "Status_Metodo"] = "GREEN"
 
         total_jogos = len(df_hist)
