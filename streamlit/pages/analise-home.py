@@ -73,11 +73,11 @@ else:
         (df_matches["Odd_BTTS_Yes"] >= st.session_state.odd_btts_min) &
         (df_matches["Odd_BTTS_Yes"] <= st.session_state.odd_btts_max) &
 
-        (df_matches["Odd_BTTS_Yes"] >= st.session_state.XG_Total_Pre_Min) &
-        (df_matches["Odd_BTTS_Yes"] <= st.session_state.XG_Home_Pre_Max) &
+        (df_matches["XG_Total_Pre"] >= st.session_state.XG_Total_Pre_Min) &
+        (df_matches["XG_Total_Pre"] <= st.session_state.XG_Home_Pre_Max) &
 
-        (df_matches["Odd_Over25_FT"] >= st.session_state.XG_Home_Pre_Min) &
-        (df_matches["Odd_Over25_FT"] <= st.session_state.XG_Home_Pre_Max)
+        (df_matches["XG_Home_Pre"] >= st.session_state.XG_Home_Pre_Min) &
+        (df_matches["XG_Home_Pre"] <= st.session_state.XG_Home_Pre_Max)
     ]
 
     print_dataframe(df_matches[['League','Rodada','Time','Home','Away','Odd_H_FT','Odd_D_FT','Odd_A_FT','Odd_Over05_HT','Odd_Over15_FT','Odd_Over25_FT','Odd_BTTS_Yes']])
