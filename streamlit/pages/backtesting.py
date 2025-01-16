@@ -55,6 +55,12 @@ else:
         'Lay Visitante'
     ])
 
+    condicao = st.radio("Condição", ["Favorito/Zebra", "Zebra/Favorito"])
+    if   condicao == "Favorito/Zebra":
+        df_hist = df_hist[df_hist["Odd_H_FT"] < df_hist["Odd_A_FT"]]
+    elif condicao == "Zebra/Favorito":
+        df_hist = df_hist[df_hist["Odd_H_FT"] > df_hist["Odd_A_FT"]]
+
     if st.button("Executar"):
 
         for i in range(1,7):
