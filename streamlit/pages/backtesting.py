@@ -32,23 +32,32 @@ else:
     with st.expander("Filtros"):
         for i in range(1,6):
             cola, colb, colc = st.columns(3)
-            with cola: indicador = st.selectbox("Indicador", indicadores, key=f"indicador_{i}")
-            with colb: operador_selecionado = st.selectbox("Operador", operadores_formatados, key=f"operador_{i}")
-            with colc: valor = st.text_input("Digite o valor:", key=f"valor_{i}")
+            with cola: st.selectbox("Indicador", indicadores, key=f"indicador_{i}")
+            with colb: st.selectbox("Operador", operadores_formatados, key=f"operador_{i}")
+            with colc: st.text_input("Digite o valor:", key=f"valor_{i}")
 
-    if st.button("Salvar"):
-        if operador_selecionado == 'igual (=)':
-            df_hist = df_hist[(df_hist[indicador] == float(valor))]
-        if operador_selecionado == 'maior que (>)':
-            df_hist = df_hist[(df_hist[indicador] > float(valor))]
-        if operador_selecionado == 'menor que (<)':
-            df_hist = df_hist[(df_hist[indicador] < float(valor))]
-        if operador_selecionado == 'maior ou igual (>=)':
-            df_hist = df_hist[(df_hist[indicador] >= float(valor))]
-        if operador_selecionado == 'menor ou igual (<=)':
-            df_hist = df_hist[(df_hist[indicador] <= float(valor))]
-        if operador_selecionado == 'diferente de (!=)':
-            df_hist = df_hist[(df_hist[indicador] != float(valor))]
+    if st.button("Executar"):
+
+        for i in range(1,6):
+            indicador = st.session_state[f'indicador_{i}']
+            operador_selecionado = st.session_state[f'operador_{i}']
+            valor = st.session_state[f'valor_{i}']
+
+            if valor != "":
+                if operador_selecionado == 'igual (=)':
+                    df_hist = df_hist[(df_hist[indicador] == float(valor))]
+                if operador_selecionado == 'maior que (>)':
+                    df_hist = df_hist[(df_hist[indicador] > float(valor))]
+                if operador_selecionado == 'menor que (<)':
+                    df_hist = df_hist[(df_hist[indicador] < float(valor))]
+                if operador_selecionado == 'maior ou igual (>=)':
+                    df_hist = df_hist[(df_hist[indicador] >= float(valor))]
+                if operador_selecionado == 'menor ou igual (<=)':
+                    df_hist = df_hist[(df_hist[indicador] <= float(valor))]
+                if operador_selecionado == 'diferente de (!=)':
+                    df_hist = df_hist[(df_hist[indicador] != float(valor))]
+
+        print_dataframe(df_hist)
 
     # col1, col2 = st.columns(2)
     # with col1:
@@ -72,7 +81,7 @@ else:
     # if not (not selected_seasons or "Todas as Temporadas" in selected_seasons):
     #     df_hist = df_hist[df_hist['Season'].isin(selected_seasons)]
 
-    print_dataframe(df_hist)
+    
 
 
     ### football-data.co.uk ###
