@@ -44,7 +44,8 @@ else:
             valor = st.session_state[f'valor_{i}']
 
             if valor != "":
-                st.write(valor)
+                st.write(f"{indicador} {operador_selecionado} {valor}")
+                
                 if operador_selecionado == 'igual (=)':
                     df_hist = df_hist[(df_hist[indicador] == float(valor))]
                 if operador_selecionado == 'maior que (>)':
