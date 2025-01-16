@@ -126,16 +126,16 @@ else:
         st.write(f"Jogos: {total_jogos}, Greens: {total_greens}, Reds: {total_reds}, Winrate: {winrate}%, Profit Acumulado: {profit_acumulado}")
 
         # Agrupar por data e somar os lucros
-        daily_profit = df_hist.groupby("Formatted_Date")["Profit"].sum().reset_index()
-        daily_profit = daily_profit.sort_values(by="Formatted_Date", ascending=False)
+        daily_profit = df_hist.groupby("Date")["Profit"].sum().reset_index()
+        daily_profit = daily_profit.sort_values(by="Date", ascending=False)
 
         # Criar o gráfico de linha com Plotly Express
         fig = px.line(
             daily_profit,
-            x="Formatted_Date",
+            x="Date",
             y="Profit",
             title="Lucro Diário",
-            labels={"Formatted_Date": "Data", "Profit": "Lucro"},
+            labels={"Date": "Data", "Profit": "Lucro"},
             markers=True  # Adiciona marcadores nos pontos
         )
 
