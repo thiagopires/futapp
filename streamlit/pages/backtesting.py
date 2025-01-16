@@ -44,6 +44,11 @@ else:
             with colb: st.selectbox("Operador", operadores_formatados, key=f"operador_{i}")
             with colc: st.text_input("Digite o valor:", key=f"valor_{i}")
 
+    metodo = st.selectbox("Método", [
+        'Back Casa',
+        'Lay Visitante'
+    ])
+
     if st.button("Executar"):
 
         for i in range(1,6):
@@ -67,8 +72,21 @@ else:
                 if operador_selecionado == 'Diferente de (!=)':
                     df_hist = df_hist[(df_hist[indicador] != float(valor))]
 
-        print_dataframe(df_hist)
+                df_hist["Status_Metodo"] = "RED"
+                if metodo == 'Back Casa':
+                    df_hist.loc[df_hist["Goals_H_FT"] > df_hist["Goals_A_FT"], "Status_Metodo"] = "GREEN"
+                if metodo == 'Lay Vistante':
+                    df_hist.loc[df_hist["Goals_H_FT"] >= df_hist["Goals_A_FT"], "Status_Metodo"] = "GREEN"
+                
+                print_dataframe(df_hist)
 
+                total_jogos = len(df_hist)
+                total_greens = len(df_hist[(df_hist['Status_Metodo'] == 'GREEN')])
+                total_reds = total_jogos - total_greens
+                winrate = round(total_greens / total_jogos, 2)
+
+                st.write(f"**Resultado:**")
+                st.write(f"Jogos: {total_jogos}, Greens: {total_greens}, Reds: {total_reds}, Winrate: {winrate}%")
 
     # leagues = sorted(df_hist['League'].unique())
     # leagues.insert(0, 'Todas as Ligas')
