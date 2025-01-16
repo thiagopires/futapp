@@ -16,13 +16,16 @@ else:
 
     df_hist = load_histmatches()
 
+    indicadores = df_hist.columns[7:]
+    indicadores.insert(0, "Selecione")
+    
     operadores_opcoes = {
-        "=": "igual",
-        ">": "maior que",
-        "<": "menor que",
-        ">=": "maior ou igual",
-        "<=": "menor ou igual",
-        "!=": "diferente de"
+        "=": "Igual",
+        ">": "Maior que",
+        "<": "Menor que",
+        ">=": "Maior ou igual",
+        "<=": "Menor ou igual",
+        "!=": "Diferente de"
     }
     operadores_formatados = [f"{descricao} ({simbolo})" for simbolo, descricao in operadores_opcoes.items()] 
 
