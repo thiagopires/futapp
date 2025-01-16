@@ -127,6 +127,7 @@ else:
 
         # Agrupar por data e somar os lucros
         daily_profit = df_hist.groupby("Formatted_Date")["Profit"].sum().reset_index()
+        daily_profit = daily_profit.sort_values(by="Formated_Date")
 
         # Criar o gráfico de linha com Plotly Express
         fig = px.line(
