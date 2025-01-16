@@ -75,7 +75,7 @@ else:
                 df_hist["Status_Metodo"] = "RED"
                 if metodo == 'Back Casa':
                     df_hist.loc[df_hist["Goals_H_FT"] > df_hist["Goals_A_FT"], "Status_Metodo"] = "GREEN"
-                if metodo == 'Lay Vistante':
+                if metodo == 'Lay Visitante':
                     df_hist.loc[df_hist["Goals_H_FT"] >= df_hist["Goals_A_FT"], "Status_Metodo"] = "GREEN"
                 
         print_dataframe(df_hist)
