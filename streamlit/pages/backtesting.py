@@ -113,7 +113,7 @@ else:
                 if metodo == 'Lay 0x2':
                     df_hist.loc[df_hist["Resultado_FT"] != '0-2', "Status_Metodo"] = "GREEN"
                 if metodo == 'Lay Goleada Visitante':
-                    df_hist.loc[not ((df_hist['Goals_A_FT'] >= 4) & (df_hist['Goals_A_FT'] > df_hist['Goals_H_FT'])), "Status_Metodo"] = "GREEN"
+                    df_hist.loc[((df_hist['Goals_A_FT'] < 4) | (df_hist['Goals_A_FT'] <= df_hist['Goals_H_FT'])), "Status_Metodo"] = "GREEN"
 
         total_jogos = len(df_hist)
         total_greens = len(df_hist[(df_hist['Status_Metodo'] == 'GREEN')])
