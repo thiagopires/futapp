@@ -93,11 +93,11 @@ else:
                 df_hist['Profit'] = -1  
                 
                 if metodo == 'Back Casa':
-                    df_hist.loc[df_hist["Goals_H_FT"] > df_hist["Goals_A_FT"], "Status_Metodo"] = "GREEN"
+                    filter = (df_hist["Goals_H_FT"] > df_hist["Goals_A_FT"])
                     df_hist.loc[filter, 'Profit'] = round(df_hist['Odd_H_FT']-1, 2)
                     df_hist.loc[filter, "Status_Metodo"] = "GREEN"
                 if metodo == 'Back Visitante':
-                    df_hist.loc[df_hist["Goals_H_FT"] < df_hist["Goals_A_FT"], "Status_Metodo"] = "GREEN"  
+                    filter = (df_hist["Goals_H_FT"] < df_hist["Goals_A_FT"])
                     df_hist.loc[filter, 'Profit'] = round(df_hist['Goals_A_FT']-1, 2)
                     df_hist.loc[filter, "Status_Metodo"] = "GREEN"
                 if metodo == 'Lay Visitante':
