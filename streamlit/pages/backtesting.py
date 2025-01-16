@@ -29,6 +29,14 @@ else:
     }
     operadores_formatados = [f"{descricao} ({simbolo})" for simbolo, descricao in operadores_opcoes.items()] 
 
+    col1, col2 = st.columns(2)
+    with col1:
+        data_inicial = st.date_input("Data Inicial", date(2022, 2, 10))
+    with col2:
+        data_final = st.date_input("Data Final", get_today())
+
+    df_hist = df_hist[(df_hist['Date'] >= pd.to_datetime(data_inicial)) & (df_hist['Date'] <= pd.to_datetime(data_final))]
+
     with st.expander("Filtros"):
         for i in range(1,6):
             cola, colb, colc = st.columns(3)
@@ -61,13 +69,6 @@ else:
 
         print_dataframe(df_hist)
 
-    # col1, col2 = st.columns(2)
-    # with col1:
-    #     data_inicial = st.date_input("Data Inicial", date(2022, 2, 10))
-    # with col2:
-    #     data_final = st.date_input("Data Final", get_today())
-
-    # df_hist = df_hist[(df_hist['Date'] >= pd.to_datetime(data_inicial)) & (df_hist['Date'] <= pd.to_datetime(data_final))]
 
     # leagues = sorted(df_hist['League'].unique())
     # leagues.insert(0, 'Todas as Ligas')
