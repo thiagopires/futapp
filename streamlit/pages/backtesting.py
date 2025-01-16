@@ -69,7 +69,7 @@ else:
             valor = st.session_state[f'valor_{i}']
 
             if valor != "":
-                st.write(f"{indicador} {operador_selecionado} {valor}")
+                st.caption(f"{indicador} {operador_selecionado} {valor}")
 
                 if operador_selecionado == 'Igual (=)':
                     df_hist = df_hist[(df_hist[indicador] == float(valor))]
