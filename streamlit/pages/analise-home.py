@@ -80,7 +80,7 @@ else:
         (df_matches["XG_Home_Pre"] <= st.session_state.XG_Home_Pre_Max)
     ]
 
-    print_dataframe(df_matches[['League','Rodada','Time','Home','Away','Odd_H_FT','Odd_D_FT','Odd_A_FT','Odd_Over05_HT','Odd_Over15_FT','Odd_Over25_FT','Odd_BTTS_Yes']])
+    print_dataframe(df_matches[['League','Rodada','Time','Home','Away','Odd_H_FT','Odd_D_FT','Odd_A_FT','Odd_Over05_HT','Odd_Over15_FT','Odd_Over25_FT','Odd_BTTS_Yes','XG_Total_Pre','XG_Home_Pre']])
 
 
     st.divider()
