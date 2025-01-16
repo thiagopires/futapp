@@ -35,7 +35,8 @@ else:
     with col2:
         data_final = st.date_input("Data Final", get_today())
 
-    df_hist = df_hist[(df_hist['Date'] >= pd.to_datetime(data_inicial)) & (df_hist['Date'] <= pd.to_datetime(data_final))]
+    if data_final and data_final:
+        df_hist = df_hist[(df_hist['Date'] >= pd.to_datetime(data_inicial)) & (df_hist['Date'] <= pd.to_datetime(data_final))]
 
     with st.expander("Filtros"):
         for i in range(1,6):
