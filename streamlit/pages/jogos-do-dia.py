@@ -44,8 +44,8 @@ else:
 
         col1, col2 = st.columns(2)
         with col1:
-            st.subheader("Odds")
-            col11, col12, col13 = st.columns(3)
+            st.subheader("Indicadores")
+            col11, col12, col13, col14 = st.columns(4)
             col11.metric(label="MO Home", value=df_match_selected["Odd_H_FT"])
             col12.metric(label="MO Draw", value=df_match_selected["Odd_D_FT"])
             col13.metric(label="MO Away", value=df_match_selected["Odd_A_FT"])
