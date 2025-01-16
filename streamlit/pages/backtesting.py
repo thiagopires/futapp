@@ -114,7 +114,11 @@ else:
         st.write(f"**Resultado:**")
         st.write(f"Jogos: {total_jogos}, Greens: {total_greens}, Reds: {total_reds}, Winrate: {winrate}%, Profit Acumulado: {profit_acumulado}")
 
-        print_dataframe(df_hist)
+        st.write(f"GREENs:")
+        print_dataframe(df_hist.loc[df_hist['Status_Metodo'] == 'GREEN'])
+
+        st.write(f"REDs:")
+        print_dataframe(df_hist.loc[df_hist['Status_Metodo'] == 'RED'])
 
     # leagues = sorted(df_hist['League'].unique())
     # leagues.insert(0, 'Todas as Ligas')
