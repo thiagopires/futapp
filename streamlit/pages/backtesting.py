@@ -90,34 +90,30 @@ else:
                     df_hist = df_hist[(df_hist[indicador] != float(valor))]
 
                 df_hist["Status_Metodo"] = "RED"
-
+                df_hist['Profit'] = -1  
                 
                 if metodo == 'Back Casa':
                     df_hist.loc[df_hist["Goals_H_FT"] > df_hist["Goals_A_FT"], "Status_Metodo"] = "GREEN"
-                    df_hist['Profit'] = -1    
                     df_hist.loc[filter, 'Profit'] = round(df_hist['Odd_H_FT']-1, 2)
                     df_hist.loc[filter, "Status_Metodo"] = "GREEN"
                 if metodo == 'Back Visitante':
-                    df_hist.loc[df_hist["Goals_H_FT"] < df_hist["Goals_A_FT"], "Status_Metodo"] = "GREEN"
-                    df_hist['Profit'] = -1    
+                    df_hist.loc[df_hist["Goals_H_FT"] < df_hist["Goals_A_FT"], "Status_Metodo"] = "GREEN"  
                     df_hist.loc[filter, 'Profit'] = round(df_hist['Goals_A_FT']-1, 2)
                     df_hist.loc[filter, "Status_Metodo"] = "GREEN"
                 if metodo == 'Lay Visitante':
-                    filter = (df_hist['Goals_H_FT'] >= df_hist['Goals_A_FT'])
-                    df_hist['Profit'] = -1    
+                    filter = (df_hist['Goals_H_FT'] >= df_hist['Goals_A_FT'])  
                     df_hist.loc[filter, 'Profit'] = round(df_hist['Odd_DC_1X']-1, 2)
                     df_hist.loc[filter, "Status_Metodo"] = "GREEN"
                 if metodo == 'Lay Casa':
-                    filter = (df_hist['Goals_H_FT'] <= df_hist['Goals_A_FT'])
-                    df_hist['Profit'] = -1    
+                    filter = (df_hist['Goals_H_FT'] <= df_hist['Goals_A_FT'])   
                     df_hist.loc[filter, 'Profit'] = round(df_hist['Odd_DC_X2']-1, 2)
                     df_hist.loc[filter, "Status_Metodo"] = "GREEN"
                 if metodo == 'Lay 0x1':
                     df_hist.loc[df_hist["Resultado_FT"] != '0-1', "Status_Metodo"] = "GREEN"
-                    df_hist['Profit'] = -1
                 if metodo == 'Lay 0x2':
                     df_hist.loc[df_hist["Resultado_FT"] != '0-2', "Status_Metodo"] = "GREEN"
-                    df_hist['Profit'] = -1
+                if metodo == 'Lay Goleada Visitante':
+                    df_hist.loc[df_hist["Resultado_FT"] != '0-2', "Status_Metodo"] = "GREEN"
 
         total_jogos = len(df_hist)
         total_greens = len(df_hist[(df_hist['Status_Metodo'] == 'GREEN')])
