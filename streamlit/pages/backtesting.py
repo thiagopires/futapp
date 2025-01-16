@@ -52,9 +52,12 @@ else:
 
     metodo = st.selectbox("Método", [
         'Back Casa',
-        'Lay Visitante',
+        'Back Visitante',
         'Lay Casa',
-        'Lay 0x1'
+        'Lay Visitante',
+        'Lay 0x1',
+        'Lay 0x2',
+        'Lay Goleada Visitante'
     ])
 
     condicao = st.radio("Condição", ["Favorito/Zebra", "Zebra/Favorito"])
