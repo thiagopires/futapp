@@ -53,7 +53,8 @@ else:
     metodo = st.selectbox("Método", [
         'Back Casa',
         'Lay Visitante',
-        'Lay Casa'
+        'Lay Casa',
+        'Lay 0x1'
     ])
 
     condicao = st.radio("Condição", ["Favorito/Zebra", "Zebra/Favorito"])
@@ -86,6 +87,10 @@ else:
                     df_hist = df_hist[(df_hist[indicador] != float(valor))]
 
                 df_hist["Status_Metodo"] = "RED"
+
+                if metodo == 'Lay 0x1':
+                    df_hist.loc[df_hist["Resultado_FT"] != '0-1', "Status_Metodo"] = "GREEN"
+                    df_hist['Profit'] = -1
                 if metodo == 'Back Casa':
                     df_hist.loc[df_hist["Goals_H_FT"] > df_hist["Goals_A_FT"], "Status_Metodo"] = "GREEN"
                 if metodo == 'Lay Visitante':
