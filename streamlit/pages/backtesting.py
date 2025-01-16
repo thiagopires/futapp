@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 from datetime import date
+import plotly.express as px
 
 from utils.functions import *
 
@@ -123,6 +124,22 @@ else:
 
         st.write(f"**Resultado:**")
         st.write(f"Jogos: {total_jogos}, Greens: {total_greens}, Reds: {total_reds}, Winrate: {winrate}%, Profit Acumulado: {profit_acumulado}")
+
+        # Agrupar por data e somar os lucros
+        daily_profit = df_hist.groupby("Formatted_Date")["Profit"].sum().reset_index()
+
+        # Criar o gráfico de linha com Plotly Express
+        fig = px.line(
+            daily_profit,
+            x="Formatted_Date",
+            y="Profit",
+            title="Lucro Diário",
+            labels={"Formatted_Date": "Data", "Profit": "Lucro"},
+            markers=True  # Adiciona marcadores nos pontos
+        )
+
+        # Mostrar o gráfico no Streamlit
+        st.plotly_chart(fig)
 
         st.write(f"GREENs:")
         print_dataframe(df_hist.loc[df_hist['Status_Metodo'] == 'GREEN'])
