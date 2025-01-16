@@ -16,65 +16,57 @@ else:
 
     df_hist = load_histmatches()
 
-    col1, col2, col3, col4 = st.columns(4)
-    with col1:
-        indicador = st.selectbox("Indicador", df_hist.columns[7:], key="indicador")
+    operadores_opcoes = {
+        "=": "igual",
+        ">": "maior que",
+        "<": "menor que",
+        ">=": "maior ou igual",
+        "<=": "menor ou igual",
+        "!=": "diferente de"
+    }
+    operadores_formatados = [f"{descricao} ({simbolo})" for simbolo, descricao in operadores_opcoes.items()]  
 
-    with col2:
-        operadores_opcoes = {
-            "=": "igual",
-            ">": "maior que",
-            "<": "menor que",
-            ">=": "maior ou igual",
-            "<=": "menor ou igual",
-            "!=": "diferente de"
-        }
+    for i in range(1,6):
+        cola, colb, colc = st.columns(4)
+        with cola: indicador = st.selectbox("Indicador", df_hist.columns[7:], key=f"indicador_{i}")
+        with colb: operador_selecionado = st.selectbox("Operador", operadores_formatados, key=f"operador_{i}")
+        with colc: valor = st.text_input("Digite o valor:", key=f"valor_{i}")
 
-        # Criar lista formatada para o selectbox
-        operadores_formatados = [f"{descricao} ({simbolo})" for simbolo, descricao in operadores_opcoes.items()]
+    if st.button("Salvar"):
+        if operador_selecionado == 'igual (=)':
+            df_hist = df_hist[(df_hist[indicador] == float(valor))]
+        if operador_selecionado == 'maior que (>)':
+            df_hist = df_hist[(df_hist[indicador] > float(valor))]
+        if operador_selecionado == 'menor que (<)':
+            df_hist = df_hist[(df_hist[indicador] < float(valor))]
+        if operador_selecionado == 'maior ou igual (>=)':
+            df_hist = df_hist[(df_hist[indicador] >= float(valor))]
+        if operador_selecionado == 'menor ou igual (<=)':
+            df_hist = df_hist[(df_hist[indicador] <= float(valor))]
+        if operador_selecionado == 'diferente de (!=)':
+            df_hist = df_hist[(df_hist[indicador] != float(valor))]
 
-        # Selectbox para escolher o operador condicional
-        operador_selecionado = st.selectbox("Operador", operadores_formatados, key="operador")
+    # col1, col2 = st.columns(2)
+    # with col1:
+    #     data_inicial = st.date_input("Data Inicial", date(2022, 2, 10))
+    # with col2:
+    #     data_final = st.date_input("Data Final", get_today())
 
-    with col3:
-        valor = st.text_input("Digite o valor:", key="valor")
+    # df_hist = df_hist[(df_hist['Date'] >= pd.to_datetime(data_inicial)) & (df_hist['Date'] <= pd.to_datetime(data_final))]
 
-    with col4:
-        if st.button("Salvar"):
-            if operador_selecionado == 'igual (=)':
-                df_hist = df_hist[(df_hist[indicador] == float(valor))]
-            if operador_selecionado == 'maior que (>)':
-                df_hist = df_hist[(df_hist[indicador] > float(valor))]
-            if operador_selecionado == 'menor que (<)':
-                df_hist = df_hist[(df_hist[indicador] < float(valor))]
-            if operador_selecionado == 'maior ou igual (>=)':
-                df_hist = df_hist[(df_hist[indicador] >= float(valor))]
-            if operador_selecionado == 'menor ou igual (<=)':
-                df_hist = df_hist[(df_hist[indicador] <= float(valor))]
-            if operador_selecionado == 'diferente de (!=)':
-                df_hist = df_hist[(df_hist[indicador] != float(valor))]
+    # leagues = sorted(df_hist['League'].unique())
+    # leagues.insert(0, 'Todas as Ligas')
+    # selected_leagues = st.multiselect("Filtrar por Liga", leagues, [leagues[0]])
 
-    col1, col2 = st.columns(2)
-    with col1:
-        data_inicial = st.date_input("Data Inicial", date(2022, 2, 10))
-    with col2:
-        data_final = st.date_input("Data Final", get_today())
+    # if not (not selected_leagues or "Todas as Ligas" in selected_leagues):
+    #     df_hist = df_hist[df_hist['League'].isin(selected_leagues)]
 
-    df_hist = df_hist[(df_hist['Date'] >= pd.to_datetime(data_inicial)) & (df_hist['Date'] <= pd.to_datetime(data_final))]
+    # seasons = sorted(df_hist['Season'].unique())
+    # seasons.insert(0, 'Todas as Temporadas')
+    # selected_seasons = st.multiselect("Filtrar por Temporada", seasons, [seasons[0]])
 
-    leagues = sorted(df_hist['League'].unique())
-    leagues.insert(0, 'Todas as Ligas')
-    selected_leagues = st.multiselect("Filtrar por Liga", leagues, [leagues[0]])
-
-    if not (not selected_leagues or "Todas as Ligas" in selected_leagues):
-        df_hist = df_hist[df_hist['League'].isin(selected_leagues)]
-
-    seasons = sorted(df_hist['Season'].unique())
-    seasons.insert(0, 'Todas as Temporadas')
-    selected_seasons = st.multiselect("Filtrar por Temporada", seasons, [seasons[0]])
-
-    if not (not selected_seasons or "Todas as Temporadas" in selected_seasons):
-        df_hist = df_hist[df_hist['Season'].isin(selected_seasons)]
+    # if not (not selected_seasons or "Todas as Temporadas" in selected_seasons):
+    #     df_hist = df_hist[df_hist['Season'].isin(selected_seasons)]
 
     print_dataframe(df_hist)
 
