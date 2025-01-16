@@ -89,8 +89,13 @@ else:
         total_reds = total_jogos - total_greens
         winrate = round(total_greens / total_jogos * 100, 2)
 
+        df_hist['Profit_Back_Away'] = -1    
+        df_hist.loc[filter, 'Profit_Back_Away'] = round(df_hist['Odd_DC_1X']-1, 2)
+
+        profit_acumulado = f"{str(round(df_hist['Profit_Back_Away'].sum(), 2))} unidades"
+
         st.write(f"**Resultado:**")
-        st.write(f"Jogos: {total_jogos}, Greens: {total_greens}, Reds: {total_reds}, Winrate: {winrate}%")
+        st.write(f"Jogos: {total_jogos}, Greens: {total_greens}, Reds: {total_reds}, Winrate: {winrate}%, Profit Acumulado: {profit_acumulado}")
 
         print_dataframe(df_hist)
 
