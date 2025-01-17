@@ -54,19 +54,18 @@ def load_daymatches(dt, filter_teams=None):
             classificacao_geral["Clube"] == row["Home"], "#"
         ]
         if not posicao_home.empty:
-            df.loc[idx, 'Posicao_Tabela_H'] = posicao_home.values[0]
+            df.loc[idx, 'PTS_Tabela_H'] = posicao_home.values[0]
         else:
-            df.loc[idx, 'Posicao_Tabela_H'] = None  # Ou um valor padrão, como -1
+            df.loc[idx, 'PTS_Tabela_H'] = None  # Ou um valor padrão, como -1
         
         # Verificar posição do time visitante
         posicao_away = classificacao_geral.loc[
             classificacao_geral["Clube"] == row["Away"], "#"
         ]
         if not posicao_away.empty:
-            df.loc[idx, 'Posicao_Tabela_A'] = posicao_away.values[0]
+            df.loc[idx, 'PTS_Tabela_A'] = posicao_away.values[0]
         else:
-            df.loc[idx, 'Posicao_Tabela_A'] = None
-
+            df.loc[idx, 'PTS_Tabela_A'] = None
 
     if filter_teams:
         filter = (df["Home"].isin(filter_teams)) | (df["Away"].isin(filter_teams))
