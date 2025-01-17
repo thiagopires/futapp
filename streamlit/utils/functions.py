@@ -48,9 +48,15 @@ def load_daymatches(dt, filter_teams=None):
     df_hist = df_hist[(df_hist['Season'] == get_current_season())]
     classificacao_geral = generate_classificacao_2(df_hist, "ALL")
 
-    for _, row in df.iterrows():
-        row['Posicao_Tabela_H'] = classificacao_geral[classificacao_geral["Clube"] == row["Home"], "#"]
-        row['Posicao_Tabela_A'] = classificacao_geral[classificacao_geral["Clube"] == row["Away"], "#"]
+    for idx, row in df.iterrows():
+        df.loc[idx, 'Posicao_Tabela_H'] = classificacao_geral.loc[
+            classificacao_geral["Clube"] == row["Home"], "#"
+        ].values[0]
+        
+        df.loc[idx, 'Posicao_Tabela_A'] = classificacao_geral.loc[
+            classificacao_geral["Clube"] == row["Away"], "#"
+        ].values[0]
+
 
     if filter_teams:
         filter = (df["Home"].isin(filter_teams)) | (df["Away"].isin(filter_teams))
