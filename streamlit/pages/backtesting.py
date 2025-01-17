@@ -44,7 +44,7 @@ else:
     if not (not selected_leagues or "Todas as Ligas" in selected_leagues):
         df_hist = df_hist[df_hist['League'].isin(selected_leagues)]
 
-    with st.expander("Monte o seu filtro:"):
+    with st.expander("Monte o filtro:"):
         for i in range(1,7):
             cola, colb, colc, cold = st.columns(4)
             with cola: st.selectbox("Indicador", indicadores, key=f"indicador_{i}")
