@@ -25,7 +25,6 @@ else:
     st.write("**Filtros**")
 
     filtro_layzebra = st.checkbox("Lay Zebra")
-    filtro_layzebra = st.checkbox("Lay Zebra")
 
     if filtro_layzebra:
         df_matches = df_matches.loc[
