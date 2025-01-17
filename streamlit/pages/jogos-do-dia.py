@@ -27,7 +27,8 @@ else:
     filtro_layzebra = st.checkbox("Lay Zebra")
 
     if filtro_layzebra:
-        df_matches = df_matches[get_filter_lay_zebra(df_matches)]
+        filter = get_filter_lay_zebra(df_matches)
+        df_matches = df_matches[filter]
 
     # Dataframe
     st.subheader(f"Selecione o jogo:")
