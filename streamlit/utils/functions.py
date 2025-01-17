@@ -45,7 +45,7 @@ def load_daymatches(dt, filter_teams=None):
     df["Confronto"] = df["Time"] + " - " + df["Home"] + " vs. " + df["Away"]
 
     df_hist = load_histmatches(dt)
-    df_hist = df_hist[(df['Season'] == row['Season'])]
+    df_hist = df_hist[(df_hist['Season'] == row['Season'])]
     classificacao_geral = generate_classificacao_2(df_hist, "ALL")
 
     for _, row in df.iterrows():
