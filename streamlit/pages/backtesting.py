@@ -130,11 +130,12 @@ else:
 
         # Agrupar por data e somar os lucros
         daily_profit = df_hist.groupby("Date")["Profit"].sum().reset_index()
-        # daily_profit = daily_profit.sort_values(by="Date", ascending=False)
         daily_profit["Cumulative_Profit"] = daily_profit["Profit"].cumsum()
         st.dataframe(daily_profit)
 
-        
+        daily_profit2 = df_hist.groupby("League")["Profit"].sum().reset_index()
+        daily_profit2["Cumulative_Profit"] = daily_profit2["Profit"].cumsum()
+        st.dataframe(daily_profit2)    
 
         # Criar o gráfico de linha com Plotly Express
         fig = px.line(
@@ -142,7 +143,7 @@ else:
             x="Date",
             y="Cumulative_Profit",
             title="Lucro Diário",
-            labels={"Date": "Data", "Cumulative_Profit": "Lucro"},
+            labels={"Date": "Data", "Cumulative_Profit": "Unidades/Stakes"},
             markers=True  # Adiciona marcadores nos pontos
         )
 
