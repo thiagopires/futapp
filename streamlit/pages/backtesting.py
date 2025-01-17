@@ -73,7 +73,7 @@ else:
 
     filtro_layzebra = st.checkbox("Lay Zebra")
     if filtro_layzebra:
-        df_matches = df_hist.loc[
+        filter = (
             (df_hist["XG_Total_Pre"] >= 1.7) &
             (df_hist["Odd_H_FT"] < df_hist["Odd_D_FT"]) &
             (df_hist["Odd_D_FT"] < df_hist["Odd_A_FT"]) & 
@@ -81,7 +81,7 @@ else:
             (df_hist["XG_Home_Pre"] > df_hist["XG_Away_Pre"]) &
             (df_hist["XG_Away_Pre"] <= 1.25) &
             (df_hist['League'].isin(['Belgium Pro League','England Premier League','France Ligue 1','Germany 2. Bundesliga','Germany Bundesliga','Italy Serie A','Italy Serie B','Portugal Liga NOS','Spain La Liga','Turkey Süper Lig']))
-        ]
+        )
 
     executar = st.button("Executar")
     if executar:
@@ -106,51 +106,50 @@ else:
                     filter = (df_hist[indicador] <= float(valor)) if tipo == 'Valor Absoluto' else (df_hist[indicador] <= df_hist[valor])
                 if operador_selecionado == 'Diferente de (!=)':
                     filter = (df_hist[indicador] != float(valor)) if tipo == 'Valor Absoluto' else (df_hist[indicador] != df_hist[valor])
-                
-                df_hist = df_hist[filter] 
-                df_hist["Status_Metodo"] = "RED"
-                df_hist['Profit'] = -1  
-                
-                if metodo == 'Back Casa':
-                    filter = (df_hist["Goals_H_FT"] > df_hist["Goals_A_FT"])
-                    df_hist.loc[filter, 'Profit'] = round(df_hist['Odd_H_FT']-1, 2)
-                    df_hist.loc[filter, "Status_Metodo"] = "GREEN"
-                if metodo == 'Back Visitante':
-                    filter = (df_hist["Goals_H_FT"] < df_hist["Goals_A_FT"])
-                    df_hist.loc[filter, 'Profit'] = round(df_hist['Goals_A_FT']-1, 2)
-                    df_hist.loc[filter, "Status_Metodo"] = "GREEN"
-                if metodo == 'Lay Visitante':
-                    filter = (df_hist['Goals_H_FT'] >= df_hist['Goals_A_FT'])  
-                    df_hist.loc[filter, 'Profit'] = round(df_hist['Odd_DC_1X']-1, 2)
-                    df_hist.loc[filter, "Status_Metodo"] = "GREEN"
-                if metodo == 'Lay Casa':
-                    filter = (df_hist['Goals_H_FT'] <= df_hist['Goals_A_FT'])   
-                    df_hist.loc[filter, 'Profit'] = round(df_hist['Odd_DC_X2']-1, 2)
-                    df_hist.loc[filter, "Status_Metodo"] = "GREEN"
-                if metodo == 'Over 0.5 HT':
-                    filter = (df_hist['TotalGoals_HT'] >= 1.5)   
-                    df_hist.loc[filter, 'Profit'] = round(df_hist['Odd_Over05_HT']-1, 2)
-                    df_hist.loc[filter, "Status_Metodo"] = "GREEN"
-                if metodo == 'Over 1.5 FT':
-                    filter = (df_hist['TotalGoals_FT'] >= 1.5)   
-                    df_hist.loc[filter, 'Profit'] = round(df_hist['Odd_Over15_FT']-1, 2)
-                    df_hist.loc[filter, "Status_Metodo"] = "GREEN"
-                if metodo == 'Over 2.5 FT':
-                    filter = (df_hist['TotalGoals_FT'] >= 2.5)   
-                    df_hist.loc[filter, 'Profit'] = round(df_hist['Odd_Over25_FT']-1, 2)
-                    df_hist.loc[filter, "Status_Metodo"] = "GREEN"
-                if metodo == 'Lay Casa':
-                    filter = (df_hist['Goals_H_FT'] <= df_hist['Goals_A_FT'])   
-                    df_hist.loc[filter, 'Profit'] = round(df_hist['Odd_DC_X2']-1, 2)
-                    df_hist.loc[filter, "Status_Metodo"] = "GREEN"
-                if metodo == 'Lay 0x1':
-                    df_hist.loc[df_hist["Resultado_FT"] != '0-1', "Status_Metodo"] = "GREEN"
-                if metodo == 'Lay 0x2':
-                    df_hist.loc[df_hist["Resultado_FT"] != '0-2', "Status_Metodo"] = "GREEN"
-                if metodo == 'Lay Goleada Visitante':
-                    df_hist.loc[((df_hist['Goals_A_FT'] < 4) | (df_hist['Goals_A_FT'] <= df_hist['Goals_H_FT'])), "Status_Metodo"] = "GREEN"
 
-    if filtro_layzebra or executar:
+    if filtro_layzebra or executar:            
+        df_hist = df_hist[filter] 
+        df_hist["Status_Metodo"] = "RED"
+        df_hist['Profit'] = -1
+        
+        if metodo == 'Back Casa':
+            filter = (df_hist["Goals_H_FT"] > df_hist["Goals_A_FT"])
+            df_hist.loc[filter, 'Profit'] = round(df_hist['Odd_H_FT']-1, 2)
+            df_hist.loc[filter, "Status_Metodo"] = "GREEN"
+        if metodo == 'Back Visitante':
+            filter = (df_hist["Goals_H_FT"] < df_hist["Goals_A_FT"])
+            df_hist.loc[filter, 'Profit'] = round(df_hist['Goals_A_FT']-1, 2)
+            df_hist.loc[filter, "Status_Metodo"] = "GREEN"
+        if metodo == 'Lay Visitante':
+            filter = (df_hist['Goals_H_FT'] >= df_hist['Goals_A_FT'])  
+            df_hist.loc[filter, 'Profit'] = round(df_hist['Odd_DC_1X']-1, 2)
+            df_hist.loc[filter, "Status_Metodo"] = "GREEN"
+        if metodo == 'Lay Casa':
+            filter = (df_hist['Goals_H_FT'] <= df_hist['Goals_A_FT'])   
+            df_hist.loc[filter, 'Profit'] = round(df_hist['Odd_DC_X2']-1, 2)
+            df_hist.loc[filter, "Status_Metodo"] = "GREEN"
+        if metodo == 'Over 0.5 HT':
+            filter = (df_hist['TotalGoals_HT'] >= 1.5)   
+            df_hist.loc[filter, 'Profit'] = round(df_hist['Odd_Over05_HT']-1, 2)
+            df_hist.loc[filter, "Status_Metodo"] = "GREEN"
+        if metodo == 'Over 1.5 FT':
+            filter = (df_hist['TotalGoals_FT'] >= 1.5)   
+            df_hist.loc[filter, 'Profit'] = round(df_hist['Odd_Over15_FT']-1, 2)
+            df_hist.loc[filter, "Status_Metodo"] = "GREEN"
+        if metodo == 'Over 2.5 FT':
+            filter = (df_hist['TotalGoals_FT'] >= 2.5)   
+            df_hist.loc[filter, 'Profit'] = round(df_hist['Odd_Over25_FT']-1, 2)
+            df_hist.loc[filter, "Status_Metodo"] = "GREEN"
+        if metodo == 'Lay Casa':
+            filter = (df_hist['Goals_H_FT'] <= df_hist['Goals_A_FT'])   
+            df_hist.loc[filter, 'Profit'] = round(df_hist['Odd_DC_X2']-1, 2)
+            df_hist.loc[filter, "Status_Metodo"] = "GREEN"
+        if metodo == 'Lay 0x1':
+            df_hist.loc[df_hist["Resultado_FT"] != '0-1', "Status_Metodo"] = "GREEN"
+        if metodo == 'Lay 0x2':
+            df_hist.loc[df_hist["Resultado_FT"] != '0-2', "Status_Metodo"] = "GREEN"
+        if metodo == 'Lay Goleada Visitante':
+            df_hist.loc[((df_hist['Goals_A_FT'] < 4) | (df_hist['Goals_A_FT'] <= df_hist['Goals_H_FT'])), "Status_Metodo"] = "GREEN"
 
         total_jogos = len(df_hist)
         total_greens = len(df_hist[(df_hist['Status_Metodo'] == 'GREEN')])
@@ -161,16 +160,13 @@ else:
         st.write(f"**Resultado:**")
         st.write(f"Jogos: {total_jogos}, Greens: {total_greens}, Reds: {total_reds}, Winrate: {winrate}%, Profit Acumulado: {profit_acumulado}")
 
-        # # Agrupar por data e somar os lucros
-        # daily_profit = df_hist.groupby("Date")["Profit"].sum().reset_index()
-        # daily_profit["Cumulative_Profit"] = daily_profit["Profit"].cumsum()
-        # st.dataframe(daily_profit)
+        daily_profit = df_hist.groupby("Date")["Profit"].sum().reset_index()
+        daily_profit["Cumulative_Profit"] = daily_profit["Profit"].cumsum()
 
         # daily_profit2 = df_hist.groupby("League")["Profit"].sum().reset_index()
         # daily_profit2["Cumulative_Profit"] = daily_profit2["Profit"].cumsum()
         # st.dataframe(daily_profit2)    
 
-        # Criar o gráfico de linha com Plotly Express
         fig = px.line(
             daily_profit,
             x="Date",
@@ -179,8 +175,6 @@ else:
             labels={"Date": "Data", "Cumulative_Profit": "Unidades/Stakes"},
             markers=True  # Adiciona marcadores nos pontos
         )
-
-        # Mostrar o gráfico no Streamlit
         st.plotly_chart(fig)
 
         st.write(f"GREENs:")
