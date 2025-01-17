@@ -44,28 +44,13 @@ else:
     if not (not selected_leagues or "Todas as Ligas" in selected_leagues):
         df_hist = df_hist[df_hist['League'].isin(selected_leagues)]
 
-    with st.expander("Monte o filtro:"):
+    with st.expander("Monte o seu filtro:"):
         for i in range(1,7):
             cola, colb, colc, cold = st.columns(4)
             with cola: st.selectbox("Indicador", indicadores, key=f"indicador_{i}")
             with colb: st.selectbox("Tipo", ['Valor Absoluto', 'Valor Relativo'], key=f"tipo_{i}")
             with colc: st.selectbox("Operador", operadores_formatados, key=f"operador_{i}")
             with cold: st.text_input("Digite o valor ou Campo:", key=f"valor_{i}")
-
-
-    st.divider()
-
-
-    st.write("**Filtros Prontos**")
-
-    filtro_layzebra = st.checkbox("Lay Zebra")
-    if filtro_layzebra:
-        filter = get_filter_lay_zebra(df_hist)
-        metodo = 'Lay Visitante'
-
-    
-    st.divider()
-
 
     metodo = st.selectbox("Método", [
         'Back Casa',
@@ -113,6 +98,7 @@ else:
     
     st.divider()
 
+
     st.write("**Filtros Prontos**")
 
     filtro_layzebra = st.checkbox("Lay Zebra")
@@ -122,8 +108,6 @@ else:
 
     
     st.divider()
-
-
 
     if filtro_layzebra or executar:            
         df_hist = df_hist[filter] 
