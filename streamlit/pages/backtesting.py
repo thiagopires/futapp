@@ -153,11 +153,7 @@ else:
         st.write(f"Jogos: {total_jogos}, Greens: {total_greens}, Reds: {total_reds}, Winrate: {winrate}%, Profit Acumulado: {profit_acumulado}")
 
         daily_profit = df_hist.groupby("Date")["Profit"].sum().reset_index()
-        daily_profit["Cumulative_Profit"] = daily_profit["Profit"].cumsum()
-
-        # daily_profit2 = df_hist.groupby("League")["Profit"].sum().reset_index()
-        # daily_profit2["Cumulative_Profit"] = daily_profit2["Profit"].cumsum()
-        # st.dataframe(daily_profit2)    
+        daily_profit["Cumulative_Profit"] = daily_profit["Profit"].cumsum()  
 
         fig = px.line(
             daily_profit,
@@ -174,6 +170,12 @@ else:
 
         st.write(f"REDs:")
         print_dataframe(df_hist.loc[df_hist['Status_Metodo'] == 'RED'])
+
+        st.write("**Detalhes**")
+
+        report = df_hist.groupby(["League", "Month_Year"])["Profit"].sum().reset_index()
+        report["Cumulative_Profit"] = report["Profit"].cumsum()
+        st.dataframe(report)  
 
     # leagues = sorted(df_hist['League'].unique())
     # leagues.insert(0, 'Todas as Ligas')
