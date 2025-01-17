@@ -59,7 +59,10 @@ else:
         'Lay Visitante',
         'Lay 0x1',
         'Lay 0x2',
-        'Lay Goleada Visitante'
+        'Lay Goleada Visitante',
+        'Over 0.5 HT',
+        'Over 1.5 FT',
+        'Over 2.5 FT'
     ])
 
     condicao = st.radio("Condição", ["Favorito/Zebra", "Zebra/Favorito"])
@@ -111,6 +114,10 @@ else:
                 if metodo == 'Lay Casa':
                     filter = (df_hist['Goals_H_FT'] <= df_hist['Goals_A_FT'])   
                     df_hist.loc[filter, 'Profit'] = round(df_hist['Odd_DC_X2']-1, 2)
+                    df_hist.loc[filter, "Status_Metodo"] = "GREEN"
+                if metodo == 'Over 0.5 HT':
+                    filter = (df_hist['TotalGoals_HT'] >= 1.5)   
+                    df_hist.loc[filter, 'Profit'] = round(df_hist['Odd_Over05_HT']-1, 2)
                     df_hist.loc[filter, "Status_Metodo"] = "GREEN"
                 if metodo == 'Over 1.5 FT':
                     filter = (df_hist['TotalGoals_FT'] >= 1.5)   
