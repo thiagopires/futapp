@@ -47,8 +47,8 @@ def load_daymatches(dt, filter_teams=None):
     df_hist = load_histmatches(dt)    
 
     for idx, row in df.iterrows():
-        df_hist = df_hist[(df_hist['Season'] == get_current_season()) & (df_hist['League'] == row['League'])]
-        classificacao_geral = generate_classificacao_2(df_hist, "ALL")
+        df_hist_cp = df_hist[(df_hist['Season'] == get_current_season()) & (df_hist['League'] == row['League'])].copy()
+        classificacao_geral = generate_classificacao_2(df_hist_cp, "ALL")
 
         posicao_home = classificacao_geral.loc[
             classificacao_geral["Clube"] == row["Home"], "#"
