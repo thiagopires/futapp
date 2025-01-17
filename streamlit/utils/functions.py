@@ -44,6 +44,16 @@ def load_daymatches(dt, filter_teams=None):
     df["Formatted_Datetime"] = df["Datetime"].dt.strftime("%d/%m/%Y %H:%M")
     df["Confronto"] = df["Time"] + " - " + df["Home"] + " vs. " + df["Away"]
 
+    df_hist = load_histmatches(dt)
+    classificacao_geral = generate_classificacao_2(df_hist, "ALL")
+
+    for _, row in df.iterrows():
+        df_hist = df_hist[(df['Season'] == row['Season'])]
+        classificacao_geral = generate_classificacao_2(df_hist, "ALL")
+
+        row['Posicao_Tabela_H'] = classificacao_geral[classificacao_geral["Clube"] == row["Home"], "#"]
+        row['Posicao_Tabela_A'] = classificacao_geral[classificacao_geral["Clube"] == row["Away"], "#"]
+
     if filter_teams:
         filter = (df["Home"].isin(filter_teams)) | (df["Away"].isin(filter_teams))
         df = df[filter]
@@ -166,6 +176,48 @@ def generate_classificacao(df, df_match_selected, type):
     styled_df = styled_df.style.apply(highlight_row, axis=1, highlight=[df_match_selected["Home"],df_match_selected["Away"]])
 
     return classificacao_df, styled_df
+
+def generate_classificacao_2(df, type):
+    # Calculando o resultado do jogo
+    df["Home_Win"] = df["Goals_H_FT"] > df["Goals_A_FT"]
+    df["Away_Win"] = df["Goals_H_FT"] < df["Goals_A_FT"]
+    df["Draw"] = df["Goals_H_FT"] == df["Goals_A_FT"]
+    
+    # Inicializando as tabelas de pontos
+    clubes = pd.DataFrame({"Clube": pd.concat([df["Home"], df["Away"]]).unique()})
+    clubes.set_index("Clube", inplace=True)
+    columns = ["PTS", "P", "W", "D", "L", "GF", "GC", "DIFF"]
+    for col in columns:
+        clubes[col] = 0
+    
+    # Atualizando estatísticas para todos os jogos
+    for _, row in df.iterrows():
+        if type == 'HOME':
+            atualizar_estatisticas(row, clubes, casa=True)
+        elif type == 'AWAY':
+            atualizar_estatisticas(row, clubes, casa=False)
+        elif type == 'ALL':
+            atualizar_estatisticas(row, clubes, casa=True)
+            atualizar_estatisticas(row, clubes, casa=False)
+    
+    # Adicionando a posição e ordenando
+
+    clubes = clubes.sort_values(by=["PTS", "DIFF", "GF"], ascending=False)
+    clubes["Goals"] = clubes["GF"].astype(str) + ":" + clubes["GC"].astype(str)
+    clubes["#"] = range(1, len(clubes) + 1)
+    clubes["DIFF"] = clubes["DIFF"].apply(lambda x: f"+{x}" if x > 0 else str(x))
+
+    clubes = clubes.reset_index()
+    classificacao_df = clubes[["#", "Clube", "PTS", "P", "W", "D", "L", "DIFF", "Goals"]]
+
+    # if type == 'HOME':
+    #     styled_df = styled_df.style.apply(highlight_row, axis=1, highlight=[df_match_selected["Home"]])        
+    # elif type == 'AWAY':
+    #     styled_df = styled_df.style.apply(highlight_row, axis=1, highlight=[df_match_selected["Away"]])
+    # elif type == 'ALL':
+    #     styled_df = styled_df.style.apply(highlight_row, axis=1, highlight=[df_match_selected["Home"],df_match_selected["Away"]])
+
+    return classificacao_df
 
 def highlight_result(row, highlight):
     colors = {
