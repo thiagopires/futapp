@@ -65,15 +65,15 @@ else:
         'Over 2.5 FT'
     ])
 
-    condicao = st.radio("Condição", ["Favorito/Zebra", "Zebra/Favorito"])
-    if condicao == "Favorito/Zebra":
-        df_hist = df_hist[(df_hist["Odd_H_FT"] < df_hist["Odd_D_FT"]) & (df_hist["Odd_D_FT"] < df_hist["Odd_A_FT"])]
-    elif condicao == "Zebra/Favorito":
-        df_hist = df_hist[(df_hist["Odd_H_FT"] > df_hist["Odd_D_FT"]) & (df_hist["Odd_D_FT"] > df_hist["Odd_A_FT"])]
+    # condicao = st.radio("Condição", ["Favorito/Zebra", "Zebra/Favorito"])
+    # if condicao == "Favorito/Zebra":
+    #     df_hist = df_hist[(df_hist["Odd_H_FT"] < df_hist["Odd_D_FT"]) & (df_hist["Odd_D_FT"] < df_hist["Odd_A_FT"])]
+    # elif condicao == "Zebra/Favorito":
+    #     df_hist = df_hist[(df_hist["Odd_H_FT"] > df_hist["Odd_D_FT"]) & (df_hist["Odd_D_FT"] > df_hist["Odd_A_FT"])]
 
     filtro_layzebra = st.checkbox("Lay Zebra")
     if filtro_layzebra:
-        filter = get_filter_lay_zebra()
+        filter = get_filter_lay_zebra(df_hist)
 
     executar = st.button("Executar")
     if executar:
