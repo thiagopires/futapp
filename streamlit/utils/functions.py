@@ -47,6 +47,7 @@ def load_daymatches(dt, filter_teams=None):
     df_hist = load_histmatches(dt)    
 
     for idx, row in df.iterrows():
+        st.write(row['League'])
         df_hist = df_hist[(df_hist['Season'] == get_current_season()) & (df_hist['League'] == row['League'])]
         classificacao_geral = generate_classificacao_2(df_hist, "ALL")
 
