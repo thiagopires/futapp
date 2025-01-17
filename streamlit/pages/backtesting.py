@@ -46,7 +46,7 @@ else:
 
     with st.expander("Filtros"):
         for i in range(1,7):
-            cola, colb, colc, cold = st.columns(3)
+            cola, colb, colc, cold = st.columns(4)
             with cola: st.selectbox("Indicador", indicadores, key=f"indicador_{i}")
             with colb: st.selectbox("Tipo", ['Valor Absoluto', 'Valor Relativo'], key=f"tipo_{i}")
             with colc: st.selectbox("Operador", operadores_formatados, key=f"operador_{i}")
