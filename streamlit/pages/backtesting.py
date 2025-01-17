@@ -111,19 +111,8 @@ else:
                 if operador_selecionado == 'Diferente de (!=)':
                     filter = (df_hist[indicador] != float(valor)) if tipo == 'Valor Absoluto' else (df_hist[indicador] != df_hist[valor])
 
-    
+
     st.divider()
-
-    st.write("**Filtros Prontos**")
-
-    filtro_layzebra = st.checkbox("Lay Zebra")
-    if filtro_layzebra:
-        filter = get_filter_lay_zebra(df_hist)
-        metodo = 'Lay Visitante'
-
-    
-    st.divider()
-
 
 
     if filtro_layzebra or executar:            
