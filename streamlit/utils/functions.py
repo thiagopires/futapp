@@ -51,7 +51,7 @@ def load_daymatches(dt, filter_teams=None):
         classificacao_geral = generate_classificacao_2(df_hist_cp, "ALL")
 
         posicao_home = classificacao_geral.loc[
-            classificacao_geral["Clube"] == row["Home"], "#"
+            classificacao_geral["Clube"] == row["Home"], "PTS"
         ]
         if not posicao_home.empty:
             df.loc[idx, 'PTS_Tabela_H'] = posicao_home.values[0]
@@ -60,7 +60,7 @@ def load_daymatches(dt, filter_teams=None):
         
         # Verificar posição do time visitante
         posicao_away = classificacao_geral.loc[
-            classificacao_geral["Clube"] == row["Away"], "#"
+            classificacao_geral["Clube"] == row["Away"], "PTS"
         ]
         if not posicao_away.empty:
             df.loc[idx, 'PTS_Tabela_A'] = posicao_away.values[0]
