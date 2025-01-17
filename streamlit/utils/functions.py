@@ -44,28 +44,28 @@ def load_daymatches(dt, filter_teams=None):
     df["Formatted_Datetime"] = df["Datetime"].dt.strftime("%d/%m/%Y %H:%M")
     df["Confronto"] = df["Time"] + " - " + df["Home"] + " vs. " + df["Away"]
 
-    df_hist = load_histmatches(dt)    
+    # df_hist = load_histmatches(dt)
 
-    for idx, row in df.iterrows():
-        df_hist_cp = df_hist[(df_hist['Season'] == get_current_season()) & (df_hist['League'] == row['League'])].copy()
-        classificacao_geral = generate_classificacao_2(df_hist_cp, "ALL")
+    # for idx, row in df.iterrows():
+    #     df_hist_cp = df_hist[(df_hist['Season'] == get_current_season()) & (df_hist['League'] == row['League'])].copy()
+    #     classificacao_geral = generate_classificacao_2(df_hist_cp, "ALL")
 
-        posicao_home = classificacao_geral.loc[
-            classificacao_geral["Clube"] == row["Home"], "PTS"
-        ]
-        if not posicao_home.empty:
-            df.loc[idx, 'PTS_Tabela_H'] = posicao_home.values[0]
-        else:
-            df.loc[idx, 'PTS_Tabela_H'] = None  # Ou um valor padrão, como -1
+    #     posicao_home = classificacao_geral.loc[
+    #         classificacao_geral["Clube"] == row["Home"], "PTS"
+    #     ]
+    #     if not posicao_home.empty:
+    #         df.loc[idx, 'PTS_Tabela_H'] = posicao_home.values[0]
+    #     else:
+    #         df.loc[idx, 'PTS_Tabela_H'] = None  # Ou um valor padrão, como -1
         
-        # Verificar posição do time visitante
-        posicao_away = classificacao_geral.loc[
-            classificacao_geral["Clube"] == row["Away"], "PTS"
-        ]
-        if not posicao_away.empty:
-            df.loc[idx, 'PTS_Tabela_A'] = posicao_away.values[0]
-        else:
-            df.loc[idx, 'PTS_Tabela_A'] = None
+    #     # Verificar posição do time visitante
+    #     posicao_away = classificacao_geral.loc[
+    #         classificacao_geral["Clube"] == row["Away"], "PTS"
+    #     ]
+    #     if not posicao_away.empty:
+    #         df.loc[idx, 'PTS_Tabela_A'] = posicao_away.values[0]
+    #     else:
+    #         df.loc[idx, 'PTS_Tabela_A'] = None
 
     if filter_teams:
         filter = (df["Home"].isin(filter_teams)) | (df["Away"].isin(filter_teams))
