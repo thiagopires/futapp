@@ -83,8 +83,8 @@ else:
             (df_hist['League'].isin(['Belgium Pro League','England Premier League','France Ligue 1','Germany 2. Bundesliga','Germany Bundesliga','Italy Serie A','Italy Serie B','Portugal Liga NOS','Spain La Liga','Turkey Süper Lig']))
         ]
 
-    if st.button("Executar"):
-
+    executar = st.button("Executar")
+    if executar:
         for i in range(1,7):
             indicador = st.session_state[f'indicador_{i}']
             tipo = st.session_state[f'tipo_{i}']
@@ -149,6 +149,8 @@ else:
                     df_hist.loc[df_hist["Resultado_FT"] != '0-2', "Status_Metodo"] = "GREEN"
                 if metodo == 'Lay Goleada Visitante':
                     df_hist.loc[((df_hist['Goals_A_FT'] < 4) | (df_hist['Goals_A_FT'] <= df_hist['Goals_H_FT'])), "Status_Metodo"] = "GREEN"
+
+    if filtro_layzebra or executar:
 
         total_jogos = len(df_hist)
         total_greens = len(df_hist[(df_hist['Status_Metodo'] == 'GREEN')])
