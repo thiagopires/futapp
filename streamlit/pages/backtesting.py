@@ -46,10 +46,11 @@ else:
 
     with st.expander("Filtros"):
         for i in range(1,7):
-            cola, colb, colc = st.columns(3)
+            cola, colb, colc, cold = st.columns(3)
             with cola: st.selectbox("Indicador", indicadores, key=f"indicador_{i}")
-            with colb: st.selectbox("Operador", operadores_formatados, key=f"operador_{i}")
-            with colc: st.text_input("Digite o valor:", key=f"valor_{i}")
+            with colb: st.selectbox("Tipo", ['Valor Absoluto', 'Valor Relativo'], key=f"tipo_{i}")
+            with colc: st.selectbox("Operador", operadores_formatados, key=f"operador_{i}")
+            with cold: st.text_input("Digite o valor ou Campo:", key=f"valor_{i}")
 
     metodo = st.selectbox("Método", [
         'Back Casa',
@@ -71,6 +72,7 @@ else:
 
         for i in range(1,7):
             indicador = st.session_state[f'indicador_{i}']
+            tipo = st.session_state[f'tipo_{i}']
             operador_selecionado = st.session_state[f'operador_{i}']
             valor = st.session_state[f'valor_{i}']
 
@@ -78,18 +80,19 @@ else:
                 st.caption(f"{indicador} {operador_selecionado} {valor}")
 
                 if operador_selecionado == 'Igual (=)':
-                    df_hist = df_hist[(df_hist[indicador] == float(valor))]
+                    filter = (df_hist[indicador] == float(valor)) if tipo == 'Valor Absoluto' else (df_hist[indicador] == df_hist[valor])
                 if operador_selecionado == 'Maior que (>)':
-                    df_hist = df_hist[(df_hist[indicador] > float(valor))]
+                    filter = (df_hist[indicador] > float(valor)) if tipo == 'Valor Absoluto' else (df_hist[indicador] > df_hist[valor])
                 if operador_selecionado == 'Menor que (<)':
-                    df_hist = df_hist[(df_hist[indicador] < float(valor))]
+                    filter = (df_hist[indicador] < float(valor)) if tipo == 'Valor Absoluto' else (df_hist[indicador] < df_hist[valor])
                 if operador_selecionado == 'Maior ou igual (>=)':
-                    df_hist = df_hist[(df_hist[indicador] >= float(valor))]
+                    filter = (df_hist[indicador] >= float(valor)) if tipo == 'Valor Absoluto' else (df_hist[indicador] >= df_hist[valor])
                 if operador_selecionado == 'Menor ou igual (<=)':
-                    df_hist = df_hist[(df_hist[indicador] <= float(valor))]
+                    filter = (df_hist[indicador] <= float(valor)) if tipo == 'Valor Absoluto' else (df_hist[indicador] <= df_hist[valor])
                 if operador_selecionado == 'Diferente de (!=)':
-                    df_hist = df_hist[(df_hist[indicador] != float(valor))]
-
+                    filter = (df_hist[indicador] != float(valor)) if tipo == 'Valor Absoluto' else (df_hist[indicador] != df_hist[valor])
+                
+                df_hist = df_hist[filter] 
                 df_hist["Status_Metodo"] = "RED"
                 df_hist['Profit'] = -1  
                 
