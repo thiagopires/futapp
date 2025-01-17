@@ -112,6 +112,18 @@ else:
                     filter = (df_hist['Goals_H_FT'] <= df_hist['Goals_A_FT'])   
                     df_hist.loc[filter, 'Profit'] = round(df_hist['Odd_DC_X2']-1, 2)
                     df_hist.loc[filter, "Status_Metodo"] = "GREEN"
+                if metodo == 'Over 1.5 FT':
+                    filter = (df_hist['TotalGoals_FT'] >= 1.5)   
+                    df_hist.loc[filter, 'Profit'] = round(df_hist['Odd_Over15_FT']-1, 2)
+                    df_hist.loc[filter, "Status_Metodo"] = "GREEN"
+                if metodo == 'Over 2.5 FT':
+                    filter = (df_hist['TotalGoals_FT'] >= 2.5)   
+                    df_hist.loc[filter, 'Profit'] = round(df_hist['Odd_Over25_FT']-1, 2)
+                    df_hist.loc[filter, "Status_Metodo"] = "GREEN"
+                if metodo == 'Lay Casa':
+                    filter = (df_hist['Goals_H_FT'] <= df_hist['Goals_A_FT'])   
+                    df_hist.loc[filter, 'Profit'] = round(df_hist['Odd_DC_X2']-1, 2)
+                    df_hist.loc[filter, "Status_Metodo"] = "GREEN"
                 if metodo == 'Lay 0x1':
                     df_hist.loc[df_hist["Resultado_FT"] != '0-1', "Status_Metodo"] = "GREEN"
                 if metodo == 'Lay 0x2':
