@@ -44,7 +44,7 @@ else:
     if not (not selected_leagues or "Todas as Ligas" in selected_leagues):
         df_hist = df_hist[df_hist['League'].isin(selected_leagues)]
 
-    with st.expander("Filtros"):
+    with st.expander("Monte o seu filtro:"):
         for i in range(1,7):
             cola, colb, colc, cold = st.columns(4)
             with cola: st.selectbox("Indicador", indicadores, key=f"indicador_{i}")
@@ -71,10 +71,6 @@ else:
     # elif condicao == "Zebra/Favorito":
     #     df_hist = df_hist[(df_hist["Odd_H_FT"] > df_hist["Odd_D_FT"]) & (df_hist["Odd_D_FT"] > df_hist["Odd_A_FT"])]
 
-    filtro_layzebra = st.checkbox("Lay Zebra")
-    if filtro_layzebra:
-        filter = get_filter_lay_zebra(df_hist)
-
     executar = st.button("Executar")
     if executar:
         for i in range(1,7):
@@ -98,6 +94,21 @@ else:
                     filter = (df_hist[indicador] <= float(valor)) if tipo == 'Valor Absoluto' else (df_hist[indicador] <= df_hist[valor])
                 if operador_selecionado == 'Diferente de (!=)':
                     filter = (df_hist[indicador] != float(valor)) if tipo == 'Valor Absoluto' else (df_hist[indicador] != df_hist[valor])
+
+    
+    st.divider()
+
+
+    st.write("**Filtros Prontos**")
+
+    filtro_layzebra = st.checkbox("Lay Zebra")
+    if filtro_layzebra:
+        filter = get_filter_lay_zebra(df_hist)
+        metodo = 'Lay Visitante'
+
+    
+    st.divider()
+
 
     if filtro_layzebra or executar:            
         df_hist = df_hist[filter] 
