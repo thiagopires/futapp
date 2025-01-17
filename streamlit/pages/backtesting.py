@@ -67,9 +67,9 @@ else:
 
     condicao = st.radio("Condição", ["Favorito/Zebra", "Zebra/Favorito"])
     if condicao == "Favorito/Zebra":
-        df_hist = df_hist[df_hist["Odd_H_FT"] < df_hist["Odd_A_FT"]]
+        df_hist = df_hist[df_hist["Odd_H_FT"] < df_hist["Odd_D_FT"] < df_hist["Odd_A_FT"]]
     elif condicao == "Zebra/Favorito":
-        df_hist = df_hist[df_hist["Odd_H_FT"] > df_hist["Odd_A_FT"]]
+        df_hist = df_hist[df_hist["Odd_H_FT"] > df_hist["Odd_D_FT"] > df_hist["Odd_A_FT"]]
 
     if st.button("Executar"):
 
@@ -147,14 +147,14 @@ else:
         st.write(f"**Resultado:**")
         st.write(f"Jogos: {total_jogos}, Greens: {total_greens}, Reds: {total_reds}, Winrate: {winrate}%, Profit Acumulado: {profit_acumulado}")
 
-        # Agrupar por data e somar os lucros
-        daily_profit = df_hist.groupby("Date")["Profit"].sum().reset_index()
-        daily_profit["Cumulative_Profit"] = daily_profit["Profit"].cumsum()
-        st.dataframe(daily_profit)
+        # # Agrupar por data e somar os lucros
+        # daily_profit = df_hist.groupby("Date")["Profit"].sum().reset_index()
+        # daily_profit["Cumulative_Profit"] = daily_profit["Profit"].cumsum()
+        # st.dataframe(daily_profit)
 
-        daily_profit2 = df_hist.groupby("League")["Profit"].sum().reset_index()
-        daily_profit2["Cumulative_Profit"] = daily_profit2["Profit"].cumsum()
-        st.dataframe(daily_profit2)    
+        # daily_profit2 = df_hist.groupby("League")["Profit"].sum().reset_index()
+        # daily_profit2["Cumulative_Profit"] = daily_profit2["Profit"].cumsum()
+        # st.dataframe(daily_profit2)    
 
         # Criar o gráfico de linha com Plotly Express
         fig = px.line(
