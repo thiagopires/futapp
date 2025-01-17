@@ -19,8 +19,22 @@ else:
     df_hist = load_histmatches()
 
     # test
-    df_matches_filter = load_daymatches(data_analise, ['Celtic','Freiburg','Liverpool'])
-    st.dataframe(df_matches_filter)
+    # df_matches_filter = load_daymatches(data_analise, ['Celtic','Freiburg','Liverpool'])
+    # st.dataframe(df_matches_filter)
+
+    st.write("**Filtros**")
+
+    filtro_layzebra = st.chechbox("Lay Zebra")
+
+    if filtro_layzebra:
+        df_matches = df_matches.loc[
+            (df_matches["XG_Total_Pre"] >= 1.7) &
+            (df_matches["Odd_H_FT"] < df_matches["Odd_D_FT"]) &
+            (df_matches["Odd_H_FT"] >= 1.22) &
+            (df_matches["XG_Home_Pre"] > df_matches["XG_Away_Pre"]) &
+            (df_matches["XG_Away_Pre"] <= df_matches["Odd_D_FT"]) &
+            (df_matches["Odd_D_FT"] < df_matches["Odd_A_FT"])
+        ]
 
     # Dataframe
     st.subheader(f"Selecione o jogo:")
