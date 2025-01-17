@@ -130,6 +130,9 @@ else:
 
         # Agrupar por data e somar os lucros
         daily_profit = df_hist.groupby("Date")["Profit"].sum().reset_index()
+
+        st.dataframe(daily_profit)
+
         daily_profit = daily_profit.sort_values(by="Date", ascending=False)
         daily_profit["Cumulative_Profit"] = daily_profit["Profit"].cumsum()
 
