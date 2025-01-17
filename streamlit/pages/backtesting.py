@@ -71,6 +71,18 @@ else:
     elif condicao == "Zebra/Favorito":
         df_hist = df_hist[(df_hist["Odd_H_FT"] > df_hist["Odd_D_FT"]) & (df_hist["Odd_D_FT"] > df_hist["Odd_A_FT"])]
 
+    filtro_layzebra = st.checkbox("Lay Zebra")
+    if filtro_layzebra:
+        df_matches = df_hist.loc[
+            (df_hist["XG_Total_Pre"] >= 1.7) &
+            (df_hist["Odd_H_FT"] < df_hist["Odd_D_FT"]) &
+            (df_hist["Odd_D_FT"] < df_hist["Odd_A_FT"]) & 
+            (df_hist["Odd_H_FT"] >= 1.22) &
+            (df_hist["XG_Home_Pre"] > df_hist["XG_Away_Pre"]) &
+            (df_hist["XG_Away_Pre"] <= 1.25) &
+            (df_hist['League'].isin(['Belgium Pro League','England Premier League','France Ligue 1','Germany 2. Bundesliga','Germany Bundesliga','Italy Serie A','Italy Serie B','Portugal Liga NOS','Spain La Liga','Turkey Süper Lig']))
+        ]
+
     if st.button("Executar"):
 
         for i in range(1,7):
