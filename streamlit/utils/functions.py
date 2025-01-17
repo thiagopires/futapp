@@ -44,20 +44,20 @@ def load_daymatches(dt, filter_teams=None):
     df["Formatted_Datetime"] = df["Datetime"].dt.strftime("%d/%m/%Y %H:%M")
     df["Confronto"] = df["Time"] + " - " + df["Home"] + " vs. " + df["Away"]
 
-    # df_hist = load_histmatches(dt)    
+    df_hist = load_histmatches(dt)    
 
-    # for idx, row in df.iterrows():
-    #     st.write(row['League'])
-    #     df_hist = df_hist[(df_hist['Season'] == get_current_season()) & (df_hist['League'] == row['League'])]
-    #     classificacao_geral = generate_classificacao_2(df_hist, "ALL")
+    for idx, row in df.iterrows():
+        print(type(row['League']))
+        df_hist = df_hist[(df_hist['Season'] == get_current_season()) & (df_hist['League'] == row['League'])]
+        classificacao_geral = generate_classificacao_2(df_hist, "ALL")
 
-    #     df.loc[idx, 'Posicao_Tabela_H'] = classificacao_geral.loc[
-    #         classificacao_geral["Clube"] == row["Home"], "#"
-    #     ].values[0]
+        df.loc[idx, 'Posicao_Tabela_H'] = classificacao_geral.loc[
+            classificacao_geral["Clube"] == row["Home"], "#"
+        ].values[0]
         
-    #     df.loc[idx, 'Posicao_Tabela_A'] = classificacao_geral.loc[
-    #         classificacao_geral["Clube"] == row["Away"], "#"
-    #     ].values[0]
+        df.loc[idx, 'Posicao_Tabela_A'] = classificacao_geral.loc[
+            classificacao_geral["Clube"] == row["Away"], "#"
+        ].values[0]
 
 
     if filter_teams:
