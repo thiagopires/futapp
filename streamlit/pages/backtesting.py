@@ -61,26 +61,24 @@ else:
     filtro_layzebra = st.checkbox("Lay Zebra")
     if filtro_layzebra:
         filter = get_filter_lay_zebra(df_hist)
+        metodo = 'Lay Visitante'
 
     
     st.divider()
 
-    col1, col2 = st.columns(2)
-    with col1:
-        metodo = st.selectbox("Método", [
-            'Back Casa',
-            'Back Visitante',
-            'Lay Casa',
-            'Lay Visitante',
-            'Lay 0x1',
-            'Lay 0x2',
-            'Lay Goleada Visitante',
-            'Over 0.5 HT',
-            'Over 1.5 FT',
-            'Over 2.5 FT'
-        ])
-    with col2:    
-        executar = st.button("Executar")
+
+    metodo = st.selectbox("Método", [
+        'Back Casa',
+        'Back Visitante',
+        'Lay Casa',
+        'Lay Visitante',
+        'Lay 0x1',
+        'Lay 0x2',
+        'Lay Goleada Visitante',
+        'Over 0.5 HT',
+        'Over 1.5 FT',
+        'Over 2.5 FT'
+    ])
 
     # condicao = st.radio("Condição", ["Favorito/Zebra", "Zebra/Favorito"])
     # if condicao == "Favorito/Zebra":
@@ -88,6 +86,7 @@ else:
     # elif condicao == "Zebra/Favorito":
     #     df_hist = df_hist[(df_hist["Odd_H_FT"] > df_hist["Odd_D_FT"]) & (df_hist["Odd_D_FT"] > df_hist["Odd_A_FT"])]
 
+    executar = st.button("Executar")
     if executar:
         for i in range(1,7):
             indicador = st.session_state[f'indicador_{i}']
@@ -111,8 +110,19 @@ else:
                 if operador_selecionado == 'Diferente de (!=)':
                     filter = (df_hist[indicador] != float(valor)) if tipo == 'Valor Absoluto' else (df_hist[indicador] != df_hist[valor])
 
-
+    
     st.divider()
+
+    st.write("**Filtros Prontos**")
+
+    filtro_layzebra = st.checkbox("Lay Zebra")
+    if filtro_layzebra:
+        filter = get_filter_lay_zebra(df_hist)
+        metodo = 'Lay Visitante'
+
+    
+    st.divider()
+
 
 
     if filtro_layzebra or executar:            
