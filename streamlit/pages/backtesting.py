@@ -45,7 +45,7 @@ else:
         df_hist = df_hist[df_hist['League'].isin(selected_leagues)]
 
     with st.expander("Monte o seu filtro:"):
-        for i in range(1,7):
+        for i in range(1,9):
             cola, colb, colc, cold = st.columns(4)
             with cola: st.selectbox("Indicador", indicadores, key=f"indicador_{i}")
             with colb: st.selectbox("Tipo", ['Valor Absoluto', 'Valor Relativo'], key=f"tipo_{i}")
@@ -73,7 +73,7 @@ else:
 
     executar = st.button("Executar")
     if executar:
-        for i in range(1,7):
+        for i in range(1,9):
             indicador = st.session_state[f'indicador_{i}']
             tipo = st.session_state[f'tipo_{i}']
             operador_selecionado = st.session_state[f'operador_{i}']
