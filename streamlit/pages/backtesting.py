@@ -95,6 +95,7 @@ else:
                 if operador_selecionado == 'Diferente de (!=)':
                     filter = (df_hist[indicador] != float(valor)) if tipo == 'Valor Absoluto' else (df_hist[indicador] != df_hist[valor])
 
+                st.write(filter)
                 df_hist = df_hist[filter]
     
     st.divider()
