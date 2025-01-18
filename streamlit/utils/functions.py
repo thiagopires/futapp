@@ -20,12 +20,12 @@ def get_filter_lay_zebra(df): # 44257907
     return (
             (df["XG_Total_Pre"] >= 1.7) &
             (df["Odd_H_FT"] < df["Odd_D_FT"]) &
-            (df["Odd_H_FT"] <= 2) &
+            (df["Odd_H_FT"] >= 1.22) &
             (df["XG_Home_Pre"] > df["XG_Away_Pre"]) &
             (df["XG_Away_Pre"] <= 1.25) &
             (df["Odd_D_FT"] < df["Odd_A_FT"]) &
             (df["Rodada"] > 2) &
-            (df['League'].isin(['Belgium Pro League','England EFL League One','England Championship','England Premier League','France Ligue 1','Germany 2. Bundesliga','Germany Bundesliga','Italy Serie A','Italy Serie B','Portugal Liga NOS','Spain La Liga','Turkey Süper Lig']))
+            (df['League'].isin(['Belgium Pro League','England EFL League One','England Premier League','France Ligue 1','Germany 2. Bundesliga','Germany Bundesliga','Italy Serie A','Italy Serie B','Portugal Liga NOS','Spain La Liga','Turkey Süper Lig']))
         )
 
 def print_dataframe(df, styled_df=None):
