@@ -80,7 +80,7 @@ else:
             valor = st.session_state[f'valor_{i}']
 
             if valor != "":
-                st.caption(f"{indicador} {operador_selecionado} {valor}")
+                st.caption(f"{indicador} {operador_selecionado} {valor} {tipo}")
 
                 if operador_selecionado == 'Igual (=)':
                     filter = (df_hist[indicador] == float(valor)) if tipo == 'Valor Absoluto' else (df_hist[indicador] == df_hist[valor])
