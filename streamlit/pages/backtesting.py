@@ -111,7 +111,7 @@ else:
 
 
     if filtro_layzebra or executar:            
-        df_hist = df_hist[filter] 
+        df_hist = df_hist.loc[filter] 
         df_hist["Status_Metodo"] = "RED"
         df_hist['Profit'] = -1
         
