@@ -17,7 +17,7 @@ else:
 
     df_hist = load_histmatches()
 
-    indicadores = df_hist.columns[7:]
+    indicadores = df_hist.columns
     indicadores.insert(0, "Selecione")
 
     operadores_opcoes = {
