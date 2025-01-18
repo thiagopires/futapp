@@ -11,9 +11,9 @@ def get_last_season():
     SEASON = '2023/2024'
     return SEASON
 
-def get_today():
+def get_today(gap=0):
     now = datetime.now()
-    adjusted_time = now - timedelta(hours=3)
+    adjusted_time = now + timedelta(days=gap) - timedelta(hours=3)
     return adjusted_time.date()
 
 def get_filter_lay_zebra(df):

@@ -31,7 +31,7 @@ else:
     operadores_formatados = [f"{descricao} ({simbolo})" for simbolo, descricao in operadores_opcoes.items()] 
 
     col1, col2 = st.columns(2)
-    with col1: data_inicial = st.date_input("Data Inicial", date(2022, 2, 10))
+    with col1: data_inicial = st.date_input("Data Inicial", get_today(-7))
     with col2: data_final = st.date_input("Data Final", get_today())
 
     leagues = sorted(df_hist['League'].unique())
@@ -108,6 +108,7 @@ else:
 
     
     st.divider()
+
 
     if filtro_layzebra or executar:            
         df_hist = df_hist[filter] 
