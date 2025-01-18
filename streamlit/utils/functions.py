@@ -11,10 +11,23 @@ def get_last_season():
     SEASON = '2023/2024'
     return SEASON
 
-def get_today():
+def get_today(offset=0):
     now = datetime.now()
-    adjusted_time = now - timedelta(hours=3)
+    adjusted_time = now + timedelta(days=offset) - timedelta(hours=3)
     return adjusted_time.date()
+
+def get_filter_lay_zebra(df): # 44257907
+    return (
+        (df["Odd_H_FT"] < df["Odd_D_FT"]) &
+        (df["Odd_D_FT"] < df["Odd_A_FT"]) &
+        (df["Odd_H_FT"] >= 1.5) &
+        (df["Odd_BTTS_Yes"] < 2) &
+        (df["XG_Total_Pre"] >= 1.7) &
+        (df["XG_Away_Pre"] <= 1.25) &
+        (df["XG_Home_Pre"] > df["XG_Away_Pre"]) &
+        (df["Rodada"] > 2) &
+        (df['League'].isin(['Belgium Pro League','England EFL League One','England Premier League','France Ligue 1','Germany 2. Bundesliga','Germany Bundesliga','Italy Serie A','Italy Serie B','Portugal Liga NOS','Turkey Süper Lig']))
+    )
 
 def print_dataframe(df, styled_df=None):
     if not styled_df:
@@ -27,11 +40,39 @@ def print_dataframe(df, styled_df=None):
         st.dataframe(styled_df, height=len(df)*38, use_container_width=True, hide_index=True)       
 
 @st.cache_data
-def load_daymatches(dt):
+def load_daymatches(dt, filter_teams=None):
     df = pd.read_csv(f"https://github.com/futpythontrader/YouTube/blob/main/Jogos_do_Dia/FootyStats/Jogos_do_Dia_FootyStats_{dt}.csv?raw=true")
     df["Datetime"] = pd.to_datetime(df["Date"] + " " + df["Time"])
     df["Formatted_Datetime"] = df["Datetime"].dt.strftime("%d/%m/%Y %H:%M")
     df["Confronto"] = df["Time"] + " - " + df["Home"] + " vs. " + df["Away"]
+
+    # df_hist = load_histmatches(dt)
+
+    # for idx, row in df.iterrows():
+    #     df_hist_cp = df_hist[(df_hist['Season'] == get_current_season()) & (df_hist['League'] == row['League'])].copy()
+    #     classificacao_geral = generate_classificacao_2(df_hist_cp, "ALL")
+
+    #     posicao_home = classificacao_geral.loc[
+    #         classificacao_geral["Clube"] == row["Home"], "PTS"
+    #     ]
+    #     if not posicao_home.empty:
+    #         df.loc[idx, 'PTS_Tabela_H'] = posicao_home.values[0]
+    #     else:
+    #         df.loc[idx, 'PTS_Tabela_H'] = None  # Ou um valor padrão, como -1
+        
+    #     # Verificar posição do time visitante
+    #     posicao_away = classificacao_geral.loc[
+    #         classificacao_geral["Clube"] == row["Away"], "PTS"
+    #     ]
+    #     if not posicao_away.empty:
+    #         df.loc[idx, 'PTS_Tabela_A'] = posicao_away.values[0]
+    #     else:
+    #         df.loc[idx, 'PTS_Tabela_A'] = None
+
+    if filter_teams:
+        filter = (df["Home"].isin(filter_teams)) | (df["Away"].isin(filter_teams))
+        df = df[filter]
+
     return df
 
 @st.cache_data
@@ -84,9 +125,10 @@ def load_histmatches(dt=None):
     df["Date"] = pd.to_datetime(df["Date"])
     if dt: df = df.loc[(df["Date"] < pd.to_datetime(dt))]
     df["Formatted_Date"] = df["Date"].dt.strftime("%d/%m/%Y")
+    df['Month_Year'] = pd.to_datetime(df['Date']).dt.strftime('%m/%Y')
     df["Resultado_HT"] = df["Goals_H_HT"].astype(str) + "-" + df["Goals_A_HT"].astype(str)
-    df["Resultado_FT"] = df["Goals_H_FT"].astype(str) + "-" + df["Goals_A_FT"].astype(str)
     df['Resultado_75'] = df.apply(calcular_resultado_75, axis=1)
+    df["Resultado_FT"] = df["Goals_H_FT"].astype(str) + "-" + df["Goals_A_FT"].astype(str)
     df["Primeiro_Gol"] = df.apply(first_goal_string, axis=1)
 
     return df
@@ -150,6 +192,48 @@ def generate_classificacao(df, df_match_selected, type):
     styled_df = styled_df.style.apply(highlight_row, axis=1, highlight=[df_match_selected["Home"],df_match_selected["Away"]])
 
     return classificacao_df, styled_df
+
+def generate_classificacao_2(df, type):
+    # Calculando o resultado do jogo
+    df["Home_Win"] = df["Goals_H_FT"] > df["Goals_A_FT"]
+    df["Away_Win"] = df["Goals_H_FT"] < df["Goals_A_FT"]
+    df["Draw"] = df["Goals_H_FT"] == df["Goals_A_FT"]
+    
+    # Inicializando as tabelas de pontos
+    clubes = pd.DataFrame({"Clube": pd.concat([df["Home"], df["Away"]]).unique()})
+    clubes.set_index("Clube", inplace=True)
+    columns = ["PTS", "P", "W", "D", "L", "GF", "GC", "DIFF"]
+    for col in columns:
+        clubes[col] = 0
+    
+    # Atualizando estatísticas para todos os jogos
+    for _, row in df.iterrows():
+        if type == 'HOME':
+            atualizar_estatisticas(row, clubes, casa=True)
+        elif type == 'AWAY':
+            atualizar_estatisticas(row, clubes, casa=False)
+        elif type == 'ALL':
+            atualizar_estatisticas(row, clubes, casa=True)
+            atualizar_estatisticas(row, clubes, casa=False)
+    
+    # Adicionando a posição e ordenando
+
+    clubes = clubes.sort_values(by=["PTS", "DIFF", "GF"], ascending=False)
+    clubes["Goals"] = clubes["GF"].astype(str) + ":" + clubes["GC"].astype(str)
+    clubes["#"] = range(1, len(clubes) + 1)
+    clubes["DIFF"] = clubes["DIFF"].apply(lambda x: f"+{x}" if x > 0 else str(x))
+
+    clubes = clubes.reset_index()
+    classificacao_df = clubes[["#", "Clube", "PTS", "P", "W", "D", "L", "DIFF", "Goals"]]
+
+    # if type == 'HOME':
+    #     styled_df = styled_df.style.apply(highlight_row, axis=1, highlight=[df_match_selected["Home"]])        
+    # elif type == 'AWAY':
+    #     styled_df = styled_df.style.apply(highlight_row, axis=1, highlight=[df_match_selected["Away"]])
+    # elif type == 'ALL':
+    #     styled_df = styled_df.style.apply(highlight_row, axis=1, highlight=[df_match_selected["Home"],df_match_selected["Away"]])
+
+    return classificacao_df
 
 def highlight_result(row, highlight):
     colors = {

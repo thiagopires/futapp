@@ -28,7 +28,7 @@ else:
     # if st.button("Limpar filtros"):
     #     set_odds_filtros(True)
 
-    col1, col2, col3, col4, col5 = st.columns(5)
+    col1, col2, col3, col4, col5, col6, col7 = st.columns(7)
     with col1:
         st.number_input("Odd_H_Min", value=1.10, min_value=1.10, max_value=1000.00, key="odd_h_min")
         st.number_input("Odd_H_Max", value=1000.00, min_value=1.10, max_value=1000.00, key="odd_h_max")
@@ -44,6 +44,12 @@ else:
     with col5:
         st.number_input("Odd_BTTS_Min", value=1.10, min_value=1.10, max_value=1000.00, key="odd_btts_min")
         st.number_input("Odd_BTTS_Max", value=1000.00, min_value=1.10, max_value=1000.00, key="odd_btts_max")
+    with col6:
+        st.number_input("XG_Total_Pre_Min", value=1.10, min_value=1.10, max_value=1000.00, key="XG_Total_Pre_Min")
+        st.number_input("XG_Total_Pre_Max", value=1000.00, min_value=1.10, max_value=1000.00, key="XG_Total_Pre_Max")
+    with col7:
+        st.number_input("XG_Home_Pre_Min", value=1.10, min_value=1.10, max_value=1000.00, key="XG_Home_Pre_Min")
+        st.number_input("XG_Home_Pre_Max", value=1000.00, min_value=1.10, max_value=1000.00, key="XG_Home_Pre_Max")
 
 
     st.divider()
@@ -65,10 +71,16 @@ else:
         (df_matches["Odd_Over25_FT"] <= st.session_state.odd_over25_ft_max) &
 
         (df_matches["Odd_BTTS_Yes"] >= st.session_state.odd_btts_min) &
-        (df_matches["Odd_BTTS_Yes"] <= st.session_state.odd_btts_max)
+        (df_matches["Odd_BTTS_Yes"] <= st.session_state.odd_btts_max) &
+
+        (df_matches["XG_Total_Pre"] >= st.session_state.XG_Total_Pre_Min) &
+        (df_matches["XG_Total_Pre"] <= st.session_state.XG_Total_Pre_Max) &
+
+        (df_matches["XG_Home_Pre"] >= st.session_state.XG_Home_Pre_Min) &
+        (df_matches["XG_Home_Pre"] <= st.session_state.XG_Home_Pre_Max)
     ]
 
-    print_dataframe(df_matches[['League','Rodada','Time','Home','Away','Odd_H_FT','Odd_D_FT','Odd_A_FT','Odd_Over05_HT','Odd_Over15_FT','Odd_Over25_FT','Odd_BTTS_Yes']])
+    print_dataframe(df_matches[['League','Rodada','Time','Home','Away','Odd_H_FT','Odd_D_FT','Odd_A_FT','Odd_Over05_HT','Odd_Over15_FT','Odd_Over25_FT','Odd_BTTS_Yes','XG_Total_Pre','XG_Home_Pre']])
 
 
     st.divider()
