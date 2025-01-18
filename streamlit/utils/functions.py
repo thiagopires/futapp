@@ -16,7 +16,7 @@ def get_today(offset=0):
     adjusted_time = now + timedelta(days=offset) - timedelta(hours=3)
     return adjusted_time.date()
 
-def get_filter_lay_zebra(df):
+def get_filter_lay_zebra(df): # 44257907
     return (
             (df["XG_Total_Pre"] >= 1.7) &
             (df["Odd_H_FT"] < df["Odd_D_FT"]) &
