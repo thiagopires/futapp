@@ -83,17 +83,17 @@ else:
                 st.caption(f"{indicador} {operador_selecionado} {valor}")
 
                 if operador_selecionado == 'Igual (=)':
-                    df_hist = df_hist[(df_hist[indicador] == float(valor)) if tipo == 'Valor Absoluto' else (df_hist[indicador] == df_hist[valor])]
+                    df_hist = df_hist.loc[(df_hist[indicador] == float(valor)) if tipo == 'Valor Absoluto' else (df_hist[indicador] == df_hist[valor])]
                 if operador_selecionado == 'Maior que (>)':
-                    df_hist = df_hist[(df_hist[indicador] > float(valor)) if tipo == 'Valor Absoluto' else (df_hist[indicador] > df_hist[valor])]
+                    df_hist = df_hist.loc[(df_hist[indicador] > float(valor)) if tipo == 'Valor Absoluto' else (df_hist[indicador] > df_hist[valor])]
                 if operador_selecionado == 'Menor que (<)':
-                    df_hist = df_hist[(df_hist[indicador] < float(valor)) if tipo == 'Valor Absoluto' else (df_hist[indicador] < df_hist[valor])]
+                    df_hist = df_hist.loc[(df_hist[indicador] < float(valor)) if tipo == 'Valor Absoluto' else (df_hist[indicador] < df_hist[valor])]
                 if operador_selecionado == 'Maior ou igual (>=)':
-                    df_hist = df_hist[(df_hist[indicador] >= float(valor)) if tipo == 'Valor Absoluto' else (df_hist[indicador] >= df_hist[valor])]
+                    df_hist = df_hist.loc[(df_hist[indicador] >= float(valor)) if tipo == 'Valor Absoluto' else (df_hist[indicador] >= df_hist[valor])]
                 if operador_selecionado == 'Menor ou igual (<=)':
-                    df_hist = df_hist[(df_hist[indicador] <= float(valor)) if tipo == 'Valor Absoluto' else (df_hist[indicador] <= df_hist[valor])]
+                    df_hist = df_hist.loc[(df_hist[indicador] <= float(valor)) if tipo == 'Valor Absoluto' else (df_hist[indicador] <= df_hist[valor])]
                 if operador_selecionado == 'Diferente de (!=)':
-                    df_hist = df_hist[(df_hist[indicador] != float(valor)) if tipo == 'Valor Absoluto' else (df_hist[indicador] != df_hist[valor])]
+                    df_hist = df_hist.loc[(df_hist[indicador] != float(valor)) if tipo == 'Valor Absoluto' else (df_hist[indicador] != df_hist[valor])]
 
 
     st.divider()
