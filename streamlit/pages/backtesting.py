@@ -83,19 +83,19 @@ else:
                 st.caption(f"{indicador} {operador_selecionado} {valor}")
 
                 if operador_selecionado == 'Igual (=)':
-                    filter = (df_hist[indicador] == float(valor)) if tipo == 'Valor Absoluto' else (df_hist[indicador] == df_hist[valor])
+                    df_hist = df_hist[(df_hist[indicador] == float(valor)) if tipo == 'Valor Absoluto' else (df_hist[indicador] == df_hist[valor])]
                 if operador_selecionado == 'Maior que (>)':
-                    filter = (df_hist[indicador] > float(valor)) if tipo == 'Valor Absoluto' else (df_hist[indicador] > df_hist[valor])
+                    df_hist = df_hist[(df_hist[indicador] > float(valor)) if tipo == 'Valor Absoluto' else (df_hist[indicador] > df_hist[valor])]
                 if operador_selecionado == 'Menor que (<)':
-                    filter = (df_hist[indicador] < float(valor)) if tipo == 'Valor Absoluto' else (df_hist[indicador] < df_hist[valor])
+                    df_hist = df_hist[(df_hist[indicador] < float(valor)) if tipo == 'Valor Absoluto' else (df_hist[indicador] < df_hist[valor])]
                 if operador_selecionado == 'Maior ou igual (>=)':
-                    filter = (df_hist[indicador] >= float(valor)) if tipo == 'Valor Absoluto' else (df_hist[indicador] >= df_hist[valor])
+                    df_hist = df_hist[(df_hist[indicador] >= float(valor)) if tipo == 'Valor Absoluto' else (df_hist[indicador] >= df_hist[valor])]
                 if operador_selecionado == 'Menor ou igual (<=)':
-                    filter = (df_hist[indicador] <= float(valor)) if tipo == 'Valor Absoluto' else (df_hist[indicador] <= df_hist[valor])
+                    df_hist = df_hist[(df_hist[indicador] <= float(valor)) if tipo == 'Valor Absoluto' else (df_hist[indicador] <= df_hist[valor])]
                 if operador_selecionado == 'Diferente de (!=)':
-                    filter = (df_hist[indicador] != float(valor)) if tipo == 'Valor Absoluto' else (df_hist[indicador] != df_hist[valor])
+                    df_hist = df_hist[(df_hist[indicador] != float(valor)) if tipo == 'Valor Absoluto' else (df_hist[indicador] != df_hist[valor])]
 
-    
+
     st.divider()
 
 
@@ -104,14 +104,14 @@ else:
     filtro_layzebra = st.checkbox("Lay Zebra")
     if filtro_layzebra:
         filter = get_filter_lay_zebra(df_hist)
+        df_hist = df_hist[filter] 
         metodo = 'Lay Visitante'
 
     
     st.divider()
 
 
-    if filtro_layzebra or executar:            
-        df_hist = df_hist.loc[filter] 
+    if filtro_layzebra or executar:       
         df_hist["Status_Metodo"] = "RED"
         df_hist['Profit'] = -1
         
