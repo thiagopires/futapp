@@ -40,6 +40,8 @@ else:
         , hide_index=True
     )
 
+    st.write(f"Quantidade de jogos: {len(df_matches)}")
+
     if match_selected.get('selection').get('rows'):
 
         df_match_selected = df_matches.iloc[match_selected.get('selection').get('rows')[0]]
