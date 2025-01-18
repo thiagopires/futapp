@@ -116,7 +116,8 @@ else:
         
         df_hist["Status_Metodo"] = "RED"
         df_hist['Profit'] = -1
-        
+        odd_media = ""
+
         if metodo == 'Back Casa':
             filter = (df_hist["Goals_H_FT"] > df_hist["Goals_A_FT"])
             df_hist.loc[filter, 'Profit'] = round(df_hist['Odd_H_FT']-1, 2)
@@ -129,6 +130,7 @@ else:
             filter = (df_hist['Goals_H_FT'] >= df_hist['Goals_A_FT'])  
             df_hist.loc[filter, 'Profit'] = round(df_hist['Odd_DC_1X']-1, 2)
             df_hist.loc[filter, "Status_Metodo"] = "GREEN"
+            odd_media = f"{str(round(df_hist['Odd_A_FT'].mean(), 2))}"
         if metodo == 'Lay Casa':
             filter = (df_hist['Goals_H_FT'] <= df_hist['Goals_A_FT'])   
             df_hist.loc[filter, 'Profit'] = round(df_hist['Odd_DC_X2']-1, 2)
@@ -163,7 +165,7 @@ else:
         profit_acumulado = f"{str(round(df_hist['Profit'].sum(), 2))} unidades"
 
         st.write(f"**Resultado:**")
-        st.write(f"Jogos: {total_jogos}, Greens: {total_greens}, Reds: {total_reds}, Winrate: {winrate}%, Profit Acumulado: {profit_acumulado}")
+        st.write(f"Jogos: {total_jogos}, Greens: {total_greens}, Reds: {total_reds}, Winrate: {winrate}%, Profit Acumulado: {profit_acumulado}, Odd Média: {odd_media}")
 
         daily_profit = df_hist.groupby("Date")["Profit"].sum().reset_index()
         daily_profit["Cumulative_Profit"] = daily_profit["Profit"].cumsum()  
