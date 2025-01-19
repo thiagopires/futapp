@@ -32,7 +32,7 @@ def get_filter_lay_zebra(df): # 44257907
             # 'England EFL League One',
             'England Premier League',
             'France Ligue 1',
-                'France Ligue 2',
+                # 'France Ligue 2',
             'Germany 2. Bundesliga',
             'Germany Bundesliga',
             'Italy Serie A',
