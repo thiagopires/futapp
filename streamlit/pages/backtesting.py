@@ -30,18 +30,17 @@ else:
     }
     operadores_formatados = [f"{descricao} ({simbolo})" for simbolo, descricao in operadores_opcoes.items()] 
 
-    col1, col2 = st.columns(2)
+    col1, col2, col3 = st.columns(3)
     with col1: data_inicial = st.date_input("Data Inicial", date(2022, 2, 10))
     with col2: data_final = st.date_input("Data Final", get_today())
+    with col3:
+        seasons = sorted(df_hist['Season'].unique())
+        seasons.insert(0, 'Todas as Temporadas')
+        selected_seasons = st.multiselect("Filtrar por Temporada", seasons, [seasons[0]])
 
     leagues = sorted(df_hist['League'].unique())
     leagues.insert(0, 'Todas as Ligas')
     selected_leagues = st.multiselect("Filtrar por Liga", leagues, [leagues[0]])
-    
-    seasons = sorted(df_hist['Season'].unique())
-    seasons.insert(0, 'Todas as Temporadas')
-    selected_seasons = st.multiselect("Filtrar por Temporada", seasons, [seasons[0]])
-
     if not (not selected_seasons or "Todas as Temporadas" in selected_seasons):
         df_hist = df_hist[df_hist['Season'].isin(selected_seasons)]
 
