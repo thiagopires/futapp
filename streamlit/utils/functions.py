@@ -28,7 +28,7 @@ def get_filter_lay_zebra(df): # 44257907
         (df["Rodada"] > 2) &
         ((df["Odd_H_FT"] <= 1.8) | (df["Odd_H_FT"] >= 1.9)) &
         (df['League'].isin([
-            # 'Belgium Pro League',
+            'Belgium Pro League',
             'England EFL League One',
             'England Premier League',
             'France Ligue 1',
@@ -36,9 +36,11 @@ def get_filter_lay_zebra(df): # 44257907
             'Germany Bundesliga',
             'Italy Serie A',
             # 'Italy Serie B',
+                'Netherlands Eredivisie'
+                'Netherlands Eerste Divisie'
             'Portugal Liga NOS',
             'Spain La Liga',
-            # 'Spain Segunda División',
+                'Spain Segunda División',
             'Turkey Süper Lig'
         ]))
     )
