@@ -188,10 +188,10 @@ else:
         )
         st.plotly_chart(fig)
 
-        st.write(f"GREENs:")
+        st.write(f":green[GREENs:]")
         print_dataframe(df_hist.loc[df_hist['Status_Metodo'] == 'GREEN'])
 
-        st.write(f"REDs:")
+        st.write(f":red[REDs:]")
         print_dataframe(df_hist.loc[df_hist['Status_Metodo'] == 'RED'])
 
         st.write("**Detalhes**")
