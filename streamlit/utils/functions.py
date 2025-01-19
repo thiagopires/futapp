@@ -18,8 +18,8 @@ def get_today(offset=0):
 
 def get_filter_lay_zebra(df): # 44257907
     return (
-        (df["Odd_H_FT"] < df["Odd_A_FT"]) &
-       # (df["Odd_D_FT"] < df["Odd_A_FT"]) &
+        (df["Odd_H_FT"] < df["Odd_D_FT"]) &
+        (df["Odd_D_FT"] < df["Odd_A_FT"]) &
         (df["Odd_H_FT"] >= 1.5) &
         (df["Odd_BTTS_Yes"] < 2) &
         (df["XG_Total_Pre"] >= 1.7) &
