@@ -62,8 +62,9 @@ def get_filter_lay_visitante_zebra(df): # 44257907
             'Germany Bundesliga',
             'Italy Serie A',
             'Italy Serie B',
-            # 'Portugal Liga NOS',
+            'Portugal Liga NOS',
             'Spain La Liga',
+            'Spain Segunda División',
             'Turkey Süper Lig'
         ]))
     )
