@@ -68,7 +68,8 @@ else:
         'Lay Goleada Visitante',
         'Over 0.5 HT',
         'Over 1.5 FT',
-        'Over 2.5 FT'
+        'Over 2.5 FT',
+        'BTTS'
     ])
 
     # condicao = st.radio("Condição", ["Favorito/Zebra", "Zebra/Favorito"])
@@ -165,6 +166,11 @@ else:
             df_hist.loc[filter, 'Profit'] = round(df_hist['Odd_Over25_FT']-1, 2)
             df_hist.loc[filter, "Status_Metodo"] = "GREEN"
             odd_media = f"{str(round(df_hist['Odd_Over25_FT'].mean(), 2))}"
+        if metodo == 'BTTS':
+            filter = ((df_hist['Goals_H_FT'] >= 1) & (df_hist['Goals_A_FT'] >= 1))
+            df_hist.loc[filter, 'Profit'] = round(df_hist['Odd_BTTS_Yes']-1, 2)
+            df_hist.loc[filter, "Status_Metodo"] = "GREEN"
+            odd_media = f"{str(round(df_hist['Odd_BTTS_Yes'].mean(), 2))}"
         if metodo == 'Lay 0x1':
             df_hist.loc[df_hist["Resultado_FT"] != '0-1', "Status_Metodo"] = "GREEN"
         if metodo == 'Lay 0x2':
