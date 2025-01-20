@@ -28,7 +28,7 @@ def get_filter_lay_zebra(df): # 44257907
         (df["XG_Home_Pre"] > df["XG_Away_Pre"]) &
         (df["XG_Total_Pre"] >= 1.7) &
         # (df["XG_Home_Pre"] >= 1.5) & 
-        (df["XG_Home_Pre"] > 1) & 
+        # (df["XG_Home_Pre"] > 1) & 
         # (df["XG_Away_Pre"] > 0) & 
         (df["XG_Away_Pre"] <= 1.25) &              
         
@@ -46,7 +46,7 @@ def get_filter_lay_zebra(df): # 44257907
             'Italy Serie B',
             'Portugal Liga NOS',
             'Spain La Liga',
-            # 'Spain Segunda División',
+            'Spain Segunda División',
             'Turkey Süper Lig'
         ]))
     )
