@@ -37,7 +37,7 @@ def get_filter_lay_zebra(df): # 44257907
             'Germany 2. Bundesliga',
             'Germany Bundesliga',
             'Italy Serie A',
-            'Italy Serie B',
+            # 'Italy Serie B',
             'Portugal Liga NOS',
             'Spain La Liga',
             'Spain Segunda División',
