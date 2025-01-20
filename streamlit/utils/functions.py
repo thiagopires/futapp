@@ -35,7 +35,7 @@ def get_filter_lay_zebra(df): # 44257907
         # (df["Rodada"] > 5) &        
         (df['League'].isin([
             'Belgium Pro League',
-            # 'England EFL League One',
+            'England EFL League One',
             'England Premier League',
             # 'England Championship',
             'France Ligue 1',
