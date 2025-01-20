@@ -204,7 +204,7 @@ else:
         )
 
         fig.update_layout(
-            template="plotly_white",
+            template="plotly_dark",
             title={
                 "text": "Lucro Diário",
                 "y": 0.9,
