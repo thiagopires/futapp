@@ -184,15 +184,59 @@ else:
         daily_profit = df_hist.groupby("Date")["Profit"].sum().reset_index()
         daily_profit["Cumulative_Profit"] = daily_profit["Profit"].cumsum()  
 
+        # fig = px.line(
+        #     daily_profit,
+        #     x="Date",
+        #     y="Cumulative_Profit",
+        #     title="Lucro Diário",
+        #     labels={"Date": "Data", "Cumulative_Profit": "Unidades/Stakes"},
+        #     markers=True  # Adiciona marcadores nos pontos
+        # )
+        # st.plotly_chart(fig)
+
         fig = px.line(
             daily_profit,
             x="Date",
             y="Cumulative_Profit",
             title="Lucro Diário",
             labels={"Date": "Data", "Cumulative_Profit": "Unidades/Stakes"},
-            markers=True  # Adiciona marcadores nos pontos
+            markers=True
         )
+
+        fig.update_layout(
+            template="plotly_white",
+            title={
+                "text": "Lucro Diário",
+                "y": 0.9,
+                "x": 0.5,
+                "xanchor": "center",
+                "yanchor": "top",
+                "font": {"size": 24, "color": "darkblue"}
+            },
+            xaxis=dict(showgrid=True, gridcolor="lightgray"),
+            yaxis=dict(showgrid=True, gridcolor="lightgray"),
+            xaxis_title="Data",
+            yaxis_title="Unidades/Stakes",
+            font=dict(family="Arial", size=14),
+            plot_bgcolor="white",
+            legend=dict(
+                title="Legenda",
+                orientation="h",
+                x=0.5, y=-0.2,
+                xanchor="center",
+                yanchor="top",
+                borderwidth=1,
+            )
+        )
+
+        fig.update_traces(
+            line=dict(color="blue", width=2),
+            marker=dict(size=8, symbol="circle", color="red"),
+            hovertemplate="<b>Data:</b> %{x}<br><b>Lucro:</b> %{y}<extra></extra>"
+        )
+
         st.plotly_chart(fig)
+
 
         st.write(f"**:green[GREENs:]**")
         print_dataframe(df_hist.loc[df_hist['Status_Metodo'] == 'GREEN'])
