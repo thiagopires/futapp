@@ -108,9 +108,15 @@ else:
 
     st.write("**Filtros Prontos**")
 
-    filtro_layzebra = st.checkbox("Lay Zebra")
-    if filtro_layzebra:
-        filter = get_filter_lay_zebra(df_hist)
+    filtro_lay_casa_zebra = st.checkbox("Lay Casa Zebra")
+    if filtro_lay_casa_zebra:
+        filter = get_filter_lay_casa_zebra(df_hist)
+        df_hist = df_hist[filter] 
+        metodo = 'Lay Casa'
+
+    filtro_lay_visitante_zebra = st.checkbox("Lay Visitante Zebra")
+    if filtro_lay_visitante_zebra:
+        filter = get_filter_lay_visitante_zebra(df_hist)
         df_hist = df_hist[filter] 
         metodo = 'Lay Visitante'
 
@@ -118,7 +124,7 @@ else:
     st.divider()
 
 
-    if filtro_layzebra or executar:            
+    if filtro_lay_visitante_zebra or filtro_lay_casa_zebra or executar:            
         
         df_hist["Status_Metodo"] = "RED"
         df_hist['Profit'] = -1

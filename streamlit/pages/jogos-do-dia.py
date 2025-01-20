@@ -24,11 +24,16 @@ else:
 
     st.write("**Filtros**")
 
-    filtro_layzebra = st.checkbox("Lay Zebra")
+    filtro_lay_casa_zebra = st.checkbox("Lay Casa Zebra")
+    filtro_lay_visitante_zebra = st.checkbox("Lay Visitante Zebra")
 
-    if filtro_layzebra:
-        filter = get_filter_lay_zebra(df_matches)
+    if filtro_lay_visitante_zebra:
+        filter = get_filter_lay_visitante_zebra(df_matches)
         df_matches = df_matches[filter]
+
+    if filtro_lay_casa_zebra:
+        filter = get_filter_lay_casa_zebra(df_matches)
+        df_matches = df_matches[filter] 
 
     # Dataframe
     st.subheader(f"Selecione o jogo:")

@@ -16,7 +16,33 @@ def get_today(offset=0):
     adjusted_time = now + timedelta(days=offset) - timedelta(hours=3)
     return adjusted_time.date()
 
-def get_filter_lay_zebra(df): # 44257907
+def get_filter_lay_casa_zebra(df): # 44257907
+    return (
+        (df["Odd_H_FT"] > df["Odd_D_FT"]) &
+        (df["Odd_D_FT"] > df["Odd_A_FT"]) &
+        ((df["Odd_A_FT"] <= 1.8) | (df["Odd_A_FT"] >= 1.9)) &
+        (df["Odd_H_FT"] < 8) &
+        (df["Odd_BTTS_Yes"] < 2) &
+        (df["Odd_Over25_FT"] > 1.5) &
+        (df["XG_Home_Pre"] < df["XG_Away_Pre"]) &
+        (df["XG_Total_Pre"] >= 1.7) &
+        (df["XG_Home_Pre"] <= 1.25) &
+        (df['League'].isin([
+            'Belgium Pro League',
+            'England EFL League One',
+            'England Premier League',
+            'France Ligue 1',
+            'Germany 2. Bundesliga',
+            'Germany Bundesliga',
+            'Italy Serie A',
+            'Italy Serie B',
+            'Portugal Liga NOS',
+            'Spain La Liga',
+            'Turkey Süper Lig'
+        ]))
+    )
+
+def get_filter_lay_visitante_zebra(df): # 44257907
     return (
         (df["Odd_H_FT"] < df["Odd_D_FT"]) &
         (df["Odd_D_FT"] < df["Odd_A_FT"]) &
@@ -26,9 +52,7 @@ def get_filter_lay_zebra(df): # 44257907
         (df["Odd_Over25_FT"] > 1.5) &
         (df["XG_Home_Pre"] > df["XG_Away_Pre"]) &
         (df["XG_Total_Pre"] >= 1.7) &
-        (df["XG_Away_Pre"] <= 1.25) &              
-        
-        (df["Rodada"] > 2) &        
+        (df["XG_Away_Pre"] <= 1.25) &
         (df['League'].isin([
             'Belgium Pro League',
             'England EFL League One',
