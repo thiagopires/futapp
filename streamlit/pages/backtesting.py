@@ -204,7 +204,7 @@ else:
         )
 
         fig.update_layout(
-            template="ggplot2",
+            template="seaborn",
             title={
                 "text": "Lucro Diário",
                 "y": 0.9,
