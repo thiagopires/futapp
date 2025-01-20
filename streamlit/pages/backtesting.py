@@ -58,27 +58,30 @@ else:
             with colc: st.selectbox("Operador", operadores_formatados, key=f"operador_{i}")
             with cold: st.text_input("Digite o valor ou Campo:", key=f"valor_{i}")
 
-    metodo = st.selectbox("Método", [
-        'Back Casa',
-        'Back Visitante',
-        'Lay Casa',
-        'Lay Visitante',
-        'Lay 0x1',
-        'Lay 0x2',
-        'Lay Goleada Visitante',
-        'Over 0.5 HT',
-        'Over 1.5 FT',
-        'Over 2.5 FT',
-        'BTTS'
-    ])
+    col1, col2, col3 = st.columns(3)
+    with col1:
+        metodo = st.selectbox("Método", [
+            'Back Casa',
+            'Back Visitante',
+            'Lay Casa',
+            'Lay Visitante',
+            'Lay 0x1',
+            'Lay 0x2',
+            'Lay Goleada Visitante',
+            'Over 0.5 HT',
+            'Over 1.5 FT',
+            'Over 2.5 FT',
+            'BTTS'
+        ])
+    with col2:
+        condicao = st.radio("Condição", ["Favorito/Zebra", "Zebra/Favorito"])
+        if condicao == "Favorito/Zebra":
+            df_hist = df_hist[(df_hist["Odd_H_FT"] < df_hist["Odd_D_FT"]) & (df_hist["Odd_D_FT"] < df_hist["Odd_A_FT"])]
+        elif condicao == "Zebra/Favorito":
+            df_hist = df_hist[(df_hist["Odd_H_FT"] > df_hist["Odd_D_FT"]) & (df_hist["Odd_D_FT"] > df_hist["Odd_A_FT"])]
+    with col3:
+        executar = st.button("Executar")
 
-    condicao = st.radio("Condição", ["Favorito/Zebra", "Zebra/Favorito"])
-    if condicao == "Favorito/Zebra":
-        df_hist = df_hist[(df_hist["Odd_H_FT"] < df_hist["Odd_D_FT"]) & (df_hist["Odd_D_FT"] < df_hist["Odd_A_FT"])]
-    elif condicao == "Zebra/Favorito":
-        df_hist = df_hist[(df_hist["Odd_H_FT"] > df_hist["Odd_D_FT"]) & (df_hist["Odd_D_FT"] > df_hist["Odd_A_FT"])]
-
-    executar = st.button("Executar")
     if executar:
         for i in range(1,9):
             indicador = st.session_state[f'indicador_{i}']
