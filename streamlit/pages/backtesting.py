@@ -204,7 +204,7 @@ else:
         )
 
         fig.update_layout(
-            template="seaborn",
+            template="plotly_white",
             title={
                 "text": "Lucro Diário",
                 "y": 0.9,
