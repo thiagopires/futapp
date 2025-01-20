@@ -30,7 +30,7 @@ def get_filter_lay_zebra(df): # 44257907
         # (df["XG_Home_Pre"] >= 1.5) & 
         # (df["XG_Home_Pre"] > 1) & 
         # (df["XG_Away_Pre"] > 0) & 
-        (df["XG_Away_Pre"] <= 1.3) &              
+        (df["XG_Away_Pre"] <= 1.25) &              
         
         # (df["Rodada"] > 5) &        
         (df['League'].isin([
@@ -39,7 +39,7 @@ def get_filter_lay_zebra(df): # 44257907
             'England Premier League',
             # 'England Championship',
             'France Ligue 1',
-            # 'France Ligue 2',
+            'France Ligue 2',
             'Germany 2. Bundesliga',
             'Germany Bundesliga',
             'Italy Serie A',
