@@ -20,19 +20,15 @@ def get_filter_lay_zebra(df): # 44257907
     return (
         (df["Odd_H_FT"] < df["Odd_D_FT"]) &
         (df["Odd_D_FT"] < df["Odd_A_FT"]) &
-        # (df["Odd_H_FT"] >= 1.5) & 
         ((df["Odd_H_FT"] <= 1.8) | (df["Odd_H_FT"] >= 1.9)) &
         (df["Odd_A_FT"] < 8) &
         (df["Odd_BTTS_Yes"] < 2) &
         (df["Odd_Over25_FT"] > 1.5) &
         (df["XG_Home_Pre"] > df["XG_Away_Pre"]) &
         (df["XG_Total_Pre"] >= 1.7) &
-        # (df["XG_Home_Pre"] >= 1.5) & 
-        # (df["XG_Home_Pre"] > 1) & 
-        # (df["XG_Away_Pre"] > 0) & 
         (df["XG_Away_Pre"] <= 1.25) &              
         
-        # (df["Rodada"] > 5) &        
+        (df["Rodada"] > 2) &        
         (df['League'].isin([
             'Belgium Pro League',
             'England EFL League One',
@@ -44,7 +40,6 @@ def get_filter_lay_zebra(df): # 44257907
             'Italy Serie B',
             'Portugal Liga NOS',
             'Spain La Liga',
-            # 'Spain Segunda División',
             'Turkey Süper Lig'
         ]))
     )
