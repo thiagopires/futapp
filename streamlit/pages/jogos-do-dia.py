@@ -24,21 +24,27 @@ else:
 
     st.write("**Filtros**")
 
-    filtro_layzebra = st.checkbox("Lay Zebra")
+    # filtro_lay_casa_zebra = st.checkbox("Lay Casa Zebra")
+    # if filtro_lay_casa_zebra:
+    #     filter = get_filter_lay_casa_zebra(df_matches)
+    #     df_matches = df_matches[filter]
 
-    if filtro_layzebra:
-        filter = get_filter_lay_zebra(df_matches)
-        df_matches = df_matches[filter]
+    filtro_lay_visitante_zebra = st.checkbox("Lay Visitante Zebra")
+    if filtro_lay_visitante_zebra:
+        filter = get_filter_lay_visitante_zebra(df_matches)
+        df_matches = df_matches[filter]    
 
     # Dataframe
     st.subheader(f"Selecione o jogo:")
     match_selected = st.dataframe(
-        df_matches[['League','Rodada','Time','Home','Away','Odd_H_FT','Odd_D_FT','Odd_A_FT','Odd_Over05_HT','Odd_Over15_FT','Odd_Over25_FT','Odd_BTTS_Yes','XG_Total_Pre','XG_Home_Pre','XG_Away_Pre']]
+        df_matches[['League','Rodada','Time','Home','Away','Odd_H_FT','Odd_D_FT','Odd_A_FT','Odd_Over05_HT','Odd_Over15_FT','Odd_Over25_FT','Odd_BTTS_Yes','XG_Total_Pre','XG_Home_Pre','XG_Away_Pre','Odd_DC_1X','Odd_DC_12','Odd_DC_X2']]
         , on_select="rerun"
         , selection_mode="single-row"
         , use_container_width=True
         , hide_index=True
     )
+
+    st.write(f"Quantidade de jogos: {len(df_matches)}")
 
     if match_selected.get('selection').get('rows'):
 

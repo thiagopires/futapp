@@ -30,13 +30,19 @@ else:
     }
     operadores_formatados = [f"{descricao} ({simbolo})" for simbolo, descricao in operadores_opcoes.items()] 
 
-    col1, col2 = st.columns(2)
-    with col1: data_inicial = st.date_input("Data Inicial", get_today(-7))
+    col1, col2, col3 = st.columns(3)
+    with col1: data_inicial = st.date_input("Data Inicial", date(2022, 2, 10))
     with col2: data_final = st.date_input("Data Final", get_today())
+    with col3:
+        seasons = sorted(df_hist['Season'].unique())
+        seasons.insert(0, 'Todas as Temporadas')
+        selected_seasons = st.multiselect("Filtrar por Temporada", seasons, [seasons[0]])
 
     leagues = sorted(df_hist['League'].unique())
     leagues.insert(0, 'Todas as Ligas')
     selected_leagues = st.multiselect("Filtrar por Liga", leagues, [leagues[0]])
+    if not (not selected_seasons or "Todas as Temporadas" in selected_seasons):
+        df_hist = df_hist[df_hist['Season'].isin(selected_seasons)]
 
     if data_final and data_final:
         df_hist = df_hist[(df_hist['Date'] >= pd.to_datetime(data_inicial)) & (df_hist['Date'] <= pd.to_datetime(data_final))]
@@ -102,9 +108,15 @@ else:
 
     st.write("**Filtros Prontos**")
 
-    filtro_layzebra = st.checkbox("Lay Zebra")
-    if filtro_layzebra:
-        filter = get_filter_lay_zebra(df_hist)
+    # filtro_lay_casa_zebra = st.checkbox("Lay Casa Zebra")
+    # if filtro_lay_casa_zebra:
+    #     filter = get_filter_lay_casa_zebra(df_hist)
+    #     df_hist = df_hist[filter] 
+    #     metodo = 'Lay Casa'
+
+    filtro_lay_visitante_zebra = st.checkbox("Lay Visitante Zebra")
+    if filtro_lay_visitante_zebra:
+        filter = get_filter_lay_visitante_zebra(df_hist)
         df_hist = df_hist[filter] 
         metodo = 'Lay Visitante'
 
@@ -112,7 +124,7 @@ else:
     st.divider()
 
 
-    if filtro_layzebra or executar:            
+    if filtro_lay_visitante_zebra or executar:
         
         df_hist["Status_Metodo"] = "RED"
         df_hist['Profit'] = -1
@@ -172,20 +184,64 @@ else:
         daily_profit = df_hist.groupby("Date")["Profit"].sum().reset_index()
         daily_profit["Cumulative_Profit"] = daily_profit["Profit"].cumsum()  
 
+        # fig = px.line(
+        #     daily_profit,
+        #     x="Date",
+        #     y="Cumulative_Profit",
+        #     title="Lucro Diário",
+        #     labels={"Date": "Data", "Cumulative_Profit": "Unidades/Stakes"},
+        #     markers=True  # Adiciona marcadores nos pontos
+        # )
+        # st.plotly_chart(fig)
+
         fig = px.line(
             daily_profit,
             x="Date",
             y="Cumulative_Profit",
             title="Lucro Diário",
             labels={"Date": "Data", "Cumulative_Profit": "Unidades/Stakes"},
-            markers=True  # Adiciona marcadores nos pontos
+            markers=True
         )
+
+        fig.update_layout(
+            template="plotly_white",
+            title={
+                "text": "Lucro Diário",
+                "y": 0.9,
+                "x": 0.5,
+                "xanchor": "center",
+                "yanchor": "top",
+                "font": {"size": 24, "color": "darkblue"}
+            },
+            xaxis=dict(showgrid=True, gridcolor="lightgray"),
+            yaxis=dict(showgrid=True, gridcolor="lightgray"),
+            xaxis_title="Data",
+            yaxis_title="Unidades/Stakes",
+            font=dict(family="Arial", size=14),
+            plot_bgcolor="white",
+            legend=dict(
+                title="Legenda",
+                orientation="h",
+                x=0.5, y=-0.2,
+                xanchor="center",
+                yanchor="top",
+                borderwidth=1,
+            )
+        )
+
+        fig.update_traces(
+            line=dict(color="blue", width=2),
+            marker=dict(size=8, symbol="circle", color="red"),
+            hovertemplate="<b>Data:</b> %{x}<br><b>Lucro:</b> %{y}<extra></extra>"
+        )
+
         st.plotly_chart(fig)
 
-        st.write(f"GREENs:")
+
+        st.write(f"**:green[GREENs:]**")
         print_dataframe(df_hist.loc[df_hist['Status_Metodo'] == 'GREEN'])
 
-        st.write(f"REDs:")
+        st.write(f"**:red[REDs:]**")
         print_dataframe(df_hist.loc[df_hist['Status_Metodo'] == 'RED'])
 
         st.write("**Detalhes**")
