@@ -26,7 +26,7 @@ def get_filter_lay_zebra(df): # 44257907
         # (df["Odd_Over25_FT"] > 1.8) &
         (df["XG_Total_Pre"] >= 1.7) &
         # (df["XG_Home_Pre"] >= 1.5) & 
-        (df["XG_Home_Pre"] > 1) & 
+        (df["XG_Home_Pre"] > 1.6) & 
         # (df["XG_Away_Pre"] > 0) & 
         (df["XG_Away_Pre"] <= 1.25) &              
         (df["XG_Home_Pre"] > df["XG_Away_Pre"]) &
