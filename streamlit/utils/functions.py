@@ -26,7 +26,7 @@ def get_filter_lay_zebra(df): # 44257907
         (df["XG_Away_Pre"] <= 1.25) &
         (df["XG_Home_Pre"] > df["XG_Away_Pre"]) &
         (df["Rodada"] > 2) &
-        ((df["Odd_H_FT"] <= 1.8) | (df["Odd_H_FT"] >= 2)) &
+        ((df["Odd_H_FT"] <= 1.78) | (df["Odd_H_FT"] >= 1.88)) &
         (df['League'].isin([
             'Belgium Pro League',
             'England EFL League One',
