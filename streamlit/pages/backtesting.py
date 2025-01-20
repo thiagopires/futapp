@@ -255,9 +255,15 @@ else:
 
         st.write("**Detalhes**")
 
-        report = df_hist.groupby(["League", "Month_Year"])["Profit"].sum().reset_index()
-        report["Cumulative_Profit"] = report["Profit"].cumsum()
-        st.dataframe(report)  
+        col1, col2 = st.columns(2)
+        with col1:
+            report = df_hist.groupby(["League", "Month_Year"])["Profit"].sum().reset_index()
+            report["Cumulative_Profit"] = report["Profit"].cumsum()
+            st.dataframe(report)
+        with col2:
+            report = df_hist.groupby(["League"])["Profit"].sum().reset_index()
+            report["Cumulative_Profit"] = report["Profit"].cumsum()
+            st.dataframe(report)
 
     # leagues = sorted(df_hist['League'].unique())
     # leagues.insert(0, 'Todas as Ligas')
