@@ -28,7 +28,7 @@ def get_filter_lay_zebra(df): # 44257907
         (df["XG_Home_Pre"] > 1) & 
         (df["XG_Away_Pre"] > 0) & 
         (df["XG_Away_Pre"] <= 1.25) &              
-        (df["XG_Home_Pre"] > df["XG_Away_Pre"]) &
+        # (df["XG_Home_Pre"] > df["XG_Away_Pre"]) &
         (df["Rodada"] > 2) &        
         (df['League'].isin([
             'Belgium Pro League',
