@@ -108,11 +108,11 @@ else:
 
     st.write("**Filtros Prontos**")
 
-    filtro_lay_casa_zebra = st.checkbox("Lay Casa Zebra")
-    if filtro_lay_casa_zebra:
-        filter = get_filter_lay_casa_zebra(df_hist)
-        df_hist = df_hist[filter] 
-        metodo = 'Lay Casa'
+    # filtro_lay_casa_zebra = st.checkbox("Lay Casa Zebra")
+    # if filtro_lay_casa_zebra:
+    #     filter = get_filter_lay_casa_zebra(df_hist)
+    #     df_hist = df_hist[filter] 
+    #     metodo = 'Lay Casa'
 
     filtro_lay_visitante_zebra = st.checkbox("Lay Visitante Zebra")
     if filtro_lay_visitante_zebra:
