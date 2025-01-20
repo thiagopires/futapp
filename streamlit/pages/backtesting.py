@@ -204,7 +204,7 @@ else:
         )
 
         fig.update_layout(
-            template="plotly_dark",
+            template="ggplot2",
             title={
                 "text": "Lucro Diário",
                 "y": 0.9,
