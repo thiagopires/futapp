@@ -88,7 +88,7 @@ else:
             'BTTS Não'
         ])
     with col2:
-        condicao = st.radio("Condição", ["Geral","Favorito/Zebra","Zebra/Favorito"])
+        condicao = st.radio("Condição", ["Geral","Favorito/Zebra","Zebra/Favorito"], horizontal=True)
         if condicao == "Favorito/Zebra":
             df_hist = df_hist[(df_hist["Odd_H_FT"] < df_hist["Odd_A_FT"])]
         elif condicao == "Zebra/Favorito":
@@ -130,7 +130,7 @@ else:
     col1, col2, col3 = st.columns(3)
     with col1:
         filtro_pronto_selecionado = st.selectbox("", [
-            "Selecione...",
+            "Sem filtro",
             "Lay Visitante Zebra",
             'Over 2.5 FT',
             'Under 2.5 FT',
@@ -172,7 +172,7 @@ else:
     st.divider()
 
 
-    if filtro_pronto_selecionado != "Selecione..." or executar:
+    if filtro_pronto_selecionado != "Sem filtro" or executar:
         
         df_hist["Status_Metodo"] = "RED"
         df_hist['Profit'] = -1
