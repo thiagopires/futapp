@@ -39,6 +39,16 @@ else:
         filter = get_filter_under(df_matches)
         df_matches = df_matches[filter]
 
+    filtro_btts_sim = st.checkbox("BTTS Sim")
+    if filtro_btts_sim:
+        filter = get_filter_btts_yes(df_matches)
+        df_matches = df_matches[filter]
+
+    filtro_btts_nao = st.checkbox("BTTS Não")
+    if filtro_btts_nao:
+        filter = get_filter_btts_no(df_matches)
+        df_matches = df_matches[filter]
+
     # Dataframe
     st.subheader(f"Selecione o jogo:")
     match_selected = st.dataframe(
