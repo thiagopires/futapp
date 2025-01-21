@@ -126,15 +126,18 @@ else:
     filtro_lay_visitante_zebra = st.checkbox("Lay Visitante Zebra")
     if filtro_lay_visitante_zebra:
         filter = get_filter_lay_visitante_zebra(df_hist)
-        df_hist = df_hist[filter] 
+        df_hist = df_hist[filter]
+        condicao = 'Geral'
         metodo = 'Lay Visitante'
 
     filtro_over25_ft = st.checkbox("Over 2.5 FT")
     if filtro_over25_ft:
         filter = get_filter_over(df_hist)
-        df_hist = df_hist[filter] 
+        df_hist = df_hist[filter]
+        condicao = 'Geral'
         metodo = 'Over 2.5 FT'
-    
+
+
     st.divider()
 
 
