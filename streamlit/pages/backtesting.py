@@ -69,6 +69,7 @@ else:
             'Lay Visitante',
             'Lay 0x1',
             'Lay 0x2',
+            'Lay 0x3',
             'Lay Goleada Visitante',
             'Over 0.5 HT',
             'Over 1.5 FT',
@@ -76,7 +77,8 @@ else:
             'Under 0.5 HT',
             'Under 1.5 FT',
             'Under 2.5 FT',
-            'BTTS'
+            'BTTS Sim',
+            'BTTS Não'
         ])
     with col2:
         condicao = st.radio("Condição", ["Geral","Favorito/Zebra","Zebra/Favorito"])
@@ -117,12 +119,6 @@ else:
 
     st.write("**Filtros Prontos**")
 
-    # filtro_lay_casa_zebra = st.checkbox("Lay Casa Zebra")
-    # if filtro_lay_casa_zebra:
-    #     filter = get_filter_lay_casa_zebra(df_hist)
-    #     df_hist = df_hist[filter] 
-    #     metodo = 'Lay Casa'
-
     filtro_lay_visitante_zebra = st.checkbox("Lay Visitante Zebra")
     if filtro_lay_visitante_zebra:
         filter = get_filter_lay_visitante_zebra(df_hist)
@@ -150,12 +146,24 @@ else:
         df_hist = df_hist[filter]
         condicao = 'Geral'
         metodo = 'BTTS Sim'
+    
+    filtro_btts_nao = st.checkbox("BTTS Não")
+    if filtro_btts_nao:
+        filter = get_filter_btts_no(df_hist)
+        df_hist = df_hist[filter]
+        condicao = 'Geral'
+        metodo = 'BTTS Não'
 
 
     st.divider()
 
 
-    if filtro_lay_visitante_zebra or filtro_over25_ft or filtro_under25_ft or filtro_btts_sim or executar:
+    if filtro_lay_visitante_zebra or \
+        filtro_over25_ft or \
+        filtro_under25_ft or \
+        filtro_btts_sim or \
+        filtro_btts_nao or \
+        executar:
         
         df_hist["Status_Metodo"] = "RED"
         df_hist['Profit'] = -1
@@ -235,6 +243,8 @@ else:
             df_hist.loc[df_hist["Resultado_FT"] != '0-1', "Status_Metodo"] = "GREEN"
         if metodo == 'Lay 0x2':
             df_hist.loc[df_hist["Resultado_FT"] != '0-2', "Status_Metodo"] = "GREEN"
+        if metodo == 'Lay 0x3':
+            df_hist.loc[df_hist["Resultado_FT"] != '0-3', "Status_Metodo"] = "GREEN"
         if metodo == 'Lay Goleada Visitante':
             df_hist.loc[((df_hist['Goals_A_FT'] < 4) | (df_hist['Goals_A_FT'] <= df_hist['Goals_H_FT'])), "Status_Metodo"] = "GREEN"
 
