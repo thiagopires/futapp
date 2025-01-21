@@ -255,89 +255,96 @@ else:
         if metodo == 'Lay Goleada Visitante':
             df_hist.loc[((df_hist['Goals_A_FT'] < 4) | (df_hist['Goals_A_FT'] <= df_hist['Goals_H_FT'])), "Status_Metodo"] = "GREEN"
 
-        total_jogos = len(df_hist)
-        total_greens = len(df_hist[(df_hist['Status_Metodo'] == 'GREEN')])
-        total_reds = total_jogos - total_greens
-        winrate = round(total_greens / total_jogos * 100, 2)
-        profit_acumulado = f"{str(round(df_hist['Profit'].sum(), 2))} unidades"
-
         st.write(f"**Resultado:**")
-        st.write(f"Jogos: {total_jogos}, Greens: {total_greens}, Reds: {total_reds}, Winrate: {winrate}%, Profit Acumulado: {profit_acumulado}, Odd Média: {odd_media}")
 
-        daily_profit = df_hist.groupby("Date")["Profit"].sum().reset_index()
-        daily_profit["Cumulative_Profit"] = daily_profit["Profit"].cumsum()  
+        total_jogos = len(df_hist)
+        
+        if total_jogos > 0:
+            total_greens = len(df_hist[(df_hist['Status_Metodo'] == 'GREEN')])
+            total_reds = total_jogos - total_greens
+            winrate = round(total_greens / total_jogos * 100, 2)
+            profit_acumulado = f"{str(round(df_hist['Profit'].sum(), 2))} unidades"
 
-        # fig = px.line(
-        #     daily_profit,
-        #     x="Date",
-        #     y="Cumulative_Profit",
-        #     title="Lucro Diário",
-        #     labels={"Date": "Data", "Cumulative_Profit": "Unidades/Stakes"},
-        #     markers=True  # Adiciona marcadores nos pontos
-        # )
-        # st.plotly_chart(fig)
+            
+            st.write(f"Jogos: {total_jogos}, Greens: {total_greens}, Reds: {total_reds}, Winrate: {winrate}%, Profit Acumulado: {profit_acumulado}, Odd Média: {odd_media}")
 
-        fig = px.line(
-            daily_profit,
-            x="Date",
-            y="Cumulative_Profit",
-            title="Lucro Diário",
-            labels={"Date": "Data", "Cumulative_Profit": "Unidades/Stakes"},
-            markers=True
-        )
+            daily_profit = df_hist.groupby("Date")["Profit"].sum().reset_index()
+            daily_profit["Cumulative_Profit"] = daily_profit["Profit"].cumsum()  
 
-        fig.update_layout(
-            template="plotly_white",
-            title={
-                "text": "Lucro Diário",
-                "y": 0.9,
-                "x": 0.5,
-                "xanchor": "center",
-                "yanchor": "top",
-                "font": {"size": 24, "color": "darkblue"}
-            },
-            xaxis=dict(showgrid=True, gridcolor="lightgray"),
-            yaxis=dict(showgrid=True, gridcolor="lightgray"),
-            xaxis_title="Data",
-            yaxis_title="Unidades/Stakes",
-            font=dict(family="Arial", size=14),
-            plot_bgcolor="white",
-            legend=dict(
-                title="Legenda",
-                orientation="h",
-                x=0.5, y=-0.2,
-                xanchor="center",
-                yanchor="top",
-                borderwidth=1,
+            # fig = px.line(
+            #     daily_profit,
+            #     x="Date",
+            #     y="Cumulative_Profit",
+            #     title="Lucro Diário",
+            #     labels={"Date": "Data", "Cumulative_Profit": "Unidades/Stakes"},
+            #     markers=True  # Adiciona marcadores nos pontos
+            # )
+            # st.plotly_chart(fig)
+
+            fig = px.line(
+                daily_profit,
+                x="Date",
+                y="Cumulative_Profit",
+                title="Lucro Diário",
+                labels={"Date": "Data", "Cumulative_Profit": "Unidades/Stakes"},
+                markers=True
             )
-        )
 
-        fig.update_traces(
-            line=dict(color="blue", width=2),
-            marker=dict(size=8, symbol="circle", color="red"),
-            hovertemplate="<b>Data:</b> %{x}<br><b>Lucro:</b> %{y}<extra></extra>"
-        )
+            fig.update_layout(
+                template="plotly_white",
+                title={
+                    "text": "Lucro Diário",
+                    "y": 0.9,
+                    "x": 0.5,
+                    "xanchor": "center",
+                    "yanchor": "top",
+                    "font": {"size": 24, "color": "darkblue"}
+                },
+                xaxis=dict(showgrid=True, gridcolor="lightgray"),
+                yaxis=dict(showgrid=True, gridcolor="lightgray"),
+                xaxis_title="Data",
+                yaxis_title="Unidades/Stakes",
+                font=dict(family="Arial", size=14),
+                plot_bgcolor="white",
+                legend=dict(
+                    title="Legenda",
+                    orientation="h",
+                    x=0.5, y=-0.2,
+                    xanchor="center",
+                    yanchor="top",
+                    borderwidth=1,
+                )
+            )
 
-        st.plotly_chart(fig)
+            fig.update_traces(
+                line=dict(color="blue", width=2),
+                marker=dict(size=8, symbol="circle", color="red"),
+                hovertemplate="<b>Data:</b> %{x}<br><b>Lucro:</b> %{y}<extra></extra>"
+            )
+
+            st.plotly_chart(fig)
 
 
-        st.write(f"**:green[GREENs:]**")
-        print_dataframe(df_hist.loc[df_hist['Status_Metodo'] == 'GREEN', ['League','Rodada','Date','Time','Home','Away','Resultado_HT','Resultado_FT','Odd_H_FT','Odd_D_FT','Odd_A_FT','Odd_Over25_FT','Odd_Under25_FT','Odd_BTTS_Yes','Odd_BTTS_No','XG_Total_Pre','XG_Home_Pre','XG_Away_Pre','Odd_DC_1X','Odd_DC_12','Odd_DC_X2','Goals_H_Minutes','Goals_A_Minutes','Primeiro_Gol','Status_Metodo','Profit']])
+            st.write(f"**:green[GREENs:]**")
+            print_dataframe(df_hist.loc[df_hist['Status_Metodo'] == 'GREEN', ['League','Rodada','Date','Time','Home','Away','Resultado_HT','Resultado_FT','Odd_H_FT','Odd_D_FT','Odd_A_FT','Odd_Over25_FT','Odd_Under25_FT','Odd_BTTS_Yes','Odd_BTTS_No','XG_Total_Pre','XG_Home_Pre','XG_Away_Pre','Odd_DC_1X','Odd_DC_12','Odd_DC_X2','Goals_H_Minutes','Goals_A_Minutes','Primeiro_Gol','Status_Metodo','Profit']])
 
-        st.write(f"**:red[REDs:]**")
-        print_dataframe(df_hist.loc[df_hist['Status_Metodo'] == 'RED', ['League','Rodada','Date','Time','Home','Away','Resultado_HT','Resultado_FT','Odd_H_FT','Odd_D_FT','Odd_A_FT','Odd_Over25_FT','Odd_Under25_FT','Odd_BTTS_Yes','Odd_BTTS_No','XG_Total_Pre','XG_Home_Pre','XG_Away_Pre','Odd_DC_1X','Odd_DC_12','Odd_DC_X2','Goals_H_Minutes','Goals_A_Minutes','Primeiro_Gol','Status_Metodo','Profit']])
+            st.write(f"**:red[REDs:]**")
+            print_dataframe(df_hist.loc[df_hist['Status_Metodo'] == 'RED', ['League','Rodada','Date','Time','Home','Away','Resultado_HT','Resultado_FT','Odd_H_FT','Odd_D_FT','Odd_A_FT','Odd_Over25_FT','Odd_Under25_FT','Odd_BTTS_Yes','Odd_BTTS_No','XG_Total_Pre','XG_Home_Pre','XG_Away_Pre','Odd_DC_1X','Odd_DC_12','Odd_DC_X2','Goals_H_Minutes','Goals_A_Minutes','Primeiro_Gol','Status_Metodo','Profit']])
 
-        st.write("**Detalhes**")
+            st.write("**Detalhes**")
 
-        col1, col2 = st.columns(2)
-        with col1:
-            report = df_hist.groupby(["League", "Month_Year"])["Profit"].sum().reset_index()
-            report["Cumulative_Profit"] = report["Profit"].cumsum()
-            st.dataframe(report)
-        with col2:
-            report = df_hist.groupby(["League"])["Profit"].sum().reset_index()
-            report["Cumulative_Profit"] = report["Profit"].cumsum()
-            st.dataframe(report)
+            col1, col2 = st.columns(2)
+            with col1:
+                report = df_hist.groupby(["League", "Month_Year"])["Profit"].sum().reset_index()
+                report["Cumulative_Profit"] = report["Profit"].cumsum()
+                st.dataframe(report)
+            with col2:
+                report = df_hist.groupby(["League"])["Profit"].sum().reset_index()
+                report["Cumulative_Profit"] = report["Profit"].cumsum()
+                st.dataframe(report)
+
+        else:
+            st.write("Sem jogos.")
 
     # leagues = sorted(df_hist['League'].unique())
     # leagues.insert(0, 'Todas as Ligas')

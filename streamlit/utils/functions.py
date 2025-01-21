@@ -166,7 +166,8 @@ def get_filter_lay_visitante_zebra(df):
             'Italy Serie B',
             'Portugal Liga NOS',
             'Spain La Liga',
-            'Turkey Süper Lig'
+            'Turkey Süper Lig',
+            'Netherlands Eredivisie'
         ]))
     )
 
