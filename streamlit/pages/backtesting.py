@@ -127,14 +127,16 @@ else:
 
     st.write("**Filtros Prontos**")
 
-    filtro_pronto_selecionado = st.selectbox("", [
-        "Selecione...",
-        "Lay Visitante Zebra",
-        'Over 2.5 FT',
-        'Under 2.5 FT',
-        'BTTS Sim',
-        'BTTS Não'
-    ])
+    col1, col2, col3 = st.columns(3)
+    with col1:
+        filtro_pronto_selecionado = st.selectbox("", [
+            "Selecione...",
+            "Lay Visitante Zebra",
+            'Over 2.5 FT',
+            'Under 2.5 FT',
+            'BTTS Sim',
+            'BTTS Não'
+        ])
 
     if filtro_pronto_selecionado == "Lay Visitante Zebra":
         filter = get_filter_lay_visitante_zebra(df_hist)
