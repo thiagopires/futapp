@@ -20,13 +20,12 @@ def get_filter_over(df):
     return (
         (df["XG_Home_Pre"] >= 1.3) &
         (df["XG_Away_Pre"] >= 1.3) &
-        (abs(df["Odd_H_FT"] - df["Odd_A_FT"]) > 0.2) &
+        # (abs(df["Odd_H_FT"] - df["Odd_A_FT"]) > 0.2) &
         (
             (
                 (df["Odd_H_FT"] < df["Odd_A_FT"]) &
                 (df['League'].isin([
                     'Spain La Liga',
-                    #'France Ligue 1',
                     'Portugal Liga NOS',
                     'Netherlands Eredivisie',
                     'England Premier League'
