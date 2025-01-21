@@ -53,10 +53,10 @@ def get_filter_under(df):
                 (df["Odd_H_FT"] < df["Odd_A_FT"]) &
                 (df['League'].isin([
                     'Belgium Pro League',
-                    'Netherlands Eredivisie',
+                    # 'Netherlands Eredivisie',
                     'Portugal Liga NOS',
-                    'Germany Bundesliga',
-                    'France Ligue 1',
+                    # 'Germany Bundesliga',
+                    # 'France Ligue 1',
                     'England EFL League One',
                     'England Premier League',
                     'Netherlands Eerste Divisie'
@@ -64,11 +64,11 @@ def get_filter_under(df):
                 ) | (
                 (df["Odd_H_FT"] > df["Odd_A_FT"]) &
                 (df['League'].isin([
-                    'Turkey Süper Lig',
+                    # 'Turkey Süper Lig',
                     'England Premier League',
                     'England EFL League Two',
-                    'France Ligue 2',
-                    'Italy Serie B',
+                    # 'France Ligue 2',
+                    # 'Italy Serie B',
                     'Portugal Liga NOS',
                     'Spain Segunda División',
                     'Belgium Pro League',
