@@ -68,7 +68,7 @@ def get_filter_under(df):
                     'England Premier League',
                     'England EFL League Two',
                     # 'France Ligue 2',
-                    # 'Italy Serie B',
+                    'Italy Serie B',
                     'Portugal Liga NOS',
                     'Spain Segunda División',
                     'Belgium Pro League',
@@ -115,7 +115,8 @@ def get_filter_btts_no(df):
         (df["XG_Home_Pre"] > 0) &
         (df["XG_Away_Pre"] > 0) &
         (df["XG_Home_Pre"] < 1.3) &
-        (df["XG_Away_Pre"] < 1.3) &        
+        (df["XG_Away_Pre"] < 1.3) &
+        (df["Odd_BTTS_No"] >= 1.6) & 
         (
             (
                 (df["Odd_H_FT"] < df["Odd_A_FT"]) &
