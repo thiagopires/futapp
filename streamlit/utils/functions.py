@@ -105,6 +105,36 @@ def get_filter_btts_yes(df):
         )
     )
 
+def get_filter_btts_no(df):
+    return (
+        (df["XG_Home_Pre"] < 1.3) &
+        (df["XG_Away_Pre"] < 1.3) &        
+        (
+            (
+                (df["Odd_H_FT"] < df["Odd_A_FT"]) &
+                (df['League'].isin([
+                    'Belgium Pro League',
+                    'Netherlands Eerste Divisie',
+                    'England EFL League One',
+                    'Netherlands Eredivisie',
+                    'England Premier League'
+                ]))
+                ) | (
+                (df["Odd_H_FT"] > df["Odd_A_FT"]) &
+                (df['League'].isin([
+                    'Belgium Pro League',
+                    'England EFL League One',
+                    'Portugal Liga NOS',
+                    'Italy Serie B',
+                    'Germany 2. Bundesliga',
+                    'England Championship',
+                    'England EFL League Two',
+                    'Spain Segunda División',
+                    'France Ligue 2'
+                ]))
+            )
+        )
+    )
 
 def get_filter_lay_visitante_zebra(df):
     return (
