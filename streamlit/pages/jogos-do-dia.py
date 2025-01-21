@@ -26,7 +26,7 @@ else:
 
     col1, col2, col3 = st.columns(3)
     with col1:
-        filtro_pronto_selecionado = st.selectbox("", [
+        filtro_pronto_selecionado = st.selectbox([
             "Sem filtro",
             "Lay Visitante Zebra",
             'Over 2.5 FT',
