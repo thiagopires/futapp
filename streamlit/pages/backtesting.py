@@ -144,11 +144,18 @@ else:
         condicao = 'Geral'
         metodo = 'Under 2.5 FT'
 
+    filtro_btts_sim = st.checkbox("BTTS Sim")
+    if filtro_btts_sim:
+        filter = get_filter_btts_yes(df_hist)
+        df_hist = df_hist[filter]
+        condicao = 'Geral'
+        metodo = 'BTTS Sim'
+
 
     st.divider()
 
 
-    if filtro_lay_visitante_zebra or filtro_over25_ft or filtro_under25_ft or executar:
+    if filtro_lay_visitante_zebra or filtro_over25_ft or filtro_under25_ft or filtro_btts_sim or executar:
         
         df_hist["Status_Metodo"] = "RED"
         df_hist['Profit'] = -1
@@ -214,11 +221,16 @@ else:
             df_hist.loc[filter, 'Profit'] = round(df_hist['Odd_Under25_FT']-1, 2)
             df_hist.loc[filter, "Status_Metodo"] = "GREEN"
             odd_media = f"{str(round(df_hist['Odd_Under25_FT'].mean(), 2))}"
-        if metodo == 'BTTS':
+        if metodo == 'BTTS Sim':
             filter = ((df_hist['Goals_H_FT'] >= 1) & (df_hist['Goals_A_FT'] >= 1))
             df_hist.loc[filter, 'Profit'] = round(df_hist['Odd_BTTS_Yes']-1, 2)
             df_hist.loc[filter, "Status_Metodo"] = "GREEN"
             odd_media = f"{str(round(df_hist['Odd_BTTS_Yes'].mean(), 2))}"
+        if metodo == 'BTTS Não':
+            filter = ((df_hist['Goals_H_FT'] == 0) | (df_hist['Goals_A_FT'] == 0))
+            df_hist.loc[filter, 'Profit'] = round(df_hist['Odd_BTTS_No']-1, 2)
+            df_hist.loc[filter, "Status_Metodo"] = "GREEN"
+            odd_media = f"{str(round(df_hist['Odd_BTTS_No'].mean(), 2))}"
         if metodo == 'Lay 0x1':
             df_hist.loc[df_hist["Resultado_FT"] != '0-1', "Status_Metodo"] = "GREEN"
         if metodo == 'Lay 0x2':
