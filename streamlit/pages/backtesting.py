@@ -63,7 +63,9 @@ else:
         metodo = st.selectbox("Método", [
             'Back Casa',
             'Back Visitante',
+            'Back Empate',
             'Lay Casa',
+            'Lay Empate',
             'Lay Visitante',
             'Lay 0x1',
             'Lay 0x2',
