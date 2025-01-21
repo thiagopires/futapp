@@ -122,10 +122,10 @@ def get_filter_btts_no(df):
                 (df["Odd_H_FT"] < df["Odd_A_FT"]) &
                 (df['League'].isin([
                     'Belgium Pro League',
-                    'Netherlands Eerste Divisie',
+                    # 'Netherlands Eerste Divisie',
                     'England EFL League One',
                     'Netherlands Eredivisie',
-                    'England Premier League'
+                    # 'England Premier League'
                 ]))
                 ) | (
                 (df["Odd_H_FT"] > df["Odd_A_FT"]) &
@@ -135,7 +135,7 @@ def get_filter_btts_no(df):
                     'Portugal Liga NOS',
                     'Italy Serie B',
                     'Germany 2. Bundesliga',
-                    'England Championship',
+                    # 'England Championship',
                     'England EFL League Two',
                     'Spain Segunda División',
                     'France Ligue 2'
