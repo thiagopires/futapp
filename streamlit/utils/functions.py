@@ -18,6 +18,8 @@ def get_today(offset=0):
 
 def get_filter_over25_ft(df):
     return (
+        (df["Odd_H_FT"] < df["Odd_D_FT"]) &
+        (df["Odd_D_FT"] < df["Odd_A_FT"]) &
         (df["XG_Home_Pre"] >= 1.3) &
         (df["XG_Away_Pre"] >= 1.3) &
         (df['League'].isin([
