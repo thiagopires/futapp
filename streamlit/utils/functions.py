@@ -22,17 +22,17 @@ def get_filter_over25_ft(df):
         (df["XG_Away_Pre"] >= 1.3) &
         (df['League'].isin([
             'Spain La Liga',
-            'Slovakia Super Liga',
-            'Wales Welsh Premier League',
+            # 'Slovakia Super Liga',
+            # 'Wales Welsh Premier League',
             'France Ligue 1',
             'Portugal Liga NOS',
             'Netherlands Eredivisie',
-            'Czech Republic First League',
+            # 'Czech Republic First League',
             'England Premier League'
         ]))
     )
 
-def get_filter_lay_visitante_zebra(df): # 44257907
+def get_filter_lay_visitante_zebra(df):
     return (
         (df["Odd_H_FT"] < df["Odd_D_FT"]) &
         (df["Odd_D_FT"] < df["Odd_A_FT"]) &
