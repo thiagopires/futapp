@@ -16,23 +16,45 @@ def get_today(offset=0):
     adjusted_time = now + timedelta(days=offset) - timedelta(hours=3)
     return adjusted_time.date()
 
-def get_filter_over25_ft(df):
+def get_filter_over(df):
     return (
-        (df["Odd_H_FT"] < df["Odd_D_FT"]) &
-        (df["Odd_D_FT"] < df["Odd_A_FT"]) &
         (df["XG_Home_Pre"] >= 1.3) &
         (df["XG_Away_Pre"] >= 1.3) &
-        (df['League'].isin([
-            'Spain La Liga',
-            # 'Slovakia Super Liga',
-            # 'Wales Welsh Premier League',
-            'France Ligue 1',
-            'Portugal Liga NOS',
-            'Netherlands Eredivisie',
-            # 'Czech Republic First League',
-            'England Premier League'
-        ]))
+        (
+            (
+            (df["Odd_H_FT"] < df["Odd_D_FT"]) &
+            (df["Odd_D_FT"] < df["Odd_A_FT"]) &
+            (df['League'].isin([
+                'Spain La Liga',
+                'France Ligue 1',
+                'Portugal Liga NOS',
+                'Netherlands Eredivisie',
+                'England Premier League'
+            ]))
+            ) | (
+            (df["Odd_H_FT"] > df["Odd_D_FT"]) &
+            (df["Odd_D_FT"] > df["Odd_A_FT"]) &
+            (df['League'].isin([
+                'England EFL League One',
+                'Italy Serie B',
+                'Spain La Liga'
+            ]))
+            )
+        )
     )
+
+
+
+# Portugal Liga NOS
+# England EFL League Two
+# Germany Bundesliga
+# England Premier League
+# France Ligue 1
+# Belgium Pro League
+# England EFL League One
+# Netherlands Eredivisie
+# Netherlands Eerste Divisie
+
 
 def get_filter_lay_visitante_zebra(df):
     return (
