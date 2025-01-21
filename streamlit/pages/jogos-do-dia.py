@@ -31,7 +31,7 @@ else:
 
     filtro_over25_ft = st.checkbox("Over 2.5 FT")
     if filtro_over25_ft:
-        filter = get_filter_over25_ft(df_matches)
+        filter = get_filter_over(df_matches)
         df_matches = df_matches[filter] 
         metodo = 'Over 2.5 FT'
 
