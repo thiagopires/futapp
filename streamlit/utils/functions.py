@@ -19,7 +19,8 @@ def get_today(offset=0):
 def get_filter_over(df):
     return (
         (df["XG_Home_Pre"] >= 1.3) &
-        (df["XG_Away_Pre"] >= 1.3) &        
+        (df["XG_Away_Pre"] >= 1.3) &
+        (df["Odd_Over25_FT"] >= 1.4) & 
         (
             (
                 (df["Odd_H_FT"] < df["Odd_A_FT"]) &
@@ -45,16 +46,17 @@ def get_filter_under(df):
         (df["XG_Home_Pre"] > 0) &
         (df["XG_Away_Pre"] > 0) &  
         (df["XG_Home_Pre"] < 1.3) &
-        (df["XG_Away_Pre"] < 1.3) &        
+        (df["XG_Away_Pre"] < 1.3) &
+        (df["Odd_Under25_FT"] >= 1.5) & 
         (
             (
                 (df["Odd_H_FT"] < df["Odd_A_FT"]) &
                 (df['League'].isin([
                     'Belgium Pro League',
-                    'Netherlands Eredivisie',
+                    # 'Netherlands Eredivisie',
                     'Portugal Liga NOS',
-                    'Germany Bundesliga',
-                    'France Ligue 1',
+                    # 'Germany Bundesliga',
+                    # 'France Ligue 1',
                     'England EFL League One',
                     'England Premier League',
                     'Netherlands Eerste Divisie'
@@ -62,10 +64,10 @@ def get_filter_under(df):
                 ) | (
                 (df["Odd_H_FT"] > df["Odd_A_FT"]) &
                 (df['League'].isin([
-                    'Turkey Süper Lig',
+                    # 'Turkey Süper Lig',
                     'England Premier League',
                     'England EFL League Two',
-                    'France Ligue 2',
+                    # 'France Ligue 2',
                     'Italy Serie B',
                     'Portugal Liga NOS',
                     'Spain Segunda División',
@@ -79,7 +81,8 @@ def get_filter_under(df):
 def get_filter_btts_yes(df):
     return (
         (df["XG_Home_Pre"] >= 1.3) &
-        (df["XG_Away_Pre"] >= 1.3) &        
+        (df["XG_Away_Pre"] >= 1.3) &
+        (df["Odd_BTTS_Yes"] >= 1.4) & 
         (
             (
                 (df["Odd_H_FT"] < df["Odd_A_FT"]) &
@@ -112,16 +115,17 @@ def get_filter_btts_no(df):
         (df["XG_Home_Pre"] > 0) &
         (df["XG_Away_Pre"] > 0) &
         (df["XG_Home_Pre"] < 1.3) &
-        (df["XG_Away_Pre"] < 1.3) &        
+        (df["XG_Away_Pre"] < 1.3) &
+        (df["Odd_BTTS_No"] >= 1.6) & 
         (
             (
                 (df["Odd_H_FT"] < df["Odd_A_FT"]) &
                 (df['League'].isin([
                     'Belgium Pro League',
-                    'Netherlands Eerste Divisie',
+                    # 'Netherlands Eerste Divisie',
                     'England EFL League One',
                     'Netherlands Eredivisie',
-                    'England Premier League'
+                    # 'England Premier League'
                 ]))
                 ) | (
                 (df["Odd_H_FT"] > df["Odd_A_FT"]) &
@@ -131,7 +135,7 @@ def get_filter_btts_no(df):
                     'Portugal Liga NOS',
                     'Italy Serie B',
                     'Germany 2. Bundesliga',
-                    'England Championship',
+                    # 'England Championship',
                     'England EFL League Two',
                     'Spain Segunda División',
                     'France Ligue 2'
