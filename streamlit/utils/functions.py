@@ -86,7 +86,7 @@ def get_filter_btts_yes(df):
             (
                 (df["Odd_H_FT"] < df["Odd_A_FT"]) &
                 (df['League'].isin([
-                    'Germany 2. Bundesliga',
+                    # 'Germany 2. Bundesliga',
                     'Italy Serie B',
                     'Greece Super League',
                     'Netherlands Eredivisie',
