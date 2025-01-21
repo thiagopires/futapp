@@ -18,7 +18,6 @@ else:
     df_hist = load_histmatches()
 
     indicadores = df_hist.columns
-    indicadores.insert(0, "Selecione")
 
     operadores_opcoes = {
         "=": "Igual",
@@ -30,6 +29,8 @@ else:
     }
     operadores_formatados = [f"{descricao} ({simbolo})" for simbolo, descricao in operadores_opcoes.items()] 
 
+    st.write("**Selecione o período**")
+
     col1, col2, col3 = st.columns(3)
     with col1: data_inicial = st.date_input("Data Inicial", date(2022, 2, 10))
     with col2: data_final = st.date_input("Data Final", get_today())
@@ -37,6 +38,8 @@ else:
         seasons = sorted(df_hist['Season'].unique())
         seasons.insert(0, 'Todas as Temporadas')
         selected_seasons = st.multiselect("Filtrar por Temporada", seasons, [seasons[0]])
+
+    st.write("**Indicadores**")
 
     leagues = sorted(df_hist['League'].unique())
     leagues.insert(0, 'Todas as Ligas')
@@ -119,36 +122,40 @@ else:
 
     st.write("**Filtros Prontos**")
 
-    filtro_lay_visitante_zebra = st.checkbox("Lay Visitante Zebra")
-    if filtro_lay_visitante_zebra:
+    filtro_pronto_selecionado = st.selectbox([
+        'Selecione...'
+        "Lay Visitante Zebra",
+        'Over 2.5 FT',
+        'Under 2.5 FT',
+        'BTTS Sim',
+        'BTTS Não'
+    ])
+
+    if filtro_pronto_selecionado == "Lay Visitante Zebra":
         filter = get_filter_lay_visitante_zebra(df_hist)
         df_hist = df_hist[filter]
         condicao = 'Geral'
         metodo = 'Lay Visitante'
 
-    filtro_over25_ft = st.checkbox("Over 2.5 FT")
-    if filtro_over25_ft:
+    elif filtro_pronto_selecionado == "Over 2.5 FT":
         filter = get_filter_over(df_hist)
         df_hist = df_hist[filter]
         condicao = 'Geral'
         metodo = 'Over 2.5 FT'
 
-    filtro_under25_ft = st.checkbox("Under 2.5 FT")
-    if filtro_under25_ft:
+    elif filtro_pronto_selecionado == "Under 2.5 FT":
         filter = get_filter_under(df_hist)
         df_hist = df_hist[filter]
         condicao = 'Geral'
         metodo = 'Under 2.5 FT'
 
-    filtro_btts_sim = st.checkbox("BTTS Sim")
-    if filtro_btts_sim:
+    elif filtro_pronto_selecionado == "BTTS Sim":
         filter = get_filter_btts_yes(df_hist)
         df_hist = df_hist[filter]
         condicao = 'Geral'
         metodo = 'BTTS Sim'
     
-    filtro_btts_nao = st.checkbox("BTTS Não")
-    if filtro_btts_nao:
+    elif filtro_pronto_selecionado == "BTTS Não":
         filter = get_filter_btts_no(df_hist)
         df_hist = df_hist[filter]
         condicao = 'Geral'
@@ -158,12 +165,7 @@ else:
     st.divider()
 
 
-    if filtro_lay_visitante_zebra or \
-        filtro_over25_ft or \
-        filtro_under25_ft or \
-        filtro_btts_sim or \
-        filtro_btts_nao or \
-        executar:
+    if filtro_pronto_selecionado != "Selecione..." or executar:
         
         df_hist["Status_Metodo"] = "RED"
         df_hist['Profit'] = -1
