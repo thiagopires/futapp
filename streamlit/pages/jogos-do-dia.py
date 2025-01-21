@@ -22,11 +22,9 @@ else:
     # df_matches_filter = load_daymatches(data_analise, ['Celtic','Freiburg','Liverpool'])
     # st.dataframe(df_matches_filter)
 
-    st.write("**Filtros Prontos**")
-
     col1, col2, col3 = st.columns(3)
     with col1:
-        filtro_pronto_selecionado = st.selectbox("Filtros Prontos", [
+        filtro_pronto_selecionado = st.selectbox("Selecione", [
             "Sem filtro",
             "Lay Visitante Zebra",
             'Over 2.5 FT',
@@ -56,7 +54,7 @@ else:
         df_matches = df_matches[filter]
 
     # Dataframe
-    st.subheader(f"Selecione o jogo:")
+    st.subheader(f"Selecione o jogo para abrir detalhes abaixo:")
     match_selected = st.dataframe(
         df_matches[['League','Rodada','Time','Home','Away','Odd_H_FT','Odd_D_FT','Odd_A_FT','Odd_Over25_FT','Odd_Under25_FT','Odd_BTTS_Yes','Odd_BTTS_No','XG_Total_Pre','XG_Home_Pre','XG_Away_Pre','Odd_DC_1X','Odd_DC_12','Odd_DC_X2']]
         , on_select="rerun"
