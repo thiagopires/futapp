@@ -134,7 +134,7 @@ else:
             'Under 2.5 FT',
             'BTTS Sim',
             'BTTS Não'
-        ], label_visibility="hidden")
+        ])
 
     if filtro_pronto_selecionado == "Lay Visitante Zebra":
         filter = get_filter_lay_visitante_zebra(df_hist)
