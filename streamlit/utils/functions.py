@@ -152,7 +152,7 @@ def get_filter_lay_visitante_zebra(df):
         (df["Odd_A_FT"] < 8) &
         (df["Odd_BTTS_Yes"] >= 1.5) &
         (df["Odd_BTTS_Yes"] < 2) &
-        (df["Odd_Over25_FT"] > 1.5) &
+        (df["Odd_Over25_FT"] > 1.6) &
         (df["XG_Home_Pre"] > df["XG_Away_Pre"]) &
         (df["XG_Total_Pre"] >= 1.7) &
         (df["XG_Away_Pre"] <= 1.25) &
