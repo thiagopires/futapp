@@ -148,7 +148,7 @@ else:
     st.divider()
 
 
-    if filtro_lay_visitante_zebra or filtro_over25_ft or executar:
+    if filtro_lay_visitante_zebra or filtro_over25_ft or filtro_under25_ft or executar:
         
         df_hist["Status_Metodo"] = "RED"
         df_hist['Profit'] = -1
