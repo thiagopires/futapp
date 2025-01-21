@@ -128,7 +128,7 @@ else:
     st.write("**Filtros Prontos**")
 
     filtro_pronto_selecionado = st.selectbox("", [
-        'Selecione...'
+        "Selecione...",
         "Lay Visitante Zebra",
         'Over 2.5 FT',
         'Under 2.5 FT',
