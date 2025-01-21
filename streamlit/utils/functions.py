@@ -23,7 +23,7 @@ def get_filter_over(df):
         # (abs(df["Odd_H_FT"] - df["Odd_A_FT"]) > 0.2) &
         (
             (
-                (df["Odd_H_FT"] < df["Odd_A_FT"]) &
+                (df["Odd_H_FT"] <= df["Odd_A_FT"]) &
                 (df['League'].isin([
                     'Spain La Liga',
                     'Portugal Liga NOS',
@@ -31,7 +31,7 @@ def get_filter_over(df):
                     'England Premier League'
                 ]))
                 ) | (
-                (df["Odd_H_FT"] > df["Odd_A_FT"]) &
+                (df["Odd_H_FT"] >= df["Odd_A_FT"]) &
                 (df['League'].isin([
                     'England EFL League One',
                     'Italy Serie B',
