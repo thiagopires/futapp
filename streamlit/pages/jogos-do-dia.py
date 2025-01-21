@@ -22,30 +22,36 @@ else:
     # df_matches_filter = load_daymatches(data_analise, ['Celtic','Freiburg','Liverpool'])
     # st.dataframe(df_matches_filter)
 
-    st.write("**Filtros**")
+    st.write("**Filtros Prontos**")
 
-    filtro_lay_visitante_zebra = st.checkbox("Lay Visitante Zebra")
-    if filtro_lay_visitante_zebra:
+    col1, col2, col3 = st.columns(3)
+    with col1:
+        filtro_pronto_selecionado = st.selectbox("", [
+            "Sem filtro",
+            "Lay Visitante Zebra",
+            'Over 2.5 FT',
+            'Under 2.5 FT',
+            'BTTS Sim',
+            'BTTS Não'
+        ])
+
+    if filtro_pronto_selecionado == "Lay Visitante Zebra":
         filter = get_filter_lay_visitante_zebra(df_matches)
         df_matches = df_matches[filter]
 
-    filtro_over25_ft = st.checkbox("Over 2.5 FT")
-    if filtro_over25_ft:
+    elif filtro_pronto_selecionado == "Over 2.5 FT":
         filter = get_filter_over(df_matches)
         df_matches = df_matches[filter]
 
-    filtro_under25_ft = st.checkbox("Under 2.5 FT")
-    if filtro_under25_ft:
+    elif filtro_pronto_selecionado == "Under 2.5 FT":
         filter = get_filter_under(df_matches)
         df_matches = df_matches[filter]
 
-    filtro_btts_sim = st.checkbox("BTTS Sim")
-    if filtro_btts_sim:
+    elif filtro_pronto_selecionado == "BTTS Sim":
         filter = get_filter_btts_yes(df_matches)
         df_matches = df_matches[filter]
-
-    filtro_btts_nao = st.checkbox("BTTS Não")
-    if filtro_btts_nao:
+    
+    elif filtro_pronto_selecionado == "BTTS Não":
         filter = get_filter_btts_no(df_matches)
         df_matches = df_matches[filter]
 
