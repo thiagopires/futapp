@@ -22,22 +22,41 @@ else:
     # df_matches_filter = load_daymatches(data_analise, ['Celtic','Freiburg','Liverpool'])
     # st.dataframe(df_matches_filter)
 
-    st.write("**Filtros**")
+    col1, col2, col3 = st.columns(3)
+    with col1:
+        filtro_pronto_selecionado = st.selectbox("Filtros Prontos", [
+            "Sem filtro",
+            "Lay Visitante Zebra",
+            'Over 2.5 FT',
+            'Under 2.5 FT',
+            'BTTS Sim',
+            'BTTS Não'
+        ])
 
-    # filtro_lay_casa_zebra = st.checkbox("Lay Casa Zebra")
-    # if filtro_lay_casa_zebra:
-    #     filter = get_filter_lay_casa_zebra(df_matches)
-    #     df_matches = df_matches[filter]
-
-    filtro_lay_visitante_zebra = st.checkbox("Lay Visitante Zebra")
-    if filtro_lay_visitante_zebra:
+    if filtro_pronto_selecionado == "Lay Visitante Zebra":
         filter = get_filter_lay_visitante_zebra(df_matches)
-        df_matches = df_matches[filter]    
+        df_matches = df_matches[filter]
+
+    elif filtro_pronto_selecionado == "Over 2.5 FT":
+        filter = get_filter_over(df_matches)
+        df_matches = df_matches[filter]
+
+    elif filtro_pronto_selecionado == "Under 2.5 FT":
+        filter = get_filter_under(df_matches)
+        df_matches = df_matches[filter]
+
+    elif filtro_pronto_selecionado == "BTTS Sim":
+        filter = get_filter_btts_yes(df_matches)
+        df_matches = df_matches[filter]
+    
+    elif filtro_pronto_selecionado == "BTTS Não":
+        filter = get_filter_btts_no(df_matches)
+        df_matches = df_matches[filter]
 
     # Dataframe
-    st.subheader(f"Selecione o jogo:")
+    st.subheader(f"Selecione o jogo para abrir detalhes abaixo:")
     match_selected = st.dataframe(
-        df_matches[['League','Rodada','Time','Home','Away','Odd_H_FT','Odd_D_FT','Odd_A_FT','Odd_Over05_HT','Odd_Over15_FT','Odd_Over25_FT','Odd_BTTS_Yes','XG_Total_Pre','XG_Home_Pre','XG_Away_Pre','Odd_DC_1X','Odd_DC_12','Odd_DC_X2']]
+        df_matches[['League','Rodada','Time','Home','Away','Odd_H_FT','Odd_D_FT','Odd_A_FT','Odd_Over25_FT','Odd_Under25_FT','Odd_BTTS_Yes','Odd_BTTS_No','XG_Total_Pre','XG_Home_Pre','XG_Away_Pre','Odd_DC_1X','Odd_DC_12','Odd_DC_X2']]
         , on_select="rerun"
         , selection_mode="single-row"
         , use_container_width=True

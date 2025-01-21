@@ -16,37 +16,135 @@ def get_today(offset=0):
     adjusted_time = now + timedelta(days=offset) - timedelta(hours=3)
     return adjusted_time.date()
 
-def get_filter_lay_casa_zebra(df):
+def get_filter_over(df):
     return (
-        (df["Odd_H_FT"] > df["Odd_D_FT"]) &
-        (df["Odd_D_FT"] > df["Odd_A_FT"]) &
-        ((df["Odd_A_FT"] <= 1.8) | (df["Odd_A_FT"] >= 1.9)) &
-        (df["Odd_H_FT"] < 8) &
-        (df["Odd_BTTS_Yes"] < 2) &
-        (df["Odd_Over25_FT"] > 1.5) &
-        (df["XG_Home_Pre"] < df["XG_Away_Pre"]) &
-        (df["XG_Total_Pre"] >= 1.7) &
-        (df["XG_Home_Pre"] <= 1.25) &
-        (df['League'].isin([
-            'Belgium Pro League',
-            'England EFL League One',
-            'England Premier League',
-            'France Ligue 1',
-            'Germany 2. Bundesliga',
-            'Germany Bundesliga',
-            'Italy Serie A',
-            'Italy Serie B',
-            'Portugal Liga NOS',
-            'Spain La Liga',
-            'Turkey Süper Lig'
-        ]))
+        (df["XG_Home_Pre"] >= 1.3) &
+        (df["XG_Away_Pre"] >= 1.3) &        
+        (
+            (
+                (df["Odd_H_FT"] < df["Odd_A_FT"]) &
+                (df['League'].isin([
+                    'Spain La Liga',
+                    'Portugal Liga NOS',
+                    'Netherlands Eredivisie',
+                    'England Premier League'
+                ]))
+                ) | (
+                (df["Odd_H_FT"] > df["Odd_A_FT"]) &
+                (df['League'].isin([
+                    'England EFL League One',
+                    'Italy Serie B',
+                    'Spain La Liga'
+                ]))
+            )
+        )
     )
 
-def get_filter_lay_visitante_zebra(df): # 44257907
+def get_filter_under(df):
+    return (
+        (df["XG_Home_Pre"] > 0) &
+        (df["XG_Away_Pre"] > 0) &  
+        (df["XG_Home_Pre"] < 1.3) &
+        (df["XG_Away_Pre"] < 1.3) &        
+        (
+            (
+                (df["Odd_H_FT"] < df["Odd_A_FT"]) &
+                (df['League'].isin([
+                    'Belgium Pro League',
+                    'Netherlands Eredivisie',
+                    'Portugal Liga NOS',
+                    'Germany Bundesliga',
+                    'France Ligue 1',
+                    'England EFL League One',
+                    'England Premier League',
+                    'Netherlands Eerste Divisie'
+                ]))
+                ) | (
+                (df["Odd_H_FT"] > df["Odd_A_FT"]) &
+                (df['League'].isin([
+                    'Turkey Süper Lig',
+                    'England Premier League',
+                    'England EFL League Two',
+                    'France Ligue 2',
+                    'Italy Serie B',
+                    'Portugal Liga NOS',
+                    'Spain Segunda División',
+                    'Belgium Pro League',
+                    'England Championship'
+                ]))
+            )
+        )
+    )
+
+def get_filter_btts_yes(df):
+    return (
+        (df["XG_Home_Pre"] >= 1.3) &
+        (df["XG_Away_Pre"] >= 1.3) &        
+        (
+            (
+                (df["Odd_H_FT"] < df["Odd_A_FT"]) &
+                (df['League'].isin([
+                    'Germany 2. Bundesliga',
+                    'Italy Serie B',
+                    'Greece Super League',
+                    'Netherlands Eredivisie',
+                    'France Ligue 1',
+                    'Germany Bundesliga',
+                    'Romania Liga I',
+                    'England Premier League',
+                    'Serbia SuperLiga'
+                ]))
+                ) | (
+                (df["Odd_H_FT"] > df["Odd_A_FT"]) &
+                (df['League'].isin([
+                    'England Premier League',
+                    'Portugal LigaPro',
+                    'France Ligue 1',
+                    'England EFL League One',
+                    'Spain La Liga'
+                ]))
+            )
+        )
+    )
+
+def get_filter_btts_no(df):
+    return (
+        (df["XG_Home_Pre"] > 0) &
+        (df["XG_Away_Pre"] > 0) &
+        (df["XG_Home_Pre"] < 1.3) &
+        (df["XG_Away_Pre"] < 1.3) &        
+        (
+            (
+                (df["Odd_H_FT"] < df["Odd_A_FT"]) &
+                (df['League'].isin([
+                    'Belgium Pro League',
+                    'Netherlands Eerste Divisie',
+                    'England EFL League One',
+                    'Netherlands Eredivisie',
+                    'England Premier League'
+                ]))
+                ) | (
+                (df["Odd_H_FT"] > df["Odd_A_FT"]) &
+                (df['League'].isin([
+                    'Belgium Pro League',
+                    'England EFL League One',
+                    'Portugal Liga NOS',
+                    'Italy Serie B',
+                    'Germany 2. Bundesliga',
+                    'England Championship',
+                    'England EFL League Two',
+                    'Spain Segunda División',
+                    'France Ligue 2'
+                ]))
+            )
+        )
+    )
+
+def get_filter_lay_visitante_zebra(df):
     return (
         (df["Odd_H_FT"] < df["Odd_D_FT"]) &
         (df["Odd_D_FT"] < df["Odd_A_FT"]) &
-        ((df["Odd_H_FT"] <= 1.8) | (df["Odd_H_FT"] >= 1.9)) &
+        ((df["Odd_H_FT"] <= 1.8) | (df["Odd_H_FT"] > 1.9)) &
         (df["Odd_A_FT"] < 8) &
         (df["Odd_BTTS_Yes"] < 2) &
         (df["Odd_Over25_FT"] > 1.5) &
