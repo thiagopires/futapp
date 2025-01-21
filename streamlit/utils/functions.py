@@ -159,15 +159,15 @@ def get_filter_lay_visitante_zebra(df):
             'Belgium Pro League',
             'England EFL League One',
             'England Premier League',
-            #'France Ligue 1',
+            'France Ligue 1',
             'Germany 2. Bundesliga',
             'Germany Bundesliga',
-            #'Italy Serie A',
+            'Italy Serie A',
             'Italy Serie B',
             'Portugal Liga NOS',
-            #'Spain La Liga',
+            'Spain La Liga',
             'Turkey Süper Lig',
-            #'Netherlands Eredivisie'
+            'Netherlands Eredivisie'
         ]))
     )
 
