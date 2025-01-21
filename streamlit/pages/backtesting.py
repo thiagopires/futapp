@@ -137,6 +137,13 @@ else:
         condicao = 'Geral'
         metodo = 'Over 2.5 FT'
 
+    filtro_under25_ft = st.checkbox("Under 2.5 FT")
+    if filtro_over25_ft:
+        filter = get_filter_under(df_hist)
+        df_hist = df_hist[filter]
+        condicao = 'Geral'
+        metodo = 'Under 2.5 FT'
+
 
     st.divider()
 
@@ -154,12 +161,12 @@ else:
             odd_media = f"{str(round(df_hist['Odd_H_FT'].mean(), 2))}"
         if metodo == 'Back Empate':
             filter = (df_hist["Goals_H_FT"] == df_hist["Goals_A_FT"])
-            df_hist.loc[filter, 'Profit'] = round(df_hist['Goals_D_FT']-1, 2)
+            df_hist.loc[filter, 'Profit'] = round(df_hist['Odd_D_FT']-1, 2)
             df_hist.loc[filter, "Status_Metodo"] = "GREEN"
             odd_media = f"{str(round(df_hist['Odd_D_FT'].mean(), 2))}"
         if metodo == 'Back Visitante':
             filter = (df_hist["Goals_H_FT"] < df_hist["Goals_A_FT"])
-            df_hist.loc[filter, 'Profit'] = round(df_hist['Goals_A_FT']-1, 2)
+            df_hist.loc[filter, 'Profit'] = round(df_hist['Odd_A_FT']-1, 2)
             df_hist.loc[filter, "Status_Metodo"] = "GREEN"
             odd_media = f"{str(round(df_hist['Odd_A_FT'].mean(), 2))}"
         if metodo == 'Lay Visitante':

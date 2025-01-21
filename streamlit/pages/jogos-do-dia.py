@@ -34,6 +34,11 @@ else:
         filter = get_filter_over(df_matches)
         df_matches = df_matches[filter]
 
+    filtro_under25_ft = st.checkbox("Under 2.5 FT")
+    if filtro_under25_ft:
+        filter = get_filter_under(df_matches)
+        df_matches = df_matches[filter]
+
     # Dataframe
     st.subheader(f"Selecione o jogo:")
     match_selected = st.dataframe(

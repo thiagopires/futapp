@@ -23,7 +23,6 @@ def get_filter_over(df):
         (
             (
                 (df["Odd_H_FT"] < df["Odd_A_FT"]) &
-                (abs(df["Odd_H_FT"] - df["Odd_A_FT"]) > 0.22) &
                 (df['League'].isin([
                     'Spain La Liga',
                     'Portugal Liga NOS',
@@ -31,7 +30,7 @@ def get_filter_over(df):
                     'England Premier League'
                 ]))
                 ) | (
-                (df["Odd_H_FT"] >= df["Odd_A_FT"]) &
+                (df["Odd_H_FT"] > df["Odd_A_FT"]) &
                 (df['League'].isin([
                     'England EFL League One',
                     'Italy Serie B',
@@ -41,18 +40,39 @@ def get_filter_over(df):
         )
     )
 
-
-
-# Portugal Liga NOS
-# England EFL League Two
-# Germany Bundesliga
-# England Premier League
-# France Ligue 1
-# Belgium Pro League
-# England EFL League One
-# Netherlands Eredivisie
-# Netherlands Eerste Divisie
-
+def get_filter_under(df):
+    return (
+        (df["XG_Home_Pre"] < 1.3) &
+        (df["XG_Away_Pre"] < 1.3) &        
+        (
+            (
+                (df["Odd_H_FT"] < df["Odd_A_FT"]) &
+                (df['League'].isin([
+                    'Belgium Pro League',
+                    'Netherlands Eredivisie',
+                    'Portugal Liga NOS',
+                    'Germany Bundesliga',
+                    'France Ligue 1',
+                    'England EFL League One',
+                    'England Premier League',
+                    'Netherlands Eerste Divisie'
+                ]))
+                ) | (
+                (df["Odd_H_FT"] > df["Odd_A_FT"]) &
+                (df['League'].isin([
+                    'Turkey Süper Lig',
+                    'England Premier League',
+                    'England EFL League Two',
+                    'France Ligue 2',
+                    'Italy Serie B',
+                    'Portugal Liga NOS',
+                    'Spain Segunda División',
+                    'Belgium Pro League',
+                    'England Championship'
+                ]))
+            )
+        )
+    )
 
 def get_filter_lay_visitante_zebra(df):
     return (
