@@ -71,6 +71,9 @@ else:
             'Over 0.5 HT',
             'Over 1.5 FT',
             'Over 2.5 FT',
+            'Under 0.5 HT',
+            'Under 1.5 FT',
+            'Under 2.5 FT',
             'BTTS'
         ])
     with col2:
@@ -79,8 +82,8 @@ else:
             df_hist = df_hist[(df_hist["Odd_H_FT"] < df_hist["Odd_D_FT"]) & (df_hist["Odd_D_FT"] < df_hist["Odd_A_FT"])]
         elif condicao == "Zebra/Favorito":
             df_hist = df_hist[(df_hist["Odd_H_FT"] > df_hist["Odd_D_FT"]) & (df_hist["Odd_D_FT"] > df_hist["Odd_A_FT"])]
-    with col3:
-        executar = st.button("Executar")
+
+    executar = st.button("Executar")
 
     if executar:
         for i in range(1,9):
@@ -124,11 +127,16 @@ else:
         df_hist = df_hist[filter] 
         metodo = 'Lay Visitante'
 
+    filtro_over25_ft = st.checkbox("Over 2.5 FT")
+    if filtro_over25_ft:
+        filter = get_filter_over25_ft(df_hist)
+        df_hist = df_hist[filter] 
+        metodo = 'Over 2.5 FT'
     
     st.divider()
 
 
-    if filtro_lay_visitante_zebra or executar:
+    if filtro_lay_visitante_zebra or filtro_over25_ft or executar:
         
         df_hist["Status_Metodo"] = "RED"
         df_hist['Profit'] = -1
@@ -139,6 +147,11 @@ else:
             df_hist.loc[filter, 'Profit'] = round(df_hist['Odd_H_FT']-1, 2)
             df_hist.loc[filter, "Status_Metodo"] = "GREEN"
             odd_media = f"{str(round(df_hist['Odd_H_FT'].mean(), 2))}"
+        if metodo == 'Back Empate':
+            filter = (df_hist["Goals_H_FT"] == df_hist["Goals_A_FT"])
+            df_hist.loc[filter, 'Profit'] = round(df_hist['Goals_D_FT']-1, 2)
+            df_hist.loc[filter, "Status_Metodo"] = "GREEN"
+            odd_media = f"{str(round(df_hist['Odd_D_FT'].mean(), 2))}"
         if metodo == 'Back Visitante':
             filter = (df_hist["Goals_H_FT"] < df_hist["Goals_A_FT"])
             df_hist.loc[filter, 'Profit'] = round(df_hist['Goals_A_FT']-1, 2)
@@ -149,13 +162,18 @@ else:
             df_hist.loc[filter, 'Profit'] = round(df_hist['Odd_DC_1X']-1, 2)
             df_hist.loc[filter, "Status_Metodo"] = "GREEN"
             odd_media = f"{str(round(df_hist['Odd_A_FT'].mean(), 2))}"
+        if metodo == 'Lay Empate':
+            filter = (df_hist['Goals_H_FT'] != df_hist['Goals_A_FT'])  
+            df_hist.loc[filter, 'Profit'] = round(df_hist['Odd_DC_12']-1, 2)
+            df_hist.loc[filter, "Status_Metodo"] = "GREEN"
+            odd_media = f"{str(round(df_hist['Odd_D_FT'].mean(), 2))}"
         if metodo == 'Lay Casa':
             filter = (df_hist['Goals_H_FT'] <= df_hist['Goals_A_FT'])   
             df_hist.loc[filter, 'Profit'] = round(df_hist['Odd_DC_X2']-1, 2)
             df_hist.loc[filter, "Status_Metodo"] = "GREEN"
             odd_media = f"{str(round(df_hist['Odd_H_FT'].mean(), 2))}"
         if metodo == 'Over 0.5 HT':
-            filter = (df_hist['TotalGoals_HT'] >= 1.5)   
+            filter = (df_hist['TotalGoals_HT'] >= 0.5)   
             df_hist.loc[filter, 'Profit'] = round(df_hist['Odd_Over05_HT']-1, 2)
             df_hist.loc[filter, "Status_Metodo"] = "GREEN"
             odd_media = f"{str(round(df_hist['Odd_Over05_HT'].mean(), 2))}"
@@ -169,6 +187,21 @@ else:
             df_hist.loc[filter, 'Profit'] = round(df_hist['Odd_Over25_FT']-1, 2)
             df_hist.loc[filter, "Status_Metodo"] = "GREEN"
             odd_media = f"{str(round(df_hist['Odd_Over25_FT'].mean(), 2))}"
+        if metodo == 'Under 0.5 HT':
+            filter = (df_hist['TotalGoals_HT'] <= 0.5)   
+            df_hist.loc[filter, 'Profit'] = round(df_hist['Odd_Under05_HT']-1, 2)
+            df_hist.loc[filter, "Status_Metodo"] = "GREEN"
+            odd_media = f"{str(round(df_hist['Odd_Under05_HT'].mean(), 2))}"
+        if metodo == 'Under 1.5 FT':
+            filter = (df_hist['TotalGoals_FT'] <= 1.5)   
+            df_hist.loc[filter, 'Profit'] = round(df_hist['Odd_Under15_FT']-1, 2)
+            df_hist.loc[filter, "Status_Metodo"] = "GREEN"
+            odd_media = f"{str(round(df_hist['Odd_Under15_FT'].mean(), 2))}"
+        if metodo == 'Under 2.5 FT':
+            filter = (df_hist['TotalGoals_FT'] <= 2.5)   
+            df_hist.loc[filter, 'Profit'] = round(df_hist['Odd_Under25_FT']-1, 2)
+            df_hist.loc[filter, "Status_Metodo"] = "GREEN"
+            odd_media = f"{str(round(df_hist['Odd_Under25_FT'].mean(), 2))}"
         if metodo == 'BTTS':
             filter = ((df_hist['Goals_H_FT'] >= 1) & (df_hist['Goals_A_FT'] >= 1))
             df_hist.loc[filter, 'Profit'] = round(df_hist['Odd_BTTS_Yes']-1, 2)

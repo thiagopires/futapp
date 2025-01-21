@@ -24,15 +24,16 @@ else:
 
     st.write("**Filtros**")
 
-    # filtro_lay_casa_zebra = st.checkbox("Lay Casa Zebra")
-    # if filtro_lay_casa_zebra:
-    #     filter = get_filter_lay_casa_zebra(df_matches)
-    #     df_matches = df_matches[filter]
-
     filtro_lay_visitante_zebra = st.checkbox("Lay Visitante Zebra")
     if filtro_lay_visitante_zebra:
         filter = get_filter_lay_visitante_zebra(df_matches)
-        df_matches = df_matches[filter]    
+        df_matches = df_matches[filter]
+
+    filtro_over25_ft = st.checkbox("Over 2.5 FT")
+    if filtro_over25_ft:
+        filter = get_filter_over25_ft(df_hist)
+        df_hist = df_hist[filter] 
+        metodo = 'Over 2.5 FT'
 
     # Dataframe
     st.subheader(f"Selecione o jogo:")
