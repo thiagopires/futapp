@@ -39,6 +39,10 @@ else:
         seasons.insert(0, 'Todas as Temporadas')
         selected_seasons = st.multiselect("Filtrar por Temporada", seasons, [seasons[0]])
 
+
+    st.divider()
+
+
     st.write("**Indicadores**")
 
     leagues = sorted(df_hist['League'].unique())
@@ -116,13 +120,14 @@ else:
                     filter = (df_hist[indicador] != float(valor)) if tipo == 'Valor Absoluto' else (df_hist[indicador] != df_hist[valor])
 
                 df_hist = df_hist[filter]
-    
+
+
     st.divider()
 
 
     st.write("**Filtros Prontos**")
 
-    filtro_pronto_selecionado = st.selectbox([
+    filtro_pronto_selecionado = st.selectbox("", [
         'Selecione...'
         "Lay Visitante Zebra",
         'Over 2.5 FT',
