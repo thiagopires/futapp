@@ -26,7 +26,7 @@ def get_filter_over(df):
                 (df["Odd_H_FT"] < df["Odd_A_FT"]) &
                 (df['League'].isin([
                     'Spain La Liga',
-                    'France Ligue 1',
+                    #'France Ligue 1',
                     'Portugal Liga NOS',
                     'Netherlands Eredivisie',
                     'England Premier League'
