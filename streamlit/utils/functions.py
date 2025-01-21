@@ -23,7 +23,7 @@ def get_filter_over(df):
         (
             (
                 (df["Odd_H_FT"] <= df["Odd_A_FT"]) &
-                (abs(df["Odd_H_FT"] - df["Odd_A_FT"]) > 0.2) &
+                (abs(df["Odd_H_FT"] - df["Odd_A_FT"]) > 0.22) &
                 (df['League'].isin([
                     'Spain La Liga',
                     'Portugal Liga NOS',
