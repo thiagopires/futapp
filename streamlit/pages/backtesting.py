@@ -138,7 +138,7 @@ else:
         metodo = 'Over 2.5 FT'
 
     filtro_under25_ft = st.checkbox("Under 2.5 FT")
-    if filtro_over25_ft:
+    if filtro_under25_ft:
         filter = get_filter_under(df_hist)
         df_hist = df_hist[filter]
         condicao = 'Geral'
