@@ -42,6 +42,8 @@ def get_filter_over(df):
 
 def get_filter_under(df):
     return (
+        (df["XG_Home_Pre"] > 0) &
+        (df["XG_Away_Pre"] > 0) &  
         (df["XG_Home_Pre"] < 1.3) &
         (df["XG_Away_Pre"] < 1.3) &        
         (
@@ -107,6 +109,8 @@ def get_filter_btts_yes(df):
 
 def get_filter_btts_no(df):
     return (
+        (df["XG_Home_Pre"] > 0) &
+        (df["XG_Away_Pre"] > 0) &
         (df["XG_Home_Pre"] < 1.3) &
         (df["XG_Away_Pre"] < 1.3) &        
         (
