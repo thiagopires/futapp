@@ -4,7 +4,6 @@ from utils.functions import *
 st.set_page_config(layout="wide")
 
 def main_page():
-    st.sidebar.title("Menu")
     st.title("Página Principal")
     st.write("Conteúdo protegido para usuários logados.")
     if st.sidebar.button("Sair"):
