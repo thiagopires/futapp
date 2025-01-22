@@ -215,6 +215,7 @@ def get_filter_back_empate(df):
     return (
         ((df["Odd_H_FT"] < 6) | (df["Odd_A_FT"] < 6)) &
         (df["XG_Home_Pre"] >= 1.4) &
+        (df["XG_Away_Pre"] >= 1.4) &
         (df["Odd_BTTS_Yes"] < 2) &
         (df["Odd_Over25_FT"] > 1.5) &
         (df['League'].isin([
