@@ -12,14 +12,25 @@ def validate_login(username, password):
     valid_password = "1234"
     return username == valid_user and password == valid_password
 
-def login_page():
-    
+def hide_sidebar():
     hide_streamlit_style = """
         <style>
         .stSidebar {display: none;}
         </style>
     """
     st.markdown(hide_streamlit_style, unsafe_allow_html=True)
+
+def show_sidebar():
+    hide_streamlit_style = """
+        <style>
+        .stSidebar {display: block;}
+        </style>
+    """
+    st.markdown(hide_streamlit_style, unsafe_allow_html=True)
+
+def login_page():
+    
+    hide_sidebar()
 
     st.title("Login")
     username = st.text_input("Usuário", value="admin")
