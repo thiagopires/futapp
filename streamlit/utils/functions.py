@@ -211,23 +211,24 @@ def get_filter_back_empate(df):
         (df["XG_Away_Pre"] > 0) & (df["XG_Away_Pre"] < 1.9) &
         (df["XG_Total_Pre"] > 0) & (df["XG_Total_Pre"] < 3) &
         (df["Odd_BTTS_Yes"] < 2) &
-        (df["Odd_Over25_FT"] > 1.5) &
-        (df['League'].isin([
-            "Portugal Liga NOS",
-            "Turkey Süper Lig",
-            "Belgium Pro League",
-            "Romania Liga I",
-            "Italy Serie B",
-            "England Championship",
-            "England Premier League"
+        (df["Odd_Over25_FT"] > 1.5) 
+        # &
+        # (df['League'].isin([
+        #     "Portugal Liga NOS",
+        #     "Turkey Süper Lig",
+        #     "Belgium Pro League",
+        #     "Romania Liga I",
+        #     "Italy Serie B",
+        #     "England Championship",
+        #     "England Premier League"
 
-            # "England Championship",
-            # "Belgium Pro League",
-            # "Romania Liga I",
-            # "Italy Serie B",
-            # "Turkey Süper Lig",
-            # "Portugal Liga NOS"
-        ]))
+        #     # "England Championship",
+        #     # "Belgium Pro League",
+        #     # "Romania Liga I",
+        #     # "Italy Serie B",
+        #     # "Turkey Süper Lig",
+        #     # "Portugal Liga NOS"
+        # ]))
     )
 
 def print_dataframe(df, styled_df=None):
