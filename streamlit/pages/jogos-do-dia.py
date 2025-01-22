@@ -27,7 +27,7 @@ def main_page():
         filtro_pronto_selecionado = st.selectbox("Filtros Prontos", [
             "Sem filtro",
             "Lay Visitante Zebra",
-            "Back Empate"
+            "Back Empate",
             'Over 2.5 FT',
             'Under 2.5 FT',
             'BTTS Sim',
