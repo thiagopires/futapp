@@ -221,6 +221,7 @@ def get_filter_back_empate(df):
         (df["XG_Total_Pre"] > 0) &
         (df["Odd_BTTS_Yes"] < 2) &
         (df["Odd_Over25_FT"] > 1.5) &
+        ((df["Odd_H_FT"] > 1.5) | (df["Odd_A_FT"] > 1.5)) &
         (df['League'].isin([
             "Portugal Liga NOS",
             # "Turkey Süper Lig",
