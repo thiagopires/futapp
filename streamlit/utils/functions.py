@@ -211,7 +211,8 @@ def get_filter_back_empate(df):
         (df["XG_Away_Pre"] > 0) & (df["XG_Away_Pre"] < 1.7) &
         (df["XG_Total_Pre"] > 0) & (df["XG_Total_Pre"] < 3.2) &
         (df["Odd_BTTS_Yes"] < 2.2) &
-        ((df["Odd_H_FT"] < 1.9) | (df["Odd_H_FT"] > 2)) &
+        # ((df["Odd_H_FT"] < 1.9) | (df["Odd_H_FT"] > 2)) 
+        # &
         (df['League'].isin([
             'England Championship',
             'Belgium Pro League',
