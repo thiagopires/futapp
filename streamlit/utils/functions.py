@@ -12,25 +12,17 @@ def validate_login(username, password):
     valid_password = "1234"
     return username == valid_user and password == valid_password
 
-def hide_sidebar():
-    hide_streamlit_style = """
+def display_sidebar(value):
+    streamlit_style = """
         <style>
-        .stSidebar {display: none;}
+        .stSidebar {display: """ + value + """};}
         </style>
     """
-    st.markdown(hide_streamlit_style, unsafe_allow_html=True)
-
-def show_sidebar():
-    hide_streamlit_style = """
-        <style>
-        .stSidebar {display: block;}
-        </style>
-    """
-    st.markdown(hide_streamlit_style, unsafe_allow_html=True)
+    st.markdown(streamlit_style, unsafe_allow_html=True)
 
 def login_page():
     
-    hide_sidebar()
+    display_sidebar('none')
 
     st.title("Login")
     username = st.text_input("Usuário", value="admin")
@@ -39,7 +31,7 @@ def login_page():
         if validate_login(username, password):
             st.session_state["logged_in"] = True
             st.success("Login realizado com sucesso!")
-            show_sidebar()
+            display_sidebar('block')
         else:
             st.error("Usuário ou senha inválidos!")
 
@@ -214,12 +206,12 @@ def get_filter_lay_visitante_zebra(df):
 def get_filter_back_empate(df):
     return (
         (df["Odd_H_FT"] > 1.5) & (df["Odd_H_FT"] < 6) &         
-        ((df["Odd_H_FT"] <= 1.8) | (df["Odd_H_FT"] > 1.9)) &        
+        ((df["Odd_H_FT"] < 1.8) | (df["Odd_H_FT"] > 1.9)) &        
         (df["XG_Home_Pre"] > 0) & (df["XG_Home_Pre"] < 1.8) &
         (df["XG_Away_Pre"] > 0) & (df["XG_Away_Pre"] < 1.8) &
         (df["XG_Total_Pre"] > 0) &
         (df["Odd_BTTS_Yes"] < 2) &
-        (df["Odd_Over25_FT"] > 2) &
+        (df["Odd_Over25_FT"] > 1.5) &
         (df['League'].isin([
             "Portugal Liga NOS",
             "Turkey Süper Lig",
