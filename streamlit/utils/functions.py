@@ -22,7 +22,7 @@ def display_sidebar(value):
 
 def login_page():
     
-    hide_sidebar()
+    display_sidebar('none')
 
     st.title("Login")
     username = st.text_input("Usuário", value="admin")

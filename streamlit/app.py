@@ -8,7 +8,7 @@ def main_page():
     st.write("Conteúdo protegido para usuários logados.")
     if st.sidebar.button("Sair"):
         st.session_state["logged_in"] = False
-        hide_sidebar()
+        display_sidebar('none')
 
 if "logged_in" not in st.session_state:
     st.session_state["logged_in"] = False
