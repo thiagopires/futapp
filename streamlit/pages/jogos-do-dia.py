@@ -4,9 +4,8 @@ import plotly.express as px
 
 from utils.functions import *
 
-if "authenticated" not in st.session_state or st.session_state.authenticated == False:
-    st.write("Faça o login na página 'app'.")
-else:
+def main_page():
+
     pd.set_option('display.max_columns', None)
     pd.set_option('display.max_rows', None)
     st.set_page_config(layout="wide")
@@ -230,3 +229,11 @@ else:
 
         # Outros dados e análises podem ser adicionados conforme necessário
         st.write("⚡ Dashboard dinâmico para análise de confrontos! ⚡")
+
+if "logged_in" not in st.session_state:
+    st.session_state["logged_in"] = False
+
+if st.session_state["logged_in"]:
+    main_page()
+else:
+    login_page()

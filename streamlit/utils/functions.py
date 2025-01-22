@@ -12,6 +12,25 @@ def validate_login(username, password):
     valid_password = "1234"
     return username == valid_user and password == valid_password
 
+def login_page():
+    
+    hide_streamlit_style = """
+        <style>
+        .stSidebar {display: none;}
+        </style>
+    """
+    st.markdown(hide_streamlit_style, unsafe_allow_html=True)
+
+    st.title("Login")
+    username = st.text_input("Usuário", value="admin")
+    password = st.text_input("Senha", value="1234", type="password")
+    if st.button("Entrar"):
+        if validate_login(username, password):
+            st.session_state["logged_in"] = True
+            st.success("Login realizado com sucesso!")
+        else:
+            st.error("Usuário ou senha inválidos!")
+
 def get_current_season():
     SEASON = '2024/2025'
     return SEASON
