@@ -4,6 +4,15 @@ from utils.functions import *
 st.set_page_config(layout="wide")
 
 def login_page():
+    
+    hide_streamlit_style = """
+        <style>
+        #MainMenu {visibility: hidden;}
+        footer {visibility: hidden;}
+        </style>
+        """
+    st.markdown(hide_streamlit_style, unsafe_allow_html=True)
+
     st.title("Login")
     username = st.text_input("Usuário")
     password = st.text_input("Senha", type="password")
