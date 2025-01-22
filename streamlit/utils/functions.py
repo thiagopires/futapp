@@ -205,7 +205,7 @@ def get_filter_lay_visitante_zebra(df):
 
 def get_filter_back_empate(df):
     return (
-        (df["Odd_H_FT"] > 1.5) & (df["Odd_H_FT"] <= 2) &
+        (df["Odd_H_FT"] > 1.5) & (df["Odd_H_FT"] <= 4) &
         (df["Odd_D_FT"] > 2.6) & (df["Odd_D_FT"] < 5.5) &
         (df["XG_Home_Pre"] > 0) & (df["XG_Home_Pre"] < 1.7) &
         (df["XG_Away_Pre"] > 0) & (df["XG_Away_Pre"] < 1.7) &
