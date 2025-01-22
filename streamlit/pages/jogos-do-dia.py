@@ -27,6 +27,7 @@ def main_page():
         filtro_pronto_selecionado = st.selectbox("Filtros Prontos", [
             "Sem filtro",
             "Lay Visitante Zebra",
+            "Back Empate"
             'Over 2.5 FT',
             'Under 2.5 FT',
             'BTTS Sim',
@@ -35,6 +36,10 @@ def main_page():
 
     if filtro_pronto_selecionado == "Lay Visitante Zebra":
         filter = get_filter_lay_visitante_zebra(df_matches)
+        df_matches = df_matches[filter]
+    
+    elif filtro_pronto_selecionado == "Back Empate":
+        filter = get_filter_back_empate(df_matches)
         df_matches = df_matches[filter]
 
     elif filtro_pronto_selecionado == "Over 2.5 FT":
