@@ -5,11 +5,12 @@ import plotly.express as px
 
 from utils.functions import *
 
+pd.set_option('display.max_columns', None)
+pd.set_option('display.max_rows', None)
+st.set_page_config(layout="wide")
+
 def main_page():
 
-    pd.set_option('display.max_columns', None)
-    pd.set_option('display.max_rows', None)
-    st.set_page_config(layout="wide")
     st.title("⚽ Backtesting")
 
     ### FootyStats ###
