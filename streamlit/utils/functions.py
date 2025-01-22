@@ -3,6 +3,15 @@ import pandas as pd
 import ast
 from datetime import datetime, timedelta
 
+import streamlit as st
+
+# Função para validar o login
+def validate_login(username, password):
+    # Substitua por sua lógica de autenticação
+    valid_user = "admin"
+    valid_password = "1234"
+    return username == valid_user and password == valid_password
+
 def get_current_season():
     SEASON = '2024/2025'
     return SEASON

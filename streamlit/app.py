@@ -1,36 +1,32 @@
 import streamlit as st
+from utils.functions import *
 
 st.set_page_config(layout="wide")
 
-USERS = {
-    "admin": "1234",
-    "user": "abcd"
-}
-
-def authenticate(username, password):
-    return USERS.get(username) == password
-
-if "authenticated" not in st.session_state:
-    st.session_state.authenticated = False
-
-if not st.session_state.authenticated:
+def login_page():
     st.title("Login")
-
-    username = st.text_input("Usuário", value="admin", key="username")
-    password = st.text_input("Senha", value="1234", type="password", key="password")
-    login_button = st.button("Entrar")
-
-    if login_button:
-        if authenticate(username, password):
-            st.session_state.authenticated = True
+    username = st.text_input("Usuário")
+    password = st.text_input("Senha", type="password")
+    if st.button("Entrar"):
+        if validate_login(username, password):
+            st.session_state["logged_in"] = True
             st.success("Login realizado com sucesso!")
-            st.info("Escolha um módulo no menu lateral.")
         else:
-            st.error("Usuário ou senha incorretos.")
-else:
-    st.title("Web App Football Data")
-    st.write("Você está autenticado!")
+            st.error("Usuário ou senha inválidos!")
 
-    # Botão para logout
-    if st.button("Logout"):
-        st.session_state.authenticated = False
+def main_page():
+    st.sidebar.title("Menu")
+    st.title("Página Principal")
+    st.write("Conteúdo protegido para usuários logados.")
+    if st.sidebar.button("Sair"):
+        st.session_state["logged_in"] = False
+        st.sidebar.empty()
+
+# Controle de fluxo baseado no estado de login
+if "logged_in" not in st.session_state:
+    st.session_state["logged_in"] = False
+
+if st.session_state["logged_in"]:
+    main_page()
+else:
+    login_page()
