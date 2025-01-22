@@ -227,7 +227,7 @@ def get_filter_back_empate(df):
             "Belgium Pro League",
             "Romania Liga I",
             "Italy Serie B",
-            "England Championship",
+            # "England Championship",
             "England Premier League"
 
             # "England Championship",
