@@ -130,6 +130,7 @@ def main_page():
         filtro_pronto_selecionado = st.selectbox("Filtros Prontos", [
             "Sem filtro",
             "Lay Visitante Zebra",
+            "Back Empate",
             'Over 2.5 FT',
             'Under 2.5 FT',
             'BTTS Sim',
@@ -165,6 +166,12 @@ def main_page():
         df_hist = df_hist[filter]
         condicao = 'Geral'
         metodo = 'BTTS Não'
+    
+    elif filtro_pronto_selecionado == "Back Empate":
+        filter = get_filter_back_empate(df_hist)
+        df_hist = df_hist[filter]
+        condicao = 'Geral'
+        metodo = 'Back Empate'
 
 
     st.divider()

@@ -211,6 +211,23 @@ def get_filter_lay_visitante_zebra(df):
         ]))
     )
 
+def get_filter_back_empate(df):
+    return (
+        (df["XG_Home_Pre"] >= 1.4) &
+        (df["Odd_BTTS_Yes"] < 2) &
+        (df["Odd_Over25_FT"] > 1.5) &
+        (df['League'].isin([
+            "Belgium Pro League",
+            "Portugal Liga NOS",
+            "England Championship",
+            "Italy Serie B",
+            "Romania Liga I",
+            "England Premier League",
+            "Portugal LigaPro"            
+        ]))
+    )
+
+
 def print_dataframe(df, styled_df=None):
     if not styled_df:
         st.dataframe(df, use_container_width=True, hide_index=True)
