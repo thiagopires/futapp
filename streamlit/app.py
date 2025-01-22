@@ -7,7 +7,7 @@ def login_page():
     
     hide_streamlit_style = """
         <style>
-        .stSidebar {visibility: hidden;}
+        .stSidebar {display: none;}
         </style>
     """
     st.markdown(hide_streamlit_style, unsafe_allow_html=True)
