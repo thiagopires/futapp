@@ -22,7 +22,7 @@ def display_sidebar(value):
 
 def login_page():
     
-    display_sidebar('none')
+    hide_sidebar()
 
     st.title("Login")
     username = st.text_input("Usuário", value="admin")
@@ -31,7 +31,7 @@ def login_page():
         if validate_login(username, password):
             st.session_state["logged_in"] = True
             st.success("Login realizado com sucesso!")
-            display_sidebar('block')
+            show_sidebar()
         else:
             st.error("Usuário ou senha inválidos!")
 
@@ -205,7 +205,7 @@ def get_filter_lay_visitante_zebra(df):
 
 def get_filter_back_empate(df):
     return (
-        (df["Odd_H_FT"] > 1.5) & (df["Odd_H_FT"] < 6) &         
+        (df["Odd_H_FT"] > 1.5) & (df["Odd_H_FT"] < 6) &     
         ((df["Odd_H_FT"] < 1.8) | (df["Odd_H_FT"] > 1.9)) &        
         (df["XG_Home_Pre"] > 0) & (df["XG_Home_Pre"] < 1.8) &
         (df["XG_Away_Pre"] > 0) & (df["XG_Away_Pre"] < 1.8) &
