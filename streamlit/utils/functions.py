@@ -222,11 +222,9 @@ def get_filter_back_empate(df):
             "England Championship",
             "Italy Serie B",
             "Romania Liga I",
-            "England Premier League",
-            "Portugal LigaPro"            
+            "England Premier League"           
         ]))
     )
-
 
 def print_dataframe(df, styled_df=None):
     if not styled_df:
