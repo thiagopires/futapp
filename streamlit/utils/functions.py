@@ -217,8 +217,6 @@ def get_filter_back_empate(df):
         (df["Odd_BTTS_Yes"] < 2) &
         (df["Odd_Over25_FT"] > 1.5) &
         (df['League'].isin([
-            "Belgium Pro League",
-            "Portugal Liga NOS",
             "England Championship",
             "Italy Serie B",
             "Romania Liga I",
