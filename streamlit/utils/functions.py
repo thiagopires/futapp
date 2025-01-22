@@ -210,7 +210,7 @@ def get_filter_back_empate(df):
         # ((df["Odd_H_FT"] < 1.8) | (df["Odd_H_FT"] > 1.9)) &
         (df["XG_Home_Pre"] > 0) & #(df["XG_Home_Pre"] < 1.7) &
         (df["XG_Away_Pre"] > 0) & #(df["XG_Away_Pre"] < 1.7) &
-        (df["XG_Total_Pre"] > 0) & (df["XG_Total_Pre"] < 3.2) &
+        (df["XG_Total_Pre"] > 0) & (df["XG_Total_Pre"] < 2.5) &
         (df["Odd_BTTS_Yes"] < 2.2) &
         ((df["Odd_H_FT"] < 1.9) | (df["Odd_H_FT"] > 2)) &
         (df['League'].isin([
