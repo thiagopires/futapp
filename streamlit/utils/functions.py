@@ -219,7 +219,8 @@ def get_filter_back_empate(df):
             'England Premier League',
             'Turkey Süper Lig',
             'Italy Serie B',
-            'Romania Liga I'
+            'Romania Liga I',
+            'Germany 2. Bundesliga'
         ]))
     )
 
