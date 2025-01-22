@@ -180,7 +180,7 @@ def main_page():
     if filtro_pronto_selecionado != "Sem filtro" or executar:
         
         df_hist["Status_Metodo"] = "RED"
-        df_hist['Profit'] = -1
+        df_hist['Profit'] = -1.0
         odd_media = ""
 
         if metodo == 'Back Casa':
