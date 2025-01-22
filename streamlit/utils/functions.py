@@ -224,11 +224,11 @@ def get_filter_back_empate(df):
         (df["Odd_Over25_FT"] > 1.5) &
         (df['League'].isin([
             "Portugal Liga NOS",
-            # "Turkey Süper Lig",
+            "Turkey Süper Lig",
             "Belgium Pro League",
             "Romania Liga I",
             "Italy Serie B",
-            # "England Championship",
+            "England Championship",
             "England Premier League"
 
             # "England Championship",
