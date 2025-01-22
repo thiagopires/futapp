@@ -39,6 +39,7 @@ def login_page():
         if validate_login(username, password):
             st.session_state["logged_in"] = True
             st.success("Login realizado com sucesso!")
+            show_sidebar()
         else:
             st.error("Usuário ou senha inválidos!")
 
