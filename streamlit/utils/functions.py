@@ -178,7 +178,7 @@ def get_filter_btts_no(df):
 
 def get_filter_lay_0x1(df):
     return (
-        (df["Odd_H_FT"] < df["Odd_D_FT"]) &
+        (df["Odd_H_FT"] < df["Odd_A_FT"]) &
         (df["Odd_H_FT"] > 1.5) &
         (df["XG_Away_Pre"] > 1.12) &
         (df["XG_Home_Pre"] > df["XG_Away_Pre"]) &
