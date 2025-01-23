@@ -45,19 +45,20 @@ def main_page():
 
     st.write("**Indicadores**")
 
-    leagues = sorted(df_hist['League'].unique())
-    leagues.insert(0, 'Todas as Ligas')
-    selected_leagues = st.multiselect("Filtrar por Liga", leagues, [leagues[0]])
-    if not (not selected_seasons or "Todas as Temporadas" in selected_seasons):
-        df_hist = df_hist[df_hist['Season'].isin(selected_seasons)]
+    with st.expander("Clique para expandir:"):
 
-    if data_final and data_final:
-        df_hist = df_hist[(df_hist['Date'] >= pd.to_datetime(data_inicial)) & (df_hist['Date'] <= pd.to_datetime(data_final))]
+        leagues = sorted(df_hist['League'].unique())
+        leagues.insert(0, 'Todas as Ligas')
+        selected_leagues = st.multiselect("Filtrar por Liga", leagues, [leagues[0]])
+        if not (not selected_seasons or "Todas as Temporadas" in selected_seasons):
+            df_hist = df_hist[df_hist['Season'].isin(selected_seasons)]
 
-    if not (not selected_leagues or "Todas as Ligas" in selected_leagues):
-        df_hist = df_hist[df_hist['League'].isin(selected_leagues)]
+        if data_final and data_final:
+            df_hist = df_hist[(df_hist['Date'] >= pd.to_datetime(data_inicial)) & (df_hist['Date'] <= pd.to_datetime(data_final))]
 
-    with st.expander("Monte o seu filtro:"):
+        if not (not selected_leagues or "Todas as Ligas" in selected_leagues):
+            df_hist = df_hist[df_hist['League'].isin(selected_leagues)]
+
         for i in range(1,9):
             cola, colb, colc, cold = st.columns(4)
             with cola: st.selectbox("Indicador", indicadores, key=f"indicador_{i}")
@@ -65,36 +66,36 @@ def main_page():
             with colc: st.selectbox("Operador", operadores_formatados, key=f"operador_{i}")
             with cold: st.text_input("Digite o valor ou Campo:", key=f"valor_{i}")
 
-    col1, col2, col3 = st.columns(3)
-    with col1:
-        metodo = st.selectbox("Método", [
-            'Back Casa',
-            'Back Visitante',
-            'Back Empate',
-            'Lay Casa',
-            'Lay Empate',
-            'Lay Visitante',
-            'Lay 0x1',
-            'Lay 0x2',
-            'Lay 0x3',
-            'Lay Goleada Visitante',
-            'Over 0.5 HT',
-            'Over 1.5 FT',
-            'Over 2.5 FT',
-            'Under 0.5 HT',
-            'Under 1.5 FT',
-            'Under 2.5 FT',
-            'BTTS Sim',
-            'BTTS Não'
-        ])
-    with col2:
-        condicao = st.radio("Condição", ["Geral","Favorito/Zebra","Zebra/Favorito"], horizontal=True)
-        if condicao == "Favorito/Zebra":
-            df_hist = df_hist[(df_hist["Odd_H_FT"] < df_hist["Odd_A_FT"])]
-        elif condicao == "Zebra/Favorito":
-            df_hist = df_hist[(df_hist["Odd_H_FT"] > df_hist["Odd_A_FT"])]
+        col1, col2, col3 = st.columns(3)
+        with col1:
+            metodo = st.selectbox("Método", [
+                'Back Casa',
+                'Back Visitante',
+                'Back Empate',
+                'Lay Casa',
+                'Lay Empate',
+                'Lay Visitante',
+                'Lay 0x1',
+                'Lay 0x2',
+                'Lay 0x3',
+                'Lay Goleada Visitante',
+                'Over 0.5 HT',
+                'Over 1.5 FT',
+                'Over 2.5 FT',
+                'Under 0.5 HT',
+                'Under 1.5 FT',
+                'Under 2.5 FT',
+                'BTTS Sim',
+                'BTTS Não'
+            ])
+        with col2:
+            condicao = st.radio("Condição", ["Geral","Favorito/Zebra","Zebra/Favorito"], horizontal=True)
+            if condicao == "Favorito/Zebra":
+                df_hist = df_hist[(df_hist["Odd_H_FT"] < df_hist["Odd_A_FT"])]
+            elif condicao == "Zebra/Favorito":
+                df_hist = df_hist[(df_hist["Odd_H_FT"] > df_hist["Odd_A_FT"])]
 
-    executar = st.button("Executar")
+        executar = st.button("Executar")
 
     if executar:
         for i in range(1,9):
