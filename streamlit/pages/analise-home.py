@@ -7,9 +7,7 @@ pd.set_option('display.max_columns', None)
 pd.set_option('display.max_rows', None)
 st.set_page_config(layout="wide")
 
-if "authenticated" not in st.session_state or st.session_state.authenticated == False:
-    st.write("Faça o login na página 'app'.")
-else:
+def main_page():
 
     st.title("⚽ Análise Home")
 
@@ -209,3 +207,12 @@ else:
     
                 st.write(f"**Jogos anteriores do {mandante} terminados em {placar}.**")
                 aba_ponto_de_saida_punter(df_hist, mandante, "Home", placar)
+
+if "logged_in" not in st.session_state:
+    st.session_state["logged_in"] = False
+
+if st.session_state["logged_in"]:
+    display_sidebar('block')
+    main_page()
+else:
+    login_page()

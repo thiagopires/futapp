@@ -2,10 +2,12 @@ import streamlit as st
 
 from utils.functions import *
 
-if "authenticated" not in st.session_state or st.session_state.authenticated == False:
-    st.write("Faça o login na página 'app'.")
-else:
-    st.set_page_config(layout="wide")
+pd.set_option('display.max_columns', None)
+pd.set_option('display.max_rows', None)
+st.set_page_config(layout="wide")
+
+def main_page():
+
     st.title("⚽ Calculadora")
 
     def clear_state(keys):
@@ -64,3 +66,12 @@ else:
                 st.write(f"Perda/Lucro:")
                 container = st.container(border=True)
                 container.code(str(lucro_perda), language="text")
+
+if "logged_in" not in st.session_state:
+    st.session_state["logged_in"] = False
+
+if st.session_state["logged_in"]:
+    display_sidebar('block')
+    main_page()
+else:
+    login_page()

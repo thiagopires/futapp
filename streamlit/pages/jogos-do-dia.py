@@ -4,12 +4,12 @@ import plotly.express as px
 
 from utils.functions import *
 
-if "authenticated" not in st.session_state or st.session_state.authenticated == False:
-    st.write("Faça o login na página 'app'.")
-else:
-    pd.set_option('display.max_columns', None)
-    pd.set_option('display.max_rows', None)
-    st.set_page_config(layout="wide")
+pd.set_option('display.max_columns', None)
+pd.set_option('display.max_rows', None)
+st.set_page_config(layout="wide")
+
+def main_page():
+
     st.title("⚽ Jogos do dia")
 
     # Init
@@ -27,14 +27,19 @@ else:
         filtro_pronto_selecionado = st.selectbox("Filtros Prontos", [
             "Sem filtro",
             "Lay Visitante Zebra",
+            "Back Empate",
             'Over 2.5 FT',
             'Under 2.5 FT',
             'BTTS Sim',
-            'BTTS Não'
+            # 'BTTS Não'
         ])
 
     if filtro_pronto_selecionado == "Lay Visitante Zebra":
         filter = get_filter_lay_visitante_zebra(df_matches)
+        df_matches = df_matches[filter]
+    
+    elif filtro_pronto_selecionado == "Back Empate":
+        filter = get_filter_back_empate(df_matches)
         df_matches = df_matches[filter]
 
     elif filtro_pronto_selecionado == "Over 2.5 FT":
@@ -49,9 +54,9 @@ else:
         filter = get_filter_btts_yes(df_matches)
         df_matches = df_matches[filter]
     
-    elif filtro_pronto_selecionado == "BTTS Não":
-        filter = get_filter_btts_no(df_matches)
-        df_matches = df_matches[filter]
+    # elif filtro_pronto_selecionado == "BTTS Não": 
+    #     filter = get_filter_btts_no(df_matches)
+    #     df_matches = df_matches[filter]
 
     # Dataframe
     st.subheader(f"Selecione o jogo para abrir detalhes abaixo:")
@@ -230,3 +235,12 @@ else:
 
         # Outros dados e análises podem ser adicionados conforme necessário
         st.write("⚡ Dashboard dinâmico para análise de confrontos! ⚡")
+
+if "logged_in" not in st.session_state:
+    st.session_state["logged_in"] = False
+
+if st.session_state["logged_in"]:
+    display_sidebar('block')
+    main_page()
+else:
+    login_page()

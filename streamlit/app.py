@@ -1,36 +1,20 @@
 import streamlit as st
+from utils.functions import *
 
 st.set_page_config(layout="wide")
 
-USERS = {
-    "admin": "1234",
-    "user": "abcd"
-}
+def main_page():
+    st.title("Página Principal")
+    st.write("Conteúdo protegido para usuários logados.")
+    if st.sidebar.button("Sair"):
+        st.session_state["logged_in"] = False
+        display_sidebar('none')
 
-def authenticate(username, password):
-    return USERS.get(username) == password
+if "logged_in" not in st.session_state:
+    st.session_state["logged_in"] = False
 
-if "authenticated" not in st.session_state:
-    st.session_state.authenticated = False
-
-if not st.session_state.authenticated:
-    st.title("Login")
-
-    username = st.text_input("Usuário", value="admin", key="username")
-    password = st.text_input("Senha", value="1234", type="password", key="password")
-    login_button = st.button("Entrar")
-
-    if login_button:
-        if authenticate(username, password):
-            st.session_state.authenticated = True
-            st.success("Login realizado com sucesso!")
-            st.info("Escolha um módulo no menu lateral.")
-        else:
-            st.error("Usuário ou senha incorretos.")
+if st.session_state["logged_in"]:
+    display_sidebar('block')
+    main_page()
 else:
-    st.title("Web App Football Data")
-    st.write("Você está autenticado!")
-
-    # Botão para logout
-    if st.button("Logout"):
-        st.session_state.authenticated = False
+    login_page()

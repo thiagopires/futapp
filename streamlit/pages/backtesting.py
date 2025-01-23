@@ -5,12 +5,12 @@ import plotly.express as px
 
 from utils.functions import *
 
-if "authenticated" not in st.session_state or st.session_state.authenticated == False:
-    st.write("Faça o login na página 'app'.")
-else:
-    pd.set_option('display.max_columns', None)
-    pd.set_option('display.max_rows', None)
-    st.set_page_config(layout="wide")
+pd.set_option('display.max_columns', None)
+pd.set_option('display.max_rows', None)
+st.set_page_config(layout="wide")
+
+def main_page():
+
     st.title("⚽ Backtesting")
 
     ### FootyStats ###
@@ -130,10 +130,11 @@ else:
         filtro_pronto_selecionado = st.selectbox("Filtros Prontos", [
             "Sem filtro",
             "Lay Visitante Zebra",
+            "Back Empate",
             'Over 2.5 FT',
             'Under 2.5 FT',
             'BTTS Sim',
-            'BTTS Não'
+            # 'BTTS Não'
         ])
 
     if filtro_pronto_selecionado == "Lay Visitante Zebra":
@@ -160,11 +161,17 @@ else:
         condicao = 'Geral'
         metodo = 'BTTS Sim'
     
-    elif filtro_pronto_selecionado == "BTTS Não":
-        filter = get_filter_btts_no(df_hist)
+    # elif filtro_pronto_selecionado == "BTTS Não":
+    #     filter = get_filter_btts_no(df_hist)
+    #     df_hist = df_hist[filter]
+    #     condicao = 'Geral'
+    #     metodo = 'BTTS Não' 
+    
+    elif filtro_pronto_selecionado == "Back Empate":
+        filter = get_filter_back_empate(df_hist)
         df_hist = df_hist[filter]
         condicao = 'Geral'
-        metodo = 'BTTS Não'
+        metodo = 'Back Empate'
 
 
     st.divider()
@@ -173,7 +180,7 @@ else:
     if filtro_pronto_selecionado != "Sem filtro" or executar:
         
         df_hist["Status_Metodo"] = "RED"
-        df_hist['Profit'] = -1
+        df_hist['Profit'] = -1.0
         odd_media = ""
 
         if metodo == 'Back Casa':
@@ -346,6 +353,16 @@ else:
         else:
             st.write("Sem jogos.")
 
+if "logged_in" not in st.session_state:
+    st.session_state["logged_in"] = False
+
+if st.session_state["logged_in"]:
+    display_sidebar('block')
+    main_page()
+else:
+    login_page()
+
+
     # leagues = sorted(df_hist['League'].unique())
     # leagues.insert(0, 'Todas as Ligas')
     # selected_leagues = st.multiselect("Filtrar por Liga", leagues, [leagues[0]])
@@ -359,9 +376,6 @@ else:
 
     # if not (not selected_seasons or "Todas as Temporadas" in selected_seasons):
     #     df_hist = df_hist[df_hist['Season'].isin(selected_seasons)]
-
-    
-
 
     ### football-data.co.uk ###
 

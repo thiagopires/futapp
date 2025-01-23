@@ -4,12 +4,12 @@ from datetime import date
 
 from utils.functions import *
 
-if "authenticated" not in st.session_state or st.session_state.authenticated == False:
-    st.write("Faça o login na página 'app'.")
-else:
-    pd.set_option('display.max_columns', None)
-    pd.set_option('display.max_rows', None)
-    st.set_page_config(layout="wide")
+pd.set_option('display.max_columns', None)
+pd.set_option('display.max_rows', None)
+st.set_page_config(layout="wide")
+
+def main_page():
+
     st.title("⚽ Base de dados")
 
     ### FootyStats ###
@@ -39,6 +39,15 @@ else:
         df_hist = df_hist[df_hist['Season'].isin(selected_seasons)]
 
     print_dataframe(df_hist)
+
+if "logged_in" not in st.session_state:
+    st.session_state["logged_in"] = False
+
+if st.session_state["logged_in"]:
+    display_sidebar('block')
+    main_page()
+else:
+    login_page()
 
 
     ### football-data.co.uk ###

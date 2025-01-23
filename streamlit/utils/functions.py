@@ -3,6 +3,38 @@ import pandas as pd
 import ast
 from datetime import datetime, timedelta
 
+import streamlit as st
+
+# Função para validar o login
+def validate_login(username, password):
+    # Substitua por sua lógica de autenticação
+    valid_user = "admin"
+    valid_password = "1234"
+    return username == valid_user and password == valid_password
+
+def display_sidebar(value):
+    streamlit_style = """
+        <style>
+        .stSidebar {display: """ + value + """};}
+        </style>
+    """
+    st.markdown(streamlit_style, unsafe_allow_html=True)
+
+def login_page():
+    
+    display_sidebar('none')
+
+    st.title("Login")
+    username = st.text_input("Usuário", value="admin")
+    password = st.text_input("Senha", value="1234", type="password")
+    if st.button("Entrar"):
+        if validate_login(username, password):
+            st.session_state["logged_in"] = True
+            st.success("Login realizado com sucesso!")
+            display_sidebar('block')
+        else:
+            st.error("Usuário ou senha inválidos!")
+
 def get_current_season():
     SEASON = '2024/2025'
     return SEASON
@@ -168,6 +200,27 @@ def get_filter_lay_visitante_zebra(df):
             'Spain La Liga',
             'Turkey Süper Lig',
             'Netherlands Eredivisie'
+        ]))
+    )
+
+def get_filter_back_empate(df):
+    return (
+        (df["Odd_H_FT"] > 1.5) & (df["Odd_H_FT"] <= 5) &
+        (df["Odd_D_FT"] > 2.6) & (df["Odd_D_FT"] < 5.5) &
+        (df["XG_Home_Pre"] > 0.85) & (df["XG_Home_Pre"] < 1.7) &
+        (df["XG_Away_Pre"] >= 0.85) & (df["XG_Away_Pre"] < 1.7) &
+        (df["XG_Total_Pre"] > 0) & (df["XG_Total_Pre"] < 3.2) &
+        (df["Odd_BTTS_Yes"] < 2.2) &
+        ((df["Odd_H_FT"] < 1.9) | (df["Odd_H_FT"] > 2)) 
+        &
+        (df['League'].isin([
+            'England Championship',
+            'Belgium Pro League',
+            'England Premier League',
+            'Italy Serie B',
+            'Turkey Süper Lig',
+            'Germany 2. Bundesliga',
+            'Romania Liga I'
         ]))
     )
 
