@@ -108,7 +108,7 @@ def main_page():
             valor = st.session_state[f'valor_{i}']
 
             if valor != "":
-                string_indicadores += f"{indicador} {operador_selecionado} {valor} ,"
+                string_indicadores += f"{indicador} {operador_selecionado} {valor} | "
 
                 if operador_selecionado == 'Igual (=)':
                     filter = (df_hist[indicador] == float(valor)) if tipo == 'Valor Absoluto' else (df_hist[indicador] == df_hist[valor])
