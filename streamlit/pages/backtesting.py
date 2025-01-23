@@ -140,6 +140,7 @@ def main_page():
             'Over 2.5 FT',
             'Under 2.5 FT',
             'BTTS Sim',
+            'Lay 0x1'
             # 'BTTS Não'
         ])
 
@@ -178,6 +179,12 @@ def main_page():
         df_hist = df_hist[filter]
         condicao = 'Geral'
         metodo = 'Back Empate'
+    
+    elif filtro_pronto_selecionado == "Lay 0x1":
+        filter = get_filter_lay_0x1(df_hist)
+        df_hist = df_hist[filter]
+        condicao = 'Geral'
+        metodo = 'Lay 0x1'
 
 
     st.divider()

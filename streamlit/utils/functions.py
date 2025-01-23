@@ -176,6 +176,30 @@ def get_filter_btts_no(df):
         )
     )
 
+def get_filter_lay_0x1(df):
+    return (
+        (df["Odd_H_FT"] < df["Odd_D_FT"]) &
+        (df["Odd_H_FT"] > 1.5) &
+        (df["XG_Away_Pre"] > 1.12) &
+        (df["XG_Home_Pre"] > df["XG_Away_Pre"]) &
+        (df["Odd_BTTS_Yes"] >= 1.5) & (df["Odd_BTTS_Yes"] < 2) &
+        (df["Odd_Over25_FT"] >= 1.6) & (df["Odd_Over25_FT"] < 2)
+        (df['League'].isin([
+            'Belgium Pro League',
+            'England Championship',
+            'England EFL League One',
+            'England Premier League',
+            'Germany 2. Bundesliga',
+            'Germany Bundesliga',
+            'Italy Serie A',
+            'Netherlands Eredivisie',
+            'Portugal Liga NOS',
+            'Romania Liga I',
+            'Spain La Liga',
+            'Turkey Süper Lig'
+        ]))
+    )
+
 def get_filter_lay_visitante_zebra(df):
     return (
         (df["Odd_H_FT"] < df["Odd_D_FT"]) &
