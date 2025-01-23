@@ -76,6 +76,7 @@ def main_page():
                 'Lay Empate',
                 'Lay Visitante',
                 'Lay 0x1',
+                'Lay 1x1',
                 'Lay 0x2',
                 'Lay 0x3',
                 'Lay Goleada Visitante',
