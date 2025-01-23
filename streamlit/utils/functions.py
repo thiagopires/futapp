@@ -180,7 +180,7 @@ def get_filter_lay_0x1(df):
     return (
         (df["Odd_H_FT"] < df["Odd_A_FT"]) &
         (df["Odd_H_FT"] > 1.5) &
-        # ((df["Odd_H_FT"] < 2.45) | (df["Odd_H_FT"] > 2.55)) &
+        ((df["Odd_H_FT"] < 2.45) | (df["Odd_H_FT"] > 2.55)) &
         (df["XG_Away_Pre"] > 1.1) &
         (df["XG_Home_Pre"] > df["XG_Away_Pre"]) &
         (df["Odd_BTTS_Yes"] > 1.5) & (df["Odd_BTTS_Yes"] < 2) &
