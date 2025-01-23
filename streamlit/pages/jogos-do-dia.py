@@ -31,7 +31,7 @@ def main_page():
             'Over 2.5 FT',
             'Under 2.5 FT',
             'BTTS Sim',
-            'BTTS Não'
+            # 'BTTS Não'
         ])
 
     if filtro_pronto_selecionado == "Lay Visitante Zebra":
@@ -54,9 +54,9 @@ def main_page():
         filter = get_filter_btts_yes(df_matches)
         df_matches = df_matches[filter]
     
-    elif filtro_pronto_selecionado == "BTTS Não":
-        filter = get_filter_btts_no(df_matches)
-        df_matches = df_matches[filter]
+    # elif filtro_pronto_selecionado == "BTTS Não":
+    #     filter = get_filter_btts_no(df_matches)
+    #     df_matches = df_matches[filter]
 
     # Dataframe
     st.subheader(f"Selecione o jogo para abrir detalhes abaixo:")

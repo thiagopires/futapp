@@ -134,7 +134,7 @@ def main_page():
             'Over 2.5 FT',
             'Under 2.5 FT',
             'BTTS Sim',
-            'BTTS Não'
+            # 'BTTS Não'
         ])
 
     if filtro_pronto_selecionado == "Lay Visitante Zebra":
@@ -161,11 +161,11 @@ def main_page():
         condicao = 'Geral'
         metodo = 'BTTS Sim'
     
-    elif filtro_pronto_selecionado == "BTTS Não":
-        filter = get_filter_btts_no(df_hist)
-        df_hist = df_hist[filter]
-        condicao = 'Geral'
-        metodo = 'BTTS Não'
+    # elif filtro_pronto_selecionado == "BTTS Não":
+    #     filter = get_filter_btts_no(df_hist)
+    #     df_hist = df_hist[filter]
+    #     condicao = 'Geral'
+    #     metodo = 'BTTS Não'
     
     elif filtro_pronto_selecionado == "Back Empate":
         filter = get_filter_back_empate(df_hist)
