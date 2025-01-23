@@ -97,6 +97,8 @@ def main_page():
                 df_hist = df_hist[(df_hist["Odd_H_FT"] > df_hist["Odd_A_FT"])]
 
         executar = st.button("Executar")
+    
+    string_indicadores = ""
 
     if executar:
         for i in range(1,9):
@@ -106,7 +108,7 @@ def main_page():
             valor = st.session_state[f'valor_{i}']
 
             if valor != "":
-                st.caption(f"{indicador} {operador_selecionado} {valor}")
+                string_indicadores += f"{indicador} {operador_selecionado} {valor} ,"
 
                 if operador_selecionado == 'Igual (=)':
                     filter = (df_hist[indicador] == float(valor)) if tipo == 'Valor Absoluto' else (df_hist[indicador] == df_hist[valor])
@@ -122,6 +124,8 @@ def main_page():
                     filter = (df_hist[indicador] != float(valor)) if tipo == 'Valor Absoluto' else (df_hist[indicador] != df_hist[valor])
 
                 df_hist = df_hist[filter]
+
+    st.caption(string_indicadores)
 
 
     st.divider()
