@@ -54,7 +54,7 @@ def main_page():
         filter = get_filter_btts_yes(df_matches)
         df_matches = df_matches[filter]
     
-    # elif filtro_pronto_selecionado == "BTTS Não":
+    # elif filtro_pronto_selecionado == "BTTS Não": 
     #     filter = get_filter_btts_no(df_matches)
     #     df_matches = df_matches[filter]
 

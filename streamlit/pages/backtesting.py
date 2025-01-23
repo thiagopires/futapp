@@ -165,7 +165,7 @@ def main_page():
     #     filter = get_filter_btts_no(df_hist)
     #     df_hist = df_hist[filter]
     #     condicao = 'Geral'
-    #     metodo = 'BTTS Não'
+    #     metodo = 'BTTS Não' 
     
     elif filtro_pronto_selecionado == "Back Empate":
         filter = get_filter_back_empate(df_hist)
