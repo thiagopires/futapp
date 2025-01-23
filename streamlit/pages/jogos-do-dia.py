@@ -31,7 +31,7 @@ def main_page():
             'Over 2.5 FT',
             'Under 2.5 FT',
             'BTTS Sim',
-            'Lay 0x1'
+            'Lay 0x1 (até 80min)'
             # 'BTTS Não'
         ])
 
@@ -55,7 +55,7 @@ def main_page():
         filter = get_filter_btts_yes(df_matches)
         df_matches = df_matches[filter]
 
-    elif filtro_pronto_selecionado == "Lay 0x1":
+    elif filtro_pronto_selecionado == "Lay 0x1 (até 80min)":
         filter = get_filter_lay_0x1(df_matches)
         df_matches = df_matches[filter]
     
