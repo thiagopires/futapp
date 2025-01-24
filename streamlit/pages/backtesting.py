@@ -268,14 +268,19 @@ def main_page():
             odd_media = f"{str(round(df_hist['Odd_BTTS_No'].mean(), 2))}"
         if metodo == 'Lay 0x1':
             df_hist.loc[((df_hist["Resultado_FT"] != '0-1') & (df_hist["Resultado_80"] != '0-1')), "Status_Metodo"] = "GREEN"
+            df_hist['Profit'] = 0
         if metodo == 'Lay 1x1':
             df_hist.loc[((df_hist["Resultado_FT"] != '1-1') & (df_hist["Resultado_80"] != '1-1')), "Status_Metodo"] = "GREEN"
+            df_hist['Profit'] = 0
         if metodo == 'Lay 0x2':
             df_hist.loc[df_hist["Resultado_FT"] != '0-2', "Status_Metodo"] = "GREEN"
+            df_hist['Profit'] = 0
         if metodo == 'Lay 0x3':
             df_hist.loc[df_hist["Resultado_FT"] != '0-3', "Status_Metodo"] = "GREEN"
+            df_hist['Profit'] = 0
         if metodo == 'Lay Goleada Visitante':
             df_hist.loc[((df_hist['Goals_A_FT'] < 4) | (df_hist['Goals_A_FT'] <= df_hist['Goals_H_FT'])), "Status_Metodo"] = "GREEN"
+            df_hist['Profit'] = 0
 
         st.write(f"**Resultado:**")
 
