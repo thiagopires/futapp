@@ -176,6 +176,31 @@ def get_filter_btts_no(df):
         )
     )
 
+def get_filter_lay_0x1(df):
+    return (
+        (df["Odd_H_FT"] < df["Odd_A_FT"]) &
+        (df["Odd_H_FT"] > 1.5) &
+        ((df["Odd_H_FT"] < 2.45) | (df["Odd_H_FT"] > 2.55)) &
+        (df["XG_Away_Pre"] > 1.12) &
+        (df["XG_Home_Pre"] > df["XG_Away_Pre"]) &
+        (df["Odd_BTTS_Yes"] > 1.5) & (df["Odd_BTTS_Yes"] < 2) &
+        (df["Odd_Over25_FT"] > 1.62) & (df["Odd_Over25_FT"] < 2) &
+        (df['League'].isin([
+            'England Championship',
+            'England EFL League One',
+            'England Premier League',
+            'Germany 2. Bundesliga',
+            'Germany Bundesliga',
+            'Italy Serie A',
+            'Netherlands Eredivisie',
+            'Portugal Liga NOS',
+            'Romania Liga I',
+            'Spain La Liga',
+            'Turkey Süper Lig',
+            'France League 1'
+        ]))
+    )
+
 def get_filter_lay_visitante_zebra(df):
     return (
         (df["Odd_H_FT"] < df["Odd_D_FT"]) &
@@ -314,6 +339,17 @@ def load_histmatches(dt=None):
         gols_away_75 = len(gols_away)
 
         return f"{gols_home_75}-{gols_away_75}"
+    
+    def calcular_resultado_80(row):
+        # Processar os minutos para casa e visitante
+        gols_home = [int(minuto.split('+')[0]) for minuto in eval(row['Goals_H_Minutes']) if int(minuto.split('+')[0]) <= 80]
+        gols_away = [int(minuto.split('+')[0]) for minuto in eval(row['Goals_A_Minutes']) if int(minuto.split('+')[0]) <= 80]
+
+        # Contar os gols marcados até o minuto 80
+        gols_home_80 = len(gols_home)
+        gols_away_80 = len(gols_away)
+
+        return f"{gols_home_80}-{gols_away_80}"
 
     df = pd.read_csv("https://github.com/futpythontrader/YouTube/blob/main/Bases_de_Dados/FootyStats/Base_de_Dados_FootyStats_(2022_2024).csv?raw=true")
     df[["Date", "Time"]] = df["Date"].str.split(" ", expand=True)
@@ -323,6 +359,7 @@ def load_histmatches(dt=None):
     df['Month_Year'] = pd.to_datetime(df['Date']).dt.strftime('%m/%Y')
     df["Resultado_HT"] = df["Goals_H_HT"].astype(str) + "-" + df["Goals_A_HT"].astype(str)
     df['Resultado_75'] = df.apply(calcular_resultado_75, axis=1)
+    df['Resultado_80'] = df.apply(calcular_resultado_80, axis=1)
     df["Resultado_FT"] = df["Goals_H_FT"].astype(str) + "-" + df["Goals_A_FT"].astype(str)
     df["Primeiro_Gol"] = df.apply(first_goal_string, axis=1)
 
