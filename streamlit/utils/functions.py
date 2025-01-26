@@ -351,7 +351,7 @@ def load_histmatches(dt=None):
 
         return f"{gols_home_80}-{gols_away_80}"
 
-    df = pd.read_csv("https://github.com/futpythontrader/YouTube/blob/main/Bases_de_Dados/FootyStats/Base_de_Dados_FootyStats_(2022_2024).csv?raw=true")
+    df = pd.read_csv("https://github.com/futpythontrader/YouTube/blob/main/Bases_de_Dados/FootyStats/Base_de_Dados_FootyStats_(2022_2025).csv?raw=true")
     df[["Date", "Time"]] = df["Date"].str.split(" ", expand=True)
     df["Date"] = pd.to_datetime(df["Date"])
     if dt: df = df.loc[(df["Date"] < pd.to_datetime(dt))]
