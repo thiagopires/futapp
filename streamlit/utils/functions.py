@@ -213,7 +213,7 @@ def get_filter_lay_visitante_zebra(df):
         (df["XG_Total_Pre"] >= 1.7) &
         (df["XG_Away_Pre"] <= 1.25) &
         (df['League'].isin([
-            'Belgium Pro League',
+            # 'Belgium Pro League',
             'England EFL League One',
             'England Premier League',
             'France Ligue 1',
