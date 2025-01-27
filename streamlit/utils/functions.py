@@ -231,7 +231,7 @@ def get_filter_back_empate(df):
         (df["XG_Home_Pre"] > 1.06) & (df["XG_Home_Pre"] < 1.7) &
         (df["XG_Away_Pre"] >= 0.85) & (df["XG_Away_Pre"] < 1.7) &
         (df["XG_Total_Pre"] > 2.1) & (df["XG_Total_Pre"] < 3.2) &
-        (df["Odd_BTTS_Yes"] < 2.2) &
+        (df["Odd_BTTS_Yes"] > 1.49) & (df["Odd_BTTS_Yes"] < 2.2) &
         ((df["Odd_H_FT"] < 1.9) | (df["Odd_H_FT"] > 2)) 
         &
         (df['League'].isin([
@@ -358,7 +358,7 @@ def load_histmatches(dt=None):
     df['Resultado_80'] = df.apply(calcular_resultado_80, axis=1)
     df["Resultado_FT"] = df["Goals_H_FT"].astype(str) + "-" + df["Goals_A_FT"].astype(str)
     df["Primeiro_Gol"] = df.apply(first_goal_string, axis=1)
-    df["Diff_XG_Home_Away_Pre"] = df['XG_Home_Pre'] - df['XG_Away_Pre']
+    df[" "] = df['XG_Home_Pre'] - df['XG_Away_Pre']
 
     return df
 
