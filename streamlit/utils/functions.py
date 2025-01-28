@@ -52,7 +52,7 @@ def get_filter_over(df):
     return (
         (df["Odd_BTTS_Yes"] >= 1.6) &
         (df["XG_Home_Pre"] >= 1.3) &
-        (df["XG_Away_Pre"] >= 0.9) &
+        (df["XG_Away_Pre"] >= 1.2) &
         # (df["Diff_XG_Home_Away_Pre"] > 0.1) & # (df["Diff_XG_Home_Away_Pre"] < 0.7) & 
         (df["Odd_Over25_FT"] >= 1.6) 
         &
