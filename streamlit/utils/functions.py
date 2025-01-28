@@ -238,7 +238,8 @@ def get_filter_back_empate(df):
         (df["Odd_Under25_FT"] > 1.45) & (df["Odd_Under25_FT"] < 2.57) &
         (df["Odd_BTTS_Yes"] > 1.49) & (df["Odd_BTTS_Yes"] < 2.2) &
         (df["Odd_BTTS_No"] >= 1.7) & (df["Odd_BTTS_No"] <= 2.38) &
-        ((df["Odd_H_FT"] < 1.9) | (df["Odd_H_FT"] > 2.05))
+        ((df["Odd_H_FT"] < 1.9) | (df["Odd_H_FT"] > 2.1)) &
+        ((df["Odd_A_FT"] < 1.9) | (df["Odd_A_FT"] > 2.1))
         &
         (df['League'].isin([
             'England Championship',
