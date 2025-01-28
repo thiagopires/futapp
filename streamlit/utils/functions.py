@@ -241,8 +241,8 @@ def get_filter_back_empate(df):
         (df["XG_Away_Pre"] >= 0.85) & (df["XG_Away_Pre"] < 1.7) &
         (df["XG_Total_Pre"] >= 2.13) & (df["XG_Total_Pre"] < 3.2) &
         (df["Diff_XG_Home_Away_Pre"] > -0.5) &
-        (("PPG_Home_Pre" in df.columns) & (df["PPG_Home_Pre"] > 0.25) if "PPG_Home_Pre" in df.columns else True) &
-        (("PPG_Away_Pre" in df.columns) & (df["PPG_Away_Pre"] < 3) if "PPG_Away_Pre" in df.columns else True) &
+        # (("PPG_Home_Pre" in df.columns) & (df["PPG_Home_Pre"] > 0.25) if "PPG_Home_Pre" in df.columns else True) &
+        # (("PPG_Away_Pre" in df.columns) & (df["PPG_Away_Pre"] < 3) if "PPG_Away_Pre" in df.columns else True) &
         (df["Odd_Under25_FT"] > 1.45) & (df["Odd_Under25_FT"] < 2.57) &
         (df["Odd_BTTS_Yes"] > 1.49) & (df["Odd_BTTS_Yes"] < 2.2) &
         (df["Odd_BTTS_No"] >= 1.7) & (df["Odd_BTTS_No"] <= 2.38) &
