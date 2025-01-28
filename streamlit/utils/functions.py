@@ -64,9 +64,7 @@ def get_filter_over(df):
                     'Spain Segunda División',
                     'Netherlands Eredivisie',
                     'Spain La Liga',
-                    'Portugal Liga NOS',
-                    'Italy Serie B',
-                    'Germany Bundesliga'
+                    'Portugal Liga NOS'
                 ]))
                 ) | (
                 (df["Odd_H_FT"] > df["Odd_A_FT"]) &
@@ -74,7 +72,6 @@ def get_filter_over(df):
                     'France Ligue 1',
                     'England EFL League One',
                     'Spain La Liga',
-                    'Portugal LigaPro',
                     'Bulgaria First League'
                 ]))
             )
