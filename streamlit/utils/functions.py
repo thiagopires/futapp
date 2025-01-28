@@ -52,22 +52,27 @@ def get_filter_over(df):
     return (
         (df["XG_Home_Pre"] >= 1.3) &
         (df["XG_Away_Pre"] >= 1.3) &
-        (df["Odd_Over25_FT"] >= 1.4) & 
+        ((df["XG_Total_Pre"] < 2.8) | (df["XG_Total_Pre"] > 3)) &
+        (df["Odd_Over25_FT"] >= 1.3) &
         (
             (
                 (df["Odd_H_FT"] < df["Odd_A_FT"]) &
                 (df['League'].isin([
-                    'Spain La Liga',
-                    'Portugal Liga NOS',
+                    'England Premier League',
+                    'Germany 2. Bundesliga',
+                    'Serbia SuperLiga',
+                    'Spain Segunda División',
                     'Netherlands Eredivisie',
-                    'England Premier League'
+                    'Spain La Liga',
+                    'Portugal Liga NOS'
                 ]))
                 ) | (
                 (df["Odd_H_FT"] > df["Odd_A_FT"]) &
                 (df['League'].isin([
+                    'France Ligue 1',
                     'England EFL League One',
-                    'Italy Serie B',
-                    'Spain La Liga'
+                    'Spain La Liga',
+                    'Bulgaria First League'
                 ]))
             )
         )
@@ -205,26 +210,25 @@ def get_filter_lay_visitante_zebra(df):
     return (
         (df["Odd_H_FT"] < df["Odd_D_FT"]) &
         (df["Odd_D_FT"] < df["Odd_A_FT"]) &
-        ((df["Odd_H_FT"] <= 1.8) | (df["Odd_H_FT"] > 1.9)) &
+        ((df["Odd_H_FT"] <= 1.8) | (df["Odd_H_FT"] >= 1.9)) &
+        ((df["Odd_D_FT"] < 3.4) | (df["Odd_D_FT"] > 3.6)) &
+        (df["Odd_H_FT"] >= 1.5) &
         (df["Odd_A_FT"] < 8) &
-        (df["Odd_BTTS_Yes"] < 2) &
+        # (df["Odd_BTTS_Yes"] < 2) &
+        (df["Odd_BTTS_No"] >= 1.8) &
         (df["Odd_Over25_FT"] > 1.5) &
         (df["XG_Home_Pre"] > df["XG_Away_Pre"]) &
-        (df["XG_Total_Pre"] >= 1.7) &
-        (df["XG_Away_Pre"] <= 1.25) &
+        (df["XG_Total_Pre"] >= 1.7) & # (df["XG_Total_Pre"] <= 2.6) &
+        (df["XG_Away_Pre"] <= 1.25) 
+        &
         (df['League'].isin([
-            'Belgium Pro League',
-            'England EFL League One',
-            'England Premier League',
-            'France Ligue 1',
-            'Germany 2. Bundesliga',
-            'Germany Bundesliga',
-            'Italy Serie A',
-            'Italy Serie B',
-            'Portugal Liga NOS',
-            'Spain La Liga',
             'Turkey Süper Lig',
-            'Netherlands Eredivisie'
+            'England EFL League One',
+            'Italy Serie B',
+            'Spain Segunda División',
+            'Italy Serie A',
+            'France Ligue 1',
+            'England Premier League'
         ]))
     )
 
@@ -232,22 +236,30 @@ def get_filter_back_empate(df):
     return (
         (df["Odd_H_FT"] > 1.5) & (df["Odd_H_FT"] <= 5) &
         (df["Odd_D_FT"] > 2.6) & (df["Odd_D_FT"] < 5.5) &
-        (df["XG_Home_Pre"] > 0.85) & (df["XG_Home_Pre"] < 1.7) &
+        (df["Odd_A_FT"] <= 5.5) &
+        (df["XG_Home_Pre"] > 1.06) & (df["XG_Home_Pre"] < 1.7) &
         (df["XG_Away_Pre"] >= 0.85) & (df["XG_Away_Pre"] < 1.7) &
-        (df["XG_Total_Pre"] > 0) & (df["XG_Total_Pre"] < 3.2) &
-        (df["Odd_BTTS_Yes"] < 2.2) &
-        ((df["Odd_H_FT"] < 1.9) | (df["Odd_H_FT"] > 2)) 
-        &
+        (df["XG_Total_Pre"] >= 2.13) & (df["XG_Total_Pre"] < 3.2) &
+        (df["Diff_XG_Home_Away_Pre"] > -0.5) &
+        (("PPG_Home_Pre" in df.columns) & (df["PPG_Home_Pre"] > 0.25) if "PPG_Home_Pre" in df.columns else True) &
+        (("PPG_Away_Pre" in df.columns) & (df["PPG_Away_Pre"] < 3) if "PPG_Away_Pre" in df.columns else True) &
+        (df["Odd_Under25_FT"] > 1.45) & (df["Odd_Under25_FT"] < 2.57) &
+        (df["Odd_BTTS_Yes"] > 1.49) & (df["Odd_BTTS_Yes"] < 2.2) &
+        (df["Odd_BTTS_No"] >= 1.7) & (df["Odd_BTTS_No"] <= 2.38) &
+        ((df["Odd_H_FT"] < 1.9) | (df["Odd_H_FT"] > 2.1)) &
+        ((df["Odd_A_FT"] < 1.9) | (df["Odd_A_FT"] > 2.1)) &
         (df['League'].isin([
             'England Championship',
             'Belgium Pro League',
             'England Premier League',
             'Italy Serie B',
-            'Turkey Süper Lig',
             'Germany 2. Bundesliga',
-            'Romania Liga I'
+            'Turkey Süper Lig',
+            'Romania Liga I',
+            'Italy Serie A',
         ]))
     )
+
 
 def print_dataframe(df, styled_df=None):
     if not styled_df:
@@ -265,6 +277,7 @@ def load_daymatches(dt, filter_teams=None):
     df["Datetime"] = pd.to_datetime(df["Date"] + " " + df["Time"])
     df["Formatted_Datetime"] = df["Datetime"].dt.strftime("%d/%m/%Y %H:%M")
     df["Confronto"] = df["Time"] + " - " + df["Home"] + " vs. " + df["Away"]
+    df["Diff_XG_Home_Away_Pre"] = df['XG_Home_Pre'] - df['XG_Away_Pre']
 
     # df_hist = load_histmatches(dt)
 
@@ -362,6 +375,7 @@ def load_histmatches(dt=None):
     df['Resultado_80'] = df.apply(calcular_resultado_80, axis=1)
     df["Resultado_FT"] = df["Goals_H_FT"].astype(str) + "-" + df["Goals_A_FT"].astype(str)
     df["Primeiro_Gol"] = df.apply(first_goal_string, axis=1)
+    df["Diff_XG_Home_Away_Pre"] = df['XG_Home_Pre'] - df['XG_Away_Pre']
 
     return df
 
