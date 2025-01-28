@@ -228,7 +228,7 @@ def get_filter_back_empate(df):
     return (
         (df["Odd_H_FT"] > 1.5) & (df["Odd_H_FT"] <= 5) &
         (df["Odd_D_FT"] > 2.6) & (df["Odd_D_FT"] < 5.5) &
-        (df["Odd_A_FT"] <= 6) &
+        (df["Odd_A_FT"] <= 5.5) &
         (df["XG_Home_Pre"] > 1.06) & (df["XG_Home_Pre"] < 1.7) &
         (df["XG_Away_Pre"] >= 0.85) & (df["XG_Away_Pre"] < 1.7) &
         (df["XG_Total_Pre"] >= 2.13) & (df["XG_Total_Pre"] < 3.2) &
