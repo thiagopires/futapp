@@ -54,7 +54,7 @@ def get_filter_over(df):
         (df["XG_Away_Pre"] >= 1.15) &
         (df["Diff_XG_Home_Away_Pre"] < 0.7) & (df["Diff_XG_Home_Away_Pre"] > 0) &
         (df["Odd_Over25_FT"] > 1.4) 
-        # &
+        &
         (df['League'].isin([
 
             'Spain La Liga',
