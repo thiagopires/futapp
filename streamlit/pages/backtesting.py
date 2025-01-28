@@ -148,7 +148,7 @@ def main_page():
         filter = get_filter_lay_visitante_zebra(df_hist)
         df_hist = df_hist[filter]
         condicao = 'Geral'
-        metodo = 'Back Casa' #'Lay Visitante'
+        metodo = 'Lay Visitante'
 
     elif filtro_pronto_selecionado == "Over 2.5 FT":
         filter = get_filter_over(df_hist)
