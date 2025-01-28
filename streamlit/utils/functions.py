@@ -272,6 +272,7 @@ def load_daymatches(dt, filter_teams=None):
     df["Datetime"] = pd.to_datetime(df["Date"] + " " + df["Time"])
     df["Formatted_Datetime"] = df["Datetime"].dt.strftime("%d/%m/%Y %H:%M")
     df["Confronto"] = df["Time"] + " - " + df["Home"] + " vs. " + df["Away"]
+    df["Diff_XG_Home_Away_Pre"] = df['XG_Home_Pre'] - df['XG_Away_Pre']
 
     # df_hist = load_histmatches(dt)
 
