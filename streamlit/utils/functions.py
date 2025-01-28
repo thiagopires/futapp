@@ -51,39 +51,39 @@ def get_today(offset=0):
 def get_filter_over(df):
     return (
         (df["Odd_D_FT"] > 3.3) &
-        (df["XG_Home_Pre"] >= 1.25) &
-        (df["XG_Away_Pre"] >= 1.25) &
+        (df["XG_Home_Pre"] >= 1.3) &
+        # (df["XG_Away_Pre"] >= 1.25) &
         (df["Diff_XG_Home_Away_Pre"] > 0) & (df["Diff_XG_Home_Away_Pre"] < 0.7) & 
         (df["Odd_Over25_FT"] >= 1.5) 
         &
         (df['League'].isin([
 
-            'Turkey Süper Lig',
-            'Italy Serie A',
-            'Spain La Liga',
-            'England Premier League',
-            'Serbia SuperLiga',
-            'Germany Bundesliga',
-            'France Ligue 1',
-            'Italy Serie B'
-
-            # 'Portugal Liga NOS',
-            # 'Serbia SuperLiga',
-            # 'Spain La Liga',
             # 'Turkey Süper Lig',
-            # 'France Ligue 1',
-            # 'France Ligue 2',
-            # 'Germany Bundesliga',
-            # 'England Premier League',
-            # 'Belgium Pro League',
             # 'Italy Serie A',
-            # 'Spain Segunda División',
-            # 'England EFL League Two',
-            # 'Italy Serie B',
-            # 'England EFL League One',
-            # 'Portugal LigaPro',
-            # 'England Championship',
-            # 'Romania Liga I'
+            # 'Spain La Liga',
+            # 'England Premier League',
+            # 'Serbia SuperLiga',
+            # 'Germany Bundesliga',
+            # 'France Ligue 1',
+            # 'Italy Serie B'
+
+            'Portugal Liga NOS',
+            'Serbia SuperLiga',
+            'Spain La Liga',
+            'Turkey Süper Lig',
+            'France Ligue 1',
+            'France Ligue 2',
+            'Germany Bundesliga',
+            'England Premier League',
+            'Belgium Pro League',
+            'Italy Serie A',
+            'Spain Segunda División',
+            'England EFL League Two',
+            'Italy Serie B',
+            'England EFL League One',
+            'Portugal LigaPro',
+            'England Championship',
+            'Romania Liga I'
         ]))
         
         # & 
