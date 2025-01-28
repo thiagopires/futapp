@@ -53,16 +53,21 @@ def get_filter_over(df):
         (df["XG_Home_Pre"] >= 1.3) &
         (df["XG_Away_Pre"] >= 1.3) &
         (df["Odd_Over25_FT"] >= 1.4) &
-        (df["Odd_H_FT"] < df["Odd_A_FT"]) # &
+        (df["Odd_H_FT"] > df["Odd_A_FT"]) # &
 
         # (
         #     (
         #         (df["Odd_H_FT"] < df["Odd_A_FT"]) &
         #         (df['League'].isin([
+        #             'England Premier League',
+        #             'Germany 2. Bundesliga',
+        #             'Serbia SuperLiga',
+        #             'Spain Segunda División',
+        #             'Netherlands Eredivisie',
         #             'Spain La Liga',
         #             'Portugal Liga NOS',
-        #             'Netherlands Eredivisie',
-        #             'England Premier League'
+        #             'Italy Serie B',
+        #             'Germany Bundesliga'
         #         ]))
         #         ) | (
         #         (df["Odd_H_FT"] > df["Odd_A_FT"]) &
