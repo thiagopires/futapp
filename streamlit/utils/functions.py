@@ -50,44 +50,27 @@ def get_today(offset=0):
 
 def get_filter_over(df):
     return (
-        (df["Odd_BTTS_Yes"] >= 1.4) &
         (df["XG_Home_Pre"] >= 1.3) &
         (df["XG_Away_Pre"] >= 1.3) &
-        (df["Diff_XG_Home_Away_Pre"] < 0.4) & 
-        (df["Odd_Over25_FT"] >= 1.4) 
-        &
-        (df['League'].isin([
-
-            'Spain La Liga',
-            'England Premier League',
-            'England EFL League One',
-            'Italy Serie B',
-            'Serbia SuperLiga',
-            'France Ligue 1',
-            'Portugal Liga NOS',
-            'Germany Bundesliga',
-            'Spain Segunda División'
-        ]))
-        
-        # & 
-        # (
-        #     (
-        #         (df["Odd_H_FT"] < df["Odd_A_FT"]) &
-        #         (df['League'].isin([
-        #             'Spain La Liga',
-        #             'Portugal Liga NOS',
-        #             'Netherlands Eredivisie',
-        #             'England Premier League'
-        #         ]))
-        #         ) | (
-        #         (df["Odd_H_FT"] > df["Odd_A_FT"]) &
-        #         (df['League'].isin([
-        #             'England EFL League One',
-        #             'Italy Serie B',
-        #             'Spain La Liga'
-        #         ]))
-        #     )
-        # )
+        (df["Odd_Over25_FT"] >= 1.4) & 
+        (
+            (
+                (df["Odd_H_FT"] < df["Odd_A_FT"]) &
+                (df['League'].isin([
+                    'Spain La Liga',
+                    'Portugal Liga NOS',
+                    'Netherlands Eredivisie',
+                    'England Premier League'
+                ]))
+                ) | (
+                (df["Odd_H_FT"] > df["Odd_A_FT"]) &
+                (df['League'].isin([
+                    'England EFL League One',
+                    'Italy Serie B',
+                    'Spain La Liga'
+                ]))
+            )
+        )
     )
 
 def get_filter_under(df):
