@@ -240,17 +240,18 @@ def get_filter_back_empate(df):
         (df["Odd_BTTS_No"] >= 1.7) & (df["Odd_BTTS_No"] <= 2.38) &
         ((df["Odd_H_FT"] < 1.9) | (df["Odd_H_FT"] > 2.1)) &
         ((df["Odd_A_FT"] < 1.9) | (df["Odd_A_FT"] > 2.1))
-        # &
-        # (df['League'].isin([
-        #     'England Championship',
-        #     'Belgium Pro League',
-        #     'England Premier League',
-        #     'Italy Serie B',
-        #     'Germany 2. Bundesliga',
-        #     'Turkey Süper Lig',
-        #     'Romania Liga I',
-        #     'Italy Serie A'
-        # ]))
+        &
+        (df['League'].isin([
+            'England Championship',
+            'Belgium Pro League',
+            'England Premier League',
+            'Italy Serie B',
+            'Germany 2. Bundesliga',
+            'Turkey Süper Lig',
+            'Romania Liga I',
+            'Italy Serie A',
+            'England EFL League Two'
+        ]))
     )
 
 def print_dataframe(df, styled_df=None):
