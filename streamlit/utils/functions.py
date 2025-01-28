@@ -203,7 +203,8 @@ def get_filter_lay_0x1(df):
 
 def get_filter_lay_visitante_zebra(df):
     return (
-        (df["Odd_H_FT"]  < df["Odd_A_FT"]) &
+        (df["Odd_H_FT"] < df["Odd_D_FT"]) &
+        (df["Odd_D_FT"] < df["Odd_A_FT"]) &
         ((df["Odd_H_FT"] <= 1.8) | (df["Odd_H_FT"] >= 1.9)) &
         ((df["Odd_D_FT"] < 3.4) | (df["Odd_D_FT"] > 3.6)) &
         (df["Odd_H_FT"] >= 1.5) &
