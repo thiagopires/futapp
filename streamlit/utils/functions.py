@@ -50,8 +50,8 @@ def get_today(offset=0):
 
 def get_filter_over(df):
     return (
-        (df["XG_Home_Pre"] >= 1.15) &
-        (df["XG_Away_Pre"] >= 1.15) &
+        (df["XG_Home_Pre"] >= 1.22) &
+        (df["XG_Away_Pre"] >= 1.22) &
         (df["Odd_Over25_FT"] >= 1.4) & 
         (
             (
