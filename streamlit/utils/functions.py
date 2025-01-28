@@ -358,7 +358,7 @@ def load_histmatches(dt=None):
     df['Resultado_80'] = df.apply(calcular_resultado_80, axis=1)
     df["Resultado_FT"] = df["Goals_H_FT"].astype(str) + "-" + df["Goals_A_FT"].astype(str)
     df["Primeiro_Gol"] = df.apply(first_goal_string, axis=1)
-    df[" "] = df['XG_Home_Pre'] - df['XG_Away_Pre']
+    df["Diff_XG_Home_Away_Pre"] = df['XG_Home_Pre'] - df['XG_Away_Pre']
 
     return df
 
