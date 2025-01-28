@@ -50,9 +50,9 @@ def get_today(offset=0):
 
 def get_filter_over(df):
     return (
-        (df["XG_Home_Pre"] >= 1.3) &
-        (df["XG_Away_Pre"] >= 1.1) &
-        (df["Odd_Over25_FT"] >= 2) 
+        # (df["XG_Home_Pre"] >= 1.3) &
+        # (df["XG_Away_Pre"] >= 1.1) &
+        (df["Odd_Over25_FT"] >= 1.55) 
         &
         (df['League'].isin([
             'Portugal Liga NOS',
