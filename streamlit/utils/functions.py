@@ -57,29 +57,32 @@ def get_filter_over(df):
         &
         (df['League'].isin([
 
+            'Turkey Süper Lig',
+            'Italy Serie A',
+            'Spain La Liga',
+            'England Premier League',
+            'Serbia SuperLiga',
+            'Germany Bundesliga',
+            'France Ligue 1',
+            'Italy Serie B'
+
+            # 'Portugal Liga NOS',
+            # 'Serbia SuperLiga',
             # 'Spain La Liga',
             # 'Turkey Süper Lig',
-            # 'Italy Serie A',
+            # 'France Ligue 1',
+            # 'France Ligue 2',
+            # 'Germany Bundesliga',
             # 'England Premier League',
-            # 'Serbia SuperLiga'
-
-            'Portugal Liga NOS',
-            'Serbia SuperLiga',
-            'Spain La Liga',
-            'Turkey Süper Lig',
-            'France Ligue 1',
-            'France Ligue 2',
-            'Germany Bundesliga',
-            'England Premier League',
-            'Belgium Pro League',
-            'Italy Serie A',
-            'Spain Segunda División',
-            'England EFL League Two',
-            'Italy Serie B',
-            'England EFL League One',
-            'Portugal LigaPro',
-            'England Championship',
-            'Romania Liga I'
+            # 'Belgium Pro League',
+            # 'Italy Serie A',
+            # 'Spain Segunda División',
+            # 'England EFL League Two',
+            # 'Italy Serie B',
+            # 'England EFL League One',
+            # 'Portugal LigaPro',
+            # 'England Championship',
+            # 'Romania Liga I'
         ]))
         
         # & 
