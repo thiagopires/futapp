@@ -214,8 +214,8 @@ def get_filter_lay_visitante_zebra(df):
         (df["Odd_Over25_FT"] > 1.5) &
         (df["XG_Home_Pre"] > df["XG_Away_Pre"]) &
         (df["XG_Total_Pre"] >= 1.7) &
-        (df["XG_Away_Pre"] <= 1.25) 
-        &
+        # (df["XG_Away_Pre"] <= 1.25) 
+        # &
         (df['League'].isin([
             'Turkey Süper Lig',
             'England EFL League One',
