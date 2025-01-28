@@ -218,7 +218,7 @@ def get_filter_lay_visitante_zebra(df):
         &
         (df['League'].isin([
             'Turkey Süper Lig',
-            'England EFL League One',
+            # 'England EFL League One',
             'Italy Serie B',
             'Spain Segunda División',
             'Italy Serie A',
