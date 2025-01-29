@@ -80,10 +80,11 @@ def main_page():
                 'Lay 0x2',
                 'Lay 0x3',
                 'Lay Goleada Visitante',
-                'Over 0.5 HT',
+                'Over 0.5 HT',                
+                'Under 0.5 HT',
+                'Over 0.5 FT',
                 'Over 1.5 FT',
                 'Over 2.5 FT',
-                'Under 0.5 HT',
                 'Under 1.5 FT',
                 'Under 2.5 FT',
                 'BTTS Sim',
@@ -238,6 +239,11 @@ def main_page():
             df_hist.loc[filter, 'Profit'] = round(df_hist['Odd_Over05_HT']-1, 2)
             df_hist.loc[filter, "Status_Metodo"] = "GREEN"
             odd_media = f"{str(round(df_hist['Odd_Over05_HT'].mean(), 2))}"
+        if metodo == 'Over 0.5 FT':
+            filter = (df_hist['TotalGoals_FT'] >= 0.5)   
+            df_hist.loc[filter, 'Profit'] = round(df_hist['Odd_Over05_FT']-1, 2)
+            df_hist.loc[filter, "Status_Metodo"] = "GREEN"
+            odd_media = f"{str(round(df_hist['Odd_Over05_FT'].mean(), 2))}"
         if metodo == 'Over 1.5 FT':
             filter = (df_hist['TotalGoals_FT'] >= 1.5)   
             df_hist.loc[filter, 'Profit'] = round(df_hist['Odd_Over15_FT']-1, 2)
