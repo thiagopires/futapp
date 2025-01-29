@@ -292,13 +292,13 @@ def main_page():
             df_hist['Profit'] = 0
         if metodo == 'Lay 1x1':
             # df_hist.loc[((df_hist["Resultado_FT"] != '1-1') & (df_hist["Resultado_80"] != '1-1')), "Status_Metodo"] = "GREEN"
-            df_hist.loc[(df_hist["Resultado_75"] != '1-1'), "Status_Metodo"] = "GREEN"
+            df_hist.loc[(df_hist["Resultado_80"] != '1-1'), "Status_Metodo"] = "GREEN"
             df_hist['Profit'] = 0
         if metodo == 'Lay 0x2':
-            df_hist.loc[df_hist["Resultado_75"] != '0-2', "Status_Metodo"] = "GREEN"
+            df_hist.loc[df_hist["Resultado_80"] != '0-2', "Status_Metodo"] = "GREEN"
             df_hist['Profit'] = 0
         if metodo == 'Lay 0x3':
-            df_hist.loc[df_hist["Resultado_75"] != '0-3', "Status_Metodo"] = "GREEN"
+            df_hist.loc[df_hist["Resultado_80"] != '0-3', "Status_Metodo"] = "GREEN"
             df_hist['Profit'] = 0
         if metodo == 'Lay Goleada Visitante':
             df_hist.loc[((df_hist['Goals_A_FT'] < 4) | (df_hist['Goals_A_FT'] <= df_hist['Goals_H_FT'])), "Status_Metodo"] = "GREEN"
