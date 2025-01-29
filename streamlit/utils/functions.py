@@ -397,17 +397,23 @@ def load_histmatches(dt=None):
         return f"{gols_home}-{gols_away}"
 
     df = pd.read_csv("https://github.com/futpythontrader/YouTube/blob/main/Bases_de_Dados/FootyStats/Base_de_Dados_FootyStats_(2022_2025).csv?raw=true")
+    
     df[["Date", "Time"]] = df["Date"].str.split(" ", expand=True)
     df["Date"] = pd.to_datetime(df["Date"])
     if dt: df = df.loc[(df["Date"] < pd.to_datetime(dt))]
     df["Formatted_Date"] = df["Date"].dt.strftime("%d/%m/%Y")
     df['Month_Year'] = pd.to_datetime(df['Date']).dt.strftime('%m/%Y')
+    
     df["Resultado_HT"] = df["Goals_H_HT"].astype(str) + "-" + df["Goals_A_HT"].astype(str)
     df["Resultado_FT"] = df["Goals_H_FT"].astype(str) + "-" + df["Goals_A_FT"].astype(str)
+    
+    df['Resultado_60'] = df.apply(calcular_resultado_minuto, minute=60, axis=1)
     df['Resultado_70'] = df.apply(calcular_resultado_minuto, minute=70, axis=1)
     df['Resultado_75'] = df.apply(calcular_resultado_minuto, minute=75, axis=1)
     df['Resultado_80'] = df.apply(calcular_resultado_minuto, minute=80, axis=1)
+    
     df[["Primeiro_Gol","Primeiro_Gol_Minuto","Primeiro_Gol_Marcador"]] = df.apply(first_goal_string, axis=1)
+    
     df["Diff_XG_Home_Away_Pre"] = df['XG_Home_Pre'] - df['XG_Away_Pre']
 
     return df
