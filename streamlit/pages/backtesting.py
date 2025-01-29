@@ -185,6 +185,12 @@ def main_page():
         df_hist = df_hist[filter]
         condicao = 'Geral'
         metodo = 'Lay 0x1'
+    
+    elif filtro_pronto_selecionado == "Lay 0x2 (até 80min)":
+        filter = get_filter_lay_0x2(df_hist)
+        df_hist = df_hist[filter]
+        condicao = 'Geral'
+        metodo = 'Lay 0x2'
 
 
     st.divider()
