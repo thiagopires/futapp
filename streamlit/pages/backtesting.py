@@ -139,7 +139,7 @@ def main_page():
             "Lay Visitante Zebra",
             "Back Empate",
             'Over 2.5 FT',
-            'Under 2.5 FT',
+            # 'Under 2.5 FT',
             'BTTS Sim',
             'Lay 0x1 (até 80min)',
             'Lay 0x2 (até 80min)',
