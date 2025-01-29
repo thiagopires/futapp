@@ -271,7 +271,7 @@ def print_dataframe(df, styled_df=None):
         ])
         st.dataframe(styled_df, height=len(df)*38, use_container_width=True, hide_index=True)       
 
-@st.cache_data
+# @st.cache_data
 def load_daymatches(dt, filter_teams=None):
     df = pd.read_csv(f"https://github.com/futpythontrader/YouTube/blob/main/Jogos_do_Dia/FootyStats/Jogos_do_Dia_FootyStats_{dt}.csv?raw=true")
     df["Datetime"] = pd.to_datetime(df["Date"] + " " + df["Time"])
