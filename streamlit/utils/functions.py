@@ -260,6 +260,50 @@ def get_filter_back_empate(df):
         ]))
     )
 
+def get_filter_lay_0x2(df):
+    return (
+        (df["XG_Away_Pre"] > 0) &
+        (df["Diff_XG_Home_Away_Pre"] > 0.66) &
+        (df['League'].isin([
+            'Belgium Pro League',
+            'England EFL League One',
+            'England Premier League',
+            'France Ligue 1',
+            'Germany 2. Bundesliga',
+            'Germany Bundesliga',
+            'Italy Serie A',
+            'Italy Serie B',
+            'Portugal Liga NOS',
+            'Spain La Liga',
+            'Spain Segunda División',
+            'Turkey Süper Lig'
+        ]))
+    )
+
+
+def get_filter_lay_0x3(df):
+    return (
+        (df["Odd_H_FT"] < df["Odd_A_FT"]) &
+        (df["XG_Home_Pre"] > 0) &
+        (df["XG_Away_Pre"] > 0) &
+        (df["XG_Away_Pre"] <= 2) &
+        (df["Odd_H_FT"] <= 2) &
+        (df["Odd_A_FT"] >= 6.5) &
+        (df['League'].isin([
+            'England Championship',
+            'England Premier League',
+            'France Ligue 1',
+            'Germany 2. Bundesliga',
+            'Germany Bundesliga',
+            'Italy Serie A',
+            'Netherlands Eredivisie',
+            'Portugal Liga NOS',
+            'Romania Liga I',
+            'Spain La Liga',
+            'Spain Segunda División',
+            'Turkey Süper Lig'
+        ]))
+    )
 
 def print_dataframe(df, styled_df=None):
     if not styled_df:
@@ -342,27 +386,16 @@ def load_histmatches(dt=None):
         else:
             return '-'  # Caso não haja gols
     
-    def calcular_resultado_75(row):
+    def calcular_resultado_minuto(row, minute):
         # Processar os minutos para casa e visitante
-        gols_home = [int(minuto.split('+')[0]) for minuto in eval(row['Goals_H_Minutes']) if int(minuto.split('+')[0]) <= 75]
-        gols_away = [int(minuto.split('+')[0]) for minuto in eval(row['Goals_A_Minutes']) if int(minuto.split('+')[0]) <= 75]
+        gols_home = [int(minuto.split('+')[0]) for minuto in eval(row['Goals_H_Minutes']) if int(minuto.split('+')[0]) <= minute]
+        gols_away = [int(minuto.split('+')[0]) for minuto in eval(row['Goals_A_Minutes']) if int(minuto.split('+')[0]) <= minute]
 
-        # Contar os gols marcados até o minuto 75
-        gols_home_75 = len(gols_home)
-        gols_away_75 = len(gols_away)
+        # Contar os gols marcados até o minuto x
+        gols_home = len(gols_home)
+        gols_away = len(gols_away)
 
-        return f"{gols_home_75}-{gols_away_75}"
-    
-    def calcular_resultado_80(row):
-        # Processar os minutos para casa e visitante
-        gols_home = [int(minuto.split('+')[0]) for minuto in eval(row['Goals_H_Minutes']) if int(minuto.split('+')[0]) <= 80]
-        gols_away = [int(minuto.split('+')[0]) for minuto in eval(row['Goals_A_Minutes']) if int(minuto.split('+')[0]) <= 80]
-
-        # Contar os gols marcados até o minuto 80
-        gols_home_80 = len(gols_home)
-        gols_away_80 = len(gols_away)
-
-        return f"{gols_home_80}-{gols_away_80}"
+        return f"{gols_home}-{gols_away}"
 
     df = pd.read_csv("https://github.com/futpythontrader/YouTube/blob/main/Bases_de_Dados/FootyStats/Base_de_Dados_FootyStats_(2022_2025).csv?raw=true")
     df[["Date", "Time"]] = df["Date"].str.split(" ", expand=True)
@@ -371,9 +404,10 @@ def load_histmatches(dt=None):
     df["Formatted_Date"] = df["Date"].dt.strftime("%d/%m/%Y")
     df['Month_Year'] = pd.to_datetime(df['Date']).dt.strftime('%m/%Y')
     df["Resultado_HT"] = df["Goals_H_HT"].astype(str) + "-" + df["Goals_A_HT"].astype(str)
-    df['Resultado_75'] = df.apply(calcular_resultado_75, axis=1)
-    df['Resultado_80'] = df.apply(calcular_resultado_80, axis=1)
     df["Resultado_FT"] = df["Goals_H_FT"].astype(str) + "-" + df["Goals_A_FT"].astype(str)
+    df['Resultado_70'] = df.apply(calcular_resultado_minuto, minute=70, axis=1)
+    df['Resultado_75'] = df.apply(calcular_resultado_minuto, minute=75, axis=1)
+    df['Resultado_80'] = df.apply(calcular_resultado_minuto, minute=80, axis=1)
     df["Primeiro_Gol"] = df.apply(first_goal_string, axis=1)
     df["Diff_XG_Home_Away_Pre"] = df['XG_Home_Pre'] - df['XG_Away_Pre']
 
