@@ -267,16 +267,18 @@ def main_page():
             df_hist.loc[filter, "Status_Metodo"] = "GREEN"
             odd_media = f"{str(round(df_hist['Odd_BTTS_No'].mean(), 2))}"
         if metodo == 'Lay 0x1':
-            df_hist.loc[((df_hist["Resultado_FT"] != '0-1') & (df_hist["Resultado_80"] != '0-1')), "Status_Metodo"] = "GREEN"
+            # df_hist.loc[((df_hist["Resultado_FT"] != '0-1') & (df_hist["Resultado_80"] != '0-1')), "Status_Metodo"] = "GREEN"
+            df_hist.loc[(df_hist["Resultado_80"] != '0-1'), "Status_Metodo"] = "GREEN"
             df_hist['Profit'] = 0
         if metodo == 'Lay 1x1':
-            df_hist.loc[((df_hist["Resultado_FT"] != '1-1') & (df_hist["Resultado_80"] != '1-1')), "Status_Metodo"] = "GREEN"
+            # df_hist.loc[((df_hist["Resultado_FT"] != '1-1') & (df_hist["Resultado_80"] != '1-1')), "Status_Metodo"] = "GREEN"
+            df_hist.loc[(df_hist["Resultado_80"] != '1-1'), "Status_Metodo"] = "GREEN"
             df_hist['Profit'] = 0
         if metodo == 'Lay 0x2':
-            df_hist.loc[df_hist["Resultado_FT"] != '0-2', "Status_Metodo"] = "GREEN"
+            df_hist.loc[df_hist["Resultado_80"] != '0-2', "Status_Metodo"] = "GREEN"
             df_hist['Profit'] = 0
         if metodo == 'Lay 0x3':
-            df_hist.loc[df_hist["Resultado_FT"] != '0-3', "Status_Metodo"] = "GREEN"
+            df_hist.loc[df_hist["Resultado_80"] != '0-3', "Status_Metodo"] = "GREEN"
             df_hist['Profit'] = 0
         if metodo == 'Lay Goleada Visitante':
             df_hist.loc[((df_hist['Goals_A_FT'] < 4) | (df_hist['Goals_A_FT'] <= df_hist['Goals_H_FT'])), "Status_Metodo"] = "GREEN"
@@ -353,10 +355,10 @@ def main_page():
 
 
             st.write(f"**:green[GREENs:]**")
-            print_dataframe(df_hist.loc[df_hist['Status_Metodo'] == 'GREEN', ['League','Rodada','Date','Time','Home','Away','Resultado_HT','Resultado_FT','Resultado_80','Odd_H_FT','Odd_D_FT','Odd_A_FT','Odd_Over25_FT','Odd_Under25_FT','Odd_BTTS_Yes','Odd_BTTS_No','Odd_DC_1X','Odd_DC_12','Odd_DC_X2','XG_Total_Pre','XG_Home_Pre','XG_Away_Pre','Diff_XG_Home_Away_Pre','PPG_Home_Pre','PPG_Away_Pre','Goals_H_Minutes','Goals_A_Minutes','Primeiro_Gol','Status_Metodo','Profit']])
+            print_dataframe(df_hist.loc[df_hist['Status_Metodo'] == 'GREEN', ['League','Rodada','Date','Time','Home','Away','Resultado_HT','Resultado_FT','Resultado_70','Resultado_75','Resultado_80','Odd_H_FT','Odd_D_FT','Odd_A_FT','Odd_Over25_FT','Odd_Under25_FT','Odd_BTTS_Yes','Odd_BTTS_No','Odd_DC_1X','Odd_DC_12','Odd_DC_X2','XG_Total_Pre','XG_Home_Pre','XG_Away_Pre','Diff_XG_Home_Away_Pre','PPG_Home_Pre','PPG_Away_Pre','Goals_H_Minutes','Goals_A_Minutes','Primeiro_Gol','Status_Metodo','Profit']])
 
             st.write(f"**:red[REDs:]**")
-            print_dataframe(df_hist.loc[df_hist['Status_Metodo'] == 'RED', ['League','Rodada','Date','Time','Home','Away','Resultado_HT','Resultado_FT','Resultado_80','Odd_H_FT','Odd_D_FT','Odd_A_FT','Odd_Over25_FT','Odd_Under25_FT','Odd_BTTS_Yes','Odd_BTTS_No','Odd_DC_1X','Odd_DC_12','Odd_DC_X2','XG_Total_Pre','XG_Home_Pre','XG_Away_Pre','Diff_XG_Home_Away_Pre','PPG_Home_Pre','PPG_Away_Pre','Goals_H_Minutes','Goals_A_Minutes','Primeiro_Gol','Status_Metodo','Profit']])
+            print_dataframe(df_hist.loc[df_hist['Status_Metodo'] == 'RED', ['League','Rodada','Date','Time','Home','Away','Resultado_HT','Resultado_FT','Resultado_70','Resultado_75','Resultado_80','Odd_H_FT','Odd_D_FT','Odd_A_FT','Odd_Over25_FT','Odd_Under25_FT','Odd_BTTS_Yes','Odd_BTTS_No','Odd_DC_1X','Odd_DC_12','Odd_DC_X2','XG_Total_Pre','XG_Home_Pre','XG_Away_Pre','Diff_XG_Home_Away_Pre','PPG_Home_Pre','PPG_Away_Pre','Goals_H_Minutes','Goals_A_Minutes','Primeiro_Gol','Status_Metodo','Profit']])
 
             st.write("**Detalhes**")
 
