@@ -280,7 +280,6 @@ def get_filter_lay_0x2(df):
         ]))
     )
 
-
 def get_filter_lay_0x3(df):
     return (
         (df["Odd_H_FT"] < df["Odd_A_FT"]) &
@@ -382,9 +381,9 @@ def load_histmatches(dt=None):
         # Identificar o menor minuto e sua origem
         if all_goals:
             first = min(all_goals, key=lambda x: x[0])  # Ordenar pelo minuto
-            return f"{first[0]}' {first[1]}"  # Formatar como "minuto' origem"
+            return [f"{first[0]}' {first[1]}",first[0],first[1]]  # Formatar como "minuto' origem"
         else:
-            return '-'  # Caso não haja gols
+            return ['-',None,""]  # Caso não haja gols
     
     def calcular_resultado_minuto(row, minute):
         # Processar os minutos para casa e visitante
@@ -408,7 +407,7 @@ def load_histmatches(dt=None):
     df['Resultado_70'] = df.apply(calcular_resultado_minuto, minute=70, axis=1)
     df['Resultado_75'] = df.apply(calcular_resultado_minuto, minute=75, axis=1)
     df['Resultado_80'] = df.apply(calcular_resultado_minuto, minute=80, axis=1)
-    df["Primeiro_Gol"] = df.apply(first_goal_string, axis=1)
+    df[["Primeiro_Gol","Primeiro_Gol_Minuto","Primeiro_Gol_Marcador"]] = df.apply(first_goal_string, axis=1)
     df["Diff_XG_Home_Away_Pre"] = df['XG_Home_Pre'] - df['XG_Away_Pre']
 
     return df
