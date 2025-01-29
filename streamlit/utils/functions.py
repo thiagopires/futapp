@@ -342,7 +342,7 @@ def load_histmatches(dt=None):
         else:
             return '-'  # Caso não haja gols
     
-    def calcular_resultado(row):
+    def calcular_resultado(row, minute):
         # Processar os minutos para casa e visitante
         gols_home = [int(minuto.split('+')[0]) for minuto in eval(row['Goals_H_Minutes']) if int(minuto.split('+')[0]) <= minute]
         gols_away = [int(minuto.split('+')[0]) for minuto in eval(row['Goals_A_Minutes']) if int(minuto.split('+')[0]) <= minute]
