@@ -38,7 +38,8 @@ def main_page():
     if not (not selected_seasons or "Todas as Temporadas" in selected_seasons):
         df_hist = df_hist[df_hist['Season'].isin(selected_seasons)]
 
-    print_dataframe(df_hist)
+    if st.button("Carregar dados"):
+        print_dataframe(df_hist)
 
 if "logged_in" not in st.session_state:
     st.session_state["logged_in"] = False
