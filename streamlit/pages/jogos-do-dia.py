@@ -33,6 +33,7 @@ def main_page():
             'BTTS Sim',
             'Lay 0x1 (até 80min)',
             'Lay 0x2 (até 80min)',
+            'Lay 0x3 (até 80min)',
             # 'BTTS Não'
         ])
 
@@ -48,9 +49,9 @@ def main_page():
         filter = get_filter_over(df_matches)
         df_matches = df_matches[filter]
 
-    elif filtro_pronto_selecionado == "Under 2.5 FT":
-        filter = get_filter_under(df_matches)
-        df_matches = df_matches[filter]
+    # elif filtro_pronto_selecionado == "Under 2.5 FT":
+    #     filter = get_filter_under(df_matches)
+    #     df_matches = df_matches[filter]
 
     elif filtro_pronto_selecionado == "BTTS Sim":
         filter = get_filter_btts_yes(df_matches)
@@ -62,6 +63,10 @@ def main_page():
 
     elif filtro_pronto_selecionado == "Lay 0x2 (até 80min)":
         filter = get_filter_lay_0x2(df_matches)
+        df_matches = df_matches[filter]
+
+    elif filtro_pronto_selecionado == "Lay 0x3 (até 80min)":
+        filter = get_filter_lay_0x3(df_matches)
         df_matches = df_matches[filter]
     
     # elif filtro_pronto_selecionado == "BTTS Não": 

@@ -280,6 +280,31 @@ def get_filter_lay_0x2(df):
         ]))
     )
 
+
+def get_filter_lay_0x3(df):
+    return (
+        (df["Odd_H_FT"] < df["Odd_A_FT"]) &
+        (df["XG_Home_Pre"] > 0) &
+        (df["XG_Away_Pre"] > 0) &
+        (df["XG_Away_Pre"] <= 2) &
+        (df["Odd_H_FT"] <= 2) &
+        (df["Odd_A_FT"] >= 6.5) &
+        (df['League'].isin([
+            'England Championship',
+            'England Premier League',
+            'France Ligue 1',
+            'Germany 2. Bundesliga',
+            'Germany Bundesliga',
+            'Italy Serie A',
+            'Netherlands Eredivisie',
+            'Portugal Liga NOS',
+            'Romania Liga I',
+            'Spain La Liga',
+            'Spain Segunda División',
+            'Turkey Süper Lig'
+        ]))
+    )
+
 def print_dataframe(df, styled_df=None):
     if not styled_df:
         st.dataframe(df, use_container_width=True, hide_index=True)
