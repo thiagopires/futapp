@@ -381,9 +381,9 @@ def load_histmatches(dt=None):
         # Identificar o menor minuto e sua origem
         if all_goals:
             first = min(all_goals, key=lambda x: x[0])  # Ordenar pelo minuto
-            return [f"{first[0]}' {first[1]}",first[0],first[1]]  # Formatar como "minuto' origem"
+            return pd.Series([f"{first[0]}' {first[1]}",first[0],first[1]])  # Formatar como "minuto' origem"
         else:
-            return ['-',None,""]  # Caso não haja gols
+            return pd.Series(['-',None,""])  # Caso não haja gols
     
     def calcular_resultado_minuto(row, minute):
         # Processar os minutos para casa e visitante
