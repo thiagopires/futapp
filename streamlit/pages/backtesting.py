@@ -111,18 +111,21 @@ def main_page():
             if valor != "":
                 string_indicadores += f"{indicador} {operador_selecionado} {valor} | "
 
+                if indicador != 'Primeiro_Gol_Marcador':
+                    valor = float(valor)
+
                 if operador_selecionado == 'Igual (=)':
-                    filter = (df_hist[indicador] == float(valor)) if tipo == 'Valor Absoluto' else (df_hist[indicador] == df_hist[valor])
+                    filter = (df_hist[indicador] == valor) if tipo == 'Valor Absoluto' else (df_hist[indicador] == df_hist[valor])
                 if operador_selecionado == 'Maior que (>)':
-                    filter = (df_hist[indicador] > float(valor)) if tipo == 'Valor Absoluto' else (df_hist[indicador] > df_hist[valor])
+                    filter = (df_hist[indicador] > valor) if tipo == 'Valor Absoluto' else (df_hist[indicador] > df_hist[valor])
                 if operador_selecionado == 'Menor que (<)':
-                    filter = (df_hist[indicador] < float(valor)) if tipo == 'Valor Absoluto' else (df_hist[indicador] < df_hist[valor])
+                    filter = (df_hist[indicador] < valor) if tipo == 'Valor Absoluto' else (df_hist[indicador] < df_hist[valor])
                 if operador_selecionado == 'Maior ou igual (>=)':
-                    filter = (df_hist[indicador] >= float(valor)) if tipo == 'Valor Absoluto' else (df_hist[indicador] >= df_hist[valor])
+                    filter = (df_hist[indicador] >= valor) if tipo == 'Valor Absoluto' else (df_hist[indicador] >= df_hist[valor])
                 if operador_selecionado == 'Menor ou igual (<=)':
-                    filter = (df_hist[indicador] <= float(valor)) if tipo == 'Valor Absoluto' else (df_hist[indicador] <= df_hist[valor])
+                    filter = (df_hist[indicador] <= valor) if tipo == 'Valor Absoluto' else (df_hist[indicador] <= df_hist[valor])
                 if operador_selecionado == 'Diferente de (!=)':
-                    filter = (df_hist[indicador] != float(valor)) if tipo == 'Valor Absoluto' else (df_hist[indicador] != df_hist[valor])
+                    filter = (df_hist[indicador] != valor) if tipo == 'Valor Absoluto' else (df_hist[indicador] != df_hist[valor])
 
                 df_hist = df_hist[filter]
 
