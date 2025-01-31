@@ -265,14 +265,11 @@ def get_filter_back_empate(df):
             'CROATIA - PRVA HNL',
             'CZECH - REPUBLIC FIRST LEAGUE',
             'AUSTRIA - BUNDESLIGA',
-            'ENGLAND - EFL LEAGUE TWO',
             'DENMARK - SUPERLIGA',
             'TURKEY - SÜPER LIG',
             'ROMANIA - LIGA I',
-            'GERMANY - 2. BUNDESLIGA',
             'ITALY - SERIE A',
             'BELGIUM - PRO LEAGUE',
-            'ITALY - SERIE B',
             'ENGLAND - PREMIER LEAGUE'
         ]))
     )
