@@ -397,10 +397,10 @@ def main_page():
             col1, col2, col3 = st.columns(3)
             with col1:
                 report = df_hist.groupby(["League", "Month_Year"])["Profit"].sum().reset_index()
-                report["Cumulative_Profit"] = report["Profit"].cumsum()
                 st.dataframe(report)
             with col2:
                 report = df_hist.groupby(["League"])["Profit"].sum().reset_index()
+                report = report.sort_values(by="Profit", ascending=False)
                 report["Cumulative_Profit"] = report["Profit"].cumsum()
                 st.dataframe(report)
             with col3:
