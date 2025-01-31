@@ -291,22 +291,20 @@ def get_filter_lay_0x3(df):
 def get_filter_back_home(df):
     return (
         (df["CV_HDA_FT"] >= 0.34) & (df["CV_HDA_FT"] < 0.44) &
-        (df["Probabilidade_H_FT"] > 0.15) & (df["Probabilidade_H_FT"] < 0.6) 
-
-        # back casa
-        # BRAZIL - SERIE B
-        # ARGENTINA - PRIMERA DIVISIÓN
-        # BELGIUM - PRO LEAGUE
-        # SWEDEN - ALLSVENSKAN
-        # ICELAND - ÚRVALSDEILD
-        # USA - MLS
-        # SOUTH - KOREA K LEAGUE 2
-        # ENGLAND - EFL LEAGUE TWO
-        # ITALY - SERIE B
-        # SCOTLAND - PREMIERSHIP
-        # SERBIA - SUPERLIGA
-
-
+        (df["Probabilidade_H_FT"] > 0.2) & (df["Probabilidade_H_FT"] < 0.65) 
+        &
+        (df['League'].isin([
+            'BRAZIL - SERIE B',
+            'BELGIUM - PRO LEAGUE',
+            'ARGENTINA - PRIMERA DIVISIÓN',
+            'SWEDEN - ALLSVENSKAN',
+            'ICELAND - ÚRVALSDEILD',
+            'ITALY - SERIE B',
+            'EGYPT - EGYPTIAN PREMIER LEAGUE',
+            'ENGLAND - CHAMPIONSHIP',
+            'CHILE - PRIMERA DIVISIÓN',
+            'ENGLAND - EFL LEAGUE TWO'
+        ])) 
     )
 
 def print_dataframe(df, styled_df=None):
