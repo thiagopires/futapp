@@ -56,13 +56,8 @@ def get_filter_over(df):
         (df["Odd_Over25_FT"] >= 1.3) # &
         &
         (df['League'].isin([
-            'BELGIUM - PRO LEAGUE',
             'PORTUGAL - LIGA NOS',
-            'WALES - WELSH PREMIER LEAGUE',
-            'PARAGUAY - DIVISION PROFESIONAL',
-            'ITALY - SERIE B',
             'GERMANY - BUNDESLIGA',
-            'SPAIN - LA LIGA',
             'NETHERLANDS - EREDIVISIE',
             'ENGLAND - CHAMPIONSHIP',
             'ENGLAND - EFL LEAGUE ONE',
@@ -70,7 +65,7 @@ def get_filter_over(df):
             'GERMANY - 2. BUNDESLIGA',
             'SERBIA - SUPERLIGA',
             'ENGLAND - PREMIER LEAGUE',
-            'SPAIN - SEGUNDA DIVISIÓN',
+            'SPAIN - SEGUNDA DIVISIÓN'
         ]))
     )
 
