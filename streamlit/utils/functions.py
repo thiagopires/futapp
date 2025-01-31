@@ -294,17 +294,17 @@ def get_filter_back_home(df):
         (df["Probabilidade_H_FT"] > 0.15) & (df["Probabilidade_H_FT"] < 0.6) 
 
         # back casa
-        BRAZIL - SERIE B
-        ARGENTINA - PRIMERA DIVISIÓN
-        BELGIUM - PRO LEAGUE
-        SWEDEN - ALLSVENSKAN
-        ICELAND - ÚRVALSDEILD
-        USA - MLS
-        SOUTH - KOREA K LEAGUE 2
-        ENGLAND - EFL LEAGUE TWO
-        ITALY - SERIE B
-        SCOTLAND - PREMIERSHIP
-        SERBIA - SUPERLIGA
+        # BRAZIL - SERIE B
+        # ARGENTINA - PRIMERA DIVISIÓN
+        # BELGIUM - PRO LEAGUE
+        # SWEDEN - ALLSVENSKAN
+        # ICELAND - ÚRVALSDEILD
+        # USA - MLS
+        # SOUTH - KOREA K LEAGUE 2
+        # ENGLAND - EFL LEAGUE TWO
+        # ITALY - SERIE B
+        # SCOTLAND - PREMIERSHIP
+        # SERBIA - SUPERLIGA
 
 
     )
