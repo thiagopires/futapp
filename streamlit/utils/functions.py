@@ -255,17 +255,27 @@ def get_filter_back_empate(df):
         (df["Odd_BTTS_No"] >= 1.7) & (df["Odd_BTTS_No"] <= 2.38) &
         ((df["Odd_H_FT"] < 1.9) | (df["Odd_H_FT"] > 2.1)) &
         ((df["Odd_A_FT"] < 1.9) | (df["Odd_A_FT"] > 2.1)) 
-        # &
-        # (df['League'].isin([
-        #     'England Championship',
-        #     'Belgium Pro League',
-        #     'England Premier League',
-        #     'Italy Serie B',
-        #     'Germany 2. Bundesliga',
-        #     'Turkey Süper Lig',
-        #     'Romania Liga I',
-        #     'Italy Serie A',
-        # ]))
+        &
+        (df['League'].isin([
+            'PARAGUAY - DIVISION PROFESIONAL',
+            'SWITZERLAND - CHALLENGE LEAGUE',
+            'SWITZERLAND - SUPER LEAGUE',
+            'WALES - WELSH PREMIER LEAGUE',
+            'AUSTRIA - 2. LIGA',
+            'CROATIA - PRVA HNL',
+            'CZECH - REPUBLIC FIRST LEAGUE',
+            'AUSTRIA - BUNDESLIGA',
+            'ENGLAND - EFL LEAGUE TWO',
+            'DENMARK - SUPERLIGA',
+            'TURKEY - SÜPER LIG',
+            'ROMANIA - LIGA I',
+            'GERMANY - 2. BUNDESLIGA',
+            'ITALY - SERIE A',
+            'BELGIUM - PRO LEAGUE',
+            'ITALY - SERIE B',
+            'ENGLAND - PREMIER LEAGUE',
+            'ENGLAND - CHAMPIONSHIP'
+        ]))
     )
 
 def get_filter_lay_0x2(df):
