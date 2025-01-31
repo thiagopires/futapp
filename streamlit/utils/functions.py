@@ -222,16 +222,25 @@ def get_filter_lay_visitante_zebra(df):
         (df["XG_Home_Pre"] > df["XG_Away_Pre"]) &
         (df["XG_Total_Pre"] >= 1.7) & # (df["XG_Total_Pre"] <= 2.6) &
         (df["XG_Away_Pre"] <= 1.25) 
-        # &
-        # (df['League'].isin([
-        #     'Turkey Süper Lig',
-        #     'England EFL League One',
-        #     'Italy Serie B',
-        #     'Spain Segunda División',
-        #     'Italy Serie A',
-        #     'France Ligue 1',
-        #     'England Premier League'
-        # ]))
+        &
+        (df['League'].isin([
+            'SPAIN - LA LIGA',
+            'DENMARK - SUPERLIGA',
+            'BELGIUM - PRO LEAGUE',
+            'ENGLAND - EFL LEAGUE TWO',
+            'AUSTRIA - 2. LIGA',
+            'POLAND - EKSTRAKLASA',
+            'GERMANY - BUNDESLIGA',
+            'SWITZERLAND - SUPER LEAGUE',
+            'ENGLAND - PREMIER LEAGUE',
+            'ITALY - SERIE A',
+            'GERMANY - 2. BUNDESLIGA',
+            'SPAIN - SEGUNDA DIVISIÓN',
+            'FRANCE - LIGUE 1',
+            'ITALY - SERIE B',
+            'ENGLAND - EFL LEAGUE ONE',
+            'TURKEY - SÜPER LIG'
+        ]))
     )
 
 def get_filter_back_empate(df):
