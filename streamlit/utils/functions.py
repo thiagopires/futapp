@@ -273,8 +273,7 @@ def get_filter_back_empate(df):
             'ITALY - SERIE A',
             'BELGIUM - PRO LEAGUE',
             'ITALY - SERIE B',
-            'ENGLAND - PREMIER LEAGUE',
-            'ENGLAND - CHAMPIONSHIP'
+            'ENGLAND - PREMIER LEAGUE'
         ]))
     )
 
