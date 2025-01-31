@@ -126,7 +126,7 @@ def get_filter_btts_yes(df):
                 (df['League'].isin([
                     'Germany 2. Bundesliga',
                     'Italy Serie B',
-                    # 'Greece Super League',
+                    #'Greece Super League',
                     'Netherlands Eredivisie',
                     'France Ligue 1',
                     'Germany Bundesliga',
@@ -183,8 +183,7 @@ def get_filter_btts_no(df):
 
 def get_filter_lay_0x1(df):
     return (
-        (df["Odd_H_FT"] < df["Odd_D_FT"]) &
-        (df["Odd_D_FT"] < df["Odd_A_FT"]) &
+        (df["Odd_H_FT"] < df["Odd_A_FT"]) &
         (df["Odd_H_FT"] > 1.5) &
         ((df["Odd_H_FT"] < 2.45) | (df["Odd_H_FT"] > 2.55)) &
         (df["XG_Away_Pre"] > 1.12) &
@@ -263,8 +262,6 @@ def get_filter_back_empate(df):
 
 def get_filter_lay_0x2(df):
     return (
-        (df["Odd_H_FT"] < df["Odd_D_FT"]) &
-        (df["Odd_D_FT"] < df["Odd_A_FT"]) &
         (df["XG_Away_Pre"] > 0) &
         (df["Diff_XG_Home_Away_Pre"] > 0.66) &
         (df['League'].isin([
@@ -285,8 +282,7 @@ def get_filter_lay_0x2(df):
 
 def get_filter_lay_0x3(df):
     return (
-        (df["Odd_H_FT"] < df["Odd_D_FT"]) &
-        (df["Odd_D_FT"] < df["Odd_A_FT"]) &
+        (df["Odd_H_FT"] < df["Odd_A_FT"]) &
         (df["XG_Home_Pre"] > 0) &
         (df["XG_Away_Pre"] > 0) &
         (df["XG_Away_Pre"] <= 2) &
