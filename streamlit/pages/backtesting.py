@@ -404,7 +404,7 @@ def main_page():
                 report["Cumulative_Profit"] = report["Profit"].cumsum()
                 st.dataframe(report)
             with col3:
-                report = df_hist.groupby(["League","Status_Metodo"])["Status_Metodo"].count().reset_index()
+                report = df_hist.groupby(["League","Status_Metodo"])["Q_Status_Metodo"].count().reset_index()
                 # report["Cumulative_Profit"] = report["Profit"].cumsum()
                 st.dataframe(report)
 
