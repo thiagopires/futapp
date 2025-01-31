@@ -115,14 +115,11 @@ def get_filter_btts_yes(df):
         (df['League'].isin([
             'SPAIN - SEGUNDA DIVISIÓN',
             'NETHERLANDS - EREDIVISIE',
-            'CROATIA - PRVA HNL',
             'GERMANY - BUNDESLIGA',
-            'SWITZERLAND - CHALLENGE LEAGUE',
             'SERBIA - SUPERLIGA',
             'ENGLAND - PREMIER LEAGUE',
             'FRANCE - LIGUE 1',
             'SPAIN - LA LIGA',
-            'WALES - WELSH PREMIER LEAGUE'
         ]))
     )
 
