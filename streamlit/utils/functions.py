@@ -110,32 +110,20 @@ def get_filter_btts_yes(df):
     return (
         (df["XG_Home_Pre"] >= 1.3) &
         (df["XG_Away_Pre"] >= 1.3) &
-        (df["Odd_BTTS_Yes"] >= 1.4) # & 
-        # (
-        #     (
-        #         (df["Odd_H_FT"] < df["Odd_A_FT"]) &
-        #         (df['League'].isin([
-        #             'Germany 2. Bundesliga',
-        #             'Italy Serie B',
-        #             #'Greece Super League',
-        #             'Netherlands Eredivisie',
-        #             'France Ligue 1',
-        #             'Germany Bundesliga',
-        #             'Romania Liga I',
-        #             'England Premier League',
-        #             'Serbia SuperLiga'
-        #         ]))
-        #         ) | (
-        #         (df["Odd_H_FT"] > df["Odd_A_FT"]) &
-        #         (df['League'].isin([
-        #             'England Premier League',
-        #             'Portugal LigaPro',
-        #             'France Ligue 1',
-        #             'England EFL League One',
-        #             'Spain La Liga'
-        #         ]))
-        #     )
-        # )
+        (df["Odd_BTTS_Yes"] >= 1.4) 
+        &
+        (df['League'].isin([
+            'SPAIN - SEGUNDA DIVISIÓN',
+            'NETHERLANDS - EREDIVISIE',
+            'CROATIA - PRVA HNL',
+            'GERMANY - BUNDESLIGA',
+            'SWITZERLAND - CHALLENGE LEAGUE',
+            'SERBIA - SUPERLIGA',
+            'ENGLAND - PREMIER LEAGUE',
+            'FRANCE - LIGUE 1',
+            'SPAIN - LA LIGA',
+            'WALES - WELSH PREMIER LEAGUE'
+        ]))
     )
 
 def get_filter_btts_no(df):
