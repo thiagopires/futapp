@@ -148,6 +148,7 @@ def main_page():
             'Lay 0x2 (até 80min)',
             'Lay 0x3 (até 80min)',
             # 'BTTS Não'
+            'Teste BackHome'
         ])
 
     if filtro_pronto_selecionado == "Lay Visitante Zebra":
@@ -204,6 +205,11 @@ def main_page():
         condicao = 'Geral'
         metodo = 'Lay 0x3'
 
+    elif filtro_pronto_selecionado == "Teste BackHome":
+        filter = get_filter_back_home(df_hist)
+        df_hist = df_hist[filter]
+        condicao = 'Geral'
+        metodo = 'Back Home'
 
     st.divider()
 
@@ -388,7 +394,7 @@ def main_page():
 
             st.write("**Detalhes**")
 
-            col1, col2 = st.columns(2)
+            col1, col2, col3 = st.columns(3)
             with col1:
                 report = df_hist.groupby(["League", "Month_Year"])["Profit"].sum().reset_index()
                 report["Cumulative_Profit"] = report["Profit"].cumsum()
@@ -396,6 +402,10 @@ def main_page():
             with col2:
                 report = df_hist.groupby(["League"])["Profit"].sum().reset_index()
                 report["Cumulative_Profit"] = report["Profit"].cumsum()
+                st.dataframe(report)
+            with col3:
+                report = df_hist.groupby(["League","Status_Metodo"])["Status_Metodo"].count().reset_index()
+                # report["Cumulative_Profit"] = report["Profit"].cumsum()
                 st.dataframe(report)
 
         else:
