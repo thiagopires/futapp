@@ -257,12 +257,6 @@ def get_filter_back_empate(df):
         ((df["Odd_A_FT"] < 1.9) | (df["Odd_A_FT"] > 2.1)) 
         &
         (df['League'].isin([
-            'PARAGUAY - DIVISION PROFESIONAL',
-            'SWITZERLAND - CHALLENGE LEAGUE',
-            'SWITZERLAND - SUPER LEAGUE',
-            'WALES - WELSH PREMIER LEAGUE',
-            'AUSTRIA - 2. LIGA',
-            'CROATIA - PRVA HNL',
             'CZECH - REPUBLIC FIRST LEAGUE',
             'AUSTRIA - BUNDESLIGA',
             'DENMARK - SUPERLIGA',
