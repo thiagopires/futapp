@@ -292,7 +292,7 @@ def get_filter_back_home(df):
     return (
         (df["Odd_H_FT"].between(1.3, 2.3)) &
         (
-            ((df['League'] == 'ARGENTINA - PRIMERA DIVISIÓN') & (df["Probabilidade_H_FT"].between(0.42, 0.51))) |
+            ((df['League'] == 'ARGENTINA - PRIMERA DIVISIÓN') & (df["Probabilidade_H_FT"].between(0.52, 0.61))) |
             ((df['League'] == 'BELGIUM - PRO LEAGUE') & (df["Probabilidade_H_FT"].between(0.52, 0.61))) |
             ((df['League'] == 'BRAZIL - SERIE A') & (df["Probabilidade_H_FT"].between(0.62, 0.71))) |
             ((df['League'] == 'BRAZIL - SERIE B') & (df["Probabilidade_H_FT"].between(0.62, 0.71))) |
@@ -300,7 +300,10 @@ def get_filter_back_home(df):
             ((df['League'] == 'JAPAN - J2 LEAGUE') & (df["Probabilidade_H_FT"].between(0.52, 0.81))) |
             ((df['League'] == 'NETHERLANDS - EERSTE DIVISIE') & (df["Probabilidade_H_FT"].between(0.62, 0.71))) |
             ((df['League'] == 'NETHERLANDS - EREDIVISIE') & (df["Probabilidade_H_FT"].between(0.52, 0.61))) |
-            ((df['League'] == 'NETHERLANDS - EREDIVISIE') & (df["Probabilidade_H_FT"].between(0.72, 0.81))) 
+            ((df['League'] == 'NETHERLANDS - EREDIVISIE') & (df["Probabilidade_H_FT"].between(0.72, 0.81))) |
+            ((df['League'] == 'PORTUGAL - LIGA NOS') & (df["Probabilidade_H_FT"].between(0.42, 0.51))) |
+            ((df['League'] == 'SPAIN - LA LIGA') & (df["Probabilidade_H_FT"].between(0.62, 0.81))) |
+            ((df['League'] == 'TURKEY - SÜPER LIG') & (df["Probabilidade_H_FT"].between(0.72, 0.81)))
         )
     )
 
