@@ -290,7 +290,7 @@ def get_filter_lay_0x3(df):
 
 def get_filter_back_home(df):
     return (
-        (df["Odd_H_FT"].between(1.3, 2.3)) &
+        (df["Odd_H_FT"].between(1.3, 2.5)) &
         (
             ((df['League'] == 'ARGENTINA - PRIMERA DIVISIÓN') & (df["Probabilidade_H_FT"].between(0.52, 0.61))) |
             ((df['League'] == 'BELGIUM - PRO LEAGUE') & (df["Probabilidade_H_FT"].between(0.52, 0.61))) |
