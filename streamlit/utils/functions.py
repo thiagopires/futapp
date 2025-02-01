@@ -292,7 +292,7 @@ def get_filter_back_home(df):
     return (
         (df["Odd_H_FT"] < df["Odd_A_FT"]) &
         (df["CV_HDA_FT"] >= 0.35) & (df["CV_HDA_FT"] <= 0.42) &
-        (df["Probabilidade_H_FT"] > 0.2) & (df["Probabilidade_H_FT"] < 0.65) 
+        (df["Probabilidade_H_FT"] > 0.15) & (df["Probabilidade_H_FT"] < 0.65) 
         # &
         # (df['League'].isin([
         #     'BRAZIL - SERIE B',
