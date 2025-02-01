@@ -297,10 +297,7 @@ def get_filter_back_home(df):
             'BRAZIL - SERIE B',
             'BELGIUM - PRO LEAGUE',
             'ARGENTINA - PRIMERA DIVISIÓN',
-            'SWEDEN - ALLSVENSKAN',
             'ITALY - SERIE B',
-            'ENGLAND - CHAMPIONSHIP',
-            'CHILE - PRIMERA DIVISIÓN'
         ])) 
     )
 
