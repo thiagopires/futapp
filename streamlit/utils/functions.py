@@ -298,12 +298,9 @@ def get_filter_back_home(df):
             'BELGIUM - PRO LEAGUE',
             'ARGENTINA - PRIMERA DIVISIÓN',
             'SWEDEN - ALLSVENSKAN',
-            'ICELAND - ÚRVALSDEILD',
             'ITALY - SERIE B',
-            'EGYPT - EGYPTIAN PREMIER LEAGUE',
             'ENGLAND - CHAMPIONSHIP',
-            'CHILE - PRIMERA DIVISIÓN',
-            'ENGLAND - EFL LEAGUE TWO'
+            'CHILE - PRIMERA DIVISIÓN'
         ])) 
     )
 
