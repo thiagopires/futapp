@@ -34,7 +34,8 @@ def main_page():
             'Lay 0x1 (até 80min)',
             'Lay 0x2 (até 80min)',
             'Lay 0x3 (até 80min)',
-            # 'BTTS Não'
+            # 'BTTS Não',
+            'Teste BackHome'
         ])
 
     if filtro_pronto_selecionado == "Lay Visitante Zebra":
@@ -73,6 +74,10 @@ def main_page():
     #     filter = get_filter_btts_no(df_matches)
     #     df_matches = df_matches[filter]
 
+    elif filtro_pronto_selecionado == "Teste BackHome":
+        filter = get_filter_back_home(df_matches)
+        df_matches = df_matches[filter]
+    
     # Dataframe
     st.subheader(f"Selecione o jogo para abrir detalhes abaixo:")
     match_selected = st.dataframe(
