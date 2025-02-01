@@ -336,6 +336,13 @@ def load_daymatches(dt, filter_teams=None):
     df["Datetime"] = pd.to_datetime(df["Date"] + " " + df["Time"])
     df["Formatted_Datetime"] = df["Datetime"].dt.strftime("%d/%m/%Y %H:%M")
     df["Confronto"] = df["Time"] + " - " + df["Home"] + " vs. " + df["Away"]
+
+    df['Probabilidade_H_FT'] = round((1 / df['Odd_H_FT']),2)
+    df['Probabilidade_D_FT'] = round((1 / df['Odd_D_FT']),2)
+    df['Probabilidade_A_FT'] = round((1 / df['Odd_A_FT']),2)
+
+    df['CV_HDA_FT'] = round((df[['Odd_H_FT','Odd_D_FT','Odd_A_FT']].std(ddof=0, axis=1) / df[['Odd_H_FT','Odd_D_FT','Odd_A_FT']].mean(axis=1)),2)
+
     df["Diff_XG_Home_Away_Pre"] = df['XG_Home_Pre'] - df['XG_Away_Pre']
 
     # df_hist = load_histmatches(dt)
