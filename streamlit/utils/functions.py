@@ -291,16 +291,16 @@ def get_filter_lay_0x3(df):
 def get_filter_back_home(df):
     return (
         (df["Odd_H_FT"] < df["Odd_A_FT"]) &
-        (df["CV_HDA_FT"] >= 0.35) & (df["CV_HDA_FT"] < 0.44) &
+        (df["CV_HDA_FT"] >= 0.35) & (df["CV_HDA_FT"] <= 0.44) &
         (df["Probabilidade_H_FT"] > 0.2) & (df["Probabilidade_H_FT"] < 0.65) 
-        &
-        (df['League'].isin([
-            'BRAZIL - SERIE B',
-            'ARGENTINA - PRIMERA DIVISIÓN',
-            'BELGIUM - PRO LEAGUE',
-            'ENGLAND - EFL LEAGUE TWO',
-            'FRANCE - LIGUE 2'
-        ])) 
+        # &
+        # (df['League'].isin([
+        #     'BRAZIL - SERIE B',
+        #     'ARGENTINA - PRIMERA DIVISIÓN',
+        #     'BELGIUM - PRO LEAGUE',
+        #     'ENGLAND - EFL LEAGUE TWO',
+        #     'FRANCE - LIGUE 2'
+        # ])) 
     )
 
 def print_dataframe(df, styled_df=None):
