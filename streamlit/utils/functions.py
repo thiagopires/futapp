@@ -293,8 +293,8 @@ def get_filter_back_home(df):
         (df["Odd_H_FT"].between(1.3, 2.5)) &
         (
             ((df['League'] == 'ARGENTINA - PRIMERA DIVISIÓN') & (df["Probabilidade_H_FT"].between(0.52, 0.61))) |
-           # ((df['League'] == 'BELGIUM - PRO LEAGUE') & (df["Probabilidade_H_FT"].between(0.32, 0.41))) |
-            ((df['League'] == 'BELGIUM - PRO LEAGUE') & (df["Probabilidade_H_FT"].between(0.52, 0.61))) |
+            ((df['League'] == 'BELGIUM - PRO LEAGUE') & (df["Probabilidade_H_FT"].between(0.32, 0.41))) |
+           # ((df['League'] == 'BELGIUM - PRO LEAGUE') & (df["Probabilidade_H_FT"].between(0.52, 0.61))) |
             ((df['League'] == 'BRAZIL - SERIE A') & (df["Probabilidade_H_FT"].between(0.62, 0.71))) |
             ((df['League'] == 'BRAZIL - SERIE B') & (df["Probabilidade_H_FT"].between(0.62, 0.71))) |
             ((df['League'] == 'EGYPT - EGYPTIAN PREMIER LEAGUE') & (df["Probabilidade_H_FT"].between(0.62, 0.81))) |
