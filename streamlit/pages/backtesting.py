@@ -148,7 +148,8 @@ def main_page():
             'Lay 0x2 (até 80min)',
             'Lay 0x3 (até 80min)',
             # 'BTTS Não'
-            'Teste BackHome'
+            'Teste BackHome',
+            'Teste LayVisitante'
         ])
 
     if filtro_pronto_selecionado == "Lay Visitante Zebra":
@@ -210,6 +211,12 @@ def main_page():
         df_hist = df_hist[filter]
         condicao = 'Geral'
         metodo = 'Back Casa'
+
+    elif filtro_pronto_selecionado == "Teste LayVisitante":
+        filter = get_filter_back_home(df_hist)
+        df_hist = df_hist[filter]
+        condicao = 'Geral'
+        metodo = 'Lay Visitante'
 
     st.divider()
 
