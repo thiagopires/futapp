@@ -74,7 +74,7 @@ def main_page():
     #     filter = get_filter_btts_no(df_matches)
     #     df_matches = df_matches[filter]
 
-    elif filtro_pronto_selecionado == "Teste BackHome":
+    elif filtro_pronto_selecionado == "Back Casa":
         filter = get_filter_back_casa(df_matches)
         df_matches = df_matches[filter]
     
