@@ -213,7 +213,7 @@ def main_page():
         metodo = 'Back Casa'
 
     elif filtro_pronto_selecionado == "Teste LayVisitante":
-        filter = get_filter_back_home(df_hist)
+        filter = get_filter_lay_visitante_2(df_hist)
         df_hist = df_hist[filter]
         condicao = 'Geral'
         metodo = 'Lay Visitante'
