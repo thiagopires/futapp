@@ -266,21 +266,21 @@ def get_filter_lay_0x3(df):
         (df["XG_Away_Pre"] <= 2) &
         (df["Odd_H_FT"] <= 2) &
         (df["Odd_A_FT"] >= 6.5) 
-        # &
-        # (df['League'].isin([
-        #     'England Championship',
-        #     'England Premier League',
-        #     'France Ligue 1',
-        #     'Germany 2. Bundesliga',
-        #     'Germany Bundesliga',
-        #     'Italy Serie A',
-        #     'Netherlands Eredivisie',
-        #     'Portugal Liga NOS',
-        #     'Romania Liga I',
-        #     'Spain La Liga',
-        #     'Spain Segunda División',
-        #     'Turkey Süper Lig'
-        # ]))
+        &
+        (df['League'].isin([
+            'ENGLAND - CHAMPIONSHIP',
+            'ENGLAND - PREMIER LEAGUE',
+            'FRANCE - LIGUE 1',
+            'GERMANY - 2. BUNDESLIGA',
+            'GERMANY - BUNDESLIGA',
+            'ITALY - SERIE A',
+            'NETHERLANDS - EREDIVISIE',
+            'PORTUGAL - LIGA NOS',
+            'ROMANIA - LIGA I',
+            'SPAIN - LA LIGA',
+            'SPAIN - SEGUNDA DIVISIÓN',
+            'TURKEY - SÜPER LIG'
+        ]))
     )
 
 def get_filter_back_casa(df):
