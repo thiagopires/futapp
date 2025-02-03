@@ -566,7 +566,7 @@ def generate_classificacao_2(df, type):
         elif type == 'ALL':
             atualizar_estatisticas(row, clubes, casa=True)
             atualizar_estatisticas(row, clubes, casa=False)
-    
+     
     # Adicionando a posição e ordenando
 
     clubes = clubes.sort_values(by=["PTS", "DIFF", "GF"], ascending=False)
