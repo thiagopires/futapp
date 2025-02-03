@@ -314,7 +314,7 @@ def get_filter_back_home(df):
 
             ((df['League'] == 'GERMANY - BUNDESLIGA') 
                 & (df["Probabilidade_H_FT"].between(0.42, 0.51))
-                & (not df["CV_HDA_FT"].between(0.2, 0.24))) |
+                & (~df["CV_HDA_FT"].between(0.2, 0.24))) |
 
             ((df['League'] == 'GERMANY - BUNDESLIGA') 
                 & (df["Probabilidade_H_FT"].between(0.52, 0.61))
@@ -325,7 +325,7 @@ def get_filter_back_home(df):
                 & (df["CV_HDA_FT"].between(0.15, 0.19))) |
 
             ((df['League'] == 'TURKEY - SÜPER LIG') 
-                & (not df["Probabilidade_H_FT"].between(0.52, 0.61))) |
+                & (~df["Probabilidade_H_FT"].between(0.52, 0.61))) |
 
             ((df['League'] == 'WALES - WELSH PREMIER LEAGUE') 
                 & (df["Probabilidade_H_FT"].between(0.62, 0.81))) |

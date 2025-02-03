@@ -209,7 +209,7 @@ def main_page():
         filter = get_filter_back_home(df_hist)
         df_hist = df_hist[filter]
         condicao = 'Geral'
-        metodo = 'Lay Visirante'
+        metodo = 'Back Casa'
 
     st.divider()
 
