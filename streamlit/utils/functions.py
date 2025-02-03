@@ -331,8 +331,8 @@ def get_filter_back_home(df):
             ((df['League'] == 'TURKEY - SÜPER LIG') 
                 & (~df["Probabilidade_H_FT"].between(0.52, 0.61))) |
 
-            ((df['League'] == 'WALES - WELSH PREMIER LEAGUE') 
-                & (df["Probabilidade_H_FT"].between(0.62, 0.81))) |
+            # ((df['League'] == 'WALES - WELSH PREMIER LEAGUE') 
+            #     & (df["Probabilidade_H_FT"].between(0.62, 0.81))) |
 
             ((df['League'] == 'ARGENTINA - PRIMERA DIVISIÓN') 
                 & (df["Probabilidade_H_FT"].between(0.62, 0.71))) |
