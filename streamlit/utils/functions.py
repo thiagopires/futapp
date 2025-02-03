@@ -241,21 +241,21 @@ def get_filter_lay_0x2(df):
     return (
         (df["XG_Away_Pre"] > 0) &
         (df["Diff_XG_Home_Away_Pre"] > 0.66) 
-        # &
-        # (df['League'].isin([
-        #     'Belgium Pro League',
-        #     'England EFL League One',
-        #     'England Premier League',
-        #     'France Ligue 1',
-        #     'Germany 2. Bundesliga',
-        #     'Germany Bundesliga',
-        #     'Italy Serie A',
-        #     'Italy Serie B',
-        #     'Portugal Liga NOS',
-        #     'Spain La Liga',
-        #     'Spain Segunda División',
-        #     'Turkey Süper Lig'
-        # ]))
+        &
+        (df['League'].isin([
+            'BELGIUM - PRO LEAGUE',
+            'ENGLAND - EFL LEAGUE ONE',
+            'ENGLAND - PREMIER LEAGUE',
+            'FRANCE - LIGUE 1',
+            'GERMANY - 2. BUNDESLIGA',
+            'GERMANY - BUNDESLIGA',
+            'ITALY - SERIE A',
+            'ITALY - SERIE B',
+            'PORTUGAL - LIGA NOS',
+            'SPAIN - LA LIGA',
+            'SPAIN - SEGUNDA DIVISIÓN',
+            'TURKEY - SÜPER LIG'
+        ]))
     )
 
 def get_filter_lay_0x3(df):
