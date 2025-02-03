@@ -294,6 +294,7 @@ def get_filter_back_home(df):
         (df["XG_Total_Pre"] > 2) &
         (df["XG_Home_Pre"] > 1) &
         (df["XG_Away_Pre"] > 0) & (df["XG_Away_Pre"] < 2.1) &
+        (df["Odd_Over25_FT"] <= 2.55) & 
         (
             ((df['League'] == 'ENGLAND - CHAMPIONSHIP') 
                 & (df["Probabilidade_H_FT"].between(0.42, 0.51))
