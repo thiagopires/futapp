@@ -167,21 +167,21 @@ def get_filter_lay_0x1(df):
         (df["XG_Home_Pre"] > df["XG_Away_Pre"]) &
         (df["Odd_BTTS_Yes"] > 1.5) & (df["Odd_BTTS_Yes"] < 2) &
         (df["Odd_Over25_FT"] > 1.62) & (df["Odd_Over25_FT"] < 2) 
-        # &
-        # (df['League'].isin([
-        #     'England Championship',
-        #     'England EFL League One',
-        #     'England Premier League',
-        #     'Germany 2. Bundesliga',
-        #     'Germany Bundesliga',
-        #     'Italy Serie A',
-        #     'Netherlands Eredivisie',
-        #     'Portugal Liga NOS',
-        #     'Romania Liga I',
-        #     'Spain La Liga',
-        #     'Turkey Süper Lig',
-        #     'France League 1'
-        # ]))
+        &
+        (df['League'].isin([
+            'ENGLAND - CHAMPIONSHIP',
+            'ENGLAND - EFL LEAGUE ONE',
+            'ENGLAND - PREMIER LEAGUE',
+            'GERMANY - 2. BUNDESLIGA',
+            'GERMANY - BUNDESLIGA',
+            'ITALY - SERIE A',
+            'NETHERLANDS - EREDIVISIE',
+            'PORTUGAL - LIGA NOS',
+            'ROMANIA - LIGA I',
+            'SPAIN - LA LIGA',
+            'TURKEY - SÜPER LIG',
+            'FRANCE - LEAGUE 1'
+        ]))
     )
 
 def get_filter_lay_visitante_zebra(df):
@@ -288,7 +288,7 @@ def get_filter_lay_0x3(df):
         # ]))
     )
 
-def get_filter_back_home(df):
+def get_filter_back_casa(df):
     return (
         (df["Odd_H_FT"].between(1.3, 2.5)) &
         (df["XG_Total_Pre"] > 2) &

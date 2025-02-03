@@ -140,6 +140,7 @@ def main_page():
         filtro_pronto_selecionado = st.selectbox("Filtros Prontos", [
             "Sem filtro",
             "Lay Visitante Zebra",
+            "Back Casa",
             "Back Empate",
             'Over 2.5 FT',
             # 'Under 2.5 FT',
@@ -148,8 +149,6 @@ def main_page():
             'Lay 0x2 (até 80min)',
             'Lay 0x3 (até 80min)',
             # 'BTTS Não'
-            'Teste BackHome',
-            'Teste LayVisitante'
         ])
 
     if filtro_pronto_selecionado == "Lay Visitante Zebra":
@@ -206,17 +205,12 @@ def main_page():
         condicao = 'Geral'
         metodo = 'Lay 0x3'
 
-    elif filtro_pronto_selecionado == "Teste BackHome":
-        filter = get_filter_back_home(df_hist)
+    elif filtro_pronto_selecionado == "Back Casa":
+        filter = get_filter_back_casa(df_hist)
         df_hist = df_hist[filter]
         condicao = 'Geral'
         metodo = 'Back Casa'
 
-    elif filtro_pronto_selecionado == "Teste LayVisitante":
-        filter = get_filter_lay_visitante_2(df_hist)
-        df_hist = df_hist[filter]
-        condicao = 'Geral'
-        metodo = 'Lay Visitante'
 
     st.divider()
 
