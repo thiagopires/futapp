@@ -200,16 +200,11 @@ def get_filter_lay_visitante_zebra(df):
         (df["XG_Away_Pre"] <= 1.25) 
         &
         (df['League'].isin([
-            'SPAIN - LA LIGA',
-            'DENMARK - SUPERLIGA',
-            'AUSTRIA - 2. LIGA',
             'POLAND - EKSTRAKLASA',
-            'SWITZERLAND - SUPER LEAGUE',
             'ENGLAND - PREMIER LEAGUE',
             'GERMANY - 2. BUNDESLIGA',
             'SPAIN - SEGUNDA DIVISIÓN',
             'FRANCE - LIGUE 1',
-            'ITALY - SERIE B',
             'ENGLAND - EFL LEAGUE ONE',
             'TURKEY - SÜPER LIG'
         ]))
