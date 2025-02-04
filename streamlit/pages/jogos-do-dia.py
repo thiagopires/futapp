@@ -36,6 +36,7 @@ def main_page():
             'Lay 0x2 (até 80min)',
             'Lay 0x3 (até 80min)',
             # 'BTTS Não',
+            'Lay Visitante 2'
         ])
 
     if filtro_pronto_selecionado == "Lay Visitante Zebra":
@@ -76,6 +77,10 @@ def main_page():
 
     elif filtro_pronto_selecionado == "Back Casa":
         filter = get_filter_back_casa(df_matches)
+        df_matches = df_matches[filter]
+
+    elif filtro_pronto_selecionado == "Lay Visitante 2":
+        filter = get_filter_lay_visitante_2(df_matches)
         df_matches = df_matches[filter]
     
     # Dataframe
