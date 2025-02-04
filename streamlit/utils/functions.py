@@ -344,6 +344,7 @@ def get_filter_back_casa(df):
 def get_filter_lay_visitante_2(df):
     return (
         (df["Odd_H_FT"].between(1.3, 2.5)) &
+        (df["XG_Total_Pre"] > 0) &
         (
             ((df['League'] == 'BELGIUM - PRO LEAGUE') 
                 & (df["Probabilidade_H_FT"].between(0.32, 0.61))) |
