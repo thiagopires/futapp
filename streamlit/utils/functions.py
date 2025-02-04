@@ -362,10 +362,7 @@ def get_filter_lay_visitante_2(df):
             ((df['League'] == 'ENGLAND - CHAMPIONSHIP') 
                 & (df["Probabilidade_H_FT"].between(0.52, 0.61))
                 & (df["CV_HDA_FT"].between(0.35, 0.39))) |
-            
-            ((df['League'] == 'ENGLAND - EFL LEAGUE ONE') 
-                & (df["Probabilidade_H_FT"].between(0.52, 0.61))
-                & (df["CV_HDA_FT"].between(0.35, 0.39))) |
+
             
             ((df['League'] == 'ENGLAND - EFL LEAGUE TWO') 
                 & (df["Probabilidade_H_FT"].between(0.32, 0.41))) | 
@@ -374,26 +371,15 @@ def get_filter_lay_visitante_2(df):
                 & (df["Probabilidade_H_FT"].between(0.52, 0.61))
                 & (~df["CV_HDA_FT"].between(0.25, 0.29))) |
 
-            ((df['League'] == 'FRANCE - LIGUE 2') 
-                & (df["Probabilidade_H_FT"].between(0.52, 0.71))) |
 
             ((df['League'] == 'PORTUGAL - LIGA NOS') 
                 & (df["Probabilidade_H_FT"].between(0.32, 0.51))) |
 
             ((df['League'] == 'SPAIN - SEGUNDA DIVISIÓN') 
                 & (df["Probabilidade_H_FT"].between(0.42, 0.51))
-                & (df["CV_HDA_FT"].between(0.2, 0.24))) |
+                & (df["CV_HDA_FT"].between(0.2, 0.24)))
 
-            ((df['League'] == 'TURKEY - SÜPER LIG') 
-                & (df["Probabilidade_H_FT"].between(0.32, 0.41))) |
 
-            ((df['League'] == 'TURKEY - SÜPER LIG') 
-                & (df["Probabilidade_H_FT"].between(0.42, 0.51))
-                & (~df["CV_HDA_FT"].between(0.25, 0.29))) |
-            
-            ((df['League'] == 'TURKEY - SÜPER LIG') 
-                & (df["Probabilidade_H_FT"].between(0.52, 0.61))
-                & (~df["CV_HDA_FT"].between(0.20, 0.24)))
     
         )
     )
