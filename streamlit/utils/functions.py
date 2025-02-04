@@ -346,7 +346,7 @@ def get_filter_lay_visitante_2(df):
         (df["Odd_H_FT"].between(1.3, 2.5)) &
         (df["XG_Total_Pre"] > 0) &
         (df["Odd_Over25_FT"] >= 1.4) & 
-        (~
+        (
             ((df['League'] == 'BELGIUM - PRO LEAGUE') 
                 & (df["Probabilidade_H_FT"].between(0.32, 0.61))) |
 
