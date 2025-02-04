@@ -352,7 +352,8 @@ def get_filter_lay_visitante_2(df):
                 & (df["Probabilidade_H_FT"].between(0.32, 0.61))) |
 
             ((df['League'] == 'DENMARK - SUPERLIGA') 
-                & (df["Probabilidade_H_FT"].between(0.32, 0.61))) |
+                & (df["Probabilidade_H_FT"].between(0.42, 0.51))
+                & (~df["CV_HDA_FT"].between(0.1, 0.14))) |
 
             ((df['League'] == 'ENGLAND - CHAMPIONSHIP') 
                 & (df["Probabilidade_H_FT"].between(0.42, 0.51))
