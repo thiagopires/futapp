@@ -1,11 +1,29 @@
 import streamlit as st
 import pandas as pd
 import ast
+import telebot
+import requests
+import time
 from datetime import datetime, timedelta
 
 import streamlit as st
 
-# Função para validar o login
+
+def send_alert(message):
+
+    bot_id = "7435885708:AAE4rfEFU70BBXLRakVW5cgjmwPQl-pa3g4"
+    telegram_chat_id = '664409017'
+
+    # message = message.replace("'<'","").replace("'>'","")
+    try:
+        bot = telebot.TeleBot(bot_id)
+        response = bot.send_message(chat_id=telegram_chat_id, text=message, parse_mode='HTML')
+        return response
+    except requests.exceptions.ConnectionError:
+        print("Connection error with Telegram. Retrying after 5 seconds...")
+        time.sleep(5)
+        send_alert(message)  # Tentar novamente após 5 segundos
+
 def validate_login(email):
     valid_emails = [
         "thiago.serip@gmail.com",
@@ -33,7 +51,8 @@ def login_page():
             display_sidebar('block')
         if validate_login(email):
             st.session_state["logged_in"] = True
-            st.success(f"Acesso autorizado para {email}! Clique em 'Entrar' novamente!")        
+            st.success(f"Acesso autorizado para {email}! Clique em 'Entrar' novamente!")
+            send_alert(f"Acesso autorizado para {email}")
         else:
             st.error("Usuário inválido!")
 
