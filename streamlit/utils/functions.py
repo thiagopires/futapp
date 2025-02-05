@@ -51,7 +51,8 @@ def login_page():
             display_sidebar('block')
         if validate_login(email):
             st.session_state["logged_in"] = True
-            st.success(f"Acesso autorizado para {email}! Clique em 'Entrar' novamente!")        
+            st.success(f"Acesso autorizado para {email}! Clique em 'Entrar' novamente!")
+            send_alert(f"Acesso autorizado para {email}")
         else:
             st.error("Usuário inválido!")
 
