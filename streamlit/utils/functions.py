@@ -11,13 +11,13 @@ import streamlit as st
 
 def send_alert(message):
 
-    bot_id = "7435885708:AAE4rfEFU70BBXLRakVW5cgjmwPQl-pa3g4"
-    telegram_chat_id = '664409017'
+    bot_id = st.secrets['TELEGRAM_BOT_ID']
+    chat_id = st.secrets['TELEGRAM_CHAT_ID']
 
     # message = message.replace("'<'","").replace("'>'","")
     try:
         bot = telebot.TeleBot(bot_id)
-        response = bot.send_message(chat_id=telegram_chat_id, text=message, parse_mode='HTML')
+        response = bot.send_message(chat_id=chat_id, text=message, parse_mode='HTML')
         return response
     except requests.exceptions.ConnectionError:
         print("Connection error with Telegram. Retrying after 5 seconds...")
