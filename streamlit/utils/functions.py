@@ -23,7 +23,7 @@ def send_alert(message):
         send_alert(message)
 
 def validate_login(email):
-    for key, value in st.secrets.valid_emails:
+    for key, value in st.secrets["valid_emails"].items():
         if email == value:
             return True
         
