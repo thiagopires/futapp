@@ -111,18 +111,21 @@ def main_page():
             if valor != "":
                 string_indicadores += f"{indicador} {operador_selecionado} {valor} | "
 
+                if indicador != 'Primeiro_Gol_Marcador':
+                    valor = float(valor)
+
                 if operador_selecionado == 'Igual (=)':
-                    filter = (df_hist[indicador] == float(valor)) if tipo == 'Valor Absoluto' else (df_hist[indicador] == df_hist[valor])
+                    filter = (df_hist[indicador] == valor) if tipo == 'Valor Absoluto' else (df_hist[indicador] == df_hist[valor])
                 if operador_selecionado == 'Maior que (>)':
-                    filter = (df_hist[indicador] > float(valor)) if tipo == 'Valor Absoluto' else (df_hist[indicador] > df_hist[valor])
+                    filter = (df_hist[indicador] > valor) if tipo == 'Valor Absoluto' else (df_hist[indicador] > df_hist[valor])
                 if operador_selecionado == 'Menor que (<)':
-                    filter = (df_hist[indicador] < float(valor)) if tipo == 'Valor Absoluto' else (df_hist[indicador] < df_hist[valor])
+                    filter = (df_hist[indicador] < valor) if tipo == 'Valor Absoluto' else (df_hist[indicador] < df_hist[valor])
                 if operador_selecionado == 'Maior ou igual (>=)':
-                    filter = (df_hist[indicador] >= float(valor)) if tipo == 'Valor Absoluto' else (df_hist[indicador] >= df_hist[valor])
+                    filter = (df_hist[indicador] >= valor) if tipo == 'Valor Absoluto' else (df_hist[indicador] >= df_hist[valor])
                 if operador_selecionado == 'Menor ou igual (<=)':
-                    filter = (df_hist[indicador] <= float(valor)) if tipo == 'Valor Absoluto' else (df_hist[indicador] <= df_hist[valor])
+                    filter = (df_hist[indicador] <= valor) if tipo == 'Valor Absoluto' else (df_hist[indicador] <= df_hist[valor])
                 if operador_selecionado == 'Diferente de (!=)':
-                    filter = (df_hist[indicador] != float(valor)) if tipo == 'Valor Absoluto' else (df_hist[indicador] != df_hist[valor])
+                    filter = (df_hist[indicador] != valor) if tipo == 'Valor Absoluto' else (df_hist[indicador] != df_hist[valor])
 
                 df_hist = df_hist[filter]
 
@@ -137,6 +140,8 @@ def main_page():
         filtro_pronto_selecionado = st.selectbox("Filtros Prontos", [
             "Sem filtro",
             "Lay Visitante Zebra",
+            'Lay Visitante v2',
+            "Back Casa",
             "Back Empate",
             'Over 2.5 FT',
             # 'Under 2.5 FT',
@@ -144,7 +149,8 @@ def main_page():
             'Lay 0x1 (até 80min)',
             'Lay 0x2 (até 80min)',
             'Lay 0x3 (até 80min)',
-            # 'BTTS Não'
+            # 'BTTS Não',
+            
         ])
 
     if filtro_pronto_selecionado == "Lay Visitante Zebra":
@@ -200,6 +206,18 @@ def main_page():
         df_hist = df_hist[filter]
         condicao = 'Geral'
         metodo = 'Lay 0x3'
+
+    elif filtro_pronto_selecionado == "Back Casa":
+        filter = get_filter_back_casa(df_hist)
+        df_hist = df_hist[filter]
+        condicao = 'Geral'
+        metodo = 'Back Casa'
+
+    elif filtro_pronto_selecionado == "Lay Visitante v2":
+        filter = get_filter_lay_visitante_v2(df_hist)
+        df_hist = df_hist[filter]
+        condicao = 'Geral'
+        metodo = 'Lay Visitante'
 
 
     st.divider()
@@ -292,7 +310,10 @@ def main_page():
             df_hist['Profit'] = 0
         if metodo == 'Lay 1x1':
             # df_hist.loc[((df_hist["Resultado_FT"] != '1-1') & (df_hist["Resultado_80"] != '1-1')), "Status_Metodo"] = "GREEN"
-            df_hist.loc[(df_hist["Resultado_80"] != '1-1'), "Status_Metodo"] = "GREEN"
+            df_hist.loc[
+                (df_hist["Resultado_60"] != '1-1') &
+                (df_hist["Primeiro_Gol_Minuto"] < 45) &
+                (df_hist["Primeiro_Gol_Marcador"] == "Home"), "Status_Metodo"] = "GREEN"
             df_hist['Profit'] = 0
         if metodo == 'Lay 0x2':
             df_hist.loc[df_hist["Resultado_80"] != '0-2', "Status_Metodo"] = "GREEN"
@@ -375,21 +396,30 @@ def main_page():
 
 
             st.write(f"**:green[GREENs:]**")
-            print_dataframe(df_hist.loc[df_hist['Status_Metodo'] == 'GREEN', ['League','Rodada','Date','Time','Home','Away','Resultado_HT','Resultado_FT','Resultado_70','Resultado_75','Resultado_80','Odd_H_FT','Odd_D_FT','Odd_A_FT','Odd_Over05_FT','Odd_Over15_FT','Odd_Over25_FT','Odd_Under05_FT','Odd_Under15_FT','Odd_Under25_FT','Odd_BTTS_Yes','Odd_BTTS_No','Odd_DC_1X','Odd_DC_12','Odd_DC_X2','XG_Total_Pre','XG_Home_Pre','XG_Away_Pre','Diff_XG_Home_Away_Pre','PPG_Home_Pre','PPG_Away_Pre','Goals_H_Minutes','Goals_A_Minutes','Primeiro_Gol','Status_Metodo','Profit']])
+            print_dataframe(
+                df_hist.loc[df_hist['Status_Metodo'] == 'GREEN', 
+                ['League','Rodada','Date','Time','Home','Away','Resultado_HT','Resultado_FT','Resultado_60','Resultado_70','Resultado_75','Resultado_80','Odd_H_FT','Odd_D_FT','Odd_A_FT','Odd_Over05_FT','Odd_Over15_FT','Odd_Over25_FT','Odd_Under05_FT','Odd_Under15_FT','Odd_Under25_FT','Odd_BTTS_Yes','Odd_BTTS_No','Odd_DC_1X','Odd_DC_12','Odd_DC_X2','XG_Total_Pre','XG_Home_Pre','XG_Away_Pre','Diff_XG_Home_Away_Pre','PPG_Home_Pre','PPG_Away_Pre','Goals_H_Minutes','Goals_A_Minutes','Primeiro_Gol','Status_Metodo','Profit','Probabilidade_H_FT','Probabilidade_D_FT','Probabilidade_A_FT','CV_HDA_FT']]
+            )
 
             st.write(f"**:red[REDs:]**")
-            print_dataframe(df_hist.loc[df_hist['Status_Metodo'] == 'RED', ['League','Rodada','Date','Time','Home','Away','Resultado_HT','Resultado_FT','Resultado_70','Resultado_75','Resultado_80','Odd_H_FT','Odd_D_FT','Odd_A_FT','Odd_Over05_FT','Odd_Over15_FT','Odd_Over25_FT','Odd_Under05_FT','Odd_Under15_FT','Odd_Under25_FT','Odd_BTTS_Yes','Odd_BTTS_No','Odd_DC_1X','Odd_DC_12','Odd_DC_X2','XG_Total_Pre','XG_Home_Pre','XG_Away_Pre','Diff_XG_Home_Away_Pre','PPG_Home_Pre','PPG_Away_Pre','Goals_H_Minutes','Goals_A_Minutes','Primeiro_Gol','Status_Metodo','Profit']])
-
+            print_dataframe(
+                df_hist.loc[df_hist['Status_Metodo'] == 'RED', 
+                ['League','Rodada','Date','Time','Home','Away','Resultado_HT','Resultado_FT','Resultado_60','Resultado_70','Resultado_75','Resultado_80','Odd_H_FT','Odd_D_FT','Odd_A_FT','Odd_Over05_FT','Odd_Over15_FT','Odd_Over25_FT','Odd_Under05_FT','Odd_Under15_FT','Odd_Under25_FT','Odd_BTTS_Yes','Odd_BTTS_No','Odd_DC_1X','Odd_DC_12','Odd_DC_X2','XG_Total_Pre','XG_Home_Pre','XG_Away_Pre','Diff_XG_Home_Away_Pre','PPG_Home_Pre','PPG_Away_Pre','Goals_H_Minutes','Goals_A_Minutes','Primeiro_Gol','Status_Metodo','Profit','Probabilidade_H_FT','Probabilidade_D_FT','Probabilidade_A_FT','CV_HDA_FT']]
+            )
             st.write("**Detalhes**")
 
-            col1, col2 = st.columns(2)
+            col1, col2, col3 = st.columns(3)
             with col1:
                 report = df_hist.groupby(["League", "Month_Year"])["Profit"].sum().reset_index()
-                report["Cumulative_Profit"] = report["Profit"].cumsum()
                 st.dataframe(report)
             with col2:
                 report = df_hist.groupby(["League"])["Profit"].sum().reset_index()
+                report = report.sort_values(by="Profit", ascending=False)
                 report["Cumulative_Profit"] = report["Profit"].cumsum()
+                st.dataframe(report)
+            with col3:
+                report = df_hist.groupby(["League", "Status_Metodo"]).size().unstack(fill_value=0).reset_index()
+                # report["Cumulative_Profit"] = report["Profit"].cumsum()
                 st.dataframe(report)
 
         else:

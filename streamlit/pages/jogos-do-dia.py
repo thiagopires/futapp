@@ -27,6 +27,8 @@ def main_page():
         filtro_pronto_selecionado = st.selectbox("Filtros Prontos", [
             "Sem filtro",
             "Lay Visitante Zebra",
+            'Lay Visitante v2',
+            "Back Casa",
             "Back Empate",
             'Over 2.5 FT',
             # 'Under 2.5 FT',
@@ -34,7 +36,7 @@ def main_page():
             'Lay 0x1 (até 80min)',
             'Lay 0x2 (até 80min)',
             'Lay 0x3 (até 80min)',
-            # 'BTTS Não'
+            # 'BTTS Não',
         ])
 
     if filtro_pronto_selecionado == "Lay Visitante Zebra":
@@ -73,6 +75,14 @@ def main_page():
     #     filter = get_filter_btts_no(df_matches)
     #     df_matches = df_matches[filter]
 
+    elif filtro_pronto_selecionado == "Back Casa":
+        filter = get_filter_back_casa(df_matches)
+        df_matches = df_matches[filter]
+
+    elif filtro_pronto_selecionado == "Lay Visitante v2":
+        filter = get_filter_lay_visitante_v2(df_matches)
+        df_matches = df_matches[filter]
+    
     # Dataframe
     st.subheader(f"Selecione o jogo para abrir detalhes abaixo:")
     match_selected = st.dataframe(
