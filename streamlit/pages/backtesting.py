@@ -406,18 +406,20 @@ def main_page():
                 df_hist.loc[df_hist['Status_Metodo'] == 'RED', 
                 ['League','Rodada','Date','Time','Home','Away','Resultado_HT','Resultado_FT','Resultado_60','Resultado_70','Resultado_75','Resultado_80','Odd_H_FT','Odd_D_FT','Odd_A_FT','Odd_Over05_FT','Odd_Over15_FT','Odd_Over25_FT','Odd_Under05_FT','Odd_Under15_FT','Odd_Under25_FT','Odd_BTTS_Yes','Odd_BTTS_No','Odd_DC_1X','Odd_DC_12','Odd_DC_X2','XG_Total_Pre','XG_Home_Pre','XG_Away_Pre','Diff_XG_Home_Away_Pre','PPG_Home_Pre','PPG_Away_Pre','Goals_H_Minutes','Goals_A_Minutes','Primeiro_Gol','Status_Metodo','Profit','Probabilidade_H_FT','Probabilidade_D_FT','Probabilidade_A_FT','CV_HDA_FT']]
             )
-            st.write("**Detalhes**")
 
             col1, col2, col3 = st.columns(3)
             with col1:
+                st.write("**Profit por Liga/Mês**")
                 report = df_hist.groupby(["League", "Month_Year"])["Profit"].sum().reset_index()
                 st.dataframe(report)
             with col2:
+                st.write("**Profit acumulado por Liga**")
                 report = df_hist.groupby(["League"])["Profit"].sum().reset_index()
                 report = report.sort_values(by="Profit", ascending=False)
                 report["Cumulative_Profit"] = report["Profit"].cumsum()
                 st.dataframe(report)
             with col3:
+                st.write("**Resultado por Liga**")
                 report = df_hist.groupby(["League", "Status_Metodo"]).size().unstack(fill_value=0).reset_index()
                 # report["Cumulative_Profit"] = report["Profit"].cumsum()
                 st.dataframe(report)
