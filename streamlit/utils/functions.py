@@ -29,11 +29,11 @@ def login_page():
     st.title("Login")
     email = st.text_input("Digite seu e-mail cadastrado para acessar", value="email")
     if st.button("Entrar"):
-        if validate_login(email):
-            st.session_state["logged_in"] = True
-            st.success(f"Acesso autorizado para {email}! Clique em 'Entrar' novamente!")
         if st.session_state["logged_in"] == True:
             display_sidebar('block')
+        if validate_login(email):
+            st.session_state["logged_in"] = True
+            st.success(f"Acesso autorizado para {email}! Clique em 'Entrar' novamente!")        
         else:
             st.error("Usuário inválido!")
 
