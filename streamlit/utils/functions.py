@@ -6,11 +6,13 @@ from datetime import datetime, timedelta
 import streamlit as st
 
 # Função para validar o login
-def validate_login(username, password):
-    # Substitua por sua lógica de autenticação
-    valid_user = "admin"
-    valid_password = "1234"
-    return username == valid_user and password == valid_password
+def validate_login(email):
+    valid_emails = [
+        "thiago.serip@gmail.com",
+        "anderson.oder@hotmail.com",
+        "rafaelbitencourt10@gmail.com"
+    ]
+    return email in valid_emails
 
 def display_sidebar(value):
     streamlit_style = """
@@ -25,10 +27,9 @@ def login_page():
     display_sidebar('none')
 
     st.title("Login")
-    username = st.text_input("Usuário", value="admin")
-    password = st.text_input("Senha", value="1234", type="password")
+    email = st.text_input("Digite seu e-mail cadastrado para acessar", value="email")
     if st.button("Entrar"):
-        if validate_login(username, password):
+        if validate_login(email):
             st.session_state["logged_in"] = True
             st.success("Login realizado com sucesso!")
             display_sidebar('block')
