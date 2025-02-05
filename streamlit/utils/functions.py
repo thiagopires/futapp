@@ -34,7 +34,7 @@ def login_page():
             st.success("Login realizado com sucesso!")
             display_sidebar('block')
         else:
-            st.error("Usuário ou senha inválidos!")
+            st.error("Usuário inválido!")
 
 def get_current_season():
     SEASON = '2024/2025'
