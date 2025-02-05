@@ -8,13 +8,11 @@ from datetime import datetime, timedelta
 
 import streamlit as st
 
-
 def send_alert(message):
 
     bot_id = st.secrets['TELEGRAM_BOT_ID']
     chat_id = st.secrets['TELEGRAM_CHAT_ID']
 
-    # message = message.replace("'<'","").replace("'>'","")
     try:
         bot = telebot.TeleBot(bot_id)
         response = bot.send_message(chat_id=chat_id, text=message, parse_mode='HTML')
@@ -22,15 +20,14 @@ def send_alert(message):
     except requests.exceptions.ConnectionError:
         print("Connection error with Telegram. Retrying after 5 seconds...")
         time.sleep(5)
-        send_alert(message)  # Tentar novamente após 5 segundos
+        send_alert(message)
 
 def validate_login(email):
-    valid_emails = [
-        "thiago.serip@gmail.com",
-        "anderson.oder@hotmail.com",
-        "rafaelbitencourt10@gmail.com"
-    ]
-    return email in valid_emails
+    for key, value in st.secrets.valid_emails:
+        if email == value:
+            return True
+        
+    return False
 
 def display_sidebar(value):
     streamlit_style = """
