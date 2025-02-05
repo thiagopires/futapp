@@ -341,7 +341,7 @@ def get_filter_back_casa(df):
         )
     )
 
-def get_filter_lay_visitante_2(df):
+def get_filter_lay_visitante_v2(df):
     return (
         (df["Odd_H_FT"].between(1.3, 2.5)) &
         (df["XG_Total_Pre"] > 0) &

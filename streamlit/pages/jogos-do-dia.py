@@ -27,6 +27,7 @@ def main_page():
         filtro_pronto_selecionado = st.selectbox("Filtros Prontos", [
             "Sem filtro",
             "Lay Visitante Zebra",
+            'Lay Visitante v2',
             "Back Casa",
             "Back Empate",
             'Over 2.5 FT',
@@ -36,7 +37,6 @@ def main_page():
             'Lay 0x2 (até 80min)',
             'Lay 0x3 (até 80min)',
             # 'BTTS Não',
-            'Lay Visitante 2'
         ])
 
     if filtro_pronto_selecionado == "Lay Visitante Zebra":
@@ -79,8 +79,8 @@ def main_page():
         filter = get_filter_back_casa(df_matches)
         df_matches = df_matches[filter]
 
-    elif filtro_pronto_selecionado == "Lay Visitante 2":
-        filter = get_filter_lay_visitante_2(df_matches)
+    elif filtro_pronto_selecionado == "Lay Visitante v2":
+        filter = get_filter_lay_visitante_v2(df_matches)
         df_matches = df_matches[filter]
     
     # Dataframe
