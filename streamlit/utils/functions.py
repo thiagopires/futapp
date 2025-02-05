@@ -27,7 +27,7 @@ def login_page():
     display_sidebar('none')
 
     st.title("Login")
-    email = st.text_input("Digite seu e-mail cadastrado para acessar", value="email")
+    email = st.text_input("Digite seu e-mail cadastrado para acessar", placeholder="email@example.com")
     if st.button("Entrar"):
         if st.session_state["logged_in"] == True:
             display_sidebar('block')
