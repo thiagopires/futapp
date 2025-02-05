@@ -2,6 +2,7 @@ import streamlit as st
 from utils.functions import *
 
 st.set_page_config(layout="wide")
+display_sidebar('none')
 
 def main_page():
     st.title("Página Principal")
