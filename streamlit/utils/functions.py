@@ -255,6 +255,25 @@ def get_filter_back_empate(df):
         ]))
     )
 
+def get_filter_lay_0x1(df):
+    return (
+        (df["Odd_H_FT"].between(1.2, 1.39)) &
+        (df["Odd_BTTS_Yes"] <= 2.75) &
+        (df["XG_Away_Pre"] >= 0.5)
+        &
+        (df['League'].isin([
+            'SPAIN - LA LIGA',
+            'ITALY - SERIE A',
+            'GERMANY - BUNDESLIGA',
+            'NETHERLANDS - EREDIVISIE',
+            'ENGLAND - CHAMPIONSHIP',
+            'BELGIUM - PRO LEAGUE',
+            'PORTUGAL - LIGA NOS',
+            'NETHERLANDS - EERSTE DIVISIE'
+        ]))
+    )
+
+
 def get_filter_lay_0x2(df):
     return (
         (df["XG_Away_Pre"] > 0) &
