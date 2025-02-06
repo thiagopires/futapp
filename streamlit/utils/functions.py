@@ -272,9 +272,6 @@ def get_filter_lay_1x1(df):
             'BELGIUM - PRO LEAGUE',
             # 'PORTUGAL - LIGA NOS',
             'NETHERLANDS - EERSTE DIVISIE',
-            'ARGENTINA - PRIMERA DIVISIÓN',
-            'BRAZIL - SERIE A',
-            'BRAZIL - SERIE B'
 
         ]))
     )
