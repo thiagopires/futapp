@@ -73,7 +73,7 @@ def main_page():
         df_matches = df_matches[filter]
 
     elif filtro_pronto_selecionado == "Lay 1x1 (até 60min)":
-        filter = get_filter_lay_0x1(df_matches)
+        filter = get_filter_lay_1x1(df_matches)
         df_matches = df_matches[filter]
     
     # elif filtro_pronto_selecionado == "BTTS Não": 

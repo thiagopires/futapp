@@ -208,11 +208,11 @@ def main_page():
         condicao = 'Geral'
         metodo = 'Lay 0x3'
 
-    elif filtro_pronto_selecionado == "Lay 0x1 (até 60min)":
-        filter = get_filter_lay_0x1(df_hist)
+    elif filtro_pronto_selecionado == "Lay 1x1 (até 60min)":
+        filter = get_filter_lay_1x1(df_hist)
         df_hist = df_hist[filter]
         condicao = 'Geral'
-        metodo = 'Lay 0x1'
+        metodo = 'Lay 1x1'
 
     elif filtro_pronto_selecionado == "Back Casa":
         filter = get_filter_back_casa(df_hist)

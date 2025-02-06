@@ -255,7 +255,7 @@ def get_filter_back_empate(df):
         ]))
     )
 
-def get_filter_lay_0x1(df):
+def get_filter_lay_1x1(df):
     return (
         (df["Odd_H_FT"].between(1.2, 1.39)) &
         (df["Odd_BTTS_Yes"] <= 2.75) &
