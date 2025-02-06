@@ -270,7 +270,7 @@ def get_filter_lay_1x1(df):
             'NETHERLANDS - EREDIVISIE',
             'ENGLAND - CHAMPIONSHIP',
             'BELGIUM - PRO LEAGUE',
-            'PORTUGAL - LIGA NOS',
+            # 'PORTUGAL - LIGA NOS',
             'NETHERLANDS - EERSTE DIVISIE'
         ]))
     )
