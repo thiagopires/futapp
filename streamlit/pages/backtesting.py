@@ -11,6 +11,9 @@ st.set_page_config(layout="wide")
 
 def main_page():
 
+    if st.secrets.env == "dev":
+        st.info("Ambiente de Desenvolvimento. Branch: dev")
+
     st.title("⚽ Backtesting")
 
     ### FootyStats ###
