@@ -8,7 +8,11 @@ st.set_page_config(layout="wide")
 
 def main_page():
 
-    st.title("⚽ Calculadora")
+    if st.secrets['ENV'] == 'dev':
+        st.info("Ambiente de Desenvolvimento. Branch: dev")
+
+    st.title("Futapp v0.1")
+    st.header("⚽ Calculadora")
 
     def clear_state(keys):
         for key in keys:

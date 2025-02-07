@@ -10,7 +10,11 @@ st.set_page_config(layout="wide")
 
 def main_page():
 
-    st.title("⚽ Base de dados")
+    if st.secrets['ENV'] == 'dev':
+        st.info("Ambiente de Desenvolvimento. Branch: dev")
+
+    st.title("Futapp v0.1")
+    st.header("⚽ Base de dados")
 
     ### FootyStats ###
 

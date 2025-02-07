@@ -9,7 +9,11 @@ st.set_page_config(layout="wide")
 
 def main_page():
 
-    st.title("⚽ Análise Away")
+    if st.secrets['ENV'] == 'dev':
+        st.info("Ambiente de Desenvolvimento. Branch: dev")
+
+    st.title("Futapp v0.1")
+    st.header("⚽ Análise Away")
 
     # Init
 
