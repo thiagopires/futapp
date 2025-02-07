@@ -12,7 +12,8 @@ def main_page():
     if st.secrets['ENV'] == 'dev':
         st.info("Ambiente de Desenvolvimento. Branch: dev")
 
-    st.title("⚽ Análise Home")
+    st.title("Futapp v0.1")
+    st.header("⚽ Análise Home")
 
     # Init
 
