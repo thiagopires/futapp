@@ -389,7 +389,7 @@ def main_page():
             )
 
             fig.update_traces(
-                line=dict(color="blue", width=2),
+                line=dict(width=2),
                 marker=dict(size=8, symbol="circle", color="red"),
                 hovertemplate="<b>Data:</b> %{x}<br><b>Lucro:</b> %{y}<extra></extra>"
             )
