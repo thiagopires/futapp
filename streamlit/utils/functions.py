@@ -276,7 +276,6 @@ def get_filter_lay_1x1(df):
         ]))
     )
 
-
 def get_filter_lay_0x2(df):
     return (
         (df["XG_Away_Pre"] > 0) &
@@ -438,7 +437,6 @@ def print_dataframe(df, styled_df=None):
         ])
         st.dataframe(styled_df, height=len(df)*38, use_container_width=True, hide_index=True)       
 
-# @st.cache_data
 def load_daymatches(dt, filter_teams=None):
     df = pd.read_csv(f"https://github.com/futpythontrader/YouTube/blob/main/Jogos_do_Dia/FootyStats/Jogos_do_Dia_FootyStats_{dt}.csv?raw=true")
     df['League'] = df['League'].str.replace(' ', ' - ', 1).str.upper()

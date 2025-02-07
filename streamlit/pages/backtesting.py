@@ -371,14 +371,13 @@ def main_page():
                     "x": 0.5,
                     "xanchor": "center",
                     "yanchor": "top",
-                    "font": {"size": 24, "color": "darkblue"}
+                    "font": {"size": 24}
                 },
                 xaxis=dict(showgrid=True, gridcolor="lightgray"),
                 yaxis=dict(showgrid=True, gridcolor="lightgray"),
                 xaxis_title="Data",
                 yaxis_title="Unidades/Stakes",
                 font=dict(family="Arial", size=14),
-                plot_bgcolor="white",
                 legend=dict(
                     title="Legenda",
                     orientation="h",
