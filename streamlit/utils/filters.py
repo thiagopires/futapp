@@ -233,11 +233,11 @@ def get_result_filtro_pronto(df, metodo):
         df['Profit'] = 0
 
     elif metodo == 'Lay 0x1 e Lay 1x0':
-        df.loc[((df["Resultado_FT"] != '0-1') & (df["Resultado_FT"] != '1-0')), "Status_Metodo"] = "GREEN"
+        df.loc[((df["Resultado_80"] != '0-1') & (df["Resultado_80"] != '1-0')), "Status_Metodo"] = "GREEN"
         df['Profit'] = 0
 
     elif metodo == 'Lay 0x3 e Lay 3x0':
-        df.loc[((df["Resultado_FT"] != '0-3') & (df["Resultado_FT"] != '3-0')), "Status_Metodo"] = "GREEN"
+        df.loc[((df["Resultado_80"] != '0-3') & (df["Resultado_80"] != '3-0')), "Status_Metodo"] = "GREEN"
         df['Profit'] = 0
 
     return df, odd_media
