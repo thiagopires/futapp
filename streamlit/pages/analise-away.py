@@ -6,9 +6,10 @@ from utils.functions import *
 pd.set_option('display.max_columns', None)
 pd.set_option('display.max_rows', None)
 st.set_page_config(layout="wide")
-set_dark_theme()
 
 def main_page():
+    
+    set_dark_theme()
 
     if st.secrets['ENV'] == 'dev':
         st.info("Ambiente de Desenvolvimento. Branch: dev")

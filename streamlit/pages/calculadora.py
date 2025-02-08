@@ -5,7 +5,6 @@ from utils.functions import *
 pd.set_option('display.max_columns', None)
 pd.set_option('display.max_rows', None)
 st.set_page_config(layout="wide")
-set_dark_theme()
 
 def main_page():
 
