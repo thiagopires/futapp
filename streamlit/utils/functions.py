@@ -8,6 +8,20 @@ from datetime import datetime, timedelta
 
 import streamlit as st
 
+def set_dark_theme():
+    # Aplica o tema Dark via custom CSS
+    st.markdown(
+        """
+        <style>
+        body {
+            background-color: #0E1117;
+            color: white;
+        }
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
+
 def send_alert(message):
 
     bot_id = st.secrets['TELEGRAM_BOT_ID']
