@@ -45,74 +45,74 @@ def get_details_filtro_pronto(df, condicao, metodo, filtro_pronto_selecionado):
     if filtro_pronto_selecionado == "Lay Visitante Zebra":
         filter = get_filter_lay_visitante_zebra(df)
         df = df[filter]
-        condicao = 'Geral'
-        metodo = 'Lay Visitante'
+        if condicao: condicao = 'Geral'
+        if metodo: metodo = 'Lay Visitante'
 
     elif filtro_pronto_selecionado == "Over 2.5 FT":
         filter = get_filter_over(df)
         df = df[filter]
-        condicao = 'Geral'
-        metodo = 'Over 2.5 FT'
+        if condicao: condicao = 'Geral'
+        if metodo: metodo = 'Over 2.5 FT'
 
     elif filtro_pronto_selecionado == "Under 2.5 FT":
         filter = get_filter_under(df)
         df = df[filter]
-        condicao = 'Geral'
-        metodo = 'Under 2.5 FT'
+        if condicao: condicao = 'Geral'
+        if metodo: metodo = 'Under 2.5 FT'
 
     elif filtro_pronto_selecionado == "BTTS Sim":
         filter = get_filter_btts_yes(df)
         df = df[filter]
-        condicao = 'Geral'
-        metodo = 'BTTS Sim'
+        if condicao: condicao = 'Geral'
+        if metodo: metodo = 'BTTS Sim'
     
     # elif filtro_pronto_selecionado == "BTTS Não":
     #     filter = get_filter_btts_no(df)
     #     df = df[filter]
-    #     condicao = 'Geral'
+    #     if condicao: condicao = 'Geral'
     #     metodo = 'BTTS Não' 
     
     elif filtro_pronto_selecionado == "Back Empate":
         filter = get_filter_back_empate(df)
         df = df[filter]
-        condicao = 'Geral'
-        metodo = 'Back Empate'
+        if condicao: condicao = 'Geral'
+        if metodo: metodo = 'Back Empate'
     
     elif filtro_pronto_selecionado == "Lay 0x1 (até 80min)":
         filter = get_filter_lay_0x1(df)
         df = df[filter]
-        condicao = 'Geral'
-        metodo = 'Lay 0x1'
+        if condicao: condicao = 'Geral'
+        if metodo: metodo = 'Lay 0x1'
     
     elif filtro_pronto_selecionado == "Lay 0x2 (até 80min)":
         filter = get_filter_lay_0x2(df)
         df = df[filter]
-        condicao = 'Geral'
-        metodo = 'Lay 0x2'
+        if condicao: condicao = 'Geral'
+        if metodo: metodo = 'Lay 0x2'
 
     elif filtro_pronto_selecionado == "Lay 0x3 (até 80min)":
         filter = get_filter_lay_0x3(df)
         df = df[filter]
-        condicao = 'Geral'
-        metodo = 'Lay 0x3'
+        if condicao: condicao = 'Geral'
+        if metodo: metodo = 'Lay 0x3'
 
     elif filtro_pronto_selecionado == "Lay 1x1 (até 60min)":
         filter = get_filter_lay_1x1(df)
         df = df[filter]
-        condicao = 'Geral'
-        metodo = 'Lay 1x1'
+        if condicao: condicao = 'Geral'
+        if metodo: metodo = 'Lay 1x1'
 
     elif filtro_pronto_selecionado == "Back Casa":
         filter = get_filter_back_casa(df)
         df = df[filter]
-        condicao = 'Geral'
-        metodo = 'Back Casa'
+        if condicao: condicao = 'Geral'
+        if metodo: metodo = 'Back Casa'
 
     elif filtro_pronto_selecionado == "Lay Visitante v2":
         filter = get_filter_lay_visitante_v2(df)
         df = df[filter]
-        condicao = 'Geral'
-        metodo = 'Lay Visitante'
+        if condicao: condicao = 'Geral'
+        if metodo: metodo = 'Lay Visitante'
 
     return df, condicao, metodo
 

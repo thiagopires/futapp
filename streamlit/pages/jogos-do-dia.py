@@ -8,7 +8,6 @@ from utils.filters import *
 pd.set_option('display.max_columns', None)
 pd.set_option('display.max_rows', None)
 st.set_page_config(layout="wide")
-set_dark_theme()
 
 def main_page():
 
@@ -28,7 +27,7 @@ def main_page():
     with col1:
         filtro_pronto_selecionado = st.selectbox("Filtros Prontos", filtros_prontos)
 
-    df_matches, condicao, metodo = get_details_filtro_pronto(df_matches, filtro_pronto_selecionado)
+    df_matches, condicao, metodo = get_details_filtro_pronto(df_matches, None, None, filtro_pronto_selecionado)
     
     # Dataframe
     st.subheader(f"Selecione o jogo para abrir detalhes abaixo:")
