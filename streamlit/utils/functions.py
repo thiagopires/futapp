@@ -50,7 +50,7 @@ def login_page():
         if validate_login(email):
             st.session_state["logged_in"] = True
             st.success(f"Acesso autorizado para {email}! Clique em 'Entrar' novamente!")
-            send_alert(f"[{st.secrets['ENV']}]Acesso autorizado para {email}")
+            send_alert(f"[{st.secrets['ENV']}] Acesso autorizado para {email}")
         else:
             st.error("Usuário inválido!")
 
