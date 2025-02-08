@@ -28,7 +28,7 @@ def main_page():
     with col1:
         filtro_pronto_selecionado = st.selectbox("Filtros Prontos", filtros_prontos)
 
-    df_matches, condicao, metodo = get_details_filtro_pronto(df_matches, filtro_pronto_selecionado)
+    df_matches, condicao, metodo = get_details_filtro_pronto(df_matches, None, None, filtro_pronto_selecionado)
     
     # Dataframe
     st.subheader(f"Selecione o jogo para abrir detalhes abaixo:")
