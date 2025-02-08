@@ -40,7 +40,7 @@ filtros_prontos =  [
     # 'BTTS Não',
 ]
 
-def get_details_filtro_pronto(df, condicao, filtro_pronto_selecionado):
+def get_details_filtro_pronto(df, condicao, metodo, filtro_pronto_selecionado):
 
     if filtro_pronto_selecionado == "Lay Visitante Zebra":
         filter = get_filter_lay_visitante_zebra(df)
