@@ -124,7 +124,7 @@ def main_page():
     with col1:
         filtro_pronto_selecionado = st.selectbox("Filtros Prontos", filtros_prontos)
 
-    df_hist, condicao, metodo = get_details_filtro_pronto(df_hist, filtro_pronto_selecionado)
+    df_hist, condicao, metodo = get_details_filtro_pronto(df_hist, condicao, filtro_pronto_selecionado)
 
 
     st.divider()

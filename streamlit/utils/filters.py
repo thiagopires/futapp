@@ -40,207 +40,207 @@ filtros_prontos =  [
     # 'BTTS Não',
 ]
 
-def get_details_filtro_pronto(df_hist, filtro_pronto_selecionado):
+def get_details_filtro_pronto(df, condicao, filtro_pronto_selecionado):
 
     if filtro_pronto_selecionado == "Lay Visitante Zebra":
-        filter = get_filter_lay_visitante_zebra(df_hist)
-        df_hist = df_hist[filter]
+        filter = get_filter_lay_visitante_zebra(df)
+        df = df[filter]
         condicao = 'Geral'
         metodo = 'Lay Visitante'
 
     elif filtro_pronto_selecionado == "Over 2.5 FT":
-        filter = get_filter_over(df_hist)
-        df_hist = df_hist[filter]
+        filter = get_filter_over(df)
+        df = df[filter]
         condicao = 'Geral'
         metodo = 'Over 2.5 FT'
 
     elif filtro_pronto_selecionado == "Under 2.5 FT":
-        filter = get_filter_under(df_hist)
-        df_hist = df_hist[filter]
+        filter = get_filter_under(df)
+        df = df[filter]
         condicao = 'Geral'
         metodo = 'Under 2.5 FT'
 
     elif filtro_pronto_selecionado == "BTTS Sim":
-        filter = get_filter_btts_yes(df_hist)
-        df_hist = df_hist[filter]
+        filter = get_filter_btts_yes(df)
+        df = df[filter]
         condicao = 'Geral'
         metodo = 'BTTS Sim'
     
     # elif filtro_pronto_selecionado == "BTTS Não":
-    #     filter = get_filter_btts_no(df_hist)
-    #     df_hist = df_hist[filter]
+    #     filter = get_filter_btts_no(df)
+    #     df = df[filter]
     #     condicao = 'Geral'
     #     metodo = 'BTTS Não' 
     
     elif filtro_pronto_selecionado == "Back Empate":
-        filter = get_filter_back_empate(df_hist)
-        df_hist = df_hist[filter]
+        filter = get_filter_back_empate(df)
+        df = df[filter]
         condicao = 'Geral'
         metodo = 'Back Empate'
     
     elif filtro_pronto_selecionado == "Lay 0x1 (até 80min)":
-        filter = get_filter_lay_0x1(df_hist)
-        df_hist = df_hist[filter]
+        filter = get_filter_lay_0x1(df)
+        df = df[filter]
         condicao = 'Geral'
         metodo = 'Lay 0x1'
     
     elif filtro_pronto_selecionado == "Lay 0x2 (até 80min)":
-        filter = get_filter_lay_0x2(df_hist)
-        df_hist = df_hist[filter]
+        filter = get_filter_lay_0x2(df)
+        df = df[filter]
         condicao = 'Geral'
         metodo = 'Lay 0x2'
 
     elif filtro_pronto_selecionado == "Lay 0x3 (até 80min)":
-        filter = get_filter_lay_0x3(df_hist)
-        df_hist = df_hist[filter]
+        filter = get_filter_lay_0x3(df)
+        df = df[filter]
         condicao = 'Geral'
         metodo = 'Lay 0x3'
 
     elif filtro_pronto_selecionado == "Lay 1x1 (até 60min)":
-        filter = get_filter_lay_1x1(df_hist)
-        df_hist = df_hist[filter]
+        filter = get_filter_lay_1x1(df)
+        df = df[filter]
         condicao = 'Geral'
         metodo = 'Lay 1x1'
 
     elif filtro_pronto_selecionado == "Back Casa":
-        filter = get_filter_back_casa(df_hist)
-        df_hist = df_hist[filter]
+        filter = get_filter_back_casa(df)
+        df = df[filter]
         condicao = 'Geral'
         metodo = 'Back Casa'
 
     elif filtro_pronto_selecionado == "Lay Visitante v2":
-        filter = get_filter_lay_visitante_v2(df_hist)
-        df_hist = df_hist[filter]
+        filter = get_filter_lay_visitante_v2(df)
+        df = df[filter]
         condicao = 'Geral'
         metodo = 'Lay Visitante'
 
-    return df_hist, condicao, metodo
+    return df, condicao, metodo
 
-def get_result_filtro_pronto(df_hist, metodo):
+def get_result_filtro_pronto(df, metodo):
 
-    df_hist["Status_Metodo"] = "RED"
-    df_hist['Profit'] = -1.0
+    df["Status_Metodo"] = "RED"
+    df['Profit'] = -1.0
     odd_media = ""
 
     if metodo == 'Back Casa':
-        filter = (df_hist["Goals_H_FT"] > df_hist["Goals_A_FT"])
-        df_hist.loc[filter, 'Profit'] = round(df_hist['Odd_H_FT']-1, 2)
-        df_hist.loc[filter, "Status_Metodo"] = "GREEN"
-        odd_media = f"{str(round(df_hist['Odd_H_FT'].mean(), 2))}"
+        filter = (df["Goals_H_FT"] > df["Goals_A_FT"])
+        df.loc[filter, 'Profit'] = round(df['Odd_H_FT']-1, 2)
+        df.loc[filter, "Status_Metodo"] = "GREEN"
+        odd_media = f"{str(round(df['Odd_H_FT'].mean(), 2))}"
 
     elif metodo == 'Back Empate':
-        filter = (df_hist["Goals_H_FT"] == df_hist["Goals_A_FT"])
-        df_hist.loc[filter, 'Profit'] = round(df_hist['Odd_D_FT']-1, 2)
-        df_hist.loc[filter, "Status_Metodo"] = "GREEN"
-        odd_media = f"{str(round(df_hist['Odd_D_FT'].mean(), 2))}"
+        filter = (df["Goals_H_FT"] == df["Goals_A_FT"])
+        df.loc[filter, 'Profit'] = round(df['Odd_D_FT']-1, 2)
+        df.loc[filter, "Status_Metodo"] = "GREEN"
+        odd_media = f"{str(round(df['Odd_D_FT'].mean(), 2))}"
 
     elif metodo == 'Back Visitante':
-        filter = (df_hist["Goals_H_FT"] < df_hist["Goals_A_FT"])
-        df_hist.loc[filter, 'Profit'] = round(df_hist['Odd_A_FT']-1, 2)
-        df_hist.loc[filter, "Status_Metodo"] = "GREEN"
-        odd_media = f"{str(round(df_hist['Odd_A_FT'].mean(), 2))}"
+        filter = (df["Goals_H_FT"] < df["Goals_A_FT"])
+        df.loc[filter, 'Profit'] = round(df['Odd_A_FT']-1, 2)
+        df.loc[filter, "Status_Metodo"] = "GREEN"
+        odd_media = f"{str(round(df['Odd_A_FT'].mean(), 2))}"
 
     elif metodo == 'Lay Visitante':
-        filter = (df_hist['Goals_H_FT'] >= df_hist['Goals_A_FT'])  
-        df_hist.loc[filter, 'Profit'] = round(df_hist['Odd_DC_1X']-1, 2)
-        df_hist.loc[filter, "Status_Metodo"] = "GREEN"
-        odd_media = f"{str(round(df_hist['Odd_A_FT'].mean(), 2))}"
+        filter = (df['Goals_H_FT'] >= df['Goals_A_FT'])  
+        df.loc[filter, 'Profit'] = round(df['Odd_DC_1X']-1, 2)
+        df.loc[filter, "Status_Metodo"] = "GREEN"
+        odd_media = f"{str(round(df['Odd_A_FT'].mean(), 2))}"
 
     elif metodo == 'Lay Empate':
-        filter = (df_hist['Goals_H_FT'] != df_hist['Goals_A_FT'])  
-        df_hist.loc[filter, 'Profit'] = round(df_hist['Odd_DC_12']-1, 2)
-        df_hist.loc[filter, "Status_Metodo"] = "GREEN"
-        odd_media = f"{str(round(df_hist['Odd_D_FT'].mean(), 2))}"
+        filter = (df['Goals_H_FT'] != df['Goals_A_FT'])  
+        df.loc[filter, 'Profit'] = round(df['Odd_DC_12']-1, 2)
+        df.loc[filter, "Status_Metodo"] = "GREEN"
+        odd_media = f"{str(round(df['Odd_D_FT'].mean(), 2))}"
 
     elif metodo == 'Lay Casa':
-        filter = (df_hist['Goals_H_FT'] <= df_hist['Goals_A_FT'])   
-        df_hist.loc[filter, 'Profit'] = round(df_hist['Odd_DC_X2']-1, 2)
-        df_hist.loc[filter, "Status_Metodo"] = "GREEN"
-        odd_media = f"{str(round(df_hist['Odd_H_FT'].mean(), 2))}"
+        filter = (df['Goals_H_FT'] <= df['Goals_A_FT'])   
+        df.loc[filter, 'Profit'] = round(df['Odd_DC_X2']-1, 2)
+        df.loc[filter, "Status_Metodo"] = "GREEN"
+        odd_media = f"{str(round(df['Odd_H_FT'].mean(), 2))}"
 
     elif metodo == 'Over 0.5 HT':
-        filter = (df_hist['TotalGoals_HT'] >= 0.5)   
-        df_hist.loc[filter, 'Profit'] = round(df_hist['Odd_Over05_HT']-1, 2)
-        df_hist.loc[filter, "Status_Metodo"] = "GREEN"
-        odd_media = f"{str(round(df_hist['Odd_Over05_HT'].mean(), 2))}"
+        filter = (df['TotalGoals_HT'] >= 0.5)   
+        df.loc[filter, 'Profit'] = round(df['Odd_Over05_HT']-1, 2)
+        df.loc[filter, "Status_Metodo"] = "GREEN"
+        odd_media = f"{str(round(df['Odd_Over05_HT'].mean(), 2))}"
 
     elif metodo == 'Over 0.5 FT':
-        filter = (df_hist['TotalGoals_FT'] >= 0.5)   
-        df_hist.loc[filter, 'Profit'] = round(df_hist['Odd_Over05_FT']-1, 2)
-        df_hist.loc[filter, "Status_Metodo"] = "GREEN"
-        odd_media = f"{str(round(df_hist['Odd_Over05_FT'].mean(), 2))}"
+        filter = (df['TotalGoals_FT'] >= 0.5)   
+        df.loc[filter, 'Profit'] = round(df['Odd_Over05_FT']-1, 2)
+        df.loc[filter, "Status_Metodo"] = "GREEN"
+        odd_media = f"{str(round(df['Odd_Over05_FT'].mean(), 2))}"
 
     elif metodo == 'Over 1.5 FT':
-        filter = (df_hist['TotalGoals_FT'] >= 1.5)   
-        df_hist.loc[filter, 'Profit'] = round(df_hist['Odd_Over15_FT']-1, 2)
-        df_hist.loc[filter, "Status_Metodo"] = "GREEN"
-        odd_media = f"{str(round(df_hist['Odd_Over15_FT'].mean(), 2))}"
+        filter = (df['TotalGoals_FT'] >= 1.5)   
+        df.loc[filter, 'Profit'] = round(df['Odd_Over15_FT']-1, 2)
+        df.loc[filter, "Status_Metodo"] = "GREEN"
+        odd_media = f"{str(round(df['Odd_Over15_FT'].mean(), 2))}"
 
     elif metodo == 'Over 2.5 FT':
-        filter = (df_hist['TotalGoals_FT'] >= 2.5)   
-        df_hist.loc[filter, 'Profit'] = round(df_hist['Odd_Over25_FT']-1, 2)
-        df_hist.loc[filter, "Status_Metodo"] = "GREEN"
-        odd_media = f"{str(round(df_hist['Odd_Over25_FT'].mean(), 2))}"
+        filter = (df['TotalGoals_FT'] >= 2.5)   
+        df.loc[filter, 'Profit'] = round(df['Odd_Over25_FT']-1, 2)
+        df.loc[filter, "Status_Metodo"] = "GREEN"
+        odd_media = f"{str(round(df['Odd_Over25_FT'].mean(), 2))}"
 
     elif metodo == 'Under 0.5 HT':
-        filter = (df_hist['TotalGoals_HT'] <= 0.5)   
-        df_hist.loc[filter, 'Profit'] = round(df_hist['Odd_Under05_HT']-1, 2)
-        df_hist.loc[filter, "Status_Metodo"] = "GREEN"
-        odd_media = f"{str(round(df_hist['Odd_Under05_HT'].mean(), 2))}"
+        filter = (df['TotalGoals_HT'] <= 0.5)   
+        df.loc[filter, 'Profit'] = round(df['Odd_Under05_HT']-1, 2)
+        df.loc[filter, "Status_Metodo"] = "GREEN"
+        odd_media = f"{str(round(df['Odd_Under05_HT'].mean(), 2))}"
         
     elif metodo == 'Under 1.5 FT':
-        filter = (df_hist['TotalGoals_FT'] <= 1.5)   
-        df_hist.loc[filter, 'Profit'] = round(df_hist['Odd_Under15_FT']-1, 2)
-        df_hist.loc[filter, "Status_Metodo"] = "GREEN"
-        odd_media = f"{str(round(df_hist['Odd_Under15_FT'].mean(), 2))}"
+        filter = (df['TotalGoals_FT'] <= 1.5)   
+        df.loc[filter, 'Profit'] = round(df['Odd_Under15_FT']-1, 2)
+        df.loc[filter, "Status_Metodo"] = "GREEN"
+        odd_media = f"{str(round(df['Odd_Under15_FT'].mean(), 2))}"
 
     elif metodo == 'Under 2.5 FT':
-        filter = (df_hist['TotalGoals_FT'] <= 2.5)   
-        df_hist.loc[filter, 'Profit'] = round(df_hist['Odd_Under25_FT']-1, 2)
-        df_hist.loc[filter, "Status_Metodo"] = "GREEN"
-        odd_media = f"{str(round(df_hist['Odd_Under25_FT'].mean(), 2))}"
+        filter = (df['TotalGoals_FT'] <= 2.5)   
+        df.loc[filter, 'Profit'] = round(df['Odd_Under25_FT']-1, 2)
+        df.loc[filter, "Status_Metodo"] = "GREEN"
+        odd_media = f"{str(round(df['Odd_Under25_FT'].mean(), 2))}"
 
     elif metodo == 'BTTS Sim':
-        filter = ((df_hist['Goals_H_FT'] >= 1) & (df_hist['Goals_A_FT'] >= 1))
-        df_hist.loc[filter, 'Profit'] = round(df_hist['Odd_BTTS_Yes']-1, 2)
-        df_hist.loc[filter, "Status_Metodo"] = "GREEN"
-        odd_media = f"{str(round(df_hist['Odd_BTTS_Yes'].mean(), 2))}"
+        filter = ((df['Goals_H_FT'] >= 1) & (df['Goals_A_FT'] >= 1))
+        df.loc[filter, 'Profit'] = round(df['Odd_BTTS_Yes']-1, 2)
+        df.loc[filter, "Status_Metodo"] = "GREEN"
+        odd_media = f"{str(round(df['Odd_BTTS_Yes'].mean(), 2))}"
 
     elif metodo == 'BTTS Não':
-        filter = ((df_hist['Goals_H_FT'] == 0) | (df_hist['Goals_A_FT'] == 0))
-        df_hist.loc[filter, 'Profit'] = round(df_hist['Odd_BTTS_No']-1, 2)
-        df_hist.loc[filter, "Status_Metodo"] = "GREEN"
-        odd_media = f"{str(round(df_hist['Odd_BTTS_No'].mean(), 2))}"
+        filter = ((df['Goals_H_FT'] == 0) | (df['Goals_A_FT'] == 0))
+        df.loc[filter, 'Profit'] = round(df['Odd_BTTS_No']-1, 2)
+        df.loc[filter, "Status_Metodo"] = "GREEN"
+        odd_media = f"{str(round(df['Odd_BTTS_No'].mean(), 2))}"
 
     elif metodo == 'Lay 0x1':
-        df_hist.loc[(df_hist["Resultado_80"] != '0-1'), "Status_Metodo"] = "GREEN"
-        df_hist['Profit'] = 0
+        df.loc[(df["Resultado_80"] != '0-1'), "Status_Metodo"] = "GREEN"
+        df['Profit'] = 0
 
     elif metodo == 'Lay 1x1':
-        df_hist.loc[df_hist["Resultado_60"] != '1-1', "Status_Metodo"] = "GREEN"
-        df_hist['Profit'] = 0
+        df.loc[df["Resultado_60"] != '1-1', "Status_Metodo"] = "GREEN"
+        df['Profit'] = 0
 
     elif metodo == 'Lay 0x2':
-        df_hist.loc[df_hist["Resultado_80"] != '0-2', "Status_Metodo"] = "GREEN"
-        df_hist['Profit'] = 0
+        df.loc[df["Resultado_80"] != '0-2', "Status_Metodo"] = "GREEN"
+        df['Profit'] = 0
 
     elif metodo == 'Lay 0x3':
-        df_hist.loc[df_hist["Resultado_80"] != '0-3', "Status_Metodo"] = "GREEN"
-        df_hist['Profit'] = 0
+        df.loc[df["Resultado_80"] != '0-3', "Status_Metodo"] = "GREEN"
+        df['Profit'] = 0
 
     elif metodo == 'Lay Goleada Visitante':
-        df_hist.loc[((df_hist['Goals_A_FT'] < 4) | (df_hist['Goals_A_FT'] <= df_hist['Goals_H_FT'])), "Status_Metodo"] = "GREEN"
-        df_hist['Profit'] = 0
+        df.loc[((df['Goals_A_FT'] < 4) | (df['Goals_A_FT'] <= df['Goals_H_FT'])), "Status_Metodo"] = "GREEN"
+        df['Profit'] = 0
 
     elif metodo == 'Lay 0x1 e Lay 1x0':
-        df_hist.loc[((df_hist["Resultado_FT"] != '0-1') & (df_hist["Resultado_FT"] != '1-0')), "Status_Metodo"] = "GREEN"
-        df_hist['Profit'] = 0
+        df.loc[((df["Resultado_FT"] != '0-1') & (df["Resultado_FT"] != '1-0')), "Status_Metodo"] = "GREEN"
+        df['Profit'] = 0
 
     elif metodo == 'Lay 0x3 e Lay 3x0':
-        df_hist.loc[((df_hist["Resultado_FT"] != '0-3') & (df_hist["Resultado_FT"] != '3-0')), "Status_Metodo"] = "GREEN"
-        df_hist['Profit'] = 0
+        df.loc[((df["Resultado_FT"] != '0-3') & (df["Resultado_FT"] != '3-0')), "Status_Metodo"] = "GREEN"
+        df['Profit'] = 0
 
-    return df_hist, odd_media
+    return df, odd_media
 
 def get_filter_over(df):
     return (
