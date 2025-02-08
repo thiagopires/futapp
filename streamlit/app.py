@@ -2,6 +2,7 @@ import streamlit as st
 from utils.functions import *
 
 st.set_page_config(layout="wide", page_title="Futapp v0.1")
+set_dark_theme()
 display_sidebar('none')
 
 def main_page():
