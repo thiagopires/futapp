@@ -1,11 +1,16 @@
 import streamlit as st
 from utils.functions import *
 
-st.set_page_config(layout="wide")
+st.set_page_config(layout="wide", page_title="Futapp v0.1")
+set_dark_theme()
 display_sidebar('none')
 
 def main_page():
-    st.title("Página Principal")
+    if st.secrets['ENV'] == 'dev':
+        st.info("Ambiente de Desenvolvimento. Branch: dev")
+
+    st.title("Futapp v0.1")
+
     st.write("Conteúdo protegido para usuários logados.")
     # if st.sidebar.button("Sair"):
     #     st.session_state["logged_in"] = False

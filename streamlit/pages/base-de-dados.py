@@ -7,10 +7,15 @@ from utils.functions import *
 pd.set_option('display.max_columns', None)
 pd.set_option('display.max_rows', None)
 st.set_page_config(layout="wide")
+set_dark_theme()
 
 def main_page():
 
-    st.title("⚽ Base de dados")
+    if st.secrets['ENV'] == 'dev':
+        st.info("Ambiente de Desenvolvimento. Branch: dev")
+
+    st.title("Futapp v0.1")
+    st.header("⚽ Base de dados")
 
     ### FootyStats ###
 
