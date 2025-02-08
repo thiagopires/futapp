@@ -3,6 +3,7 @@ import pandas as pd
 import plotly.express as px
 
 from utils.functions import *
+from utils.filters import *
 
 pd.set_option('display.max_columns', None)
 pd.set_option('display.max_rows', None)

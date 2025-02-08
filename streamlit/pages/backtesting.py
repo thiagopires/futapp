@@ -2,8 +2,10 @@ import streamlit as st
 import pandas as pd
 from datetime import date
 import plotly.express as px
+import random
 
 from utils.functions import *
+from utils.filters import *
 
 pd.set_option('display.max_columns', None)
 pd.set_option('display.max_rows', None)
@@ -84,6 +86,8 @@ def main_page():
                 'Lay 0x2',
                 'Lay 0x3',
                 'Lay Goleada Visitante',
+                'Lay 0x1 e Lay 1x0',
+                'Lay 0x3 e Lay 3x0',
                 'Over 0.5 HT',                
                 'Under 0.5 HT',
                 'Over 0.5 FT',
