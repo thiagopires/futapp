@@ -8,8 +8,6 @@ pd.set_option('display.max_rows', None)
 st.set_page_config(layout="wide")
 
 def main_page():
-    
-    set_dark_theme()
 
     if st.secrets['ENV'] == 'dev':
         st.info("Ambiente de Desenvolvimento. Branch: dev")
