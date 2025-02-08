@@ -23,75 +23,11 @@ def main_page():
     df_matches = load_daymatches(data_analise)
     df_hist = load_histmatches()
 
-    # test
-    # df_matches_filter = load_daymatches(data_analise, ['Celtic','Freiburg','Liverpool'])
-    # st.dataframe(df_matches_filter)
-
     col1, col2, col3 = st.columns(3)
     with col1:
-        filtro_pronto_selecionado = st.selectbox("Filtros Prontos", [
-            "Sem filtro",
-            "Lay Visitante Zebra",
-            'Lay Visitante v2',
-            "Back Casa",
-            "Back Empate",
-            'Over 2.5 FT',
-            # 'Under 2.5 FT',
-            'BTTS Sim',
-            'Lay 0x1 (até 80min)',
-            'Lay 0x2 (até 80min)',
-            'Lay 0x3 (até 80min)',
-            'Lay 1x1 (até 60min)',
-            # 'BTTS Não',
-        ])
+        filtro_pronto_selecionado = st.selectbox("Filtros Prontos", filtros_prontos)
 
-    if filtro_pronto_selecionado == "Lay Visitante Zebra":
-        filter = get_filter_lay_visitante_zebra(df_matches)
-        df_matches = df_matches[filter]
-    
-    elif filtro_pronto_selecionado == "Back Empate":
-        filter = get_filter_back_empate(df_matches)
-        df_matches = df_matches[filter]
-
-    elif filtro_pronto_selecionado == "Over 2.5 FT":
-        filter = get_filter_over(df_matches)
-        df_matches = df_matches[filter]
-
-    # elif filtro_pronto_selecionado == "Under 2.5 FT":
-    #     filter = get_filter_under(df_matches)
-    #     df_matches = df_matches[filter]
-
-    elif filtro_pronto_selecionado == "BTTS Sim":
-        filter = get_filter_btts_yes(df_matches)
-        df_matches = df_matches[filter]
-
-    elif filtro_pronto_selecionado == "Lay 0x1 (até 80min)":
-        filter = get_filter_lay_0x1(df_matches)
-        df_matches = df_matches[filter]
-
-    elif filtro_pronto_selecionado == "Lay 0x2 (até 80min)":
-        filter = get_filter_lay_0x2(df_matches)
-        df_matches = df_matches[filter]
-
-    elif filtro_pronto_selecionado == "Lay 0x3 (até 80min)":
-        filter = get_filter_lay_0x3(df_matches)
-        df_matches = df_matches[filter]
-
-    elif filtro_pronto_selecionado == "Lay 1x1 (até 60min)":
-        filter = get_filter_lay_1x1(df_matches)
-        df_matches = df_matches[filter]
-    
-    # elif filtro_pronto_selecionado == "BTTS Não": 
-    #     filter = get_filter_btts_no(df_matches)
-    #     df_matches = df_matches[filter]
-
-    elif filtro_pronto_selecionado == "Back Casa":
-        filter = get_filter_back_casa(df_matches)
-        df_matches = df_matches[filter]
-
-    elif filtro_pronto_selecionado == "Lay Visitante v2":
-        filter = get_filter_lay_visitante_v2(df_matches)
-        df_matches = df_matches[filter]
+    df_matches, condicao, metodo = get_details_filtro_pronto(df_matches, filtro_pronto_selecionado)
     
     # Dataframe
     st.subheader(f"Selecione o jogo para abrir detalhes abaixo:")

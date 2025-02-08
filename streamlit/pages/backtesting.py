@@ -74,30 +74,7 @@ def main_page():
 
         col1, col2, col3 = st.columns(3)
         with col1:
-            metodo = st.selectbox("Método", [
-                'Back Casa',
-                'Back Visitante',
-                'Back Empate',
-                'Lay Casa',
-                'Lay Empate',
-                'Lay Visitante',
-                'Lay 0x1',
-                'Lay 1x1',
-                'Lay 0x2',
-                'Lay 0x3',
-                'Lay Goleada Visitante',
-                'Lay 0x1 e Lay 1x0',
-                'Lay 0x3 e Lay 3x0',
-                'Over 0.5 HT',                
-                'Under 0.5 HT',
-                'Over 0.5 FT',
-                'Over 1.5 FT',
-                'Over 2.5 FT',
-                'Under 1.5 FT',
-                'Under 2.5 FT',
-                'BTTS Sim',
-                'BTTS Não'
-            ])
+            metodo = st.selectbox("Método", metodos)
         with col2:
             condicao = st.radio("Condição", ["Geral","Favorito/Zebra","Zebra/Favorito"], horizontal=True)
             if condicao == "Favorito/Zebra":
@@ -145,94 +122,9 @@ def main_page():
 
     col1, col2, col3 = st.columns(3)
     with col1:
-        filtro_pronto_selecionado = st.selectbox("Filtros Prontos", [
-            "Sem filtro",
-            "Lay Visitante Zebra",
-            'Lay Visitante v2',
-            "Back Casa",
-            "Back Empate",
-            'Over 2.5 FT',
-            # 'Under 2.5 FT',
-            'BTTS Sim',
-            'Lay 0x1 (até 80min)',
-            'Lay 0x2 (até 80min)',
-            'Lay 0x3 (até 80min)',
-            'Lay 1x1 (até 60min)',
-            # 'BTTS Não',
-            
-        ])
+        filtro_pronto_selecionado = st.selectbox("Filtros Prontos", filtros_prontos)
 
-    if filtro_pronto_selecionado == "Lay Visitante Zebra":
-        filter = get_filter_lay_visitante_zebra(df_hist)
-        df_hist = df_hist[filter]
-        condicao = 'Geral'
-        metodo = 'Lay Visitante'
-
-    elif filtro_pronto_selecionado == "Over 2.5 FT":
-        filter = get_filter_over(df_hist)
-        df_hist = df_hist[filter]
-        condicao = 'Geral'
-        metodo = 'Over 2.5 FT'
-
-    elif filtro_pronto_selecionado == "Under 2.5 FT":
-        filter = get_filter_under(df_hist)
-        df_hist = df_hist[filter]
-        condicao = 'Geral'
-        metodo = 'Under 2.5 FT'
-
-    elif filtro_pronto_selecionado == "BTTS Sim":
-        filter = get_filter_btts_yes(df_hist)
-        df_hist = df_hist[filter]
-        condicao = 'Geral'
-        metodo = 'BTTS Sim'
-    
-    # elif filtro_pronto_selecionado == "BTTS Não":
-    #     filter = get_filter_btts_no(df_hist)
-    #     df_hist = df_hist[filter]
-    #     condicao = 'Geral'
-    #     metodo = 'BTTS Não' 
-    
-    elif filtro_pronto_selecionado == "Back Empate":
-        filter = get_filter_back_empate(df_hist)
-        df_hist = df_hist[filter]
-        condicao = 'Geral'
-        metodo = 'Back Empate'
-    
-    elif filtro_pronto_selecionado == "Lay 0x1 (até 80min)":
-        filter = get_filter_lay_0x1(df_hist)
-        df_hist = df_hist[filter]
-        condicao = 'Geral'
-        metodo = 'Lay 0x1'
-    
-    elif filtro_pronto_selecionado == "Lay 0x2 (até 80min)":
-        filter = get_filter_lay_0x2(df_hist)
-        df_hist = df_hist[filter]
-        condicao = 'Geral'
-        metodo = 'Lay 0x2'
-
-    elif filtro_pronto_selecionado == "Lay 0x3 (até 80min)":
-        filter = get_filter_lay_0x3(df_hist)
-        df_hist = df_hist[filter]
-        condicao = 'Geral'
-        metodo = 'Lay 0x3'
-
-    elif filtro_pronto_selecionado == "Lay 1x1 (até 60min)":
-        filter = get_filter_lay_1x1(df_hist)
-        df_hist = df_hist[filter]
-        condicao = 'Geral'
-        metodo = 'Lay 1x1'
-
-    elif filtro_pronto_selecionado == "Back Casa":
-        filter = get_filter_back_casa(df_hist)
-        df_hist = df_hist[filter]
-        condicao = 'Geral'
-        metodo = 'Back Casa'
-
-    elif filtro_pronto_selecionado == "Lay Visitante v2":
-        filter = get_filter_lay_visitante_v2(df_hist)
-        df_hist = df_hist[filter]
-        condicao = 'Geral'
-        metodo = 'Lay Visitante'
+    df_hist, condicao, metodo = get_details_filtro_pronto(df_hist, filtro_pronto_selecionado)
 
 
     st.divider()
@@ -240,101 +132,7 @@ def main_page():
 
     if filtro_pronto_selecionado != "Sem filtro" or executar:
         
-        df_hist["Status_Metodo"] = "RED"
-        df_hist['Profit'] = -1.0
-        odd_media = ""
-
-        if metodo == 'Back Casa':
-            filter = (df_hist["Goals_H_FT"] > df_hist["Goals_A_FT"])
-            df_hist.loc[filter, 'Profit'] = round(df_hist['Odd_H_FT']-1, 2)
-            df_hist.loc[filter, "Status_Metodo"] = "GREEN"
-            odd_media = f"{str(round(df_hist['Odd_H_FT'].mean(), 2))}"
-        if metodo == 'Back Empate':
-            filter = (df_hist["Goals_H_FT"] == df_hist["Goals_A_FT"])
-            df_hist.loc[filter, 'Profit'] = round(df_hist['Odd_D_FT']-1, 2)
-            df_hist.loc[filter, "Status_Metodo"] = "GREEN"
-            odd_media = f"{str(round(df_hist['Odd_D_FT'].mean(), 2))}"
-        if metodo == 'Back Visitante':
-            filter = (df_hist["Goals_H_FT"] < df_hist["Goals_A_FT"])
-            df_hist.loc[filter, 'Profit'] = round(df_hist['Odd_A_FT']-1, 2)
-            df_hist.loc[filter, "Status_Metodo"] = "GREEN"
-            odd_media = f"{str(round(df_hist['Odd_A_FT'].mean(), 2))}"
-        if metodo == 'Lay Visitante':
-            filter = (df_hist['Goals_H_FT'] >= df_hist['Goals_A_FT'])  
-            df_hist.loc[filter, 'Profit'] = round(df_hist['Odd_DC_1X']-1, 2)
-            df_hist.loc[filter, "Status_Metodo"] = "GREEN"
-            odd_media = f"{str(round(df_hist['Odd_A_FT'].mean(), 2))}"
-        if metodo == 'Lay Empate':
-            filter = (df_hist['Goals_H_FT'] != df_hist['Goals_A_FT'])  
-            df_hist.loc[filter, 'Profit'] = round(df_hist['Odd_DC_12']-1, 2)
-            df_hist.loc[filter, "Status_Metodo"] = "GREEN"
-            odd_media = f"{str(round(df_hist['Odd_D_FT'].mean(), 2))}"
-        if metodo == 'Lay Casa':
-            filter = (df_hist['Goals_H_FT'] <= df_hist['Goals_A_FT'])   
-            df_hist.loc[filter, 'Profit'] = round(df_hist['Odd_DC_X2']-1, 2)
-            df_hist.loc[filter, "Status_Metodo"] = "GREEN"
-            odd_media = f"{str(round(df_hist['Odd_H_FT'].mean(), 2))}"
-        if metodo == 'Over 0.5 HT':
-            filter = (df_hist['TotalGoals_HT'] >= 0.5)   
-            df_hist.loc[filter, 'Profit'] = round(df_hist['Odd_Over05_HT']-1, 2)
-            df_hist.loc[filter, "Status_Metodo"] = "GREEN"
-            odd_media = f"{str(round(df_hist['Odd_Over05_HT'].mean(), 2))}"
-        if metodo == 'Over 0.5 FT':
-            filter = (df_hist['TotalGoals_FT'] >= 0.5)   
-            df_hist.loc[filter, 'Profit'] = round(df_hist['Odd_Over05_FT']-1, 2)
-            df_hist.loc[filter, "Status_Metodo"] = "GREEN"
-            odd_media = f"{str(round(df_hist['Odd_Over05_FT'].mean(), 2))}"
-        if metodo == 'Over 1.5 FT':
-            filter = (df_hist['TotalGoals_FT'] >= 1.5)   
-            df_hist.loc[filter, 'Profit'] = round(df_hist['Odd_Over15_FT']-1, 2)
-            df_hist.loc[filter, "Status_Metodo"] = "GREEN"
-            odd_media = f"{str(round(df_hist['Odd_Over15_FT'].mean(), 2))}"
-        if metodo == 'Over 2.5 FT':
-            filter = (df_hist['TotalGoals_FT'] >= 2.5)   
-            df_hist.loc[filter, 'Profit'] = round(df_hist['Odd_Over25_FT']-1, 2)
-            df_hist.loc[filter, "Status_Metodo"] = "GREEN"
-            odd_media = f"{str(round(df_hist['Odd_Over25_FT'].mean(), 2))}"
-        if metodo == 'Under 0.5 HT':
-            filter = (df_hist['TotalGoals_HT'] <= 0.5)   
-            df_hist.loc[filter, 'Profit'] = round(df_hist['Odd_Under05_HT']-1, 2)
-            df_hist.loc[filter, "Status_Metodo"] = "GREEN"
-            odd_media = f"{str(round(df_hist['Odd_Under05_HT'].mean(), 2))}"
-        if metodo == 'Under 1.5 FT':
-            filter = (df_hist['TotalGoals_FT'] <= 1.5)   
-            df_hist.loc[filter, 'Profit'] = round(df_hist['Odd_Under15_FT']-1, 2)
-            df_hist.loc[filter, "Status_Metodo"] = "GREEN"
-            odd_media = f"{str(round(df_hist['Odd_Under15_FT'].mean(), 2))}"
-        if metodo == 'Under 2.5 FT':
-            filter = (df_hist['TotalGoals_FT'] <= 2.5)   
-            df_hist.loc[filter, 'Profit'] = round(df_hist['Odd_Under25_FT']-1, 2)
-            df_hist.loc[filter, "Status_Metodo"] = "GREEN"
-            odd_media = f"{str(round(df_hist['Odd_Under25_FT'].mean(), 2))}"
-        if metodo == 'BTTS Sim':
-            filter = ((df_hist['Goals_H_FT'] >= 1) & (df_hist['Goals_A_FT'] >= 1))
-            df_hist.loc[filter, 'Profit'] = round(df_hist['Odd_BTTS_Yes']-1, 2)
-            df_hist.loc[filter, "Status_Metodo"] = "GREEN"
-            odd_media = f"{str(round(df_hist['Odd_BTTS_Yes'].mean(), 2))}"
-        if metodo == 'BTTS Não':
-            filter = ((df_hist['Goals_H_FT'] == 0) | (df_hist['Goals_A_FT'] == 0))
-            df_hist.loc[filter, 'Profit'] = round(df_hist['Odd_BTTS_No']-1, 2)
-            df_hist.loc[filter, "Status_Metodo"] = "GREEN"
-            odd_media = f"{str(round(df_hist['Odd_BTTS_No'].mean(), 2))}"
-        if metodo == 'Lay 0x1':
-            # df_hist.loc[((df_hist["Resultado_FT"] != '0-1') & (df_hist["Resultado_80"] != '0-1')), "Status_Metodo"] = "GREEN"
-            df_hist.loc[(df_hist["Resultado_80"] != '0-1'), "Status_Metodo"] = "GREEN"
-            df_hist['Profit'] = 0
-        if metodo == 'Lay 1x1':
-            df_hist.loc[df_hist["Resultado_60"] != '1-1', "Status_Metodo"] = "GREEN"
-            df_hist['Profit'] = 0
-        if metodo == 'Lay 0x2':
-            df_hist.loc[df_hist["Resultado_80"] != '0-2', "Status_Metodo"] = "GREEN"
-            df_hist['Profit'] = 0
-        if metodo == 'Lay 0x3':
-            df_hist.loc[df_hist["Resultado_80"] != '0-3', "Status_Metodo"] = "GREEN"
-            df_hist['Profit'] = 0
-        if metodo == 'Lay Goleada Visitante':
-            df_hist.loc[((df_hist['Goals_A_FT'] < 4) | (df_hist['Goals_A_FT'] <= df_hist['Goals_H_FT'])), "Status_Metodo"] = "GREEN"
-            df_hist['Profit'] = 0
+        df_hist, odd_media = get_result_filtro_pronto(df_hist, metodo)
 
         st.write(f"**Resultado:**")
 
@@ -351,16 +149,6 @@ def main_page():
 
             daily_profit = df_hist.groupby("Date")["Profit"].sum().reset_index()
             daily_profit["Cumulative_Profit"] = daily_profit["Profit"].cumsum()  
-
-            # fig = px.line(
-            #     daily_profit,
-            #     x="Date",
-            #     y="Cumulative_Profit",
-            #     title="Lucro Diário",
-            #     labels={"Date": "Data", "Cumulative_Profit": "Unidades/Stakes"},
-            #     markers=True  # Adiciona marcadores nos pontos
-            # )
-            # st.plotly_chart(fig)
 
             fig = px.line(
                 daily_profit,
@@ -444,62 +232,3 @@ if st.session_state["logged_in"]:
     main_page()
 else:
     login_page()
-
-
-    # leagues = sorted(df_hist['League'].unique())
-    # leagues.insert(0, 'Todas as Ligas')
-    # selected_leagues = st.multiselect("Filtrar por Liga", leagues, [leagues[0]])
-
-    # if not (not selected_leagues or "Todas as Ligas" in selected_leagues):
-    #     df_hist = df_hist[df_hist['League'].isin(selected_leagues)]
-
-    # seasons = sorted(df_hist['Season'].unique())
-    # seasons.insert(0, 'Todas as Temporadas')
-    # selected_seasons = st.multiselect("Filtrar por Temporada", seasons, [seasons[0]])
-
-    # if not (not selected_seasons or "Todas as Temporadas" in selected_seasons):
-    #     df_hist = df_hist[df_hist['Season'].isin(selected_seasons)]
-
-    ### football-data.co.uk ###
-
-    # st.sidebar.header("Filtros")
-    # selected_league = st.sidebar.selectbox('Escolha uma liga', ['England','Germany','Italy','Spain','France'])
-    # selected_season = st.sidebar.selectbox('Escolha uma temporada', ['2024/2025','2023/2024','2022/2023','2021/2022','2020/2021'])
-
-    # def drop_reset_index(df):
-    #     df = df.dropna()
-    #     df = df.reset_index(drop=True)
-    #     df.index += 1
-    #     return df
-
-    # def load_data(league, season):
-
-    #   match league:
-    #     case 'England':
-    #       league = 'E0'
-    #     case 'Germany':
-    #       league = 'D1'
-    #     case 'Italy':
-    #       league = 'I1'
-    #     case 'Spain':
-    #       league = 'SP1'
-    #     case 'France':
-    #       league = 'F1'
-
-    #   url = f"https://www.football-data.co.uk/mmz4281/{season[2:4]}{season[7:9]}/{league}.csv"
-    #   data = pd.read_csv(url)
-    #   return data
-
-    # df = load_data(selected_league, selected_season)
-
-    # df = df[['Div','Date','Time','HomeTeam','AwayTeam','HTHG','HTAG','HTR','FTHG','FTAG','FTR',
-    # 'BFEH','BFED','BFEA','BFE>2.5','BFE<2.5','AHh','BFEAHH','BFEAHA']]
-
-    # df.columns = ['League','Date','Time','Home','Away','Goals_H_HT','Goals_A_HT','Result_HT','Goals_H_FT','Goals_A_FT','Result_FT',
-    # 'Odd_H_Open','Odd_D_Open','Odd_A_Open','Odd_Over25_Open','Odd_Under25_Open','Asian_Handicap_Open','Odd_AHH_Open','Odd_AHA_Open']
-
-    # df = drop_reset_index(df)
-
-    # st.subheader(f"Dataframe: {selected_league} - {selected_season}")
-
-    # st.dataframe(df)
