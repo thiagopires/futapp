@@ -14,8 +14,8 @@ def set_dark_theme():
         """
         <style>
         body {
-            background-color: #0E1117;
-            color: white;
+            background-color: #0E1117 !important;
+            color: white !important;
         }
         </style>
         """,
