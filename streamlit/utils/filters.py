@@ -558,6 +558,7 @@ def get_filter_back_casa(df):
 
 def get_filter_lay_visitante_v2(df):
     return (
+        (df["Odd_H_FT"] < df["Odd_A_FT"]) &
         (df["Odd_H_FT"].between(1.3, 2.5)) &
         (df["XG_Total_Pre"] > 0) &
         (df["Odd_Over25_FT"] >= 1.4) &
