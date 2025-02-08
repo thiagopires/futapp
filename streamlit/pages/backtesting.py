@@ -113,7 +113,7 @@ def main_page():
     if executar:
         for key, value in st.session_state:
             if 'indicador' in key:
-                i = key.split("_")[1] 
+                i = key.split("_")[1]
                 indicador = st.session_state[f'indicador_{i}']
                 tipo = st.session_state[f'tipo_{i}']
                 operador_selecionado = st.session_state[f'operador_{i}']
