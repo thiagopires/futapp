@@ -65,8 +65,7 @@ def main_page():
         if not (not selected_leagues or "Todas as Ligas" in selected_leagues):
             df_hist = df_hist[df_hist['League'].isin(selected_leagues)]
 
-        if st.button("Adicionar regra"):
-            i = random.randint(1,100)
+        for i in range(1,9):
             cola, colb, colc, cold = st.columns(4)
             with cola: st.selectbox("Indicador", indicadores, key=f"indicador_{i}")
             with colb: st.selectbox("Tipo", ['Valor Absoluto', 'Valor Relativo'], key=f"tipo_{i}")
@@ -111,34 +110,32 @@ def main_page():
     string_indicadores = ""
 
     if executar:
-        for key, value in st.session_state:
-            if 'indicador' in key:
-                i = key.split("_")[1]
-                indicador = st.session_state[f'indicador_{i}']
-                tipo = st.session_state[f'tipo_{i}']
-                operador_selecionado = st.session_state[f'operador_{i}']
-                valor = st.session_state[f'valor_{i}']
+        for i in range(1,9):
+            indicador = st.session_state[f'indicador_{i}']
+            tipo = st.session_state[f'tipo_{i}']
+            operador_selecionado = st.session_state[f'operador_{i}']
+            valor = st.session_state[f'valor_{i}']
 
-                if valor != "":
-                    string_indicadores += f"{indicador} {operador_selecionado} {valor} | "
+            if valor != "":
+                string_indicadores += f"{indicador} {operador_selecionado} {valor} | "
 
-                    if indicador != 'Primeiro_Gol_Marcador':
-                        valor = float(valor)
+                if indicador != 'Primeiro_Gol_Marcador':
+                    valor = float(valor)
 
-                    if operador_selecionado == 'Igual (=)':
-                        filter = (df_hist[indicador] == valor) if tipo == 'Valor Absoluto' else (df_hist[indicador] == df_hist[valor])
-                    if operador_selecionado == 'Maior que (>)':
-                        filter = (df_hist[indicador] > valor) if tipo == 'Valor Absoluto' else (df_hist[indicador] > df_hist[valor])
-                    if operador_selecionado == 'Menor que (<)':
-                        filter = (df_hist[indicador] < valor) if tipo == 'Valor Absoluto' else (df_hist[indicador] < df_hist[valor])
-                    if operador_selecionado == 'Maior ou igual (>=)':
-                        filter = (df_hist[indicador] >= valor) if tipo == 'Valor Absoluto' else (df_hist[indicador] >= df_hist[valor])
-                    if operador_selecionado == 'Menor ou igual (<=)':
-                        filter = (df_hist[indicador] <= valor) if tipo == 'Valor Absoluto' else (df_hist[indicador] <= df_hist[valor])
-                    if operador_selecionado == 'Diferente de (!=)':
-                        filter = (df_hist[indicador] != valor) if tipo == 'Valor Absoluto' else (df_hist[indicador] != df_hist[valor])
+                if operador_selecionado == 'Igual (=)':
+                    filter = (df_hist[indicador] == valor) if tipo == 'Valor Absoluto' else (df_hist[indicador] == df_hist[valor])
+                if operador_selecionado == 'Maior que (>)':
+                    filter = (df_hist[indicador] > valor) if tipo == 'Valor Absoluto' else (df_hist[indicador] > df_hist[valor])
+                if operador_selecionado == 'Menor que (<)':
+                    filter = (df_hist[indicador] < valor) if tipo == 'Valor Absoluto' else (df_hist[indicador] < df_hist[valor])
+                if operador_selecionado == 'Maior ou igual (>=)':
+                    filter = (df_hist[indicador] >= valor) if tipo == 'Valor Absoluto' else (df_hist[indicador] >= df_hist[valor])
+                if operador_selecionado == 'Menor ou igual (<=)':
+                    filter = (df_hist[indicador] <= valor) if tipo == 'Valor Absoluto' else (df_hist[indicador] <= df_hist[valor])
+                if operador_selecionado == 'Diferente de (!=)':
+                    filter = (df_hist[indicador] != valor) if tipo == 'Valor Absoluto' else (df_hist[indicador] != df_hist[valor])
 
-                    df_hist = df_hist[filter]
+                df_hist = df_hist[filter]
 
     st.caption(string_indicadores)
 
