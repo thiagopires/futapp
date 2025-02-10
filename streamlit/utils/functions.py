@@ -121,6 +121,7 @@ def load_daymatches(dt, filter_teams=None):
 
     return df
 
+@st.cache_data
 def load_histmatches(dt=None):
 
     def first_goal_string(row):
