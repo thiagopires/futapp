@@ -311,15 +311,15 @@ def highlight_result(row, highlight):
     Goals_A_FT = Goals[1]
 
     if Goals_H_FT > Goals_A_FT:
-        return [f"background-color: {colors[0]}; color: #495163" if col == "Resultado_FT" else "" for col in row.index]
+        return [f"background-color: {colors[0]}; color: #000" if col == "Resultado_FT" else "" for col in row.index]
     elif Goals_H_FT == Goals_A_FT:
-        return [f"background-color: {colors[1]}; color: #495163" if col == "Resultado_FT" else "" for col in row.index]
+        return [f"background-color: {colors[1]}; color: #000" if col == "Resultado_FT" else "" for col in row.index]
     elif Goals_H_FT < Goals_A_FT:
-        return [f"background-color: {colors[2]}; color: #495163" if col == "Resultado_FT" else "" for col in row.index]
+        return [f"background-color: {colors[2]}; color: #000" if col == "Resultado_FT" else "" for col in row.index]
 
 def highlight_row(row, highlight):
     if row["Clube"] in highlight:
-        return ['background-color: #FFE0A6; color: #495163'] * len(row)
+        return ['background-color: #FFE0A6; color: #000'] * len(row)
     return [''] * len(row)
 
 def calcular_gols_por_tempo(df, team_name):
@@ -387,7 +387,7 @@ def calcular_gols_por_tempo(df, team_name):
         "Gols Sofridos": gols_sofridos.values()
     }).sort_values(by='Intervalo', ascending=False)
 
-    return df_gols.melt(id_vars='Intervalo', var_name='Tipo de Gol', value_name='Quantidade')
+    return df_gols.melt(id_vars='Intervalo', var_name='Tipo de Gol', value_name='Gols')
 
 def calcular_estatisticas(df, team_name):
     # Filtrar jogos do time

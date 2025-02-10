@@ -130,7 +130,7 @@ def main_page():
         col1, col2 = st.columns(2)
         with col1:
             fig = px.bar(home_gols_por_tempo, 
-                        x='Quantidade',
+                        x='Gols',
                         y='Intervalo',
                         orientation="h",
                         color='Tipo de Gol',
@@ -145,7 +145,7 @@ def main_page():
             st.plotly_chart(fig, use_container_width=True, key="fig1")
         with col2:
             fig = px.bar(away_gols_por_tempo, 
-                        x='Quantidade',
+                        x='Gols',
                         y='Intervalo',
                         orientation="h",
                         color='Tipo de Gol',
