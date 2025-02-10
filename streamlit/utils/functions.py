@@ -387,7 +387,7 @@ def calcular_gols_por_tempo(df, team_name):
         "Gols Sofridos": gols_sofridos.values()
     }).sort_values(by='Intervalo', ascending=False)
 
-    return df_gols.melt(id_vars='Intervalo', var_name='Tipo de Gol', value_name='Quantidade')
+    return df_gols.melt(id_vars='Intervalo', var_name='Tipo de Gol', value_name='Gols')
 
 def calcular_estatisticas(df, team_name):
     # Filtrar jogos do time
