@@ -130,11 +130,11 @@ def get_result_filtro_pronto(df, metodo):
         odd_media = f"{str(round(df['Odd_H_FT'].mean(), 2))}"
 
     if metodo == 'Back Casa ou Back 1x1':
-        filter1 = (df["Goals_H_FT"] > df["Goals_A_FT"])
-        filter2 = (df["Resultado_FT"] == '1-1')
-        filter = (filter1 | filter2)
-        df.loc[filter1, 'Profit'] = round(df['Odd_H_FT']-1, 2)
-        df.loc[filter2, 'Profit'] = 0
+        filter = df["Primeiro_Gol"].str.contains("Home")
+        # filter2 = (df["Resultado_FT"] == '1-1')
+        # filter = (filter1 | filter2)
+        df.loc[filter, 'Profit'] = round(df['Odd_H_FT']-1, 2)
+        # df.loc[filter2, 'Profit'] = 0
         df.loc[filter, "Status_Metodo"] = "GREEN"
         odd_media = f"{str(round(df['Odd_H_FT'].mean(), 2))}"
 
