@@ -157,32 +157,7 @@ def main_page():
                         text_auto=True,
                         title=df_match_selected['Away']
             )
-            st.plotly_chart(fig, use_container_width=True, key="fig2")
-
-        # Tabela 22 e 23: Percurso Casa e Visitante
-        # percurso_casa = {
-        #     "Sequência de Vitórias": 1,
-        #     "Sequência de Empates": 0,
-        #     "Sequência de Derrotas": 3,
-        #     "Não ganha há": 7,
-        #     "Não empata há": 1,
-        #     "Não perde há": 3,
-        # }
-        # percurso_visitante = {
-        #     "Sequência de Vitórias": 2,
-        #     "Sequência de Empates": 1,
-        #     "Sequência de Derrotas": 0,
-        #     "Não ganha há": 1,
-        #     "Não empata há": 2,
-        #     "Não perde há": 5,
-        # }
-        # col1, col2 = st.columns(2)
-        # with col1:
-        #     st.subheader("Percurso - Casa")
-        #     st.json(percurso_casa)
-        # with col2:
-        #     st.subheader("Percurso - Visitante")
-        #     st.json(percurso_visitante)
+            st.plotly_chart(fig, use_container_width=True, key="fig2")s
 
         # Título
         st.subheader("⚽ Estatísticas de gols (últimos 10 jogos)")
