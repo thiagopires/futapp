@@ -157,7 +157,7 @@ def main_page():
                         text_auto=True,
                         title=df_match_selected['Away']
             )
-            st.plotly_chart(fig, use_container_width=True, key="fig2")s
+            st.plotly_chart(fig, use_container_width=True, key="fig2")
 
         # Título
         st.subheader("⚽ Estatísticas de gols (últimos 10 jogos)")
