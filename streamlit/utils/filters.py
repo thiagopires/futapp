@@ -21,7 +21,8 @@ metodos = [
     'Under 1.5 FT',
     'Under 2.5 FT',
     'BTTS Sim',
-    'BTTS Não'
+    'BTTS Não',
+    'Back Casa ou Back 1x1',
 ]
 
 filtros_prontos =  [
@@ -125,6 +126,15 @@ def get_result_filtro_pronto(df, metodo):
     if metodo == 'Back Casa':
         filter = (df["Goals_H_FT"] > df["Goals_A_FT"])
         df.loc[filter, 'Profit'] = round(df['Odd_H_FT']-1, 2)
+        df.loc[filter, "Status_Metodo"] = "GREEN"
+        odd_media = f"{str(round(df['Odd_H_FT'].mean(), 2))}"
+
+    if metodo == 'Back Casa ou Back 1x1':
+        filter = df["Primeiro_Gol"].str.contains("Home")
+        # filter2 = (df["Resultado_FT"] == '1-1')
+        # filter = (filter1 | filter2)
+        df.loc[filter, 'Profit'] = round(df['Odd_H_FT']-1, 2)
+        # df.loc[filter2, 'Profit'] = 0
         df.loc[filter, "Status_Metodo"] = "GREEN"
         odd_media = f"{str(round(df['Odd_H_FT'].mean(), 2))}"
 

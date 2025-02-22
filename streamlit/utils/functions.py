@@ -79,6 +79,7 @@ def print_dataframe(df, styled_df=None):
 
 def load_daymatches(dt, filter_teams=None):
     df = pd.read_csv(f"https://github.com/futpythontrader/YouTube/blob/main/Jogos_do_Dia/FootyStats/Jogos_do_Dia_FootyStats_{dt}.csv?raw=true")
+    
     df['League'] = df['League'].str.replace(' ', ' - ', 1).str.upper()
     df["Datetime"] = pd.to_datetime(df["Date"] + " " + df["Time"])
     df["Formatted_Datetime"] = df["Datetime"].dt.strftime("%d/%m/%Y %H:%M")

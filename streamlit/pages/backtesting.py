@@ -206,6 +206,7 @@ def main_page():
             with col3:
                 st.write("**Resultado por Liga**")
                 report = df_hist.groupby(["League", "Status_Metodo"]).size().unstack(fill_value=0).reset_index()
+                report['Winrate'] = round((report['GREEN'] / (report['GREEN'] + report['RED'])) * 100, 2)
                 # report["Cumulative_Profit"] = report["Profit"].cumsum()
                 st.dataframe(report)
 
