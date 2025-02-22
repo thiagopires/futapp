@@ -32,7 +32,7 @@ def main_page():
     # Dataframe
     st.subheader(f"Selecione o jogo para abrir detalhes abaixo:")
     match_selected = st.dataframe(
-        df_matches[['League','Rodada','Time','Home','Away','Odd_H_FT','Odd_D_FT','Odd_A_FT','Odd_Over25_FT','Odd_Under25_FT','Odd_BTTS_Yes','Odd_BTTS_No','XG_Total_Pre','XG_Home_Pre','XG_Away_Pre','Odd_DC_1X','Odd_DC_12','Odd_DC_X2']]
+        df_matches[['League','Rodada','Time','Home','Away','Odd_H_FT','Odd_D_FT','Odd_A_FT','Odd_Over25_FT','Odd_Under25_FT','Odd_BTTS_Yes','Odd_BTTS_No','XG_Total_Pre','XG_Home_Pre','XG_Away_Pre','Odd_DC_1X','Odd_DC_12','Odd_DC_X2']].sort_values(by=["Time", "League"], ascending=False)
         , on_select="rerun"
         , selection_mode="single-row"
         , use_container_width=True
