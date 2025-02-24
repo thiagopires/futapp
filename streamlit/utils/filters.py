@@ -571,7 +571,6 @@ def get_filter_lay_visitante_v2(df):
         (df["Odd_H_FT"] < df["Odd_A_FT"]) &
         (df["Odd_H_FT"].between(1.3, 2.5)) &
         (df["XG_Total_Pre"] > 0) &
-        (df["XG_Away_Pre"] > 1.2) &
         (df["Odd_Over25_FT"] >= 1.4) &
         (df["Odd_H_FT"] < 6) &
         (
