@@ -78,49 +78,53 @@ def print_dataframe(df, styled_df=None):
         st.dataframe(styled_df, height=len(df)*38, use_container_width=True, hide_index=True)       
 
 def load_daymatches(dt, filter_teams=None):
-    df = pd.read_csv(f"https://github.com/futpythontrader/YouTube/blob/main/Jogos_do_Dia/FootyStats/Jogos_do_Dia_FootyStats_{dt}.csv?raw=true")
+
+    try:
+        df = pd.read_csv(f"https://github.com/futpythontrader/YouTube/blob/main/Jogos_do_Dia/FootyStats/Jogos_do_Dia_FootyStats_{dt}.csv?raw=true")
     
-    df['League'] = df['League'].str.replace(' ', ' - ', 1).str.upper()
-    df["Datetime"] = pd.to_datetime(df["Date"] + " " + df["Time"])
-    df["Formatted_Datetime"] = df["Datetime"].dt.strftime("%d/%m/%Y %H:%M")
-    df["Confronto"] = df["Time"] + " - " + df["Home"] + " vs. " + df["Away"]
+        df['League'] = df['League'].str.replace(' ', ' - ', 1).str.upper()
+        df["Datetime"] = pd.to_datetime(df["Date"] + " " + df["Time"])
+        df["Formatted_Datetime"] = df["Datetime"].dt.strftime("%d/%m/%Y %H:%M")
+        df["Confronto"] = df["Time"] + " - " + df["Home"] + " vs. " + df["Away"]
 
-    df['Probabilidade_H_FT'] = round((1 / df['Odd_H_FT']),2)
-    df['Probabilidade_D_FT'] = round((1 / df['Odd_D_FT']),2)
-    df['Probabilidade_A_FT'] = round((1 / df['Odd_A_FT']),2)
+        df['Probabilidade_H_FT'] = round((1 / df['Odd_H_FT']),2)
+        df['Probabilidade_D_FT'] = round((1 / df['Odd_D_FT']),2)
+        df['Probabilidade_A_FT'] = round((1 / df['Odd_A_FT']),2)
 
-    df['CV_HDA_FT'] = round((df[['Odd_H_FT','Odd_D_FT','Odd_A_FT']].std(ddof=0, axis=1) / df[['Odd_H_FT','Odd_D_FT','Odd_A_FT']].mean(axis=1)),2)
+        df['CV_HDA_FT'] = round((df[['Odd_H_FT','Odd_D_FT','Odd_A_FT']].std(ddof=0, axis=1) / df[['Odd_H_FT','Odd_D_FT','Odd_A_FT']].mean(axis=1)),2)
 
-    df["Diff_XG_Home_Away_Pre"] = df['XG_Home_Pre'] - df['XG_Away_Pre']
+        df["Diff_XG_Home_Away_Pre"] = df['XG_Home_Pre'] - df['XG_Away_Pre']
 
-    # df_hist = load_histmatches(dt)
+        if filter_teams: df = df[(df["Home"].isin(filter_teams)) | (df["Away"].isin(filter_teams))]
 
-    # for idx, row in df.iterrows():
-    #     df_hist_cp = df_hist[(df_hist['Season'] == get_current_season()) & (df_hist['League'] == row['League'])].copy()
-    #     classificacao_geral = generate_classificacao_2(df_hist_cp, "ALL")
+        return df
 
-    #     posicao_home = classificacao_geral.loc[
-    #         classificacao_geral["Clube"] == row["Home"], "PTS"
-    #     ]
-    #     if not posicao_home.empty:
-    #         df.loc[idx, 'PTS_Tabela_H'] = posicao_home.values[0]
-    #     else:
-    #         df.loc[idx, 'PTS_Tabela_H'] = None  # Ou um valor padrão, como -1
-        
-    #     # Verificar posição do time visitante
-    #     posicao_away = classificacao_geral.loc[
-    #         classificacao_geral["Clube"] == row["Away"], "PTS"
-    #     ]
-    #     if not posicao_away.empty:
-    #         df.loc[idx, 'PTS_Tabela_A'] = posicao_away.values[0]
-    #     else:
-    #         df.loc[idx, 'PTS_Tabela_A'] = None
+        # df_hist = load_histmatches(dt)
 
-    if filter_teams:
-        filter = (df["Home"].isin(filter_teams)) | (df["Away"].isin(filter_teams))
-        df = df[filter]
+        # for idx, row in df.iterrows():
+        #     df_hist_cp = df_hist[(df_hist['Season'] == get_current_season()) & (df_hist['League'] == row['League'])].copy()
+        #     classificacao_geral = generate_classificacao_2(df_hist_cp, "ALL")
 
-    return df
+        #     posicao_home = classificacao_geral.loc[
+        #         classificacao_geral["Clube"] == row["Home"], "PTS"
+        #     ]
+        #     if not posicao_home.empty:
+        #         df.loc[idx, 'PTS_Tabela_H'] = posicao_home.values[0]
+        #     else:
+        #         df.loc[idx, 'PTS_Tabela_H'] = None  # Ou um valor padrão, como -1
+            
+        #     # Verificar posição do time visitante
+        #     posicao_away = classificacao_geral.loc[
+        #         classificacao_geral["Clube"] == row["Away"], "PTS"
+        #     ]
+        #     if not posicao_away.empty:
+        #         df.loc[idx, 'PTS_Tabela_A'] = posicao_away.values[0]
+        #     else:
+        #         df.loc[idx, 'PTS_Tabela_A'] = None
+
+    except urllib.error.HTTPError as e:
+        st.info(f"Os dados para {dt} não estão disponíveis.")
+        return pd.DataFrame()  # Retorna um DataFrame vazio para evitar erro na aplicação
 
 @st.cache_data
 def load_histmatches(dt=None):
@@ -541,7 +545,7 @@ def aba_over25(df_hist, team, side):
         st.write(f"Jogos analisados: {dict['Jogos analisados']} — Jogos Over 2.5 FT: {dict['Jogos Over 2.5 FT']} — Winrate: {dict['Winrate']} — Profit Acumulado: {dict['Profit Acumulado']}")
         print_dataframe(df[['League','Season','Date','Home','Away','Odd_Over25_FT','Goals_H_FT','Goals_A_FT','Profit_Over25']])
     else:
-        st.write("Sem jogos.")
+        st.info("Sem jogos.")
 
 def aba_btts(df_hist, team, side):
     dict = {}
@@ -565,7 +569,7 @@ def aba_btts(df_hist, team, side):
         st.write(f"Jogos analisados: {dict['Jogos analisados']} — Jogos BTTS: {dict['Jogos BTTS']} — Winrate: {dict['Winrate']} — Profit Acumulado: {dict['Profit Acumulado']}")
         print_dataframe(df[['League','Season','Date','Home','Away','Odd_BTTS_Yes','Goals_H_FT','Goals_A_FT','Profit_BTTS']])
     else:
-        st.write("Sem jogos.")
+        st.info("Sem jogos.")
 
 def aba_ult10(df_hist, team, side):
     df = df_hist.loc[
@@ -576,7 +580,7 @@ def aba_ult10(df_hist, team, side):
     if len(df) > 0:
         print_dataframe(df)
     else:
-        st.write("Sem jogos.")
+        st.info("Sem jogos.")
 
 def aba_ponto_de_saida_punter(df_hist, team, side, score):
 
@@ -672,7 +676,7 @@ def aba_confrontodireto(df_hist, home, away):
     if len(df) > 0:
         print_dataframe(df)
     else:
-        st.write("Sem jogos.")
+        st.info("Sem jogos.")
 
 def aba_back_home(df_hist, team, side):
     dict = {}
@@ -698,7 +702,7 @@ def aba_back_home(df_hist, team, side):
         st.write(f"Jogos analisados: {dict['Jogos analisados']} — Jogos vencidos pelo {team}: {dict[f'Jogos vencidos pelo {team}']} — Winrate: {dict['Winrate']} — Profit Acumulado: {dict['Profit Acumulado']}")
         print_dataframe(df[['League','Season','Date','Home','Away','Odd_H_FT','Odd_D_FT','Odd_A_FT','Goals_H_FT','Goals_A_FT','Profit_Back_Home']])
     else:
-        st.write("Sem jogos.")
+        st.info("Sem jogos.")
 
 def aba_back_draw(df_hist, team, side):
     dict = {}
@@ -724,7 +728,7 @@ def aba_back_draw(df_hist, team, side):
         st.write(f"Jogos analisados: {dict['Jogos analisados']} — Jogos empatados pelo {team}: {dict[f'Jogos empatados pelo {team}']} — Winrate: {dict['Winrate']} — Profit Acumulado: {dict['Profit Acumulado']}")
         print_dataframe(df[['League','Season','Date','Home','Away','Odd_H_FT','Odd_D_FT','Odd_A_FT','Goals_H_FT','Goals_A_FT','Profit_Back_Draw']])
     else:
-        st.write("Sem jogos.")
+        st.info("Sem jogos.")
 
 def aba_back_away(df_hist, team, side):
     dict = {}
@@ -750,7 +754,7 @@ def aba_back_away(df_hist, team, side):
         st.write(f"Jogos analisados: {dict['Jogos analisados']} — Jogos perdidos pelo {team}: {dict[f'Jogos perdidos pelo {team}']} — Winrate: {dict['Winrate']} — Profit Acumulado: {dict['Profit Acumulado']}")
         print_dataframe(df[['League','Season','Date','Home','Away','Odd_H_FT','Odd_D_FT','Odd_A_FT','Goals_H_FT','Goals_A_FT','Profit_Back_Away']])
     else:
-        st.write("Sem jogos.")
+        st.info("Sem jogos.")
 
 def aba_lay_home(df_hist, team, side):
     dict = {}
@@ -776,7 +780,7 @@ def aba_lay_home(df_hist, team, side):
         st.write(f"Jogos analisados: {dict['Jogos analisados']} — Jogos não vencidos pelo {team}: {dict[f'Jogos não vencidos pelo {team}']} — Winrate: {dict['Winrate']} — Profit Acumulado: {dict['Profit Acumulado']}")
         print_dataframe(df[['League','Season','Date','Home','Away','Odd_DC_1X','Odd_DC_12','Odd_DC_X2','Goals_H_FT','Goals_A_FT','Profit_Back_Home']])
     else:
-        st.write("Sem jogos.")
+        st.info("Sem jogos.")
 
 def aba_lay_draw(df_hist, team, side):
     dict = {}
@@ -802,7 +806,7 @@ def aba_lay_draw(df_hist, team, side):
         st.write(f"Jogos analisados: {dict['Jogos analisados']} — Jogos não empatados pelo {team}: {dict[f'Jogos não empatados pelo {team}']} — Winrate: {dict['Winrate']} — Profit Acumulado: {dict['Profit Acumulado']}")
         print_dataframe(df[['League','Season','Date','Home','Away','Odd_DC_1X','Odd_DC_12','Odd_DC_X2','Goals_H_FT','Goals_A_FT','Profit_Back_Draw']])
     else:
-        st.write("Sem jogos.")
+        st.info("Sem jogos.")
 
 def aba_lay_away(df_hist, team, side):
     dict = {}
@@ -828,7 +832,7 @@ def aba_lay_away(df_hist, team, side):
         st.write(f"Jogos analisados: {dict['Jogos analisados']} — Jogos não vencidos pelo Adversário do {team}: {dict[f'Jogos não vencidos pelo Adversário do {team}']} — Winrate: {dict['Winrate']} — Profit Acumulado: {dict['Profit Acumulado']}")
         print_dataframe(df[['League','Season','Date','Home','Away','Odd_DC_1X','Odd_DC_12','Odd_DC_X2','Goals_H_FT','Goals_A_FT','Profit_Back_Away']])
     else:
-        st.write("Sem jogos.")
+        st.info("Sem jogos.")
 
 def resultados_singulares(df_hist, team, side):
 
