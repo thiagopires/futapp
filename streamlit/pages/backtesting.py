@@ -206,8 +206,12 @@ def main_page():
             with col3:
                 st.write("**Resultado por Liga**")
                 report = df_hist.groupby(["League", "Status_Metodo"]).size().unstack(fill_value=0).reset_index()
-                report['Winrate'] = round((report['GREEN'] / (report['GREEN'] + report['RED'])) * 100, 2) if 'RED' in report else 100
-                # report["Cumulative_Profit"] = report["Profit"].cumsum()
+                if 'RED' not in report.columns:
+                    report['Winrate'] = 100
+                elif 'GREEN' not in report.columns:
+                    report['Winrate'] = 0
+                else:
+                    report['Winrate'] = round((report['GREEN'] / (report['GREEN'] + report['RED'])) * 100, 2)
                 st.dataframe(report)
 
             st.write(f"**:green[GREENs:]**")
