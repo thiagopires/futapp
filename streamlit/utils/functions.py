@@ -38,14 +38,21 @@ def display_sidebar(value):
     """
     st.markdown(streamlit_style, unsafe_allow_html=True)
 
+def submit_login():
+    st.session_state["submit_login"] = True
+
 def login_page():
     
     display_sidebar('none')
+    st.session_state["submit_login"] = False
 
     st.title("Bem vindo ao Futapp.")
     st.header("Login")
-    email = st.text_input("Digite seu e-mail cadastrado para acessar", placeholder="email@example.com")
-    if st.button("Entrar"):
+    email = st.text_input(
+        "Digite seu e-mail cadastrado para acessar", 
+        placeholder="email@example.com",
+        on_change=submit_login)
+    if st.button("Entrar") or st.session_state["submit_login"] == True:
         if st.session_state["logged_in"] == True:
             display_sidebar('block')
         if validate_login(email):
