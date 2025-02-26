@@ -131,7 +131,6 @@ def load_daymatches(dt, filter_teams=None):
         #         df.loc[idx, 'PTS_Tabela_A'] = None
 
     except urllib.error.HTTPError as e:
-        st.info(f"Os dados para {dt} não estão disponíveis.")
         return pd.DataFrame()  # Retorna um DataFrame vazio para evitar erro na aplicação
 
 @st.cache_data
