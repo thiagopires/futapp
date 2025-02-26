@@ -227,7 +227,7 @@ def main_page():
             )
 
         else:
-            st.write("Sem jogos.")
+            st.info("Sem jogos.")
 
 if "logged_in" not in st.session_state:
     st.session_state["logged_in"] = False

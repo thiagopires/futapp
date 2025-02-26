@@ -2,3 +2,4 @@ streamlit
 pandas
 plotly
 telebot
+urllib3
