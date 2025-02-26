@@ -134,7 +134,7 @@ def load_daymatches(dt, filter_teams=None):
         return pd.DataFrame()  # Retorna um DataFrame vazio para evitar erro na aplicação
 
 @st.cache_data
-def load_histmatches(dt=None):
+def load_histmatches():
 
     def first_goal_string(row):
         def parse_minutes(value, team):
@@ -184,7 +184,6 @@ def load_histmatches(dt=None):
     
     df[["Date", "Time"]] = df["Date"].str.split(" ", expand=True)
     df["Date"] = pd.to_datetime(df["Date"])
-    if dt: df = df.loc[(df["Date"] < pd.to_datetime(dt))]
     df["Formatted_Date"] = df["Date"].dt.strftime("%d/%m/%Y")
     df['Month_Year'] = pd.to_datetime(df['Date']).dt.strftime('%m/%Y')
     
