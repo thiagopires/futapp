@@ -10,6 +10,7 @@ metodos = [
     'Lay 1x1',
     'Lay 0x2',
     'Lay 0x3',
+    "Lay 2x2",
     'Lay Goleada Visitante',
     'Lay 0x1 e Lay 1x0',
     'Lay 0x3 e Lay 3x0',
@@ -236,6 +237,10 @@ def get_result_filtro_pronto(df, metodo):
 
     elif metodo == 'Lay 0x3':
         df.loc[df["Resultado_80"] != '0-3', "Status_Metodo"] = "GREEN"
+        df['Profit'] = 0
+
+    elif metodo == 'Lay 2x2':
+        df.loc[df["Resultado_60"] != '2-2', "Status_Metodo"] = "GREEN"
         df['Profit'] = 0
 
     elif metodo == 'Lay Goleada Visitante':
