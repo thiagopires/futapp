@@ -141,6 +141,7 @@ def betfair_load_histmatches(file):
 def footystats_load_histmatches(file):
     return pd.read_csv(file)
 
+@st.cache_data
 def load_histmatches(source):
 
     def first_goal_string(row):
