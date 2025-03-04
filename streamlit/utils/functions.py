@@ -202,7 +202,7 @@ def load_histmatches(source):
                 'Odd_A': 'Odd_A_FT',
                 'Odd_D': 'Odd_D_FT',
             })
-            print_dataframe(df)
+            # print_dataframe(df)
         elif source == 'FootyStats':
             file = "https://github.com/futpythontrader/YouTube/blob/main/Bases_de_Dados/FootyStats/Base_de_Dados_FootyStats_(2022_2025).csv?raw=true"
             df = footystats_load_histmatches(file)
