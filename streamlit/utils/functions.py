@@ -190,7 +190,9 @@ def load_histmatches(source):
         # df['League'] = df['League'].str.replace(' ', ' - ', 1).str.upper()
         rename_leagues(df)
         
-        df[["Date", "Time"]] = df["Date"].str.split(" ", expand=True)
+        if source == 'FootyStats':
+            df[["Date", "Time"]] = df["Date"].str.split(" ", expand=True)
+        
         df["Date"] = pd.to_datetime(df["Date"])
         df["Formatted_Date"] = df["Date"].dt.strftime("%d/%m/%Y")
         df['Month_Year'] = pd.to_datetime(df['Date']).dt.strftime('%m/%Y')
