@@ -199,6 +199,7 @@ def load_histmatches(source):
                 'Goals_Min_A': 'Goals_A_Minutes',
                 'Odd_H': 'Odd_H_FT',
                 'Odd_A': 'Odd_A_FT',
+                'Odd_D': 'Odd_D_FT',
             })
             print_dataframe(df)
         elif source == 'FootyStats':
