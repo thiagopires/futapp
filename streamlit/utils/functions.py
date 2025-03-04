@@ -6,6 +6,7 @@ import requests
 import time
 import urllib
 import io
+import re
 from datetime import datetime, timedelta
 
 import streamlit as st
@@ -141,7 +142,7 @@ def betfair_load_histmatches():
     file = load_content_api_github("Bases_de_Dados/Betfair/Base_de_Dados_Betfair_Exchange_Back_Lay.csv")
     df = pd.read_csv(file)
 
-    padrao = "|".join(["\(W\)", "\(Res\)", "U23", "U21", "U19"])
+    padrao = "|".join(re.escape(term) for term in ["(W)", "(Res)", "U23", "U21", "U19"])
     df = df[~df['Home'].str.contains(padrao, regex=True, na=False)]
     df = df[~df['Away'].str.contains(padrao, regex=True, na=False)]
 
