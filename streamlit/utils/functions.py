@@ -180,7 +180,7 @@ def load_histmatches(source):
 
     try:
         if source == 'Betfair':
-            file = load_content_api_github("Bases_de_Dados/Betfair/Base_de_dados_Betfair_Exchange_Back_Lay.csv")
+            file = load_content_api_github("Bases_de_Dados/Betfair/Base_de_Dados_Betfair_Exchange_Back_Lay.csv")
             df = pd.read_csv(file)
             df = df.rename(columns=lambda col: col.removesuffix('_Back'))            
             # print_dataframe(df)
