@@ -118,7 +118,7 @@ def betfair_load_daymatches(dt, filter_teams=None):
     headers = {"Authorization": f"token {st.secrets["github"]["TOKEN"]}"}
     file_path = f"Jogos_do_Dia/Betfair/Jogos_do_Dia_Betfair_Back_Lay_{dt}.csv"
 
-    url = f"https://api.github.com/repos/{st.secrets["github"]["OWNER"]}/{st.secrets["github"]["REPO"]}/contents/{file_path}"
+    url = f'https://api.github.com/repos/{st.secrets["github"]["OWNER"]}/{st.secrets["github"]["REPO"]}/contents/{file_path}'
 
     try:
         response = requests.get(url, headers=headers)
