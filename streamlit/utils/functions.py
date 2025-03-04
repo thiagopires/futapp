@@ -88,8 +88,6 @@ def print_dataframe(df, styled_df=None):
 
 def load_content_api_github(file_path):
     headers = {"Authorization": f"token {st.secrets["github"]["TOKEN"]}"}
-    file_path = f"Jogos_do_Dia/Betfair/Jogos_do_Dia_Betfair_Back_Lay_{dt}.csv"
-
     url = f'https://api.github.com/repos/{st.secrets["github"]["OWNER"]}/{st.secrets["github"]["REPO"]}/contents/{file_path}'
     response = requests.get(url, headers=headers)
     content = requests.get(response.json()['download_url'], headers=headers).content
