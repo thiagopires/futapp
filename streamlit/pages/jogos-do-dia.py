@@ -19,15 +19,11 @@ def main_page():
 
     # Init
 
+    fonte_dados = st.selectbox("Fonte de Dados", ['FootyStats','Betfair'])
     data_analise = st.date_input("Data da Análise", get_today())
-    fonte_histmatches = st.selectbox("Fonte dos dados", ['FootyStats','Betfair'])
 
-    if fonte_histmatches == 'FootyStats':
-        df_matches = footystats_load_daymatches(data_analise)
-        df_hist = footystats_load_histmatches()
-    elif fonte_histmatches == 'Betfair':
-        df_matches = betfair_load_daymatches(data_analise)
-        df_hist = footystats_load_histmatches()
+    df_matches = load_daymatches(data_analise, fonte_dados)
+    df_hist = load_histmatches(fonte_dados)
 
     if df_matches.empty:
         st.info(f"Os dados para {data_analise} não estão disponíveis.")

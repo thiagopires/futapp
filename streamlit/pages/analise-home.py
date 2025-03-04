@@ -18,8 +18,8 @@ def main_page():
     # Init
 
     data_analise = st.date_input("Data da Análise", get_today())
-    df_matches = footystats_load_daymatches(data_analise)
-    df_hist = footystats_load_histmatches()
+    df_matches = load_daymatches(data_analise, 'FootyStats')
+    df_hist = load_histmatches('FootyStats')
 
 
     st.divider()

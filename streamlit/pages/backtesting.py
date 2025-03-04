@@ -20,8 +20,7 @@ def main_page():
     st.header("⚽ Backtesting")
 
     ### FootyStats ###
-
-    df_hist = footystats_load_histmatches()
+    df_hist = load_histmatches('FootyStats')
 
     indicadores = df_hist.columns
 

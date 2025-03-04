@@ -86,57 +86,31 @@ def print_dataframe(df, styled_df=None):
         ])
         st.dataframe(styled_df, height=len(df)*38, use_container_width=True, hide_index=True)       
 
-def footystats_load_daymatches(dt, filter_teams=None):
-
-    try:
-        df = pd.read_csv(f"https://github.com/futpythontrader/YouTube/blob/main/Jogos_do_Dia/FootyStats/Jogos_do_Dia_FootyStats_{dt}.csv?raw=true")
-    
-        # df['League'] = df['League'].str.replace(' ', ' - ', 1).str.upper()
-        df["Datetime"] = pd.to_datetime(df["Date"] + " " + df["Time"])
-        df["Formatted_Datetime"] = df["Datetime"].dt.strftime("%d/%m/%Y %H:%M")
-        df["Confronto"] = df["Time"] + " - " + df["Home"] + " vs. " + df["Away"]
-
-        df['Probabilidade_H_FT'] = round((1 / df['Odd_H_FT']),2)
-        df['Probabilidade_D_FT'] = round((1 / df['Odd_D_FT']),2)
-        df['Probabilidade_A_FT'] = round((1 / df['Odd_A_FT']),2)
-
-        df['CV_HDA_FT'] = round((df[['Odd_H_FT','Odd_D_FT','Odd_A_FT']].std(ddof=0, axis=1) / df[['Odd_H_FT','Odd_D_FT','Odd_A_FT']].mean(axis=1)),2)
-
-        df["Diff_XG_Home_Away_Pre"] = df['XG_Home_Pre'] - df['XG_Away_Pre']
-
-        if filter_teams: df = df[(df["Home"].isin(filter_teams)) | (df["Away"].isin(filter_teams))]
-
-        rename_leagues(df)
-
-        return df
-
-    except urllib.error.HTTPError as e:
-        return pd.DataFrame()  # Retorna um DataFrame vazio para evitar erro na aplicação
-
-def betfair_load_daymatches(dt, filter_teams=None):
-
+def load_content_api_github(file_path):
     headers = {"Authorization": f"token {st.secrets["github"]["TOKEN"]}"}
     file_path = f"Jogos_do_Dia/Betfair/Jogos_do_Dia_Betfair_Back_Lay_{dt}.csv"
 
     url = f'https://api.github.com/repos/{st.secrets["github"]["OWNER"]}/{st.secrets["github"]["REPO"]}/contents/{file_path}'
+    response = requests.get(url, headers=headers)
+    content = requests.get(response.json()['download_url'], headers=headers).content
+
+    return io.BytesIO(content)
+
+def load_daymatches(dt, source):
 
     try:
-        response = requests.get(url, headers=headers)
-        data = response.json()
+        if source == 'Betfair':            
+            file = load_content_api_github(f"Jogos_do_Dia/Betfair/Jogos_do_Dia_Betfair_Back_Lay_{dt}.csv")
+            df = pd.read_csv(file)
+            df = df.rename(columns=lambda col: col.removesuffix('_Back'))            
+            # print_dataframe(df)
 
-        download_url = data['download_url']
-        content = requests.get(download_url, headers=headers).content
+        elif source == 'Footystats':
+            df = pd.read_csv(f"https://github.com/futpythontrader/YouTube/blob/main/Jogos_do_Dia/FootyStats/Jogos_do_Dia_FootyStats_{dt}.csv?raw=true")
         
-        df = pd.read_csv(io.BytesIO(content))
-        df = df.rename(columns=lambda col: col.removesuffix('_Back'))
-
-        print_dataframe(df)
-
-        outliers = "|".join(["(W)", "(Res)", "U23", "U21", "U19"])
-        df = df[~df['Home'].str.contains(outliers, regex=True, na=False)]
-        df = df[~df['Away'].str.contains(outliers, regex=True, na=False)]
-    
         # df['League'] = df['League'].str.replace(' ', ' - ', 1).str.upper()
+        rename_leagues(df)
+
         df["Datetime"] = pd.to_datetime(df["Date"] + " " + df["Time"])
         df["Formatted_Datetime"] = df["Datetime"].dt.strftime("%d/%m/%Y %H:%M")
         df["Confronto"] = df["Time"] + " - " + df["Home"] + " vs. " + df["Away"]
@@ -147,15 +121,14 @@ def betfair_load_daymatches(dt, filter_teams=None):
 
         df['CV_HDA_FT'] = round((df[['Odd_H_FT','Odd_D_FT','Odd_A_FT']].std(ddof=0, axis=1) / df[['Odd_H_FT','Odd_D_FT','Odd_A_FT']].mean(axis=1)),2)
 
-        df['Rodada'] = 0
-        df['XG_Total_Pre'] = 0.1
-        df['XG_Home_Pre'] = 0.1
-        df['XG_Away_Pre'] = 0.1
-        df["Diff_XG_Home_Away_Pre"] = 0.1
-
-        if filter_teams: df = df[(df["Home"].isin(filter_teams)) | (df["Away"].isin(filter_teams))]
-
-        rename_leagues(df)
+        if source == 'Betfair':
+            df['Rodada'] = 0
+            df['XG_Total_Pre'] = 0.1
+            df['XG_Home_Pre'] = 0.1
+            df['XG_Away_Pre'] = 0.1
+            df["Diff_XG_Home_Away_Pre"] = 0.1
+        elif source == 'Footystats':
+            df["Diff_XG_Home_Away_Pre"] = df['XG_Home_Pre'] - df['XG_Away_Pre']
 
         return df
 
@@ -163,7 +136,7 @@ def betfair_load_daymatches(dt, filter_teams=None):
         return pd.DataFrame()  # Retorna um DataFrame vazio para evitar erro na aplicação
 
 @st.cache_data
-def footystats_load_histmatches():
+def load_histmatches(source):
 
     def first_goal_string(row):
         def parse_minutes(value, team):
@@ -207,36 +180,52 @@ def footystats_load_histmatches():
 
         return f"{gols_home}-{gols_away}"
 
-    df = pd.read_csv("https://github.com/futpythontrader/YouTube/blob/main/Bases_de_Dados/FootyStats/Base_de_Dados_FootyStats_(2022_2025).csv?raw=true")
-    
-    # df['League'] = df['League'].str.replace(' ', ' - ', 1).str.upper()
-    
-    df[["Date", "Time"]] = df["Date"].str.split(" ", expand=True)
-    df["Date"] = pd.to_datetime(df["Date"])
-    df["Formatted_Date"] = df["Date"].dt.strftime("%d/%m/%Y")
-    df['Month_Year'] = pd.to_datetime(df['Date']).dt.strftime('%m/%Y')
-    
-    df["Resultado_HT"] = df["Goals_H_HT"].astype(str) + "-" + df["Goals_A_HT"].astype(str)
-    df["Resultado_FT"] = df["Goals_H_FT"].astype(str) + "-" + df["Goals_A_FT"].astype(str)
-    
-    df['Resultado_60'] = df.apply(calcular_resultado_minuto, minute=60, axis=1)
-    df['Resultado_70'] = df.apply(calcular_resultado_minuto, minute=70, axis=1)
-    df['Resultado_75'] = df.apply(calcular_resultado_minuto, minute=75, axis=1)
-    df['Resultado_80'] = df.apply(calcular_resultado_minuto, minute=80, axis=1)
+    try:
+        if source == 'Betfair':
+            file = load_content_api_github("Bases_de_Dados/Betfair/Base_de_dados_Betfair_Exchange_Back_Lay.csv")
+            df = pd.read_csv(file)
+            df = df.rename(columns=lambda col: col.removesuffix('_Back'))            
+            # print_dataframe(df)
+        elif source == 'Footystats':
+            df = pd.read_csv("https://github.com/futpythontrader/YouTube/blob/main/Bases_de_Dados/FootyStats/Base_de_Dados_FootyStats_(2022_2025).csv?raw=true")
+        
+        # df['League'] = df['League'].str.replace(' ', ' - ', 1).str.upper()
+        rename_leagues(df)
+        
+        df[["Date", "Time"]] = df["Date"].str.split(" ", expand=True)
+        df["Date"] = pd.to_datetime(df["Date"])
+        df["Formatted_Date"] = df["Date"].dt.strftime("%d/%m/%Y")
+        df['Month_Year'] = pd.to_datetime(df['Date']).dt.strftime('%m/%Y')
+        
+        df["Resultado_HT"] = df["Goals_H_HT"].astype(str) + "-" + df["Goals_A_HT"].astype(str)
+        df["Resultado_FT"] = df["Goals_H_FT"].astype(str) + "-" + df["Goals_A_FT"].astype(str)
+        
+        df['Resultado_60'] = df.apply(calcular_resultado_minuto, minute=60, axis=1)
+        df['Resultado_70'] = df.apply(calcular_resultado_minuto, minute=70, axis=1)
+        df['Resultado_75'] = df.apply(calcular_resultado_minuto, minute=75, axis=1)
+        df['Resultado_80'] = df.apply(calcular_resultado_minuto, minute=80, axis=1)
 
-    df['Probabilidade_H_FT'] = round((1 / df['Odd_H_FT']),2)
-    df['Probabilidade_D_FT'] = round((1 / df['Odd_D_FT']),2)
-    df['Probabilidade_A_FT'] = round((1 / df['Odd_A_FT']),2)
+        df['Probabilidade_H_FT'] = round((1 / df['Odd_H_FT']),2)
+        df['Probabilidade_D_FT'] = round((1 / df['Odd_D_FT']),2)
+        df['Probabilidade_A_FT'] = round((1 / df['Odd_A_FT']),2)
 
-    df['CV_HDA_FT'] = round((df[['Odd_H_FT','Odd_D_FT','Odd_A_FT']].std(ddof=0, axis=1) / df[['Odd_H_FT','Odd_D_FT','Odd_A_FT']].mean(axis=1)),2)
+        df['CV_HDA_FT'] = round((df[['Odd_H_FT','Odd_D_FT','Odd_A_FT']].std(ddof=0, axis=1) / df[['Odd_H_FT','Odd_D_FT','Odd_A_FT']].mean(axis=1)),2)
+        
+        df[["Primeiro_Gol","Primeiro_Gol_Minuto","Primeiro_Gol_Marcador"]] = df.apply(first_goal_string, axis=1)
+        
+        if source == 'Betfair':
+            df['Rodada'] = 0
+            df['XG_Total_Pre'] = 0.1
+            df['XG_Home_Pre'] = 0.1
+            df['XG_Away_Pre'] = 0.1
+            df["Diff_XG_Home_Away_Pre"] = 0.1
+        elif source == 'Footystats':
+            df["Diff_XG_Home_Away_Pre"] = df['XG_Home_Pre'] - df['XG_Away_Pre']  
+
+        return df
     
-    df[["Primeiro_Gol","Primeiro_Gol_Minuto","Primeiro_Gol_Marcador"]] = df.apply(first_goal_string, axis=1)
-    
-    df["Diff_XG_Home_Away_Pre"] = df['XG_Home_Pre'] - df['XG_Away_Pre']
-
-    rename_leagues(df)
-
-    return df
+    except urllib.error.HTTPError as e:
+        return pd.DataFrame()  # Retorna um DataFrame vazio para evitar erro na aplicação
 
 def atualizar_estatisticas(row, clubes, casa=True):
     clube = row["Home"] if casa else row["Away"]
