@@ -141,10 +141,10 @@ def betfair_load_daymatches(dt, filter_teams=None):
         df['CV_HDA_FT'] = round((df[['Odd_H_FT','Odd_D_FT','Odd_A_FT']].std(ddof=0, axis=1) / df[['Odd_H_FT','Odd_D_FT','Odd_A_FT']].mean(axis=1)),2)
 
         df['Rodada'] = 0
-        df['XG_Total_Pre'] = 0
-        df['XG_Home_Pre'] = 0
-        df['XG_Away_Pre'] = 0
-        df["Diff_XG_Home_Away_Pre"] = 0
+        df['XG_Total_Pre'] = 0.1
+        df['XG_Home_Pre'] = 0.1
+        df['XG_Away_Pre'] = 0.1
+        df["Diff_XG_Home_Away_Pre"] = 0.1
 
         if filter_teams: df = df[(df["Home"].isin(filter_teams)) | (df["Away"].isin(filter_teams))]
 
