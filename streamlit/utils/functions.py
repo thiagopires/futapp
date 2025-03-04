@@ -100,7 +100,7 @@ def load_daymatches(dt, source):
         if source == 'Betfair':            
             file = load_content_api_github(f"Jogos_do_Dia/Betfair/Jogos_do_Dia_Betfair_Back_Lay_{dt}.csv")
             df = pd.read_csv(file)
-            df = df.rename(columns=lambda col: col.removesuffix('_Back'))            
+            df = df.rename(columns=lambda col: col.removesuffix('_Back'))
             # print_dataframe(df)
 
         elif source == 'FootyStats':
@@ -136,7 +136,13 @@ def load_daymatches(dt, source):
 @st.cache_data
 def betfair_load_histmatches():
     file = load_content_api_github("Bases_de_Dados/Betfair/Base_de_Dados_Betfair_Exchange_Back_Lay.csv")
-    return pd.read_csv(file)
+    df = pd.read_csv(file)
+
+    padrao = "|".join(["(W)", "(Res)", "U23", "U21", "U19"])
+    df = df[~df['Home'].str.contains(padrao, regex=True, na=False)]
+    df = df[~df['Away'].str.contains(padrao, regex=True, na=False)]
+
+    return df
 
 @st.cache_data
 def footystats_load_histmatches():
@@ -203,7 +209,6 @@ def load_histmatches(source):
                 'Odd_A': 'Odd_A_FT',
                 'Odd_D': 'Odd_D_FT',
             })
-            # print_dataframe(df)
         elif source == 'FootyStats':
             df = footystats_load_histmatches()
         
