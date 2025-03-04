@@ -105,7 +105,7 @@ def load_daymatches(dt, source):
             df = df.rename(columns=lambda col: col.removesuffix('_Back'))            
             # print_dataframe(df)
 
-        elif source == 'Footystats':
+        elif source == 'FootyStats':
             df = pd.read_csv(f"https://github.com/futpythontrader/YouTube/blob/main/Jogos_do_Dia/FootyStats/Jogos_do_Dia_FootyStats_{dt}.csv?raw=true")
         
         # df['League'] = df['League'].str.replace(' ', ' - ', 1).str.upper()
@@ -127,7 +127,7 @@ def load_daymatches(dt, source):
             df['XG_Home_Pre'] = 0.1
             df['XG_Away_Pre'] = 0.1
             df["Diff_XG_Home_Away_Pre"] = 0.1
-        elif source == 'Footystats':
+        elif source == 'FootyStats':
             df["Diff_XG_Home_Away_Pre"] = df['XG_Home_Pre'] - df['XG_Away_Pre']
 
         return df
@@ -186,7 +186,7 @@ def load_histmatches(source):
             df = pd.read_csv(file)
             df = df.rename(columns=lambda col: col.removesuffix('_Back'))            
             # print_dataframe(df)
-        elif source == 'Footystats':
+        elif source == 'FootyStats':
             df = pd.read_csv("https://github.com/futpythontrader/YouTube/blob/main/Bases_de_Dados/FootyStats/Base_de_Dados_FootyStats_(2022_2025).csv?raw=true")
         
         # df['League'] = df['League'].str.replace(' ', ' - ', 1).str.upper()
@@ -219,7 +219,7 @@ def load_histmatches(source):
             df['XG_Home_Pre'] = 0.1
             df['XG_Away_Pre'] = 0.1
             df["Diff_XG_Home_Away_Pre"] = 0.1
-        elif source == 'Footystats':
+        elif source == 'FootyStats':
             df["Diff_XG_Home_Away_Pre"] = df['XG_Home_Pre'] - df['XG_Away_Pre']  
 
         return df

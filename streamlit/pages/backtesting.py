@@ -19,7 +19,6 @@ def main_page():
     st.title("Futapp v0.1")
     st.header("⚽ Backtesting")
 
-    ### FootyStats ###
     df_hist = load_histmatches('FootyStats')
 
     indicadores = df_hist.columns
