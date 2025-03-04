@@ -134,11 +134,13 @@ def load_daymatches(dt, source):
         return pd.DataFrame()  # Retorna um DataFrame vazio para evitar erro na aplicação
 
 @st.cache_data
-def betfair_load_histmatches(file):
+def betfair_load_histmatches():
+    file = load_content_api_github("Bases_de_Dados/Betfair/Base_de_Dados_Betfair_Exchange_Back_Lay.csv")
     return pd.read_csv(file)
 
 @st.cache_data
-def footystats_load_histmatches(file):
+def footystats_load_histmatches():
+    file = "https://github.com/futpythontrader/YouTube/blob/main/Bases_de_Dados/FootyStats/Base_de_Dados_FootyStats_(2022_2025).csv?raw=true"
     return pd.read_csv(file)
 
 @st.cache_data
@@ -189,9 +191,8 @@ def load_histmatches(source):
         return f"{gols_home}-{gols_away}"
 
     try:
-        if source == 'Betfair':
-            file = load_content_api_github("Bases_de_Dados/Betfair/Base_de_Dados_Betfair_Exchange_Back_Lay.csv")
-            df = betfair_load_histmatches(file)
+        if source == 'Betfair':            
+            df = betfair_load_histmatches()
             df = df.rename(columns=lambda col: col.removesuffix('_Back'))
             df = df.rename(columns={
                 'Goals_H': 'Goals_H_FT',
@@ -204,8 +205,7 @@ def load_histmatches(source):
             })
             # print_dataframe(df)
         elif source == 'FootyStats':
-            file = "https://github.com/futpythontrader/YouTube/blob/main/Bases_de_Dados/FootyStats/Base_de_Dados_FootyStats_(2022_2025).csv?raw=true"
-            df = footystats_load_histmatches(file)
+            df = footystats_load_histmatches()
         
         # df['League'] = df['League'].str.replace(' ', ' - ', 1).str.upper()
         rename_leagues(df)

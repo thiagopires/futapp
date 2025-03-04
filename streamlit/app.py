@@ -11,6 +11,10 @@ def main_page():
     st.title("Futapp v0.1")
 
     st.write("Conteúdo protegido para usuários logados.")
+
+    betfair_load_histmatches()
+    footystats_load_histmatches()
+    
     # if st.sidebar.button("Sair"):
     #     st.session_state["logged_in"] = False
     #     display_sidebar('none')
