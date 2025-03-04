@@ -121,10 +121,10 @@ def load_daymatches(dt, source):
 
         if source == 'Betfair':
             df['Rodada'] = 0
-            df['XG_Total_Pre'] = 0.1
-            df['XG_Home_Pre'] = 0.1
-            df['XG_Away_Pre'] = 0.1
-            df["Diff_XG_Home_Away_Pre"] = 0.1
+            df['XG_Total_Pre'] = 1
+            df['XG_Home_Pre'] = 1
+            df['XG_Away_Pre'] = 1
+            df["Diff_XG_Home_Away_Pre"] = 1
             df["Odd_DC_1X"] = df["Odd_A_FT_Lay"]
             df["Odd_DC_12"] = df["Odd_D_FT_Lay"]
             df["Odd_DC_X2"] = df["Odd_H_FT_Lay"]            
@@ -246,10 +246,10 @@ def load_histmatches(source):
         
         if source == 'Betfair':
             df['Rodada'] = 0
-            df['XG_Total_Pre'] = 0.1
-            df['XG_Home_Pre'] = 0.1
-            df['XG_Away_Pre'] = 0.1
-            df["Diff_XG_Home_Away_Pre"] = 0.1
+            df['XG_Total_Pre'] = 1
+            df['XG_Home_Pre'] = 1
+            df['XG_Away_Pre'] = 1
+            df["Diff_XG_Home_Away_Pre"] = 1
             df["Odd_DC_1X"] = df["Odd_A_FT_Lay"]
             df["Odd_DC_12"] = df["Odd_D_FT_Lay"]
             df["Odd_DC_X2"] = df["Odd_H_FT_Lay"]
