@@ -182,7 +182,11 @@ def load_histmatches(source):
         if source == 'Betfair':
             file = load_content_api_github("Bases_de_Dados/Betfair/Base_de_Dados_Betfair_Exchange_Back_Lay.csv")
             df = pd.read_csv(file)
-            df = df.rename(columns=lambda col: col.removesuffix('_Back'))            
+            df = df.rename(columns=lambda col: col.removesuffix('_Back')) 
+            df = df.rename(columns={
+                'Goals_H': 'Goals_H_FT',
+                'Goals_A': 'Goals_A_FT',
+            })
             print_dataframe(df)
         elif source == 'FootyStats':
             df = pd.read_csv("https://github.com/futpythontrader/YouTube/blob/main/Bases_de_Dados/FootyStats/Base_de_Dados_FootyStats_(2022_2025).csv?raw=true")
