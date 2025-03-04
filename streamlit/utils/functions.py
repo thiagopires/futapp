@@ -127,7 +127,12 @@ def betfair_load_daymatches(dt, filter_teams=None):
         download_url = data['download_url']
         content = requests.get(download_url, headers=headers).content
         
-        df = pd.read_csv(io.BytesIO(content)).rename(columns=lambda col: col.removesuffix('_Back'))
+        df = pd.read_csv(io.BytesIO(content))
+        df = df.rename(columns=lambda col: col.removesuffix('_Back'))
+
+        outliers = "|".join(["(W)", "(Res)", "U23", "U21", "U19"])
+        df = df[~df['Home'].str.contains(outliers, regex=True, na=False)]
+        df = df[~df['Away'].str.contains(outliers, regex=True, na=False)]
     
         # df['League'] = df['League'].str.replace(' ', ' - ', 1).str.upper()
         df["Datetime"] = pd.to_datetime(df["Date"] + " " + df["Time"])
