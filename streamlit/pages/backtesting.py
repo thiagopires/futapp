@@ -21,7 +21,7 @@ def main_page():
 
     ### FootyStats ###
 
-    df_hist = load_histmatches()
+    df_hist = footystats_load_histmatches()
 
     indicadores = df_hist.columns
 

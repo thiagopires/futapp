@@ -5,6 +5,7 @@ import telebot
 import requests
 import time
 import urllib
+import io
 from datetime import datetime, timedelta
 
 import streamlit as st
@@ -85,7 +86,7 @@ def print_dataframe(df, styled_df=None):
         ])
         st.dataframe(styled_df, height=len(df)*38, use_container_width=True, hide_index=True)       
 
-def load_daymatches(dt, filter_teams=None):
+def footystats_load_daymatches(dt, filter_teams=None):
 
     try:
         df = pd.read_csv(f"https://github.com/futpythontrader/YouTube/blob/main/Jogos_do_Dia/FootyStats/Jogos_do_Dia_FootyStats_{dt}.csv?raw=true")
@@ -109,34 +110,49 @@ def load_daymatches(dt, filter_teams=None):
 
         return df
 
-        # df_hist = load_histmatches(dt)
+    except urllib.error.HTTPError as e:
+        return pd.DataFrame()  # Retorna um DataFrame vazio para evitar erro na aplicação
 
-        # for idx, row in df.iterrows():
-        #     df_hist_cp = df_hist[(df_hist['Season'] == get_current_season()) & (df_hist['League'] == row['League'])].copy()
-        #     classificacao_geral = generate_classificacao_2(df_hist_cp, "ALL")
+def betfair_load_daymatches(dt, filter_teams=None):
 
-        #     posicao_home = classificacao_geral.loc[
-        #         classificacao_geral["Clube"] == row["Home"], "PTS"
-        #     ]
-        #     if not posicao_home.empty:
-        #         df.loc[idx, 'PTS_Tabela_H'] = posicao_home.values[0]
-        #     else:
-        #         df.loc[idx, 'PTS_Tabela_H'] = None  # Ou um valor padrão, como -1
-            
-        #     # Verificar posição do time visitante
-        #     posicao_away = classificacao_geral.loc[
-        #         classificacao_geral["Clube"] == row["Away"], "PTS"
-        #     ]
-        #     if not posicao_away.empty:
-        #         df.loc[idx, 'PTS_Tabela_A'] = posicao_away.values[0]
-        #     else:
-        #         df.loc[idx, 'PTS_Tabela_A'] = None
+    headers = {"Authorization": f"token {st.secrets["github"]["TOKEN"]}"}
+    file_path = f"Jogos_do_Dia/Betfair/Jogos_do_Dia_Betfair_Back_Lay_{dt}.csv"
+
+    url = f"{st.secrets["github"]["GITHUB_API_URL"]}/{st.secrets["github"]["OWNER"]}/{st.secrets["github"]["REPO"]}/contents/{file_path}"
+
+    try:
+        response = requests.get(url, headers=headers)
+        data = response.json()
+
+        download_url = data['download_url']
+        content = requests.get(download_url, headers=headers).content
+        
+        df = pd.read_csv(io.BytesIO(content))
+    
+        df['League'] = df['League'].str.replace(' ', ' - ', 1).str.upper()
+        df["Datetime"] = pd.to_datetime(df["Date"] + " " + df["Time"])
+        df["Formatted_Datetime"] = df["Datetime"].dt.strftime("%d/%m/%Y %H:%M")
+        df["Confronto"] = df["Time"] + " - " + df["Home"] + " vs. " + df["Away"]
+
+        df['Probabilidade_H_FT'] = round((1 / df['Odd_H_FT']),2)
+        df['Probabilidade_D_FT'] = round((1 / df['Odd_D_FT']),2)
+        df['Probabilidade_A_FT'] = round((1 / df['Odd_A_FT']),2)
+
+        df['CV_HDA_FT'] = round((df[['Odd_H_FT','Odd_D_FT','Odd_A_FT']].std(ddof=0, axis=1) / df[['Odd_H_FT','Odd_D_FT','Odd_A_FT']].mean(axis=1)),2)
+
+        df["Diff_XG_Home_Away_Pre"] = df['XG_Home_Pre'] - df['XG_Away_Pre']
+
+        if filter_teams: df = df[(df["Home"].isin(filter_teams)) | (df["Away"].isin(filter_teams))]
+
+        rename_leagues(df)
+
+        return df
 
     except urllib.error.HTTPError as e:
         return pd.DataFrame()  # Retorna um DataFrame vazio para evitar erro na aplicação
 
 @st.cache_data
-def load_histmatches():
+def footystats_load_histmatches():
 
     def first_goal_string(row):
         def parse_minutes(value, team):
