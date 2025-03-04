@@ -186,6 +186,8 @@ def load_histmatches(source):
             df = df.rename(columns={
                 'Goals_H': 'Goals_H_FT',
                 'Goals_A': 'Goals_A_FT',
+                'Goals_Min_H': 'Goals_H_Minutes',
+                'Goals_Min_A': 'Goals_A_Minutes',
             })
             print_dataframe(df)
         elif source == 'FootyStats':
