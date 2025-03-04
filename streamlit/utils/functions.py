@@ -130,6 +130,8 @@ def betfair_load_daymatches(dt, filter_teams=None):
         df = pd.read_csv(io.BytesIO(content))
         df = df.rename(columns=lambda col: col.removesuffix('_Back'))
 
+        print_dataframe(df)
+
         outliers = "|".join(["(W)", "(Res)", "U23", "U21", "U19"])
         df = df[~df['Home'].str.contains(outliers, regex=True, na=False)]
         df = df[~df['Away'].str.contains(outliers, regex=True, na=False)]
@@ -1109,6 +1111,7 @@ def rename_leagues(df):
     df.replace('Romanian Liga I','ROMANIA - LIGA 1', inplace=True)
     df.replace('Romanian Liga II','ROMANIA - LIGA 2', inplace=True)
     df.replace('Saudi Professional League','SAUDI ARABIA - SAUDI PROFESSION', inplace=True)
+    df.replace('Saudi 1st Division','SAUDI ARABIA - 1ST DIVISION', inplace=True)    
     df.replace('Scottish Championship','SCOTLAND - CHAMPIONSHIP', inplace=True)
     df.replace('Scottish League One','SCOTLAND - LEAGUE ONE', inplace=True)
     df.replace('Scottish League Two','SCOTLAND - LEAGUE TWO', inplace=True)
