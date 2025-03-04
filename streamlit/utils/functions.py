@@ -127,8 +127,7 @@ def betfair_load_daymatches(dt, filter_teams=None):
         download_url = data['download_url']
         content = requests.get(download_url, headers=headers).content
         
-        df = pd.read_csv(io.BytesIO(content))
-        print_dataframe(df)
+        df = pd.read_csv(io.BytesIO(content)).rename(columns=lambda col: col.removesuffix('_Back'))
     
         df['League'] = df['League'].str.replace(' ', ' - ', 1).str.upper()
         df["Datetime"] = pd.to_datetime(df["Date"] + " " + df["Time"])
