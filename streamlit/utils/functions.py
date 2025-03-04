@@ -208,6 +208,9 @@ def load_histmatches(source):
                 'Odd_H': 'Odd_H_FT',
                 'Odd_A': 'Odd_A_FT',
                 'Odd_D': 'Odd_D_FT',
+                'Odd_H_Lay': 'Odd_H_FT_Lay',
+                'Odd_A_Lay': 'Odd_A_FT_Lay',
+                'Odd_D_Lay': 'Odd_D_FT_Lay',
             })
         elif source == 'FootyStats':
             df = footystats_load_histmatches()
@@ -244,6 +247,9 @@ def load_histmatches(source):
             df['XG_Home_Pre'] = 0.1
             df['XG_Away_Pre'] = 0.1
             df["Diff_XG_Home_Away_Pre"] = 0.1
+            df["Odd_DC_1X"] = df["Odd_A_FT_Lay"]
+            df["Odd_DC_12"] = df["Odd_D_FT_Lay"]
+            df["Odd_DC_X2"] = df["Odd_H_FT_Lay"]
         elif source == 'FootyStats':
             df["Diff_XG_Home_Away_Pre"] = df['XG_Home_Pre'] - df['XG_Away_Pre']  
 
