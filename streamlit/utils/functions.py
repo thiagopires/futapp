@@ -95,16 +95,16 @@ def load_daymatches(dt, source):
         if source == 'Betfair':            
             file = load_content_api_github(f"Jogos_do_Dia/Betfair/Jogos_do_Dia_Betfair_Back_Lay_{dt}.csv")
             df = pd.read_csv(file)
+            rename_leagues(df)
             df = df[df["League"].isin(get_betfair_leagues())]
             df = df.rename(columns=lambda col: col.removesuffix('_Back'))
             # print_dataframe(df)
 
         elif source == 'FootyStats':
             df = pd.read_csv(f"https://github.com/futpythontrader/YouTube/blob/main/Jogos_do_Dia/FootyStats/Jogos_do_Dia_FootyStats_{dt}.csv?raw=true")
-        
-        # df['League'] = df['League'].str.replace(' ', ' - ', 1).str.upper()
-        rename_leagues(df)
+            rename_leagues(df)
 
+        # df['League'] = df['League'].str.replace(' ', ' - ', 1).str.upper()
         df["Datetime"] = pd.to_datetime(df["Date"] + " " + df["Time"])
         df["Formatted_Datetime"] = df["Datetime"].dt.strftime("%d/%m/%Y %H:%M")
         df["Confronto"] = df["Time"] + " - " + df["Home"] + " vs. " + df["Away"]
@@ -136,6 +136,7 @@ def load_daymatches(dt, source):
 def betfair_load_histmatches():
     file = load_content_api_github("Bases_de_Dados/Betfair/Base_de_Dados_Betfair_Exchange_Back_Lay.csv")
     df = pd.read_csv(file)
+    rename_leagues(df)
     df = df[df["League"].isin(get_betfair_leagues())]
 
     return df
@@ -1161,38 +1162,37 @@ def rename_leagues(df):
 
 def get_betfair_leagues():
     return [
-        "AUSTRALIA 1",
-        "ARGENTINA 1",
-        "BELGIUM 1",
-        "BRAZIL 1",
-        "BRAZIL 2",
-        "CONFERENCE LEAGUE",
-        "DENMARK 1",
-        "EGYPT 1",
-        "ENGLAND 1",
-        "ENGLAND 2",
-        "ENGLAND 3",
-        "ENGLAND 4",
-        "EUROPA CHAMPIONS LEAGUE",
-        "EUROPA CONFERENCE LEAGUE",
-        "EUROPA LEAGUE",
-        "FRANCE 1",
-        "FRANCE 2",
-        "GERMANY 1",
-        "GERMANY 2",
-        "ITALY 1",
-        "ITALY 2",
-        "JAPAN 1",
-        "MEXICO 1",
-        "NETHERLANDS 1",
-        "NETHERLANDS 2",
-        "NORWAY 1",
-        "PORTUGAL 1",
-        "ROMANIA 1",
-        "SAUDI ARABIA 1",
-        "SCOTLAND 1",
-        "SPAIN 1",
-        "SPAIN 2",
-        "TURKEY 1",
-        "USA 1"
+        'ARGENTINA - PRIMERA DIVISIÓN',
+        'AUSTRALIA - A-LEAGUE',
+        'BELGIUM - PRO LEAGUE',
+        'BRAZIL - SERIE A',
+        'BRAZIL - SERIE B',
+        'DENMARK - SUPERLIGA',
+        'EGYPT - EGYPTIAN PREMIER LEAGUE',
+        'ENGLAND - CHAMPIONSHIP',
+        'ENGLAND - EFL LEAGUE ONE',
+        'ENGLAND - EFL LEAGUE TWO',
+        'ENGLAND - PREMIER LEAGUE',
+        'EUROPA CHAMPIONS LEAGUE',
+        'EUROPA CONFERENCE LEAGUE',
+        'EUROPA LEAGUE',
+        'FRANCE - LIGUE 1',
+        'FRANCE - LIGUE 2',
+        'GERMANY - 2. BUNDESLIGA',
+        'GERMANY - BUNDESLIGA',
+        'ITALY - SERIE A',
+        'ITALY - SERIE B',
+        'JAPAN - J1 LEAGUE',
+        'MEXICO - LIGA MX',
+        'NETHERLANDS - EERSTE DIVISIE',
+        'NETHERLANDS - EREDIVISIE',
+        'NORWAY - ELITESERIEN',
+        'PORTUGAL - LIGA NOS',
+        'ROMANIA - LIGA I',
+        'SAUDI ARABIA - SAUDI PROFESSION',
+        'SCOTLAND - PREMIERSHIP',
+        'SPAIN - LA LIGA',
+        'SPAIN - SEGUNDA DIVISIÓN',
+        'TURKEY - SÜPER LIG',
+        'USA - MLS',
     ]
