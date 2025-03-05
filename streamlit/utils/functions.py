@@ -96,9 +96,12 @@ def load_daymatches(dt, source):
             file = load_content_api_github(f"Jogos_do_Dia/Betfair/Jogos_do_Dia_Betfair_Back_Lay_{dt}.csv")
             df = pd.read_csv(file)
             rename_leagues(df)
+
+            print_dataframe(df)
+            
             df = df[df["League"].isin(get_betfair_leagues())]
             df = df.rename(columns=lambda col: col.removesuffix('_Back'))
-            # print_dataframe(df)
+            
 
         elif source == 'FootyStats':
             df = pd.read_csv(f"https://github.com/futpythontrader/YouTube/blob/main/Jogos_do_Dia/FootyStats/Jogos_do_Dia_FootyStats_{dt}.csv?raw=true")
