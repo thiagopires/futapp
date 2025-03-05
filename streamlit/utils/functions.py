@@ -116,7 +116,7 @@ def load_daymatches(dt, source):
             rename_leagues(df)
             rename_teams(df)
             df = rename_columns_betfair(df)
-            print_dataframe(df)
+            # print_dataframe(df)
 
         elif source == 'FootyStats':
             df = pd.read_csv(f"https://github.com/futpythontrader/YouTube/blob/main/Jogos_do_Dia/FootyStats/Jogos_do_Dia_FootyStats_{dt}.csv?raw=true")
@@ -155,7 +155,7 @@ def betfair_load_histmatches():
     file = load_content_api_github("Bases_de_Dados/Betfair/Base_de_Dados_Betfair_Exchange_Back_Lay.csv")
     df = pd.read_csv(file)
     rename_leagues(df)
-    rename_columns_betfair(df)
+    df = rename_columns_betfair(df)
     return df
 
 @st.cache_data
