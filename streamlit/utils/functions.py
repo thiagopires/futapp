@@ -134,6 +134,7 @@ def load_daymatches(dt, source):
         df['CV_HDA_FT'] = round((df[['Odd_H_FT','Odd_D_FT','Odd_A_FT']].std(ddof=0, axis=1) / df[['Odd_H_FT','Odd_D_FT','Odd_A_FT']].mean(axis=1)),2)
 
         if source == 'Betfair':
+            df['Season'] = ''
             df['Rodada'] = 0
             df['XG_Total_Pre'] = 1
             df['XG_Home_Pre'] = 1
