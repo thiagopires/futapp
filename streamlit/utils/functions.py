@@ -8,8 +8,6 @@ import urllib
 import io
 from datetime import datetime, timedelta
 
-from filters import *
-
 def send_alert(message):
     bot_id = st.secrets['TELEGRAM_BOT_ID']
     chat_id = st.secrets['TELEGRAM_CHAT_ID']

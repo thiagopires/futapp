@@ -1,5 +1,6 @@
 import streamlit as st
 from utils.functions import *
+from utils.filters import *
 
 st.set_page_config(layout="wide", page_title="Futapp v0.1")
 display_sidebar('none')
