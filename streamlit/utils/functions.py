@@ -134,7 +134,7 @@ def load_daymatches(dt, source):
         df['CV_HDA_FT'] = round((df[['Odd_H_FT','Odd_D_FT','Odd_A_FT']].std(ddof=0, axis=1) / df[['Odd_H_FT','Odd_D_FT','Odd_A_FT']].mean(axis=1)),2)
 
         if source == 'Betfair':
-            df['Season'] = ''
+            df['Season'] = get_current_season()
             df['Rodada'] = 0
             df['XG_Total_Pre'] = 1
             df['XG_Home_Pre'] = 1
@@ -244,7 +244,7 @@ def load_histmatches(source):
         df[["Primeiro_Gol","Primeiro_Gol_Minuto","Primeiro_Gol_Marcador"]] = df.apply(first_goal_string, axis=1)
         
         if source == 'Betfair':
-            df['Season'] = ''
+            df['Season'] = get_current_season()
             df['Rodada'] = 0
             df['XG_Total_Pre'] = 1
             df['XG_Home_Pre'] = 1
