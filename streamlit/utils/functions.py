@@ -244,6 +244,7 @@ def load_histmatches(source):
         df[["Primeiro_Gol","Primeiro_Gol_Minuto","Primeiro_Gol_Marcador"]] = df.apply(first_goal_string, axis=1)
         
         if source == 'Betfair':
+            df['Season'] = ''
             df['Rodada'] = 0
             df['XG_Total_Pre'] = 1
             df['XG_Home_Pre'] = 1
