@@ -82,6 +82,24 @@ def print_dataframe(df, styled_df=None):
         ])
         st.dataframe(styled_df, height=len(df)*38, use_container_width=True, hide_index=True)       
 
+def rename_columns_betfair(df):
+    df = df[df["League"].isin(get_betfair_leagues())]
+    df = df.rename(columns=lambda col: col.removesuffix('_Back'))
+    df = df.rename(columns={
+        'Goals_H': 'Goals_H_FT',
+        'Goals_A': 'Goals_A_FT',
+        'Goals_Min_H': 'Goals_H_Minutes',
+        'Goals_Min_A': 'Goals_A_Minutes',
+        'Odd_H': 'Odd_H_FT',
+        'Odd_A': 'Odd_A_FT',
+        'Odd_D': 'Odd_D_FT',
+        'Odd_H_Lay': 'Odd_H_FT_Lay',
+        'Odd_A_Lay': 'Odd_A_FT_Lay',
+        'Odd_D_Lay': 'Odd_D_FT_Lay',
+    })
+
+    return df
+
 def load_content_api_github(file_path):
     headers = {"Authorization": f"token {st.secrets["github"]["TOKEN"]}"}
     url = f'https://api.github.com/repos/{st.secrets["github"]["OWNER"]}/{st.secrets["github"]["REPO"]}/contents/{file_path}'
@@ -97,9 +115,8 @@ def load_daymatches(dt, source):
             df = pd.read_csv(file)
             rename_leagues(df)
             rename_teams(df)
-            df = df[df["League"].isin(get_betfair_leagues())]
-            df = df.rename(columns=lambda col: col.removesuffix('_Back'))
-            print_dataframe(df)
+            rename_columns_betfair(df)
+            # print_dataframe(df)
 
         elif source == 'FootyStats':
             df = pd.read_csv(f"https://github.com/futpythontrader/YouTube/blob/main/Jogos_do_Dia/FootyStats/Jogos_do_Dia_FootyStats_{dt}.csv?raw=true")
@@ -138,8 +155,7 @@ def betfair_load_histmatches():
     file = load_content_api_github("Bases_de_Dados/Betfair/Base_de_Dados_Betfair_Exchange_Back_Lay.csv")
     df = pd.read_csv(file)
     rename_leagues(df)
-    df = df[df["League"].isin(get_betfair_leagues())]
-
+    rename_columns_betfair(df)
     return df
 
 @st.cache_data
@@ -197,19 +213,6 @@ def load_histmatches(source):
     try:
         if source == 'Betfair':            
             df = betfair_load_histmatches()
-            df = df.rename(columns=lambda col: col.removesuffix('_Back'))
-            df = df.rename(columns={
-                'Goals_H': 'Goals_H_FT',
-                'Goals_A': 'Goals_A_FT',
-                'Goals_Min_H': 'Goals_H_Minutes',
-                'Goals_Min_A': 'Goals_A_Minutes',
-                'Odd_H': 'Odd_H_FT',
-                'Odd_A': 'Odd_A_FT',
-                'Odd_D': 'Odd_D_FT',
-                'Odd_H_Lay': 'Odd_H_FT_Lay',
-                'Odd_A_Lay': 'Odd_A_FT_Lay',
-                'Odd_D_Lay': 'Odd_D_FT_Lay',
-            })
         elif source == 'FootyStats':
             df = footystats_load_histmatches()
         
