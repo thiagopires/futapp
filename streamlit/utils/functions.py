@@ -8,8 +8,6 @@ import urllib
 import io
 from datetime import datetime, timedelta
 
-from utils.filters import *
-
 def send_alert(message):
     bot_id = st.secrets['TELEGRAM_BOT_ID']
     chat_id = st.secrets['TELEGRAM_CHAT_ID']
@@ -97,7 +95,7 @@ def load_daymatches(dt, source):
         if source == 'Betfair':            
             file = load_content_api_github(f"Jogos_do_Dia/Betfair/Jogos_do_Dia_Betfair_Back_Lay_{dt}.csv")
             df = pd.read_csv(file)
-            df = df[df["League"].isin(betfair_leagues)]
+            df = df[df["League"].isin(get_betfair_leagues())]
             df = df.rename(columns=lambda col: col.removesuffix('_Back'))
             # print_dataframe(df)
 
@@ -138,7 +136,7 @@ def load_daymatches(dt, source):
 def betfair_load_histmatches():
     file = load_content_api_github("Bases_de_Dados/Betfair/Base_de_Dados_Betfair_Exchange_Back_Lay.csv")
     df = pd.read_csv(file)
-    df = df[df["League"].isin(betfair_leagues)]
+    df = df[df["League"].isin(get_betfair_leagues())]
 
     return df
 
@@ -1156,3 +1154,41 @@ def rename_leagues(df):
     df.replace('Venezuelan Primera Division','VENEZUELA - LIGA FUTVE', inplace=True)
     df.replace('Welsh Premiership','WALES - CYMRU PREMIER', inplace=True)
     df.replace('Lithuanian A Lyga','LITHUANIA - A LYGA', inplace=True)
+
+def get_betfair_leagues():
+    return [
+        "AUSTRALIA 1",
+        "ARGENTINA 1",
+        "BELGIUM 1",
+        "BRAZIL 1",
+        "BRAZIL 2",
+        "CONFERENCE LEAGUE",
+        "DENMARK 1",
+        "EGYPT 1",
+        "ENGLAND 1",
+        "ENGLAND 2",
+        "ENGLAND 3",
+        "ENGLAND 4",
+        "EUROPA CHAMPIONS LEAGUE",
+        "EUROPA CONFERENCE LEAGUE",
+        "EUROPA LEAGUE",
+        "FRANCE 1",
+        "FRANCE 2",
+        "GERMANY 1",
+        "GERMANY 2",
+        "ITALY 1",
+        "ITALY 2",
+        "JAPAN 1",
+        "MEXICO 1",
+        "NETHERLANDS 1",
+        "NETHERLANDS 2",
+        "NORWAY 1",
+        "PORTUGAL 1",
+        "ROMANIA 1",
+        "SAUDI ARABIA 1",
+        "SCOTLAND 1",
+        "SPAIN 1",
+        "SPAIN 2",
+        "TURKEY 1",
+        "USA 1"
+    ]
