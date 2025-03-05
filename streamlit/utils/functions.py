@@ -115,7 +115,7 @@ def load_daymatches(dt, source):
             df = pd.read_csv(file)
             rename_leagues(df)
             rename_teams(df)
-            rename_columns_betfair(df)
+            df = rename_columns_betfair(df)
             # print_dataframe(df)
 
         elif source == 'FootyStats':
