@@ -980,6 +980,7 @@ def rename_leagues(df):
 
     # FootyStats
     df.replace('ARGENTINA 1','ARGENTINA - PRIMERA DIVISIÓN', inplace=True)
+    df.replace('AUSTRALIA 1','AUSTRALIA - A-LEAGUE', inplace=True)
     df.replace('AUSTRIA 2','AUSTRIA - 2. LIGA', inplace=True)
     df.replace('AUSTRIA 1','AUSTRIA - BUNDESLIGA', inplace=True)
     df.replace('BELGIUM 1','BELGIUM - PRO LEAGUE', inplace=True)
@@ -988,6 +989,7 @@ def rename_leagues(df):
     df.replace('BULGARIA 1','BULGARIA - FIRST LEAGUE', inplace=True)
     df.replace('CHILE 1','CHILE - PRIMERA DIVISIÓN', inplace=True)
     df.replace('CHINA 1','CHINA - CHINESE SUPER LEAGUE', inplace=True)
+    df.replace('CONFERENCE LEAGUE','EUROPA CONFERENCE LEAGUE', inplace=True)
     df.replace('CROATIA 1','CROATIA - PRVA HNL', inplace=True)
     df.replace('CZECH 1','CZECH - REPUBLIC FIRST LEAGUE', inplace=True)
     df.replace('DENMARK 1','DENMARK - SUPERLIGA', inplace=True)
@@ -1008,6 +1010,7 @@ def rename_leagues(df):
     df.replace('ITALY 2','ITALY - SERIE B', inplace=True)
     df.replace('JAPAN 1','JAPAN - J1 LEAGUE', inplace=True)
     df.replace('JAPAN 2','JAPAN - J2 LEAGUE', inplace=True)
+    df.replace('MEXICO 1','MEXICO - LIGA MX', inplace=True)
     df.replace('NETHERLANDS 2','NETHERLANDS - EERSTE DIVISIE', inplace=True)
     df.replace('NETHERLANDS 1','NETHERLANDS - EREDIVISIE', inplace=True)
     df.replace('NORWAY 1','NORWAY - ELITESERIEN', inplace=True)
@@ -1018,6 +1021,7 @@ def rename_leagues(df):
     df.replace('PORTUGAL 2','PORTUGAL - LIGAPRO', inplace=True)
     df.replace('REPUBLIC OF IRELAND 1','REPUBLIC OF IRELAND - PREMIER DIVISION', inplace=True)
     df.replace('ROMANIA 1','ROMANIA - LIGA I', inplace=True)
+    df.replace('SAUDI ARABIA 1','SAUDI ARABIA - SAUDI PROFESSION', inplace=True)
     df.replace('SCOTLAND 1','SCOTLAND - PREMIERSHIP', inplace=True)
     df.replace('SERBIA 1','SERBIA - SUPERLIGA', inplace=True)
     df.replace('SLOVAKIA 1','SLOVAKIA - SUPER LIGA', inplace=True)

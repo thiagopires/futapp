@@ -30,6 +30,8 @@ def main_page():
     leagues.insert(0, 'Todas as Ligas')
     selected_leagues = st.multiselect("Filtrar por Liga", leagues, [leagues[0]])
 
+    print(leagues)
+
     if not (not selected_leagues or "Todas as Ligas" in selected_leagues):
         df_hist = df_hist[df_hist['League'].isin(selected_leagues)]
 

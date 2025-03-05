@@ -13,8 +13,8 @@ def main_page():
 
     st.write("Conteúdo protegido para usuários logados.")
 
-    betfair_load_histmatches()
-    footystats_load_histmatches()
+    load_histmatches('FootyStats')
+    load_histmatches('Betfair')
     
     # if st.sidebar.button("Sair"):
     #     st.session_state["logged_in"] = False
