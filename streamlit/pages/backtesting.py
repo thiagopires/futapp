@@ -19,7 +19,8 @@ def main_page():
     st.title("Futapp v0.1")
     st.header("⚽ Backtesting")
 
-    df_hist = load_histmatches('FootyStats')
+    fonte_dados = st.selectbox("Fonte de Dados", ['FootyStats','Betfair'])
+    df_hist = load_histmatches(fonte_dados)
 
     indicadores = df_hist.columns
 
