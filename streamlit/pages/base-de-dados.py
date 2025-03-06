@@ -26,7 +26,8 @@ def main_page():
     df_hist = load_histmatches(fonte_dados)
     df_hist = df_hist[(df_hist['Date'] >= pd.to_datetime(data_inicial)) & (df_hist['Date'] <= pd.to_datetime(data_final))]
 
-    leagues = sorted(df_hist['League'].unique())
+    # leagues = sorted(df_hist['League'].unique())
+    leagues = get_betfair_leagues()
     leagues.insert(0, 'Todas as Ligas')
     selected_leagues = st.multiselect("Filtrar por Liga", leagues, [leagues[0]])
 
