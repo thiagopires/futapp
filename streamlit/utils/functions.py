@@ -8,6 +8,19 @@ import urllib
 import io
 from datetime import datetime, timedelta
 
+def get_current_season():
+    SEASON = '2024/2025'
+    return SEASON
+
+def get_last_season():
+    SEASON = '2023/2024'
+    return SEASON
+
+def get_today(offset=0):
+    now = datetime.now()
+    adjusted_time = now + timedelta(days=offset) - timedelta(hours=3)
+    return adjusted_time.date()
+
 def send_alert(message):
     bot_id = st.secrets['TELEGRAM_BOT_ID']
     chat_id = st.secrets['TELEGRAM_CHAT_ID']
@@ -59,19 +72,6 @@ def login_page():
         else:
             st.error("Usuário inválido!")
 
-def get_current_season():
-    SEASON = '2024/2025'
-    return SEASON
-
-def get_last_season():
-    SEASON = '2023/2024'
-    return SEASON
-
-def get_today(offset=0):
-    now = datetime.now()
-    adjusted_time = now + timedelta(days=offset) - timedelta(hours=3)
-    return adjusted_time.date()
-
 def print_dataframe(df, styled_df=None):
     if not styled_df:
         st.dataframe(df, use_container_width=True, hide_index=True)
@@ -105,7 +105,6 @@ def load_content_api_github(file_path):
     url = f'https://api.github.com/repos/{st.secrets["github"]["OWNER"]}/{st.secrets["github"]["REPO"]}/contents/{file_path}'
     response = requests.get(url, headers=headers)
     content = requests.get(response.json()['download_url'], headers=headers).content
-
     return io.BytesIO(content)
 
 def load_daymatches(dt, source):
@@ -398,7 +397,7 @@ def calcular_gols_por_tempo(df, team_name):
 
         # Função para ajustar minutos com '+' (exemplo: '45+3' -> 45)
         def ajustar_minuto(minuto):
-            if '+' in minuto:
+            if '+' in str(minuto):
                 return int(minuto.split('+')[0])
             return int(minuto)
 
