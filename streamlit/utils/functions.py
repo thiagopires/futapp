@@ -141,7 +141,7 @@ def load_daymatches(dt, source):
             df["Diff_XG_Home_Away_Pre"] = 1
             df["Odd_DC_1X"] = df["Odd_A_FT_Lay"]
             df["Odd_DC_12"] = df["Odd_D_FT_Lay"]
-            df["Odd_DC_X2"] = df["Odd_H_FT_Lay"]            
+            df["Odd_DC_X2"] = df["Odd_H_FT_Lay"]
         elif source == 'FootyStats':
             df["Diff_XG_Home_Away_Pre"] = df['XG_Home_Pre'] - df['XG_Away_Pre']
 
@@ -252,6 +252,8 @@ def load_histmatches(source):
             df["Odd_DC_1X"] = df["Odd_A_FT_Lay"]
             df["Odd_DC_12"] = df["Odd_D_FT_Lay"]
             df["Odd_DC_X2"] = df["Odd_H_FT_Lay"]
+            df['PPG_Home_Pre'] = 0
+            df['PPG_Away_Pre'] = 0
         elif source == 'FootyStats':
             df["Diff_XG_Home_Away_Pre"] = df['XG_Home_Pre'] - df['XG_Away_Pre']  
 
