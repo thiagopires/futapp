@@ -664,7 +664,7 @@ def get_filter_lay_visitante_v2(df):
             
             ((df['League'] == 'ENGLAND - PREMIER LEAGUE') 
                 & (df["Probabilidade_A_FT"].between(0.22, 0.31))
-                & (df["CV_HDA_FT"].between(0.2, 0.24))) |
+                & (df["CV_HDA_FT"].between(0.35, 0.39))) |
             
             ((df['League'] == 'ENGLAND - PREMIER LEAGUE') 
                 & (df["Probabilidade_A_FT"].between(0.32, 0.41))
