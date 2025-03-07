@@ -621,14 +621,24 @@ def get_filter_lay_visitante_v2(df):
     
     return (
         (df["Odd_H_FT"].between(1.3, 2.5)) &
+        (df["Odd_H_FT"] < df["Odd_A_FT"]) &
         (
+
+            ((df['League'] == 'AUSTRALIA - A-LEAGUE') 
+                & (df["Probabilidade_A_FT"].between(0.22, 0.31))
+                & (df["CV_HDA_FT"].between(0.2, 0.29))) |
+
             ((df['League'] == 'BELGIUM - PRO LEAGUE') 
                 & (df["Probabilidade_A_FT"].between(0.12, 0.21))
                 & (df["CV_HDA_FT"].between(0.3, 0.44))) |
             
             ((df['League'] == 'BELGIUM - PRO LEAGUE') 
                 & (df["Probabilidade_A_FT"].between(0.22, 0.31))
-                & (df["CV_HDA_FT"].between(0.2, 0.34))) |
+                & (df["CV_HDA_FT"].between(0.25, 0.29))) |
+
+            ((df['League'] == 'BELGIUM - PRO LEAGUE') 
+                & (df["Probabilidade_A_FT"].between(0.32, 0.41))
+                & (df["CV_HDA_FT"].between(0.2, 0.29))) |
 
             ((df['League'] == 'DENMARK - SUPERLIGA') 
                 & (df["Probabilidade_A_FT"].between(0.12, 0.21))) | 
