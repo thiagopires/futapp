@@ -698,8 +698,6 @@ def get_filter_lay_visitante_v2(df):
                 & (df["Probabilidade_H_FT"].between(0.22, 0.31))
                 & (df["CV_HDA_FT"].between(0.3, 0.34))) |
 
-            ((df['League'] == 'TURKEY - SÜPER LIG')) |
-
             ((df['League'] == 'TURKEY - SÜPER LIG') 
                 & (df["Probabilidade_H_FT"].between(0.32, 0.41))
                 & (df["CV_HDA_FT"].between(0.1, 0.14)))
