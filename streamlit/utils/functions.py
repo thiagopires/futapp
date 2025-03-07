@@ -234,11 +234,12 @@ def load_histmatches(source):
         df['Resultado_75'] = df.apply(calcular_resultado_minuto, minute=75, axis=1)
         df['Resultado_80'] = df.apply(calcular_resultado_minuto, minute=80, axis=1)
 
-        df['Probabilidade_H_FT'] = round((1 / df['Odd_H_FT']),2)
-        df['Probabilidade_D_FT'] = round((1 / df['Odd_D_FT']),2)
-        df['Probabilidade_A_FT'] = round((1 / df['Odd_A_FT']),2)
+        # Variaveis Secundárias
+        df['Probabilidade_H_FT'] = round((1 / df['Odd_H_FT']), 2)
+        df['Probabilidade_D_FT'] = round((1 / df['Odd_D_FT']), 2)
+        df['Probabilidade_A_FT'] = round((1 / df['Odd_A_FT']), 2)
 
-        df['CV_HDA_FT'] = round((df[['Odd_H_FT','Odd_D_FT','Odd_A_FT']].std(ddof=0, axis=1) / df[['Odd_H_FT','Odd_D_FT','Odd_A_FT']].mean(axis=1)),2)
+        df['CV_HDA_FT'] = round((df[['Odd_H_FT','Odd_D_FT','Odd_A_FT']].std(ddof=0, axis=1) / df[['Odd_H_FT','Odd_D_FT','Odd_A_FT']].mean(axis=1)), 2)
         
         df[["Primeiro_Gol","Primeiro_Gol_Minuto","Primeiro_Gol_Marcador"]] = df.apply(first_goal_string, axis=1)
         
