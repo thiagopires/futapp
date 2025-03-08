@@ -153,6 +153,8 @@ def load_daymatches(dt, source):
 
     except urllib.error.HTTPError as e:
         return pd.DataFrame()  # Retorna um DataFrame vazio para evitar erro na aplicação
+    except pd.errors.EmptyDataError as e:
+        return pd.DataFrame()  # Retorna um DataFrame vazio para evitar erro na aplicação
 
 @st.cache_data
 def betfair_load_histmatches():
