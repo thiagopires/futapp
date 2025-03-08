@@ -651,9 +651,9 @@ def get_filter_lay_visitante_v2(df):
             #     & (df["Probabilidade_A_FT"].between(0.12, 0.21))
             #     & (df["CV_HDA_FT"].between(0.3, 0.34))) |
 
-            ((df['League'] == 'ENGLAND - CHAMPIONSHIP') 
-                & (df["Probabilidade_A_FT"].between(0.22, 0.31))
-                & (df["CV_HDA_FT"].between(0.15, 0.19))) |
+            # ((df['League'] == 'ENGLAND - CHAMPIONSHIP') 
+            #     & (df["Probabilidade_A_FT"].between(0.22, 0.31))
+            #     & (df["CV_HDA_FT"].between(0.15, 0.19))) |
             
             ((df['League'] == 'ENGLAND - CHAMPIONSHIP') 
                 & (df["Probabilidade_A_FT"].between(0.32, 0.41))
