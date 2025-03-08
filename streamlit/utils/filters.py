@@ -620,7 +620,7 @@ def get_filter_lay_visitante_v2(df):
     # )
     
     return (
-        (df["Odd_H_FT"].between(1.3, 2.5)) &
+        (df["Odd_H_FT"].between(1.4, 2.5)) &
         (
             ((df['League'] == 'AUSTRALIA - A-LEAGUE') 
                 & (df["Probabilidade_A_FT"].between(0.22, 0.31))
