@@ -371,7 +371,7 @@ def load_histmatches(source):
         df['CV_CG_H_02'] = df['DesvPad_CG_H_02'] / df['Media_CG_H_02']
         df['CV_CG_A_02'] = df['DesvPad_CG_A_02'] / df['Media_CG_A_02']
 
-        colunas_deletar = ['Pts_H','Pts_A','DesvPad_Ptos_H','DesvPad_Ptos_A',
+        colunas_deletar = ['Pts_H','Pts_A','DesvPad_Pts_H','DesvPad_Pts_A',
                         'DesvPad_GM_H','DesvPad_GM_A',
                         'DesvPad_GS_H','DesvPad_GS_A',
                         'SG_H','SG_A','DesvPad_SG_H','DesvPad_SG_A',
