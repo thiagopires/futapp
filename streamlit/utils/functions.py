@@ -302,8 +302,8 @@ def load_histmatches(source):
         df['CV_SG_A'] = df['DesvPad_SG_A'] / df['Media_SG_A']
 
         # Média de Saldo de Gols Ponderado pela Probabilidade do Time
-        df['SG_H_01'] = (df['Goals_H_FT'] - df['Goals_A_FT']) / df['p_H']
-        df['SG_A_01'] = (df['Goals_A_FT'] - df['Goals_H_FT']) / df['p_A']
+        df['SG_H_01'] = (df['Goals_H_FT'] - df['Goals_A_FT']) / df['Probabilidade_H_FT']
+        df['SG_A_01'] = (df['Goals_A_FT'] - df['Goals_H_FT']) / df['Probabilidade_A_FT']
         df['Media_SG_H_01'] = df.groupby('Home')['SG_H_01'].rolling(window=5, min_periods=5).mean().reset_index(0,drop=True)
         df['Media_SG_A_01'] = df.groupby('Away')['SG_A_01'].rolling(window=5, min_periods=5).mean().reset_index(0,drop=True)
         df['Media_SG_H_01'] = df.groupby('Home')['Media_SG_H_01'].shift(1)
@@ -316,8 +316,8 @@ def load_histmatches(source):
         df['CV_SG_A_01'] = df['DesvPad_SG_A_01'] / df['Media_SG_A_01']
 
         # Média de Saldo de Gols Ponderado pela Probabilidade do Adversário
-        df['SG_H_02'] = (df['Goals_H_FT'] - df['Goals_A_FT']) / df['p_A']
-        df['SG_A_02'] = (df['Goals_A_FT'] - df['Goals_H_FT']) / df['p_H']
+        df['SG_H_02'] = (df['Goals_H_FT'] - df['Goals_A_FT']) / df['Probabilidade_A_FT']
+        df['SG_A_02'] = (df['Goals_A_FT'] - df['Goals_H_FT']) / df['Probabilidade_H_FT']
         df['Media_SG_H_02'] = df.groupby('Home')['SG_H_02'].rolling(window=5, min_periods=5).mean().reset_index(0,drop=True)
         df['Media_SG_A_02'] = df.groupby('Away')['SG_A_02'].rolling(window=5, min_periods=5).mean().reset_index(0,drop=True)
         df['Media_SG_H_02'] = df.groupby('Home')['Media_SG_H_02'].shift(1)
@@ -330,8 +330,8 @@ def load_histmatches(source):
         df['CV_SG_A_02'] = df['DesvPad_SG_A_02'] / df['Media_SG_A_02']
 
         # Média do Valor do Gol
-        df['VG_H'] = df['Goals_H_FT'] * df['p_A']
-        df['VG_A'] = df['Goals_A_FT'] * df['p_H']
+        df['VG_H'] = df['Goals_H_FT'] * df['Probabilidade_A_FT']
+        df['VG_A'] = df['Goals_A_FT'] * df['Probabilidade_H_FT']
         df['Media_VG_H'] = df.groupby('Home')['VG_H'].rolling(window=5, min_periods=5).mean().reset_index(0,drop=True)
         df['Media_VG_A'] = df.groupby('Away')['VG_A'].rolling(window=5, min_periods=5).mean().reset_index(0,drop=True)
         df['Media_VG_H'] = df.groupby('Home')['Media_VG_H'].shift(1)
@@ -344,8 +344,8 @@ def load_histmatches(source):
         df['CV_VG_A'] = df['DesvPad_VG_A'] / df['Media_VG_A']
 
         # Custo do Gol 1.0
-        df['CG_H_01'] = df['Goals_H_FT'] / df['p_H']
-        df['CG_A_01'] = df['Goals_A_FT'] / df['p_A']
+        df['CG_H_01'] = df['Goals_H_FT'] / df['Probabilidade_H_FT']
+        df['CG_A_01'] = df['Goals_A_FT'] / df['Probabilidade_A_FT']
         df['Media_CG_H_01'] = df.groupby('Home')['CG_H_01'].rolling(window=5, min_periods=5).mean().reset_index(0,drop=True)
         df['Media_CG_A_01'] = df.groupby('Away')['CG_A_01'].rolling(window=5, min_periods=5).mean().reset_index(0,drop=True)
         df['Media_CG_H_01'] = df.groupby('Home')['Media_CG_H_01'].shift(1)
@@ -358,8 +358,8 @@ def load_histmatches(source):
         df['CV_CG_A_01'] = df['DesvPad_CG_A_01'] / df['Media_CG_A_01']
 
         # Custo do Gol 2.0
-        df['CG_H_02'] = (df['Goals_H_FT'] / 2) + (df['p_H'] / 2)
-        df['CG_A_02'] = (df['Goals_A_FT'] / 2) + (df['p_A'] / 2)
+        df['CG_H_02'] = (df['Goals_H_FT'] / 2) + (df['Probabilidade_H_FT'] / 2)
+        df['CG_A_02'] = (df['Goals_A_FT'] / 2) + (df['Probabilidade_A_FT'] / 2)
         df['Media_CG_H_02'] = df.groupby('Home')['CG_H_02'].rolling(window=5, min_periods=5).mean().reset_index(0,drop=True)
         df['Media_CG_A_02'] = df.groupby('Away')['CG_A_02'].rolling(window=5, min_periods=5).mean().reset_index(0,drop=True)
         df['Media_CG_H_02'] = df.groupby('Home')['Media_CG_H_02'].shift(1)
