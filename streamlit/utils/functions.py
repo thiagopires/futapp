@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+import numpy as np
 import ast
 import telebot
 import requests
@@ -234,6 +235,8 @@ def load_histmatches(source):
         df['Resultado_75'] = df.apply(calcular_resultado_minuto, minute=75, axis=1)
         df['Resultado_80'] = df.apply(calcular_resultado_minuto, minute=80, axis=1)
 
+        df[["Primeiro_Gol", "Primeiro_Gol_Minuto", "Primeiro_Gol_Marcador"]] = df.apply(first_goal_string, axis=1)
+
         # Variaveis Secundárias
         df['Probabilidade_H_FT'] = round((1 / df['Odd_H_FT']), 2)
         df['Probabilidade_D_FT'] = round((1 / df['Odd_D_FT']), 2)
@@ -241,8 +244,146 @@ def load_histmatches(source):
 
         df['CV_HDA_FT'] = round((df[['Odd_H_FT','Odd_D_FT','Odd_A_FT']].std(ddof=0, axis=1) / df[['Odd_H_FT','Odd_D_FT','Odd_A_FT']].mean(axis=1)), 2)
         
-        df[["Primeiro_Gol","Primeiro_Gol_Minuto","Primeiro_Gol_Marcador"]] = df.apply(first_goal_string, axis=1)
+        # Média dos Pontos (PPG)
+        df['Pts_H'] = np.where(df['Goals_H_FT'] > df['Goals_A_FT'], 3,
+                      np.where(df['Goals_H_FT'] == df['Goals_A_FT'], 1, 0))
+        df['Pts_A'] = np.where(df['Goals_H_FT'] < df['Goals_A_FT'], 3,
+                      np.where(df['Goals_H_FT'] == df['Goals_A_FT'], 1, 0))
         
+        df['Media_Pts_H'] = df.groupby('Home')['Pts_H'].rolling(window=5, min_periods=5).mean().reset_index(0, drop=True)
+        df['Media_Pts_H'] = df.groupby('Home')['Media_Pts_H'].shift(1)
+        df['Media_Pts_A'] = df.groupby('Away')['Pts_A'].rolling(window=5, min_periods=5).mean().reset_index(0, drop=True)
+        df['Media_Pts_A'] = df.groupby('Away')['Media_Pts_A'].shift(1)
+
+        df['DesvPad_Pts_H'] = df.groupby('Home')['Pts_H'].rolling(window=5, min_periods=5).std().reset_index(0, drop=True)
+        df['DesvPad_Pts_H'] = df.groupby('Home')['DesvPad_Pts_H'].shift(1)
+        df['DesvPad_Pts_A'] = df.groupby('Away')['Pts_A'].rolling(window=5, min_periods=5).std().reset_index(0, drop=True)
+        df['DesvPad_Pts_A'] = df.groupby('Away')['DesvPad_Pts_A'].shift(1)
+
+        df['CV_Pts_H'] = df['DesvPad_Pts_H'] / df['Media_Pts_H']
+        df['CV_Pts_A'] = df['DesvPad_Pts_A'] / df['Media_Pts_A']
+
+        # Média Gols Marcados
+        df['Media_GM_H'] = df.groupby('Home')['Goals_H_FT'].rolling(window=5, min_periods=5).mean().reset_index(0,drop=True)
+        df['Media_GM_A'] = df.groupby('Away')['Goals_A_FT'].rolling(window=5, min_periods=5).mean().reset_index(0,drop=True)
+        df['Media_GM_H'] = df.groupby('Home')['Media_GM_H'].shift(1)
+        df['Media_GM_A'] = df.groupby('Away')['Media_GM_A'].shift(1)
+        df['DesvPad_GM_H'] = df.groupby('Home')['Goals_H_FT'].rolling(window=5, min_periods=5).std().reset_index(0,drop=True)
+        df['DesvPad_GM_A'] = df.groupby('Away')['Goals_A_FT'].rolling(window=5, min_periods=5).std().reset_index(0,drop=True)
+        df['DesvPad_GM_H'] = df.groupby('Home')['DesvPad_GM_H'].shift(1)
+        df['DesvPad_GM_A'] = df.groupby('Away')['DesvPad_GM_A'].shift(1)
+        df['CV_GM_H'] = df['DesvPad_GM_H'] / df['Media_GM_H']
+        df['CV_GM_A'] = df['DesvPad_GM_A'] / df['Media_GM_A']
+
+        # Média de Gols Sofridos
+        df['Media_GS_H'] = df.groupby('Home')['Goals_A_FT'].rolling(window=5, min_periods=5).mean().reset_index(0,drop=True)
+        df['Media_GS_A'] = df.groupby('Away')['Goals_H_FT'].rolling(window=5, min_periods=5).mean().reset_index(0,drop=True)
+        df['Media_GS_H'] = df.groupby('Home')['Media_GS_H'].shift(1)
+        df['Media_GS_A'] = df.groupby('Away')['Media_GS_A'].shift(1)
+        df['DesvPad_GS_H'] = df.groupby('Home')['Goals_A_FT'].rolling(window=5, min_periods=5).std().reset_index(0,drop=True)
+        df['DesvPad_GS_A'] = df.groupby('Away')['Goals_H_FT'].rolling(window=5, min_periods=5).std().reset_index(0,drop=True)
+        df['DesvPad_GS_H'] = df.groupby('Home')['DesvPad_GS_H'].shift(1)
+        df['DesvPad_GS_A'] = df.groupby('Away')['DesvPad_GS_A'].shift(1)
+        df['CV_GS_H'] = df['DesvPad_GS_H'] / df['Media_GS_H']
+        df['CV_GS_A'] = df['DesvPad_GS_A'] / df['Media_GS_A']
+
+        # Média de Saldo de Gols
+        df['SG_H'] = df['Goals_H_FT'] - df['Goals_A_FT']
+        df['SG_A'] = df['Goals_A_FT'] - df['Goals_H_FT']
+        df['Media_SG_H'] = df.groupby('Home')['SG_H'].rolling(window=5, min_periods=5).mean().reset_index(0,drop=True)
+        df['Media_SG_A'] = df.groupby('Away')['SG_A'].rolling(window=5, min_periods=5).mean().reset_index(0,drop=True)
+        df['Media_SG_H'] = df.groupby('Home')['Media_SG_H'].shift(1)
+        df['Media_SG_A'] = df.groupby('Away')['Media_SG_A'].shift(1)
+        df['DesvPad_SG_H'] = df.groupby('Home')['SG_H'].rolling(window=5, min_periods=5).std().reset_index(0,drop=True)
+        df['DesvPad_SG_A'] = df.groupby('Away')['SG_A'].rolling(window=5, min_periods=5).std().reset_index(0,drop=True)
+        df['DesvPad_SG_H'] = df.groupby('Home')['DesvPad_SG_H'].shift(1)
+        df['DesvPad_SG_A'] = df.groupby('Away')['DesvPad_SG_A'].shift(1)
+        df['CV_SG_H'] = df['DesvPad_SG_H'] / df['Media_SG_H']
+        df['CV_SG_A'] = df['DesvPad_SG_A'] / df['Media_SG_A']
+
+        # Média de Saldo de Gols Ponderado pela Probabilidade do Time
+        df['SG_H_01'] = (df['Goals_H_FT'] - df['Goals_A_FT']) / df['p_H']
+        df['SG_A_01'] = (df['Goals_A_FT'] - df['Goals_H_FT']) / df['p_A']
+        df['Media_SG_H_01'] = df.groupby('Home')['SG_H_01'].rolling(window=5, min_periods=5).mean().reset_index(0,drop=True)
+        df['Media_SG_A_01'] = df.groupby('Away')['SG_A_01'].rolling(window=5, min_periods=5).mean().reset_index(0,drop=True)
+        df['Media_SG_H_01'] = df.groupby('Home')['Media_SG_H_01'].shift(1)
+        df['Media_SG_A_01'] = df.groupby('Away')['Media_SG_A_01'].shift(1)
+        df['DesvPad_SG_H_01'] = df.groupby('Home')['SG_H_01'].rolling(window=5, min_periods=5).std().reset_index(0,drop=True)
+        df['DesvPad_SG_A_01'] = df.groupby('Away')['SG_A_01'].rolling(window=5, min_periods=5).std().reset_index(0,drop=True)
+        df['DesvPad_SG_H_01'] = df.groupby('Home')['DesvPad_SG_H_01'].shift(1)
+        df['DesvPad_SG_A_01'] = df.groupby('Away')['DesvPad_SG_A_01'].shift(1)
+        df['CV_SG_H_01'] = df['DesvPad_SG_H_01'] / df['Media_SG_H_01']
+        df['CV_SG_A_01'] = df['DesvPad_SG_A_01'] / df['Media_SG_A_01']
+
+        # Média de Saldo de Gols Ponderado pela Probabilidade do Adversário
+        df['SG_H_02'] = (df['Goals_H_FT'] - df['Goals_A_FT']) / df['p_A']
+        df['SG_A_02'] = (df['Goals_A_FT'] - df['Goals_H_FT']) / df['p_H']
+        df['Media_SG_H_02'] = df.groupby('Home')['SG_H_02'].rolling(window=5, min_periods=5).mean().reset_index(0,drop=True)
+        df['Media_SG_A_02'] = df.groupby('Away')['SG_A_02'].rolling(window=5, min_periods=5).mean().reset_index(0,drop=True)
+        df['Media_SG_H_02'] = df.groupby('Home')['Media_SG_H_02'].shift(1)
+        df['Media_SG_A_02'] = df.groupby('Away')['Media_SG_A_02'].shift(1)
+        df['DesvPad_SG_H_02'] = df.groupby('Home')['SG_H_02'].rolling(window=5, min_periods=5).std().reset_index(0,drop=True)
+        df['DesvPad_SG_A_02'] = df.groupby('Away')['SG_A_02'].rolling(window=5, min_periods=5).std().reset_index(0,drop=True)
+        df['DesvPad_SG_H_02'] = df.groupby('Home')['DesvPad_SG_H_02'].shift(1)
+        df['DesvPad_SG_A_02'] = df.groupby('Away')['DesvPad_SG_A_02'].shift(1)
+        df['CV_SG_H_02'] = df['DesvPad_SG_H_02'] / df['Media_SG_H_02']
+        df['CV_SG_A_02'] = df['DesvPad_SG_A_02'] / df['Media_SG_A_02']
+
+        # Média do Valor do Gol
+        df['VG_H'] = df['Goals_H_FT'] * df['p_A']
+        df['VG_A'] = df['Goals_A_FT'] * df['p_H']
+        df['Media_VG_H'] = df.groupby('Home')['VG_H'].rolling(window=5, min_periods=5).mean().reset_index(0,drop=True)
+        df['Media_VG_A'] = df.groupby('Away')['VG_A'].rolling(window=5, min_periods=5).mean().reset_index(0,drop=True)
+        df['Media_VG_H'] = df.groupby('Home')['Media_VG_H'].shift(1)
+        df['Media_VG_A'] = df.groupby('Away')['Media_VG_A'].shift(1)
+        df['DesvPad_VG_H'] = df.groupby('Home')['VG_H'].rolling(window=5, min_periods=5).std().reset_index(0,drop=True)
+        df['DesvPad_VG_A'] = df.groupby('Away')['VG_A'].rolling(window=5, min_periods=5).std().reset_index(0,drop=True)
+        df['DesvPad_VG_H'] = df.groupby('Home')['DesvPad_VG_H'].shift(1)
+        df['DesvPad_VG_A'] = df.groupby('Away')['DesvPad_VG_A'].shift(1)
+        df['CV_VG_H'] = df['DesvPad_VG_H'] / df['Media_VG_H']
+        df['CV_VG_A'] = df['DesvPad_VG_A'] / df['Media_VG_A']
+
+        # Custo do Gol 1.0
+        df['CG_H_01'] = df['Goals_H_FT'] / df['p_H']
+        df['CG_A_01'] = df['Goals_A_FT'] / df['p_A']
+        df['Media_CG_H_01'] = df.groupby('Home')['CG_H_01'].rolling(window=5, min_periods=5).mean().reset_index(0,drop=True)
+        df['Media_CG_A_01'] = df.groupby('Away')['CG_A_01'].rolling(window=5, min_periods=5).mean().reset_index(0,drop=True)
+        df['Media_CG_H_01'] = df.groupby('Home')['Media_CG_H_01'].shift(1)
+        df['Media_CG_A_01'] = df.groupby('Away')['Media_CG_A_01'].shift(1)
+        df['DesvPad_CG_H_01'] = df.groupby('Home')['CG_H_01'].rolling(window=5, min_periods=5).std().reset_index(0,drop=True)
+        df['DesvPad_CG_A_01'] = df.groupby('Away')['CG_A_01'].rolling(window=5, min_periods=5).std().reset_index(0,drop=True)
+        df['DesvPad_CG_H_01'] = df.groupby('Home')['DesvPad_CG_H_01'].shift(1)
+        df['DesvPad_CG_A_01'] = df.groupby('Away')['DesvPad_CG_A_01'].shift(1)
+        df['CV_CG_H_01'] = df['DesvPad_CG_H_01'] / df['Media_CG_H_01']
+        df['CV_CG_A_01'] = df['DesvPad_CG_A_01'] / df['Media_CG_A_01']
+
+        # Custo do Gol 2.0
+        df['CG_H_02'] = (df['Goals_H_FT'] / 2) + (df['p_H'] / 2)
+        df['CG_A_02'] = (df['Goals_A_FT'] / 2) + (df['p_A'] / 2)
+        df['Media_CG_H_02'] = df.groupby('Home')['CG_H_02'].rolling(window=5, min_periods=5).mean().reset_index(0,drop=True)
+        df['Media_CG_A_02'] = df.groupby('Away')['CG_A_02'].rolling(window=5, min_periods=5).mean().reset_index(0,drop=True)
+        df['Media_CG_H_02'] = df.groupby('Home')['Media_CG_H_02'].shift(1)
+        df['Media_CG_A_02'] = df.groupby('Away')['Media_CG_A_02'].shift(1)
+        df['DesvPad_CG_H_02'] = df.groupby('Home')['CG_H_02'].rolling(window=5, min_periods=5).std().reset_index(0,drop=True)
+        df['DesvPad_CG_A_02'] = df.groupby('Away')['CG_A_02'].rolling(window=5, min_periods=5).std().reset_index(0,drop=True)
+        df['DesvPad_CG_H_02'] = df.groupby('Home')['DesvPad_CG_H_02'].shift(1)
+        df['DesvPad_CG_A_02'] = df.groupby('Away')['DesvPad_CG_A_02'].shift(1)
+        df['CV_CG_H_02'] = df['DesvPad_CG_H_02'] / df['Media_CG_H_02']
+        df['CV_CG_A_02'] = df['DesvPad_CG_A_02'] / df['Media_CG_A_02']
+
+        colunas_deletar = ['Ptos_H','Ptos_A','DesvPad_Ptos_H','DesvPad_Ptos_A',
+                        'DesvPad_GM_H','DesvPad_GM_A',
+                        'DesvPad_GS_H','DesvPad_GS_A',
+                        'SG_H','SG_A','DesvPad_SG_H','DesvPad_SG_A',
+                        'SG_H_01','SG_A_01','DesvPad_SG_H_01','DesvPad_SG_A_01',
+                        'SG_H_02','SG_A_02','DesvPad_SG_H_02','DesvPad_SG_A_02',
+                        'VG_H','VG_A','DesvPad_VG_H','DesvPad_VG_A',
+                        'CG_H_00','CG_A_00','DesvPad_CG_H_00','DesvPad_CG_A_00',
+                        'CG_H_01','CG_A_01','DesvPad_CG_H_01','DesvPad_CG_A_01',
+                        'CG_H_02','CG_A_02','DesvPad_CG_H_02','DesvPad_CG_A_02']
+
+        df = df.drop(colunas_deletar, axis=1)
+
         if source == 'Betfair':
             df['Season'] = get_current_season()
             df['Rodada'] = 0
