@@ -378,7 +378,6 @@ def load_histmatches(source):
                         'SG_H_01','SG_A_01','DesvPad_SG_H_01','DesvPad_SG_A_01',
                         'SG_H_02','SG_A_02','DesvPad_SG_H_02','DesvPad_SG_A_02',
                         'VG_H','VG_A','DesvPad_VG_H','DesvPad_VG_A',
-                        'CG_H_00','CG_A_00','DesvPad_CG_H_00','DesvPad_CG_A_00',
                         'CG_H_01','CG_A_01','DesvPad_CG_H_01','DesvPad_CG_A_01',
                         'CG_H_02','CG_A_02','DesvPad_CG_H_02','DesvPad_CG_A_02']
 
