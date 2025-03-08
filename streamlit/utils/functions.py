@@ -103,7 +103,7 @@ def rename_columns_betfair(df):
 
 def load_content_api_github(file_path):
     try:
-        headers = {"Authorization": f"token {st.secrets["github"]["TOKEN"]}"}
+        headers = {'Authorization': f'token {st.secrets["github"]["TOKEN"]}'}
         url = f'https://api.github.com/repos/{st.secrets["github"]["OWNER"]}/{st.secrets["github"]["REPO"]}/contents/{file_path}'
         response = requests.get(url, headers=headers)
         content = requests.get(response.json()['download_url'], headers=headers).content
