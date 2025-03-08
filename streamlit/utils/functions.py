@@ -102,11 +102,14 @@ def rename_columns_betfair(df):
     return df
 
 def load_content_api_github(file_path):
-    headers = {"Authorization": f"token {st.secrets["github"]["TOKEN"]}"}
-    url = f'https://api.github.com/repos/{st.secrets["github"]["OWNER"]}/{st.secrets["github"]["REPO"]}/contents/{file_path}'
-    response = requests.get(url, headers=headers)
-    content = requests.get(response.json()['download_url'], headers=headers).content
-    return io.BytesIO(content)
+    try:
+        headers = {"Authorization": f"token {st.secrets["github"]["TOKEN"]}"}
+        url = f'https://api.github.com/repos/{st.secrets["github"]["OWNER"]}/{st.secrets["github"]["REPO"]}/contents/{file_path}'
+        response = requests.get(url, headers=headers)
+        content = requests.get(response.json()['download_url'], headers=headers).content
+        return io.BytesIO(content)
+    except KeyError as e:
+        return io.BytesIO()
 
 def load_daymatches(dt, source):
     try:
