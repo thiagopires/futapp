@@ -212,6 +212,7 @@ def main_page():
             with col1:
                 st.write("**Resultado por FX (Prob, CV) do MO**")
                 report = df_hist.groupby(["League", "FX_Probabilidade_A", "FX_CV_HDA", "Status_Metodo"]).size().unstack(fill_value=0).reset_index()
+                report = report[report['GREEN'] + report['RED'] > 0]
                 report['Winrate'] = round((report['GREEN'] / (report['GREEN'] + report['RED'])) * 100, 2)
                 # report["Cumulative_Profit"] = report["Profit"].cumsum()
                 st.dataframe(report)
