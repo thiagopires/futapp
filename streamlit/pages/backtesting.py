@@ -142,7 +142,6 @@ def main_page():
             total_reds = total_jogos - total_greens
             winrate = round(total_greens / total_jogos * 100, 2)
             profit_acumulado = f"{str(round(df_hist['Profit'].sum(), 2))} unidades"
-
             
             st.write(f"Jogos: {total_jogos}, Greens: {total_greens}, Reds: {total_reds}, Winrate: {winrate}%, Profit Acumulado: {profit_acumulado}, Odd Média: {odd_media}")
 
@@ -191,7 +190,7 @@ def main_page():
 
             st.plotly_chart(fig)
 
-            col1, col2, col3 = st.columns(3)
+            col1, col2 = st.columns(2)
             with col1:
                 st.write("**Profit por Liga/Mês**")
                 report = df_hist.groupby(["League", "Month_Year"])["Profit"].sum().reset_index()
@@ -202,9 +201,17 @@ def main_page():
                 report = report.sort_values(by="Profit", ascending=False)
                 report["Cumulative_Profit"] = report["Profit"].cumsum()
                 st.dataframe(report)
-            with col3:
+
+            col1, col2 = st.columns(2)
+            with col1:
                 st.write("**Resultado por Liga**")
                 report = df_hist.groupby(["League", "Status_Metodo"]).size().unstack(fill_value=0).reset_index()
+                report['Winrate'] = round((report['GREEN'] / (report['GREEN'] + report['RED'])) * 100, 2)
+                # report["Cumulative_Profit"] = report["Profit"].cumsum()
+                st.dataframe(report)
+            with col1:
+                st.write("**Resultado por FX (Prob, CV) do MO**")
+                report = df_hist.groupby(["League", "FX_Probabilidade_A", "FX_CV_HDA", "Status_Metodo"]).size().unstack(fill_value=0).reset_index()
                 report['Winrate'] = round((report['GREEN'] / (report['GREEN'] + report['RED'])) * 100, 2)
                 # report["Cumulative_Profit"] = report["Profit"].cumsum()
                 st.dataframe(report)
