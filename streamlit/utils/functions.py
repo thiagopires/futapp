@@ -254,7 +254,7 @@ def load_histmatches(source):
         labels = [f"{bins[i]:.2f}-{bins[i+1]:.2f}" for i in range(len(bins)-1)]
 
         # Criando a coluna de faixas
-        df['FX_Probablidade_A'] = pd.cut(df['Probabilidade_A_FT'], bins=bins, labels=labels, include_lowest=True)
+        df['FX_Probabilidade_A'] = pd.cut(df['Probabilidade_A_FT'], bins=bins, labels=labels, include_lowest=True)
 
         # Definindo os bins de 0 a 1 com intervalos de 0.5
         bins = np.arange(0, 1, 0.05)
