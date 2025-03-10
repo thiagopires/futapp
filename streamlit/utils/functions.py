@@ -136,6 +136,20 @@ def load_daymatches(dt, source):
 
         df['CV_HDA_FT'] = round((df[['Odd_H_FT','Odd_D_FT','Odd_A_FT']].std(ddof=0, axis=1) / df[['Odd_H_FT','Odd_D_FT','Odd_A_FT']].mean(axis=1)),2)
 
+        # Definindo os bins de 0.12 a 1.2 com intervalos de 0.9
+        bins = np.arange(0.12, 1.2, 0.09)
+        labels = [f"{bins[i]:.2f}-{bins[i+1]:.2f}" for i in range(len(bins)-1)]
+
+        # Criando a coluna de faixas
+        df['FX_Probabilidade_A'] = pd.cut(df['Probabilidade_A_FT'], bins=bins, labels=labels, include_lowest=True)
+
+        # Definindo os bins de 0 a 1 com intervalos de 0.5
+        bins = np.arange(0, 1, 0.05)
+        labels = [f"{bins[i]:.2f}-{bins[i+1]:.2f}" for i in range(len(bins)-1)]
+
+        # Criando a coluna de faixas
+        df['FX_CV_HDA'] = pd.cut(df['CV_HDA_FT'], bins=bins, labels=labels, include_lowest=True)
+
         if source == 'Betfair':
             df['Season'] = get_current_season()
             df['Rodada'] = 0
