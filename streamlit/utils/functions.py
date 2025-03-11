@@ -430,7 +430,8 @@ def load_histmatches(source):
             df['PPG_Home_Pre'] = 0
             df['PPG_Away_Pre'] = 0
         elif source == 'FootyStats':
-            df["Diff_XG_Home_Away_Pre"] = df['XG_Home_Pre'] - df['XG_Away_Pre']  
+            df["Diff_XG_Home_Away_Pre"] = df['XG_Home_Pre'] - df['XG_Away_Pre']
+            df["Odd_CS_0x1_Lay"] = 0
 
         return df
     
