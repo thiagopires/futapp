@@ -398,7 +398,8 @@ def get_filter_lay_0x1(df):
     # )
 
     return (
-        df['Odd_H_FT'].between(1.5, 4) & (
+        (df['Odd_H_FT'].between(1.5, 4)) & 
+        (df["Odd_CS_0x1_Lay"] <= 30) & (
             ((df['League'] == 'AUSTRALIA - A-LEAGUE') & (df['FX_Probabilidade_A'] == '0.21-0.30') & (df['FX_CV_HDA'] == '0.15-0.20')) |
             ((df['League'] == 'AUSTRALIA - A-LEAGUE') & (df['FX_Probabilidade_A'] == '0.21-0.30') & (df['FX_CV_HDA'] == '0.20-0.25')) |
             ((df['League'] == 'AUSTRALIA - A-LEAGUE') & (df['FX_Probabilidade_A'] == '0.30-0.39') & (df['FX_CV_HDA'] == '0.20-0.25')) |
