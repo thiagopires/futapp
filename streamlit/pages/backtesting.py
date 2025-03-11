@@ -194,13 +194,13 @@ def main_page():
             with col1:
                 st.write("**Profit por Liga/Mês**")
                 report = df_hist.groupby(["League", "Month_Year"])["Profit"].sum().reset_index()
-                st.dataframe(report)
+                print_dataframe(report)
             with col2:
                 st.write("**Profit acumulado por Liga**")
                 report = df_hist.groupby(["League"])["Profit"].sum().reset_index()
                 report = report.sort_values(by="Profit", ascending=False)
                 report["Cumulative_Profit"] = report["Profit"].cumsum()
-                st.dataframe(report)
+                print_dataframe(report)
 
             col1, col2 = st.columns(2)
             with col1:
@@ -208,14 +208,14 @@ def main_page():
                 report = df_hist.groupby(["League", "Status_Metodo"]).size().unstack(fill_value=0).reset_index()
                 report['Winrate'] = round((report['GREEN'] / (report['GREEN'] + report['RED'])) * 100, 2)
                 # report["Cumulative_Profit"] = report["Profit"].cumsum()
-                st.dataframe(report)
+                print_dataframe(report)
             with col2:
                 st.write("**Resultado por FX (Prob, CV) do MO**")
                 report = df_hist.groupby(["League", "FX_Probabilidade_A", "FX_CV_HDA", "Status_Metodo"]).size().unstack(fill_value=0).reset_index()
                 report = report[report['GREEN'] + report['RED'] > 0]
                 report['Winrate'] = round((report['GREEN'] / (report['GREEN'] + report['RED'])) * 100, 2)
                 # report["Cumulative_Profit"] = report["Profit"].cumsum()
-                st.dataframe(report)
+                print_dataframe(report)
 
             st.write(f"**:green[GREENs:]**")
             print_dataframe(
