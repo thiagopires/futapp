@@ -225,15 +225,15 @@ def get_result_filtro_pronto(df, metodo):
         odd_media = f"{str(round(df['Odd_BTTS_No'].mean(), 2))}"
 
     elif metodo == 'Lay 0x1':
-        df.loc[(df["Resultado_80"] != '0-1'), "Status_Metodo"] = "GREEN"
-        df['Profit'] = 0
-
-    elif metodo == 'Lay 1x1':
         df['Profit'] =  np.where(df['Resultado_HT'] == '0-1', -0.15,
                         np.where(df['Resultado_65'] == '0-1', -0.25,
                         np.where(df['Resultado_65'] == '0-0', -0.08, 1 / (df['Odd_CS_0x1_Lay'] - 1))))
         df['Status_Metodo']  = np.where(df['Profit'] >= 0, 'GREEN', 'RED')
         odd_media = f"{str(round(df['Odd_CS_0x1_Lay'].mean(), 2))}"
+
+    elif metodo == 'Lay 1x1':
+        df.loc[(df["Resultado_80"] != '1-1'), "Status_Metodo"] = "GREEN"
+        df['Profit'] = 0
 
     elif metodo == 'Lay 0x2':
         df.loc[df["Resultado_80"] != '0-2', "Status_Metodo"] = "GREEN"
