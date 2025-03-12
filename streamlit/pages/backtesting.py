@@ -137,9 +137,8 @@ def main_page(fonte_dados):
             winrate = round(total_greens / total_jogos * 100, 2)
             profit_acumulado = f"{str(round(df_hist['Profit'].sum(), 2))} unidades"
             
-            st.write(f"Jogos: {total_jogos}, Greens: {total_greens}, Reds: {total_reds}, "
-                        f"{f'Voids: {total_voids}, ' if total_voids > 0 else ''}"
-                        f"Winrate: {winrate}%, Profit Acumulado Líquido: {profit_acumulado}, Comissão: 2.8%, Odd Média: {odd_media}")
+            str_voids = f"Voids: {total_voids}" if total_voids > 0 else ""
+            st.write(f"Jogos: {total_jogos}, Greens: {total_greens}, Reds: {total_reds}, {str_voids}, Winrate: {winrate}%, Profit Acumulado Líquido: {profit_acumulado}, Comissão: 2.8%, Odd Média: {odd_media}")
 
             daily_profit = df_hist.groupby("Date")["Profit"].sum().reset_index()
             daily_profit["Cumulative_Profit"] = daily_profit["Profit"].cumsum()  
