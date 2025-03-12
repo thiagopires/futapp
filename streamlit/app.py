@@ -31,6 +31,7 @@ opcoes = {
 }
 
 # Criando a sidebar com radio buttons
+st.sidebar.subheader("Futapp v0.1")
 escolha = st.sidebar.radio("Navegação", list(opcoes.keys()))
 
 display_sidebar('none')
