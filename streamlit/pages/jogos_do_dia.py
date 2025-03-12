@@ -1,7 +1,7 @@
 from utils.functions import *
 from utils.filters import *
 
-def main_page():
+def main_page(fonte_dados):
 
     if st.secrets['ENV'] == 'dev':
         st.info("Ambiente de Desenvolvimento. Branch: dev")
@@ -11,7 +11,7 @@ def main_page():
 
     # Init
 
-    fonte_dados = st.selectbox("Fonte de Dados", ['FootyStats','Betfair'])
+    # fonte_dados = st.selectbox("Fonte de Dados", ['FootyStats','Betfair'])
     data_analise = st.date_input("Data da Análise", get_today())
 
     df_matches = load_daymatches(data_analise, fonte_dados)

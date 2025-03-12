@@ -1,7 +1,5 @@
 import streamlit as st
 import pandas as pd
-from datetime import date
-import plotly.express as px
 
 from utils.functions import *
 from utils.filters import *
@@ -33,6 +31,11 @@ opcoes = {
 # Criando a sidebar com radio buttons
 st.sidebar.subheader("Futapp v0.1")
 escolha = st.sidebar.radio("Navegação", list(opcoes.keys()))
+
+st.sidebar.divider()
+
+fonte_dados = st.sidebar.radio("Fonte de Dados", ['FootyStats', 'Betfair'])
+df_hist = load_histmatches(fonte_dados)
 
 display_sidebar('none')
 

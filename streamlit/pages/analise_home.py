@@ -1,7 +1,7 @@
 from utils.functions import *
 from utils.filters import *
 
-def main_page():
+def main_page(fonte_dados):
 
     if st.secrets['ENV'] == 'dev':
         st.info("Ambiente de Desenvolvimento. Branch: dev")
@@ -12,8 +12,8 @@ def main_page():
     # Init
 
     data_analise = st.date_input("Data da Análise", get_today())
-    df_matches = load_daymatches(data_analise, 'FootyStats')
-    df_hist = load_histmatches('FootyStats')
+    df_matches = load_daymatches(data_analise, fonte_dados)
+    df_hist = load_histmatches(fonte_dados)
 
 
     st.divider()

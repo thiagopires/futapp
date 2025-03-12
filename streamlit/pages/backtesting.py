@@ -1,7 +1,10 @@
 from utils.functions import *
 from utils.filters import *
 
-def main_page():
+from datetime import date
+import plotly.express as px
+
+def main_page(fonte_dados):
 
     if st.secrets['ENV'] == 'dev':
         st.info("Ambiente de Desenvolvimento. Branch: dev")
@@ -9,7 +12,7 @@ def main_page():
     st.title("Futapp v0.1")
     st.header("⚽ Backtesting")
 
-    fonte_dados = st.selectbox("Fonte de Dados", ['Betfair','FootyStats'])
+    # fonte_dados = st.selectbox("Fonte de Dados", ['Betfair','FootyStats'])
     df_hist = load_histmatches(fonte_dados)
 
     indicadores = df_hist.columns

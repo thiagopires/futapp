@@ -8,6 +8,3 @@ def main_page():
     st.title("Futapp v0.1")
 
     st.write("Conteúdo protegido para usuários logados.")
-
-    load_histmatches('FootyStats')
-    load_histmatches('Betfair')

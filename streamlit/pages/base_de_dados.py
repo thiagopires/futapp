@@ -1,7 +1,9 @@
 from utils.functions import *
 from utils.filters import *
 
-def main_page():
+from datetime import date
+
+def main_page(fonte_dados):
 
     if st.secrets['ENV'] == 'dev':
         st.info("Ambiente de Desenvolvimento. Branch: dev")
@@ -9,7 +11,7 @@ def main_page():
     st.title("Futapp v0.1")
     st.header("⚽ Base de dados")
 
-    fonte_dados = st.selectbox("Fonte de Dados", ['FootyStats','Betfair'])
+    # fonte_dados = st.selectbox("Fonte de Dados", ['FootyStats','Betfair'])
     col1, col2 = st.columns(2)
     with col1:
         data_inicial = st.date_input("Data Inicial", date(2022, 2, 10))
