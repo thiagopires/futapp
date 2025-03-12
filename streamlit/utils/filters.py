@@ -27,21 +27,28 @@ metodos = [
     'Back Casa ou Back 1x1',
 ]
 
-filtros_prontos =  [
-    "Sem filtro",
-    "Lay Visitante Zebra",
-    'Lay Visitante v2',
-    "Back Casa",
-    "Back Empate",
-    'Over 2.5 FT',
-    # 'Under 2.5 FT',
-    'BTTS Sim',
-    'Lay 0x1 (até 80min)',
-    'Lay 0x2 (até 80min)',
-    'Lay 0x3 (até 80min)',
-    'Lay 1x1 (até 60min)',
-    # 'BTTS Não',
-]
+filtros_prontos =  {
+    'FootyStats' : [
+        "Sem filtro",
+        "Lay Visitante Zebra",
+        'Lay Visitante v2',
+        "Back Casa",
+        "Back Empate",
+        'Over 2.5 FT',
+        # 'Under 2.5 FT',
+        'BTTS Sim',
+        'Lay 0x1 (até 80min)',
+        'Lay 0x2 (até 80min)',
+        'Lay 0x3 (até 80min)',
+        'Lay 1x1 (até 60min)'
+        # 'BTTS Não',
+    ],
+    'Betfair': [
+        "Sem filtro",
+        'BF - Lay Visitante',
+        'BF - Lay 0x1 (até 65min)'
+    ]
+}
 
 def get_details_filtro_pronto(df, condicao, metodo, filtro_pronto_selecionado):
 
@@ -116,6 +123,18 @@ def get_details_filtro_pronto(df, condicao, metodo, filtro_pronto_selecionado):
         df = df[filter]
         if condicao: condicao = 'Geral'
         if metodo: metodo = 'Lay Visitante'
+
+    elif filtro_pronto_selecionado == "BF - Lay Visitante":
+        filter = get_filter_betfair_lay_visitante(df)
+        df = df[filter]
+        if condicao: condicao = 'Geral'
+        if metodo: metodo = 'Lay Visitante'
+
+    elif filtro_pronto_selecionado == "BF - Lay 0x1 (até 65min)":
+        filter = get_filter_betfair_lay_0x1(df)
+        df = df[filter]
+        if condicao: condicao = 'Geral'
+        if metodo: metodo = 'Lay 0x1 65min'
 
     return df, condicao, metodo
 
@@ -224,12 +243,16 @@ def get_result_filtro_pronto(df, metodo):
         df.loc[filter, "Status_Metodo"] = "GREEN"
         odd_media = f"{str(round(df['Odd_BTTS_No'].mean(), 2))}"
 
-    elif metodo == 'Lay 0x1':
+    elif metodo == 'Lay 0x1 65min':
         df['Profit'] =  np.where(df['Resultado_65'] == '0-1', -0.25,
                         np.where(df['Resultado_65'] == '0-0', -0.08, 1 / (df['Odd_CS_0x1_Lay'] - 1)))
                         # np.where(df['Resultado_HT'] == '0-1', -0.15,
         df['Status_Metodo']  = np.where(df['Profit'] >= 0, 'GREEN', 'RED')
         odd_media = f"{str(round(df['Odd_CS_0x1_Lay'].mean(), 2))}"
+
+    elif metodo == 'Lay 0x1':
+        df.loc[(df["Resultado_80"] != '0-1'), "Status_Metodo"] = "GREEN"
+        df['Profit'] = 0
 
     elif metodo == 'Lay 1x1':
         df.loc[(df["Resultado_80"] != '1-1'), "Status_Metodo"] = "GREEN"
@@ -372,115 +395,29 @@ def get_filter_btts_no(df):
     )
 
 def get_filter_lay_0x1(df):
-    # return (
-    #     (df["Odd_H_FT"] < df["Odd_A_FT"]) &
-    #     (df["Odd_H_FT"] > 1.5) &
-    #     ((df["Odd_H_FT"] < 2.45) | (df["Odd_H_FT"] > 2.55)) &
-    #     (df["XG_Away_Pre"] > 1.12) &
-    #     (df["XG_Home_Pre"] > df["XG_Away_Pre"]) &
-    #     (df["Odd_BTTS_Yes"] > 1.5) & (df["Odd_BTTS_Yes"] < 2) &
-    #     (df["Odd_Over25_FT"] > 1.62) & (df["Odd_Over25_FT"] < 2) 
-    #     &
-    #     (df['League'].isin([
-    #         'ENGLAND - CHAMPIONSHIP',
-    #         'ENGLAND - EFL LEAGUE ONE',
-    #         'ENGLAND - PREMIER LEAGUE',
-    #         'GERMANY - 2. BUNDESLIGA',
-    #         'GERMANY - BUNDESLIGA',
-    #         'ITALY - SERIE A',
-    #         'NETHERLANDS - EREDIVISIE',
-    #         'PORTUGAL - LIGA NOS',
-    #         'ROMANIA - LIGA I',
-    #         'SPAIN - LA LIGA',
-    #         'TURKEY - SÜPER LIG',
-    #         'FRANCE - LEAGUE 1'
-    #     ]))
-    # )
-
     return (
-        (df['Odd_H_FT'].between(1.5, 4)) & 
-        (df["Odd_CS_0x1_Lay"] <= 30) & (
-            ((df['League'] == 'AUSTRALIA - A-LEAGUE') & (df['FX_Probabilidade_A'] == '0.21-0.30') & (df['FX_CV_HDA'] == '0.15-0.20')) |
-            ((df['League'] == 'AUSTRALIA - A-LEAGUE') & (df['FX_Probabilidade_A'] == '0.21-0.30') & (df['FX_CV_HDA'] == '0.20-0.25')) |
-            ((df['League'] == 'AUSTRALIA - A-LEAGUE') & (df['FX_Probabilidade_A'] == '0.30-0.39') & (df['FX_CV_HDA'] == '0.20-0.25')) |
-            ((df['League'] == 'AUSTRALIA - A-LEAGUE') & (df['FX_Probabilidade_A'] == '0.39-0.48') & (df['FX_CV_HDA'] == '0.10-0.15')) |
-            ((df['League'] == 'BELGIUM - PRO LEAGUE') & (df['FX_Probabilidade_A'] == '0.21-0.30') & (df['FX_CV_HDA'] == '0.25-0.30')) |
-            ((df['League'] == 'BELGIUM - PRO LEAGUE') & (df['FX_Probabilidade_A'] == '0.30-0.39') & (df['FX_CV_HDA'] == '0.20-0.25')) |
-            ((df['League'] == 'BRAZIL - SERIE A') & (df['FX_Probabilidade_A'] == '0.12-0.21') & (df['FX_CV_HDA'] == '0.45-0.50')) |
-            ((df['League'] == 'BRAZIL - SERIE A') & (df['FX_Probabilidade_A'] == '0.12-0.21') & (df['FX_CV_HDA'] == '0.55-0.60')) |
-            ((df['League'] == 'BRAZIL - SERIE B') & (df['FX_Probabilidade_A'] == '0.30-0.39') & (df['FX_CV_HDA'] == '0.05-0.10')) |
-            ((df['League'] == 'BRAZIL - SERIE B') & (df['FX_Probabilidade_A'] == '0.39-0.48') & (df['FX_CV_HDA'] == '0.15-0.20')) |
-            ((df['League'] == 'DENMARK - SUPERLIGA') & (df['FX_Probabilidade_A'] == '0.12-0.21') & (df['FX_CV_HDA'] == '0.40-0.45')) |
-            ((df['League'] == 'DENMARK - SUPERLIGA') & (df['FX_Probabilidade_A'] == '0.12-0.21') & (df['FX_CV_HDA'] == '0.45-0.50')) |
-            ((df['League'] == 'DENMARK - SUPERLIGA') & (df['FX_Probabilidade_A'] == '0.21-0.30') & (df['FX_CV_HDA'] == '0.15-0.20')) |
-            ((df['League'] == 'DENMARK - SUPERLIGA') & (df['FX_Probabilidade_A'] == '0.30-0.39') & (df['FX_CV_HDA'] == '0.10-0.15')) |
-            ((df['League'] == 'DENMARK - SUPERLIGA') & (df['FX_Probabilidade_A'] == '0.39-0.48') & (df['FX_CV_HDA'] == '0.10-0.15')) |
-            ((df['League'] == 'EGYPT - EGYPTIAN PREMIER LEAGUE') & (df['FX_Probabilidade_A'] == '0.12-0.21') & (df['FX_CV_HDA'] == '0.55-0.60')) |
-            ((df['League'] == 'ENGLAND - EFL LEAGUE ONE') & (df['FX_Probabilidade_A'] == '0.39-0.48') & (df['FX_CV_HDA'] == '0.20-0.25')) |
-            ((df['League'] == 'ENGLAND - EFL LEAGUE TWO') & (df['FX_Probabilidade_A'] == '0.12-0.21') & (df['FX_CV_HDA'] == '0.50-0.55')) |
-            ((df['League'] == 'ENGLAND - EFL LEAGUE TWO') & (df['FX_Probabilidade_A'] == '0.30-0.39') & (df['FX_CV_HDA'] == '0.00-0.05')) |
-            ((df['League'] == 'ENGLAND - PREMIER LEAGUE') & (df['FX_Probabilidade_A'] == '0.12-0.21') & (df['FX_CV_HDA'] == '0.30-0.35')) |
-            ((df['League'] == 'ENGLAND - PREMIER LEAGUE') & (df['FX_Probabilidade_A'] == '0.12-0.21') & (df['FX_CV_HDA'] == '0.45-0.50')) |
-            ((df['League'] == 'ENGLAND - PREMIER LEAGUE') & (df['FX_Probabilidade_A'] == '0.21-0.30') & (df['FX_CV_HDA'] == '0.35-0.40')) |
-            ((df['League'] == 'FRANCE - LIGUE 1') & (df['FX_Probabilidade_A'] == '0.12-0.21') & (df['FX_CV_HDA'] == '0.45-0.50')) |
-            ((df['League'] == 'FRANCE - LIGUE 1') & (df['FX_Probabilidade_A'] == '0.39-0.48') & (df['FX_CV_HDA'] == '0.15-0.20')) |
-            ((df['League'] == 'FRANCE - LIGUE 2') & (df['FX_Probabilidade_A'] == '0.12-0.21') & (df['FX_CV_HDA'] == '0.45-0.50')) |
-            ((df['League'] == 'FRANCE - LIGUE 2') & (df['FX_Probabilidade_A'] == '0.21-0.30') & (df['FX_CV_HDA'] == '0.10-0.15')) |
-            ((df['League'] == 'FRANCE - LIGUE 2') & (df['FX_Probabilidade_A'] == '0.30-0.39') & (df['FX_CV_HDA'] == '0.00-0.05')) |
-            ((df['League'] == 'FRANCE - LIGUE 2') & (df['FX_Probabilidade_A'] == '0.30-0.39') & (df['FX_CV_HDA'] == '0.15-0.20')) |
-            ((df['League'] == 'FRANCE - LIGUE 2') & (df['FX_Probabilidade_A'] == '0.48-0.57') & (df['FX_CV_HDA'] == '0.25-0.30')) |
-            ((df['League'] == 'GERMANY - 2. BUNDESLIGA') & (df['FX_Probabilidade_A'] == '0.12-0.21') & (df['FX_CV_HDA'] == '0.40-0.45')) |
-            ((df['League'] == 'GERMANY - 2. BUNDESLIGA') & (df['FX_Probabilidade_A'] == '0.30-0.39') & (df['FX_CV_HDA'] == '0.20-0.25')) |
-            ((df['League'] == 'GERMANY - 2. BUNDESLIGA') & (df['FX_Probabilidade_A'] == '0.48-0.57') & (df['FX_CV_HDA'] == '0.25-0.30')) |
-            ((df['League'] == 'GERMANY - BUNDESLIGA') & (df['FX_Probabilidade_A'] == '0.12-0.21') & (df['FX_CV_HDA'] == '0.40-0.45')) |
-            ((df['League'] == 'GERMANY - BUNDESLIGA') & (df['FX_Probabilidade_A'] == '0.21-0.30') & (df['FX_CV_HDA'] == '0.15-0.20')) |
-            ((df['League'] == 'GERMANY - BUNDESLIGA') & (df['FX_Probabilidade_A'] == '0.21-0.30') & (df['FX_CV_HDA'] == '0.30-0.35')) |
-            ((df['League'] == 'GERMANY - BUNDESLIGA') & (df['FX_Probabilidade_A'] == '0.30-0.39') & (df['FX_CV_HDA'] == '0.20-0.25')) |
-            ((df['League'] == 'GERMANY - BUNDESLIGA') & (df['FX_Probabilidade_A'] == '0.39-0.48') & (df['FX_CV_HDA'] == '0.10-0.15')) |
-            ((df['League'] == 'ITALY - SERIE A') & (df['FX_Probabilidade_A'] == '0.12-0.21') & (df['FX_CV_HDA'] == '0.40-0.45')) |
-            ((df['League'] == 'ITALY - SERIE A') & (df['FX_Probabilidade_A'] == '0.12-0.21') & (df['FX_CV_HDA'] == '0.45-0.50')) |
-            ((df['League'] == 'JAPAN - J1 LEAGUE') & (df['FX_Probabilidade_A'] == '0.12-0.21') & (df['FX_CV_HDA'] == '0.30-0.35')) |
-            ((df['League'] == 'JAPAN - J1 LEAGUE') & (df['FX_Probabilidade_A'] == '0.12-0.21') & (df['FX_CV_HDA'] == '0.40-0.45')) |
-            ((df['League'] == 'JAPAN - J1 LEAGUE') & (df['FX_Probabilidade_A'] == '0.12-0.21') & (df['FX_CV_HDA'] == '0.50-0.55')) |
-            ((df['League'] == 'JAPAN - J1 LEAGUE') & (df['FX_Probabilidade_A'] == '0.39-0.48') & (df['FX_CV_HDA'] == '0.20-0.25')) |
-            ((df['League'] == 'MEXICO - LIGA MX') & (df['FX_Probabilidade_A'] == '0.12-0.21') & (df['FX_CV_HDA'] == '0.30-0.35')) |
-            ((df['League'] == 'MEXICO - LIGA MX') & (df['FX_Probabilidade_A'] == '0.12-0.21') & (df['FX_CV_HDA'] == '0.35-0.40')) |
-            ((df['League'] == 'MEXICO - LIGA MX') & (df['FX_Probabilidade_A'] == '0.12-0.21') & (df['FX_CV_HDA'] == '0.40-0.45')) |
-            ((df['League'] == 'MEXICO - LIGA MX') & (df['FX_Probabilidade_A'] == '0.12-0.21') & (df['FX_CV_HDA'] == '0.45-0.50')) |
-            ((df['League'] == 'MEXICO - LIGA MX') & (df['FX_Probabilidade_A'] == '0.48-0.57') & (df['FX_CV_HDA'] == '0.20-0.25')) |
-            ((df['League'] == 'NETHERLANDS - EERSTE DIVISIE') & (df['FX_Probabilidade_A'] == '0.12-0.21') & (df['FX_CV_HDA'] == '0.40-0.45')) |
-            ((df['League'] == 'NETHERLANDS - EERSTE DIVISIE') & (df['FX_Probabilidade_A'] == '0.39-0.48') & (df['FX_CV_HDA'] == '0.10-0.15')) |
-            ((df['League'] == 'NETHERLANDS - EERSTE DIVISIE') & (df['FX_Probabilidade_A'] == '0.39-0.48') & (df['FX_CV_HDA'] == '0.20-0.25')) |
-            ((df['League'] == 'NETHERLANDS - EERSTE DIVISIE') & (df['FX_Probabilidade_A'] == '0.48-0.57') & (df['FX_CV_HDA'] == '0.20-0.25')) |
-            ((df['League'] == 'NETHERLANDS - EREDIVISIE') & (df['FX_Probabilidade_A'] == '0.12-0.21') & (df['FX_CV_HDA'] == '0.30-0.35')) |
-            ((df['League'] == 'NETHERLANDS - EREDIVISIE') & (df['FX_Probabilidade_A'] == '0.12-0.21') & (df['FX_CV_HDA'] == '0.35-0.40')) |
-            ((df['League'] == 'NETHERLANDS - EREDIVISIE') & (df['FX_Probabilidade_A'] == '0.12-0.21') & (df['FX_CV_HDA'] == '0.40-0.45')) |
-            ((df['League'] == 'NETHERLANDS - EREDIVISIE') & (df['FX_Probabilidade_A'] == '0.21-0.30') & (df['FX_CV_HDA'] == '0.30-0.35')) |
-            ((df['League'] == 'NORWAY - ELITESERIEN') & (df['FX_Probabilidade_A'] == '0.30-0.39') & (df['FX_CV_HDA'] == '0.20-0.25')) |
-            ((df['League'] == 'NORWAY - ELITESERIEN') & (df['FX_Probabilidade_A'] == '0.39-0.48') & (df['FX_CV_HDA'] == '0.25-0.30')) |
-            ((df['League'] == 'PORTUGAL - LIGA NOS') & (df['FX_Probabilidade_A'] == '0.12-0.21') & (df['FX_CV_HDA'] == '0.45-0.50')) |
-            ((df['League'] == 'ROMANIA - LIGA I') & (df['FX_Probabilidade_A'] == '0.12-0.21') & (df['FX_CV_HDA'] == '0.35-0.40')) |
-            ((df['League'] == 'ROMANIA - LIGA I') & (df['FX_Probabilidade_A'] == '0.12-0.21') & (df['FX_CV_HDA'] == '0.45-0.50')) |
-            ((df['League'] == 'SAUDI ARABIA - SAUDI PROFESSION') & (df['FX_Probabilidade_A'] == '0.12-0.21') & (df['FX_CV_HDA'] == '0.40-0.45')) |
-            ((df['League'] == 'SAUDI ARABIA - SAUDI PROFESSION') & (df['FX_Probabilidade_A'] == '0.21-0.30') & (df['FX_CV_HDA'] == '0.25-0.30')) |
-            ((df['League'] == 'SAUDI ARABIA - SAUDI PROFESSION') & (df['FX_Probabilidade_A'] == '0.21-0.30') & (df['FX_CV_HDA'] == '0.30-0.35')) |
-            ((df['League'] == 'SAUDI ARABIA - SAUDI PROFESSION') & (df['FX_Probabilidade_A'] == '0.30-0.39') & (df['FX_CV_HDA'] == '0.15-0.20')) |
-            ((df['League'] == 'SAUDI ARABIA - SAUDI PROFESSION') & (df['FX_Probabilidade_A'] == '0.39-0.48') & (df['FX_CV_HDA'] == '0.10-0.15')) |
-            ((df['League'] == 'SAUDI ARABIA - SAUDI PROFESSION') & (df['FX_Probabilidade_A'] == '0.48-0.57') & (df['FX_CV_HDA'] == '0.25-0.30')) |
-            ((df['League'] == 'SCOTLAND - PREMIERSHIP') & (df['FX_Probabilidade_A'] == '0.12-0.21') & (df['FX_CV_HDA'] == '0.35-0.40')) |
-            ((df['League'] == 'SCOTLAND - PREMIERSHIP') & (df['FX_Probabilidade_A'] == '0.30-0.39') & (df['FX_CV_HDA'] == '0.10-0.15')) |
-            ((df['League'] == 'SPAIN - LA LIGA') & (df['FX_Probabilidade_A'] == '0.21-0.30') & (df['FX_CV_HDA'] == '0.30-0.35')) |
-            ((df['League'] == 'SPAIN - LA LIGA') & (df['FX_Probabilidade_A'] == '0.30-0.39') & (df['FX_CV_HDA'] == '0.10-0.15')) |
-            ((df['League'] == 'SPAIN - SEGUNDA DIVISIÓN') & (df['FX_Probabilidade_A'] == '0.12-0.21') & (df['FX_CV_HDA'] == '0.40-0.45')) |
-            ((df['League'] == 'SPAIN - SEGUNDA DIVISIÓN') & (df['FX_Probabilidade_A'] == '0.21-0.30') & (df['FX_CV_HDA'] == '0.15-0.20')) |
-            ((df['League'] == 'TURKEY - SÜPER LIG') & (df['FX_Probabilidade_A'] == '0.12-0.21') & (df['FX_CV_HDA'] == '0.40-0.45')) |
-            ((df['League'] == 'TURKEY - SÜPER LIG') & (df['FX_Probabilidade_A'] == '0.12-0.21') & (df['FX_CV_HDA'] == '0.50-0.55')) |
-            ((df['League'] == 'TURKEY - SÜPER LIG') & (df['FX_Probabilidade_A'] == '0.30-0.39') & (df['FX_CV_HDA'] == '0.15-0.20')) |
-            ((df['League'] == 'USA - MLS') & (df['FX_Probabilidade_A'] == '0.12-0.21') & (df['FX_CV_HDA'] == '0.45-0.50')) |
-            ((df['League'] == 'USA - MLS') & (df['FX_Probabilidade_A'] == '0.21-0.30') & (df['FX_CV_HDA'] == '0.35-0.40')) |
-            ((df['League'] == 'USA - MLS') & (df['FX_Probabilidade_A'] == '0.30-0.39') & (df['FX_CV_HDA'] == '0.25-0.30')) |
-            ((df['League'] == 'USA - MLS') & (df['FX_Probabilidade_A'] == '0.39-0.48') & (df['FX_CV_HDA'] == '0.20-0.25'))
-        )    
+        (df["Odd_H_FT"] < df["Odd_A_FT"]) &
+        (df["Odd_H_FT"] > 1.5) &
+        ((df["Odd_H_FT"] < 2.45) | (df["Odd_H_FT"] > 2.55)) &
+        (df["XG_Away_Pre"] > 1.12) &
+        (df["XG_Home_Pre"] > df["XG_Away_Pre"]) &
+        (df["Odd_BTTS_Yes"] > 1.5) & (df["Odd_BTTS_Yes"] < 2) &
+        (df["Odd_Over25_FT"] > 1.62) & (df["Odd_Over25_FT"] < 2) 
+        &
+        (df['League'].isin([
+            'ENGLAND - CHAMPIONSHIP',
+            'ENGLAND - EFL LEAGUE ONE',
+            'ENGLAND - PREMIER LEAGUE',
+            'GERMANY - 2. BUNDESLIGA',
+            'GERMANY - BUNDESLIGA',
+            'ITALY - SERIE A',
+            'NETHERLANDS - EREDIVISIE',
+            'PORTUGAL - LIGA NOS',
+            'ROMANIA - LIGA I',
+            'SPAIN - LA LIGA',
+            'TURKEY - SÜPER LIG',
+            'FRANCE - LEAGUE 1'
+        ]))
     )
 
 def get_filter_lay_visitante_zebra(df):
@@ -662,170 +599,54 @@ def get_filter_back_casa(df):
     )
 
 def get_filter_lay_visitante_v2(df):
-    # return (
-    #     (df["Odd_H_FT"] < df["Odd_A_FT"]) &
-    #     (df["Odd_H_FT"].between(1.3, 2.5)) &
-    #     (df["XG_Total_Pre"] > 0) &
-    #     (df["Odd_Over25_FT"] >= 1.4) &
-    #     (df["Odd_H_FT"] < 6) &
-    #     (
-    #         ((df['League'] == 'BELGIUM - PRO LEAGUE') 
-    #             & (df["Probabilidade_A_FT"].between(0.32, 0.61))) |
+    return (
+        (df["Odd_H_FT"] < df["Odd_A_FT"]) &
+        (df["Odd_H_FT"].between(1.3, 2.5)) &
+        (df["XG_Total_Pre"] > 0) &
+        (df["Odd_Over25_FT"] >= 1.4) &
+        (df["Odd_H_FT"] < 6) &
+        (
+            ((df['League'] == 'BELGIUM - PRO LEAGUE') 
+                & (df["Probabilidade_A_FT"].between(0.32, 0.61))) |
 
-    #         ((df['League'] == 'DENMARK - SUPERLIGA') 
-    #             & (df["Probabilidade_A_FT"].between(0.42, 0.51))
-    #             & (~df["CV_HDA_FT"].between(0.1, 0.14))) |
+            ((df['League'] == 'DENMARK - SUPERLIGA') 
+                & (df["Probabilidade_A_FT"].between(0.42, 0.51))
+                & (~df["CV_HDA_FT"].between(0.1, 0.14))) |
 
-    #         ((df['League'] == 'ENGLAND - CHAMPIONSHIP') 
-    #             & (df["Probabilidade_A_FT"].between(0.42, 0.51))
-    #             & (df["CV_HDA_FT"].between(0.15, 0.19))) |
+            ((df['League'] == 'ENGLAND - CHAMPIONSHIP') 
+                & (df["Probabilidade_A_FT"].between(0.42, 0.51))
+                & (df["CV_HDA_FT"].between(0.15, 0.19))) |
 
-    #         ((df['League'] == 'ENGLAND - CHAMPIONSHIP') 
-    #             & (df["Probabilidade_A_FT"].between(0.52, 0.61))
-    #             & (df["CV_HDA_FT"].between(0.25, 0.29))) |
+            ((df['League'] == 'ENGLAND - CHAMPIONSHIP') 
+                & (df["Probabilidade_A_FT"].between(0.52, 0.61))
+                & (df["CV_HDA_FT"].between(0.25, 0.29))) |
 
-    #         ((df['League'] == 'ENGLAND - CHAMPIONSHIP') 
-    #             & (df["Probabilidade_A_FT"].between(0.52, 0.61))
-    #             & (df["CV_HDA_FT"].between(0.35, 0.39))) |
+            ((df['League'] == 'ENGLAND - CHAMPIONSHIP') 
+                & (df["Probabilidade_A_FT"].between(0.52, 0.61))
+                & (df["CV_HDA_FT"].between(0.35, 0.39))) |
             
-    #         ((df['League'] == 'ENGLAND - EFL LEAGUE TWO') 
-    #             & (df["Probabilidade_A_FT"].between(0.32, 0.41))) | 
+            ((df['League'] == 'ENGLAND - EFL LEAGUE TWO') 
+                & (df["Probabilidade_A_FT"].between(0.32, 0.41))) | 
 
-    #         ((df['League'] == 'ENGLAND - EFL LEAGUE TWO') 
-    #             & (df["Probabilidade_A_FT"].between(0.52, 0.61))
-    #             & (~df["CV_HDA_FT"].between(0.25, 0.29))) |
+            ((df['League'] == 'ENGLAND - EFL LEAGUE TWO') 
+                & (df["Probabilidade_A_FT"].between(0.52, 0.61))
+                & (~df["CV_HDA_FT"].between(0.25, 0.29))) |
 
-    #         ((df['League'] == 'PORTUGAL - LIGA NOS') 
-    #             & (df["Probabilidade_A_FT"].between(0.32, 0.51))) |
+            ((df['League'] == 'PORTUGAL - LIGA NOS') 
+                & (df["Probabilidade_A_FT"].between(0.32, 0.51))) |
 
-    #         ((df['League'] == 'SPAIN - SEGUNDA DIVISIÓN') 
-    #             & (df["Probabilidade_A_FT"].between(0.42, 0.51))
-    #             & (df["CV_HDA_FT"].between(0.2, 0.24))) |
+            ((df['League'] == 'SPAIN - SEGUNDA DIVISIÓN') 
+                & (df["Probabilidade_A_FT"].between(0.42, 0.51))
+                & (df["CV_HDA_FT"].between(0.2, 0.24))) |
 
-    #         ((df['League'] == 'PORTUGAL - LIGA NOS') ) |
+            ((df['League'] == 'PORTUGAL - LIGA NOS') ) |
 
-    #         ((df['League'] == 'TURKEY - SÜPER LIG') )
+            ((df['League'] == 'TURKEY - SÜPER LIG') )
 
-    #     )
-    # )
-    
+        )
+    )
 
-
-    # return (
-    #     (df["Odd_H_FT"].between(1.4, 2.5)) &
-    #     (
-    #         ((df['League'] == 'AUSTRALIA - A-LEAGUE') & (df["Probabilidade_A_FT"].between(0.22, 0.31)) & (df["CV_HDA_FT"].between(0.2, 0.29))) |
-
-    #         ((df['League'] == 'BELGIUM - PRO LEAGUE') 
-    #             & (df["Probabilidade_A_FT"].between(0.12, 0.21))
-    #             & (df["CV_HDA_FT"].between(0.3, 0.44))) |
-            
-    #         ((df['League'] == 'BELGIUM - PRO LEAGUE') 
-    #             & (df["Probabilidade_A_FT"].between(0.22, 0.31))
-    #             & (df["CV_HDA_FT"].between(0.2, 0.29))) |
-
-    #         ((df['League'] == 'BELGIUM - PRO LEAGUE') 
-    #             & (df["Probabilidade_A_FT"].between(0.32, 0.41))
-    #             & (df["CV_HDA_FT"].between(0.15, 0.24))) |
-
-    #         ((df['League'] == 'DENMARK - SUPERLIGA') 
-    #             & (df["Probabilidade_A_FT"].between(0.12, 0.21))
-    #             & (~df["CV_HDA_FT"].between(0.4, 0.44))
-    #             & (~df["CV_HDA_FT"].between(0.6, 0.64))) | 
-            
-    #         ((df['League'] == 'DENMARK - SUPERLIGA') 
-    #             & (df["Probabilidade_A_FT"].between(0.32, 0.41))
-    #             & (df["CV_HDA_FT"].between(0.15, 0.24))) |
-            
-    #         ((df['League'] == 'ENGLAND - CHAMPIONSHIP') 
-    #             & (df["Probabilidade_A_FT"].between(0.32, 0.41))
-    #             & (df["CV_HDA_FT"].between(0.15, 0.24))) |
-
-    #         ((df['League'] == 'ENGLAND - PREMIER LEAGUE') 
-    #             & (df["Probabilidade_A_FT"].between(0.22, 0.31))
-    #             & (df["CV_HDA_FT"].between(0.35, 0.39))) |
-            
-    #         ((df['League'] == 'ENGLAND - PREMIER LEAGUE') 
-    #             & (df["Probabilidade_A_FT"].between(0.32, 0.41))
-    #             & (df["CV_HDA_FT"].between(0.1, 0.14))) |
-
-    #         ((df['League'] == 'EGYPT - EGYPTIAN PREMIER LEAGUE')
-    #             & (df["Probabilidade_A_FT"].between(0.12, 0.21))
-    #             & (df["CV_HDA_FT"].between(0.3, 0.39))) |
-
-    #         ((df['League'] == 'EGYPT - EGYPTIAN PREMIER LEAGUE') 
-    #             & (df["Probabilidade_A_FT"].between(0.12, 0.21))
-    #             & (df["CV_HDA_FT"].between(0.45, 0.49))) |
-
-    #         ((df['League'] == 'EGYPT - EGYPTIAN PREMIER LEAGUE') 
-    #             & (df["Probabilidade_A_FT"].between(0.12, 0.21))
-    #             & (df["CV_HDA_FT"].between(0.55, 0.59))) |
-
-    #         ((df['League'] == 'GERMANY - 2. BUNDESLIGA') 
-    #             & (df["Probabilidade_A_FT"].between(0.12, 0.21))
-    #             & (~df["CV_HDA_FT"].between(0.5, 0.54))) |
-
-    #         ((df['League'] == 'GERMANY - 2. BUNDESLIGA') 
-    #             & (df["Probabilidade_A_FT"].between(0.22, 0.31))
-    #             & (df["CV_HDA_FT"].between(0.15, 0.19))) |
-
-    #         ((df['League'] == 'GERMANY - BUNDESLIGA') 
-    #             & (df["Probabilidade_A_FT"].between(0.12, 0.21))
-    #             & (df["CV_HDA_FT"].between(0.3, 0.39))) |
-
-    #         ((df['League'] == 'GERMANY - BUNDESLIGA') 
-    #             & (df["Probabilidade_A_FT"].between(0.12, 0.21))
-    #             & (df["CV_HDA_FT"].between(0.45, 0.49))) |
-
-    #         ((df['League'] == 'GERMANY - BUNDESLIGA') 
-    #             & (df["Probabilidade_A_FT"].between(0.22, 0.31))
-    #             & (df["CV_HDA_FT"].between(0.1, 0.14))) |
-
-    #         ((df['League'] == 'GERMANY - BUNDESLIGA') 
-    #             & (df["Probabilidade_A_FT"].between(0.32, 0.41))
-    #             & (df["CV_HDA_FT"].between(0.2, 0.29))) |
-
-    #         ((df['League'] == 'ITALY - SERIE A') 
-    #             & (df["Probabilidade_A_FT"].between(0.12, 0.21))
-    #             & (df["CV_HDA_FT"].between(0.35, 0.44))) |
-
-    #         ((df['League'] == 'ITALY - SERIE B') 
-    #             & (df["Probabilidade_A_FT"].between(0.22, 0.31))
-    #             & (df["CV_HDA_FT"].between(0.25, 0.29))) |
-
-    #         ((df['League'] == 'ITALY - SERIE B') 
-    #             & (df["Probabilidade_A_FT"].between(0.32, 0.41))
-    #             & (df["CV_HDA_FT"].between(0.1, 0.14))) |
-
-    #         ((df['League'] == 'MEXICO - LIGA MX') 
-    #             & (df["Probabilidade_A_FT"].between(0.32, 0.41))) |
-
-    #         ((df['League'] == 'PORTUGAL - LIGA NOS') 
-    #             & (df["Probabilidade_A_FT"].between(0.22, 0.31))
-    #             & (df["CV_HDA_FT"].between(0.25, 0.34))) |
-
-    #         ((df['League'] == 'PORTUGAL - LIGA NOS') 
-    #             & (df["Probabilidade_A_FT"].between(0.32, 0.41))) |
-
-    #         ((df['League'] == 'TURKEY - SÜPER LIG') 
-    #             & (df["Probabilidade_A_FT"].between(0.12, 0.21))
-    #             & (~df["CV_HDA_FT"].between(0.3, 0.34))
-    #             & (~df["CV_HDA_FT"].between(0.45, 0.49))) |
-
-    #         ((df['League'] == 'TURKEY - SÜPER LIG') 
-    #             & (df["Probabilidade_A_FT"].between(0.22, 0.31))
-    #             & (df["CV_HDA_FT"].between(0.15, 0.19))) |
-
-    #         ((df['League'] == 'TURKEY - SÜPER LIG') 
-    #             & (df["Probabilidade_A_FT"].between(0.22, 0.31))
-    #             & (df["CV_HDA_FT"].between(0.3, 0.34))) |
-
-    #         ((df['League'] == 'TURKEY - SÜPER LIG') 
-    #             & (df["Probabilidade_A_FT"].between(0.32, 0.41))
-    #             & (df["CV_HDA_FT"].between(0.1, 0.14)))
-    #     )
-
-
+def get_filter_betfair_lay_visitante(df):
     return ( 
         df['Odd_A_FT'].between(2.4, 5.4) & (
             ((df['League'] == 'ARGENTINA - PRIMERA DIVISIÓN') & (df['FX_Probabilidade_A'] == '0.39-0.48') & (df['FX_CV_HDA'] == '0.15-0.20')) |
@@ -891,4 +712,91 @@ def get_filter_lay_visitante_v2(df):
             ((df['League'] == 'TURKEY - SÜPER LIG') & (df['FX_Probabilidade_A'] == '0.30-0.39') & (df['FX_CV_HDA'] == '0.15-0.20')) |
             ((df['League'] == 'TURKEY - SÜPER LIG') & (df['FX_Probabilidade_A'] == '0.39-0.48') & (df['FX_CV_HDA'] == '0.10-0.15'))
         )
+    )
+
+def get_filter_betfair_lay_0x1(df):
+    return (
+        (df['Odd_H_FT'].between(1.5, 4)) & 
+        (df["Odd_CS_0x1_Lay"] <= 30) & (
+            ((df['League'] == 'AUSTRALIA - A-LEAGUE') & (df['FX_Probabilidade_A'] == '0.21-0.30') & (df['FX_CV_HDA'] == '0.15-0.20')) |
+            ((df['League'] == 'AUSTRALIA - A-LEAGUE') & (df['FX_Probabilidade_A'] == '0.21-0.30') & (df['FX_CV_HDA'] == '0.20-0.25')) |
+            ((df['League'] == 'AUSTRALIA - A-LEAGUE') & (df['FX_Probabilidade_A'] == '0.30-0.39') & (df['FX_CV_HDA'] == '0.20-0.25')) |
+            ((df['League'] == 'AUSTRALIA - A-LEAGUE') & (df['FX_Probabilidade_A'] == '0.39-0.48') & (df['FX_CV_HDA'] == '0.10-0.15')) |
+            ((df['League'] == 'BELGIUM - PRO LEAGUE') & (df['FX_Probabilidade_A'] == '0.21-0.30') & (df['FX_CV_HDA'] == '0.25-0.30')) |
+            ((df['League'] == 'BELGIUM - PRO LEAGUE') & (df['FX_Probabilidade_A'] == '0.30-0.39') & (df['FX_CV_HDA'] == '0.20-0.25')) |
+            ((df['League'] == 'BRAZIL - SERIE A') & (df['FX_Probabilidade_A'] == '0.12-0.21') & (df['FX_CV_HDA'] == '0.45-0.50')) |
+            ((df['League'] == 'BRAZIL - SERIE A') & (df['FX_Probabilidade_A'] == '0.12-0.21') & (df['FX_CV_HDA'] == '0.55-0.60')) |
+            ((df['League'] == 'BRAZIL - SERIE B') & (df['FX_Probabilidade_A'] == '0.30-0.39') & (df['FX_CV_HDA'] == '0.05-0.10')) |
+            ((df['League'] == 'BRAZIL - SERIE B') & (df['FX_Probabilidade_A'] == '0.39-0.48') & (df['FX_CV_HDA'] == '0.15-0.20')) |
+            ((df['League'] == 'DENMARK - SUPERLIGA') & (df['FX_Probabilidade_A'] == '0.12-0.21') & (df['FX_CV_HDA'] == '0.40-0.45')) |
+            ((df['League'] == 'DENMARK - SUPERLIGA') & (df['FX_Probabilidade_A'] == '0.12-0.21') & (df['FX_CV_HDA'] == '0.45-0.50')) |
+            ((df['League'] == 'DENMARK - SUPERLIGA') & (df['FX_Probabilidade_A'] == '0.21-0.30') & (df['FX_CV_HDA'] == '0.15-0.20')) |
+            ((df['League'] == 'DENMARK - SUPERLIGA') & (df['FX_Probabilidade_A'] == '0.30-0.39') & (df['FX_CV_HDA'] == '0.10-0.15')) |
+            ((df['League'] == 'DENMARK - SUPERLIGA') & (df['FX_Probabilidade_A'] == '0.39-0.48') & (df['FX_CV_HDA'] == '0.10-0.15')) |
+            ((df['League'] == 'EGYPT - EGYPTIAN PREMIER LEAGUE') & (df['FX_Probabilidade_A'] == '0.12-0.21') & (df['FX_CV_HDA'] == '0.55-0.60')) |
+            ((df['League'] == 'ENGLAND - EFL LEAGUE ONE') & (df['FX_Probabilidade_A'] == '0.39-0.48') & (df['FX_CV_HDA'] == '0.20-0.25')) |
+            ((df['League'] == 'ENGLAND - EFL LEAGUE TWO') & (df['FX_Probabilidade_A'] == '0.12-0.21') & (df['FX_CV_HDA'] == '0.50-0.55')) |
+            ((df['League'] == 'ENGLAND - EFL LEAGUE TWO') & (df['FX_Probabilidade_A'] == '0.30-0.39') & (df['FX_CV_HDA'] == '0.00-0.05')) |
+            ((df['League'] == 'ENGLAND - PREMIER LEAGUE') & (df['FX_Probabilidade_A'] == '0.12-0.21') & (df['FX_CV_HDA'] == '0.30-0.35')) |
+            ((df['League'] == 'ENGLAND - PREMIER LEAGUE') & (df['FX_Probabilidade_A'] == '0.12-0.21') & (df['FX_CV_HDA'] == '0.45-0.50')) |
+            ((df['League'] == 'ENGLAND - PREMIER LEAGUE') & (df['FX_Probabilidade_A'] == '0.21-0.30') & (df['FX_CV_HDA'] == '0.35-0.40')) |
+            ((df['League'] == 'FRANCE - LIGUE 1') & (df['FX_Probabilidade_A'] == '0.12-0.21') & (df['FX_CV_HDA'] == '0.45-0.50')) |
+            ((df['League'] == 'FRANCE - LIGUE 1') & (df['FX_Probabilidade_A'] == '0.39-0.48') & (df['FX_CV_HDA'] == '0.15-0.20')) |
+            ((df['League'] == 'FRANCE - LIGUE 2') & (df['FX_Probabilidade_A'] == '0.12-0.21') & (df['FX_CV_HDA'] == '0.45-0.50')) |
+            ((df['League'] == 'FRANCE - LIGUE 2') & (df['FX_Probabilidade_A'] == '0.21-0.30') & (df['FX_CV_HDA'] == '0.10-0.15')) |
+            ((df['League'] == 'FRANCE - LIGUE 2') & (df['FX_Probabilidade_A'] == '0.30-0.39') & (df['FX_CV_HDA'] == '0.00-0.05')) |
+            ((df['League'] == 'FRANCE - LIGUE 2') & (df['FX_Probabilidade_A'] == '0.30-0.39') & (df['FX_CV_HDA'] == '0.15-0.20')) |
+            ((df['League'] == 'FRANCE - LIGUE 2') & (df['FX_Probabilidade_A'] == '0.48-0.57') & (df['FX_CV_HDA'] == '0.25-0.30')) |
+            ((df['League'] == 'GERMANY - 2. BUNDESLIGA') & (df['FX_Probabilidade_A'] == '0.12-0.21') & (df['FX_CV_HDA'] == '0.40-0.45')) |
+            ((df['League'] == 'GERMANY - 2. BUNDESLIGA') & (df['FX_Probabilidade_A'] == '0.30-0.39') & (df['FX_CV_HDA'] == '0.20-0.25')) |
+            ((df['League'] == 'GERMANY - 2. BUNDESLIGA') & (df['FX_Probabilidade_A'] == '0.48-0.57') & (df['FX_CV_HDA'] == '0.25-0.30')) |
+            ((df['League'] == 'GERMANY - BUNDESLIGA') & (df['FX_Probabilidade_A'] == '0.12-0.21') & (df['FX_CV_HDA'] == '0.40-0.45')) |
+            ((df['League'] == 'GERMANY - BUNDESLIGA') & (df['FX_Probabilidade_A'] == '0.21-0.30') & (df['FX_CV_HDA'] == '0.15-0.20')) |
+            ((df['League'] == 'GERMANY - BUNDESLIGA') & (df['FX_Probabilidade_A'] == '0.21-0.30') & (df['FX_CV_HDA'] == '0.30-0.35')) |
+            ((df['League'] == 'GERMANY - BUNDESLIGA') & (df['FX_Probabilidade_A'] == '0.30-0.39') & (df['FX_CV_HDA'] == '0.20-0.25')) |
+            ((df['League'] == 'GERMANY - BUNDESLIGA') & (df['FX_Probabilidade_A'] == '0.39-0.48') & (df['FX_CV_HDA'] == '0.10-0.15')) |
+            ((df['League'] == 'ITALY - SERIE A') & (df['FX_Probabilidade_A'] == '0.12-0.21') & (df['FX_CV_HDA'] == '0.40-0.45')) |
+            ((df['League'] == 'ITALY - SERIE A') & (df['FX_Probabilidade_A'] == '0.12-0.21') & (df['FX_CV_HDA'] == '0.45-0.50')) |
+            ((df['League'] == 'JAPAN - J1 LEAGUE') & (df['FX_Probabilidade_A'] == '0.12-0.21') & (df['FX_CV_HDA'] == '0.30-0.35')) |
+            ((df['League'] == 'JAPAN - J1 LEAGUE') & (df['FX_Probabilidade_A'] == '0.12-0.21') & (df['FX_CV_HDA'] == '0.40-0.45')) |
+            ((df['League'] == 'JAPAN - J1 LEAGUE') & (df['FX_Probabilidade_A'] == '0.12-0.21') & (df['FX_CV_HDA'] == '0.50-0.55')) |
+            ((df['League'] == 'JAPAN - J1 LEAGUE') & (df['FX_Probabilidade_A'] == '0.39-0.48') & (df['FX_CV_HDA'] == '0.20-0.25')) |
+            ((df['League'] == 'MEXICO - LIGA MX') & (df['FX_Probabilidade_A'] == '0.12-0.21') & (df['FX_CV_HDA'] == '0.30-0.35')) |
+            ((df['League'] == 'MEXICO - LIGA MX') & (df['FX_Probabilidade_A'] == '0.12-0.21') & (df['FX_CV_HDA'] == '0.35-0.40')) |
+            ((df['League'] == 'MEXICO - LIGA MX') & (df['FX_Probabilidade_A'] == '0.12-0.21') & (df['FX_CV_HDA'] == '0.40-0.45')) |
+            ((df['League'] == 'MEXICO - LIGA MX') & (df['FX_Probabilidade_A'] == '0.12-0.21') & (df['FX_CV_HDA'] == '0.45-0.50')) |
+            ((df['League'] == 'MEXICO - LIGA MX') & (df['FX_Probabilidade_A'] == '0.48-0.57') & (df['FX_CV_HDA'] == '0.20-0.25')) |
+            ((df['League'] == 'NETHERLANDS - EERSTE DIVISIE') & (df['FX_Probabilidade_A'] == '0.12-0.21') & (df['FX_CV_HDA'] == '0.40-0.45')) |
+            ((df['League'] == 'NETHERLANDS - EERSTE DIVISIE') & (df['FX_Probabilidade_A'] == '0.39-0.48') & (df['FX_CV_HDA'] == '0.10-0.15')) |
+            ((df['League'] == 'NETHERLANDS - EERSTE DIVISIE') & (df['FX_Probabilidade_A'] == '0.39-0.48') & (df['FX_CV_HDA'] == '0.20-0.25')) |
+            ((df['League'] == 'NETHERLANDS - EERSTE DIVISIE') & (df['FX_Probabilidade_A'] == '0.48-0.57') & (df['FX_CV_HDA'] == '0.20-0.25')) |
+            ((df['League'] == 'NETHERLANDS - EREDIVISIE') & (df['FX_Probabilidade_A'] == '0.12-0.21') & (df['FX_CV_HDA'] == '0.30-0.35')) |
+            ((df['League'] == 'NETHERLANDS - EREDIVISIE') & (df['FX_Probabilidade_A'] == '0.12-0.21') & (df['FX_CV_HDA'] == '0.35-0.40')) |
+            ((df['League'] == 'NETHERLANDS - EREDIVISIE') & (df['FX_Probabilidade_A'] == '0.12-0.21') & (df['FX_CV_HDA'] == '0.40-0.45')) |
+            ((df['League'] == 'NETHERLANDS - EREDIVISIE') & (df['FX_Probabilidade_A'] == '0.21-0.30') & (df['FX_CV_HDA'] == '0.30-0.35')) |
+            ((df['League'] == 'NORWAY - ELITESERIEN') & (df['FX_Probabilidade_A'] == '0.30-0.39') & (df['FX_CV_HDA'] == '0.20-0.25')) |
+            ((df['League'] == 'NORWAY - ELITESERIEN') & (df['FX_Probabilidade_A'] == '0.39-0.48') & (df['FX_CV_HDA'] == '0.25-0.30')) |
+            ((df['League'] == 'PORTUGAL - LIGA NOS') & (df['FX_Probabilidade_A'] == '0.12-0.21') & (df['FX_CV_HDA'] == '0.45-0.50')) |
+            ((df['League'] == 'ROMANIA - LIGA I') & (df['FX_Probabilidade_A'] == '0.12-0.21') & (df['FX_CV_HDA'] == '0.35-0.40')) |
+            ((df['League'] == 'ROMANIA - LIGA I') & (df['FX_Probabilidade_A'] == '0.12-0.21') & (df['FX_CV_HDA'] == '0.45-0.50')) |
+            ((df['League'] == 'SAUDI ARABIA - SAUDI PROFESSION') & (df['FX_Probabilidade_A'] == '0.12-0.21') & (df['FX_CV_HDA'] == '0.40-0.45')) |
+            ((df['League'] == 'SAUDI ARABIA - SAUDI PROFESSION') & (df['FX_Probabilidade_A'] == '0.21-0.30') & (df['FX_CV_HDA'] == '0.25-0.30')) |
+            ((df['League'] == 'SAUDI ARABIA - SAUDI PROFESSION') & (df['FX_Probabilidade_A'] == '0.21-0.30') & (df['FX_CV_HDA'] == '0.30-0.35')) |
+            ((df['League'] == 'SAUDI ARABIA - SAUDI PROFESSION') & (df['FX_Probabilidade_A'] == '0.30-0.39') & (df['FX_CV_HDA'] == '0.15-0.20')) |
+            ((df['League'] == 'SAUDI ARABIA - SAUDI PROFESSION') & (df['FX_Probabilidade_A'] == '0.39-0.48') & (df['FX_CV_HDA'] == '0.10-0.15')) |
+            ((df['League'] == 'SAUDI ARABIA - SAUDI PROFESSION') & (df['FX_Probabilidade_A'] == '0.48-0.57') & (df['FX_CV_HDA'] == '0.25-0.30')) |
+            ((df['League'] == 'SCOTLAND - PREMIERSHIP') & (df['FX_Probabilidade_A'] == '0.12-0.21') & (df['FX_CV_HDA'] == '0.35-0.40')) |
+            ((df['League'] == 'SCOTLAND - PREMIERSHIP') & (df['FX_Probabilidade_A'] == '0.30-0.39') & (df['FX_CV_HDA'] == '0.10-0.15')) |
+            ((df['League'] == 'SPAIN - LA LIGA') & (df['FX_Probabilidade_A'] == '0.21-0.30') & (df['FX_CV_HDA'] == '0.30-0.35')) |
+            ((df['League'] == 'SPAIN - LA LIGA') & (df['FX_Probabilidade_A'] == '0.30-0.39') & (df['FX_CV_HDA'] == '0.10-0.15')) |
+            ((df['League'] == 'SPAIN - SEGUNDA DIVISIÓN') & (df['FX_Probabilidade_A'] == '0.12-0.21') & (df['FX_CV_HDA'] == '0.40-0.45')) |
+            ((df['League'] == 'SPAIN - SEGUNDA DIVISIÓN') & (df['FX_Probabilidade_A'] == '0.21-0.30') & (df['FX_CV_HDA'] == '0.15-0.20')) |
+            ((df['League'] == 'TURKEY - SÜPER LIG') & (df['FX_Probabilidade_A'] == '0.12-0.21') & (df['FX_CV_HDA'] == '0.40-0.45')) |
+            ((df['League'] == 'TURKEY - SÜPER LIG') & (df['FX_Probabilidade_A'] == '0.12-0.21') & (df['FX_CV_HDA'] == '0.50-0.55')) |
+            ((df['League'] == 'TURKEY - SÜPER LIG') & (df['FX_Probabilidade_A'] == '0.30-0.39') & (df['FX_CV_HDA'] == '0.15-0.20')) |
+            ((df['League'] == 'USA - MLS') & (df['FX_Probabilidade_A'] == '0.12-0.21') & (df['FX_CV_HDA'] == '0.45-0.50')) |
+            ((df['League'] == 'USA - MLS') & (df['FX_Probabilidade_A'] == '0.21-0.30') & (df['FX_CV_HDA'] == '0.35-0.40')) |
+            ((df['League'] == 'USA - MLS') & (df['FX_Probabilidade_A'] == '0.30-0.39') & (df['FX_CV_HDA'] == '0.25-0.30')) |
+            ((df['League'] == 'USA - MLS') & (df['FX_Probabilidade_A'] == '0.39-0.48') & (df['FX_CV_HDA'] == '0.20-0.25'))
+        )    
     )
