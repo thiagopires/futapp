@@ -132,11 +132,12 @@ def main_page(fonte_dados):
         
         if total_jogos > 0:
             total_greens = len(df_hist[(df_hist['Status_Metodo'] == 'GREEN')])
-            total_reds = total_jogos - total_greens
+            total_reds = len(df_hist[(df_hist['Status_Metodo'] == 'RED')])
+            total_voids = len(df_hist[(df_hist['Status_Metodo'] == 'VOID')])
             winrate = round(total_greens / total_jogos * 100, 2)
             profit_acumulado = f"{str(round(df_hist['Profit'].sum(), 2))} unidades"
             
-            st.write(f"Jogos: {total_jogos}, Greens: {total_greens}, Reds: {total_reds}, Winrate: {winrate}%, Profit Acumulado Líquido: {profit_acumulado}, Comissão: 2.8%, Odd Média: {odd_media}")
+            st.write(f"Jogos: {total_jogos}, Greens: {total_greens}, Reds: {total_reds}, {"Voids: " + total_voids if total_voids > 0 else ""}Winrate: {winrate}%, Profit Acumulado Líquido: {profit_acumulado}, Comissão: 2.8%, Odd Média: {odd_media}")
 
             daily_profit = df_hist.groupby("Date")["Profit"].sum().reset_index()
             daily_profit["Cumulative_Profit"] = daily_profit["Profit"].cumsum()  
@@ -221,6 +222,13 @@ def main_page(fonte_dados):
                 df_hist.loc[df_hist['Status_Metodo'] == 'RED', 
                 ['League','Rodada','Date','Time','Home','Away','Resultado_HT','Resultado_FT','Resultado_60','Resultado_65','Resultado_70','Resultado_75','Resultado_80','Odd_H_FT','Odd_D_FT','Odd_A_FT','Odd_Over05_FT','Odd_Over15_FT','Odd_Over25_FT','Odd_Under05_FT','Odd_Under15_FT','Odd_Under25_FT','Odd_BTTS_Yes','Odd_BTTS_No','Odd_DC_1X','Odd_DC_12','Odd_DC_X2','Odd_CS_0x1_Lay','Odd_CS_0x2_Lay','XG_Total_Pre','XG_Home_Pre','XG_Away_Pre','Diff_XG_Home_Away_Pre','PPG_Home_Pre','PPG_Away_Pre','Goals_H_Minutes','Goals_A_Minutes','Primeiro_Gol','Status_Metodo','Profit','Probabilidade_H_FT','Probabilidade_D_FT','Probabilidade_A_FT','CV_HDA_FT']]
             )
+
+            if total_voids > 0:
+                st.write(f"**:gray[VOIDs:]**")
+                print_dataframe(
+                    df_hist.loc[df_hist['Status_Metodo'] == 'VOID', 
+                    ['League','Rodada','Date','Time','Home','Away','Resultado_HT','Resultado_FT','Resultado_60','Resultado_65','Resultado_70','Resultado_75','Resultado_80','Odd_H_FT','Odd_D_FT','Odd_A_FT','Odd_Over05_FT','Odd_Over15_FT','Odd_Over25_FT','Odd_Under05_FT','Odd_Under15_FT','Odd_Under25_FT','Odd_BTTS_Yes','Odd_BTTS_No','Odd_DC_1X','Odd_DC_12','Odd_DC_X2','Odd_CS_0x1_Lay','Odd_CS_0x2_Lay','XG_Total_Pre','XG_Home_Pre','XG_Away_Pre','Diff_XG_Home_Away_Pre','PPG_Home_Pre','PPG_Away_Pre','Goals_H_Minutes','Goals_A_Minutes','Primeiro_Gol','Status_Metodo','Profit','Probabilidade_H_FT','Probabilidade_D_FT','Probabilidade_A_FT','CV_HDA_FT']]
+                )
 
         else:
             st.info("Sem jogos.")
