@@ -273,8 +273,13 @@ def get_result_filtro_pronto(df, metodo):
         df['Profit'] =  np.where(df['Resultado_65'] == '0-2', -0.25,
                         np.where(df['Resultado_65'] == '0-1', -0.08,
                         np.where(df['Resultado_65'] == '0-0', profit_no_comission(df['Odd_CS_0x2_Lay'],'Lay') * 0.4, profit_no_comission(df['Odd_CS_0x2_Lay'],'Lay'))))
-        df['Status_Metodo'] = np.where(df['Profit'] > 0, 'GREEN', 
-                              np.where(df['Profit'] < 0, 'RED', 'VOID'))
+        
+        # df['Status_Metodo'] = np.where(df['Profit'] > 0, 'GREEN', 
+        #                       np.where(df['Profit'] < 0, 'RED', 'VOID'))
+        
+        df['Status_Metodo'] =   np.where(df['Resultado_65'].isin('0-1','0-2'), 'RED',
+                                np.where(df['Resultado_65'] == '0-0', 'VOID', 'GREEN'))
+        
         odd_media = f"{str(round(df['Odd_CS_0x2_Lay'].mean(), 2))}"
 
     elif metodo == 'Lay 0x2':
