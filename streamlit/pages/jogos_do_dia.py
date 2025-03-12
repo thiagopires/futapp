@@ -1,13 +1,5 @@
-import streamlit as st
-import pandas as pd
-import plotly.express as px
-
 from utils.functions import *
 from utils.filters import *
-
-pd.set_option('display.max_columns', None)
-pd.set_option('display.max_rows', None)
-st.set_page_config(layout="wide")
 
 def main_page():
 
@@ -188,11 +180,11 @@ def main_page():
             # Outros dados e análises podem ser adicionados conforme necessário
             st.write("⚡ Dashboard dinâmico para análise de confrontos! ⚡")
 
-if "logged_in" not in st.session_state:
-    st.session_state["logged_in"] = False
+# if "logged_in" not in st.session_state:
+#     st.session_state["logged_in"] = False
 
-if st.session_state["logged_in"]:
-    display_sidebar('block')
-    main_page()
-else:
-    login_page()
+# if st.session_state["logged_in"]:
+#     display_sidebar('block')
+#     main_page()
+# else:
+#     login_page()

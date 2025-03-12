@@ -1,11 +1,5 @@
-import streamlit as st
-import pandas as pd
-
 from utils.functions import *
-
-pd.set_option('display.max_columns', None)
-pd.set_option('display.max_rows', None)
-st.set_page_config(layout="wide")
+from utils.filters import *
 
 def main_page():
 
@@ -13,7 +7,7 @@ def main_page():
         st.info("Ambiente de Desenvolvimento. Branch: dev")
 
     st.title("Futapp v0.1")
-    st.header("⚽ Análise Home")
+    st.header("⚽ Análise Away")
 
     # Init
 
@@ -26,7 +20,7 @@ def main_page():
 
 
     if df_matches.empty:
-        st.info(f"Os dados para {data_analise} não estão disponíveis.")
+        st.info(f"Os dados para {data_analise} não estão disponíveis.")    
 
     else:
         st.subheader("Filtro de Odds")
@@ -34,7 +28,7 @@ def main_page():
         # if st.button("Limpar filtros"):
         #     set_odds_filtros(True)
 
-        col1, col2, col3, col4, col5, col6, col7 = st.columns(7)
+        col1, col2, col3, col4, col5 = st.columns(5)
         with col1:
             st.number_input("Odd_H_Min", value=1.10, min_value=1.10, max_value=1000.00, key="odd_h_min")
             st.number_input("Odd_H_Max", value=1000.00, min_value=1.10, max_value=1000.00, key="odd_h_max")
@@ -50,12 +44,6 @@ def main_page():
         with col5:
             st.number_input("Odd_BTTS_Min", value=1.10, min_value=1.10, max_value=1000.00, key="odd_btts_min")
             st.number_input("Odd_BTTS_Max", value=1000.00, min_value=1.10, max_value=1000.00, key="odd_btts_max")
-        with col6:
-            st.number_input("XG_Total_Pre_Min", value=1.10, min_value=1.10, max_value=1000.00, key="XG_Total_Pre_Min")
-            st.number_input("XG_Total_Pre_Max", value=1000.00, min_value=1.10, max_value=1000.00, key="XG_Total_Pre_Max")
-        with col7:
-            st.number_input("XG_Home_Pre_Min", value=1.10, min_value=1.10, max_value=1000.00, key="XG_Home_Pre_Min")
-            st.number_input("XG_Home_Pre_Max", value=1000.00, min_value=1.10, max_value=1000.00, key="XG_Home_Pre_Max")
 
 
         st.divider()
@@ -77,31 +65,25 @@ def main_page():
             (df_matches["Odd_Over25_FT"] <= st.session_state.odd_over25_ft_max) &
 
             (df_matches["Odd_BTTS_Yes"] >= st.session_state.odd_btts_min) &
-            (df_matches["Odd_BTTS_Yes"] <= st.session_state.odd_btts_max) &
-
-            (df_matches["XG_Total_Pre"] >= st.session_state.XG_Total_Pre_Min) &
-            (df_matches["XG_Total_Pre"] <= st.session_state.XG_Total_Pre_Max) &
-
-            (df_matches["XG_Home_Pre"] >= st.session_state.XG_Home_Pre_Min) &
-            (df_matches["XG_Home_Pre"] <= st.session_state.XG_Home_Pre_Max)
+            (df_matches["Odd_BTTS_Yes"] <= st.session_state.odd_btts_max)
         ]
 
-        print_dataframe(df_matches[['League','Rodada','Time','Home','Away','Odd_H_FT','Odd_D_FT','Odd_A_FT','Odd_Over05_HT','Odd_Over15_FT','Odd_Over25_FT','Odd_BTTS_Yes','XG_Total_Pre','XG_Home_Pre']])
+        print_dataframe(df_matches[['League','Rodada','Time','Home','Away','Odd_H_FT','Odd_D_FT','Odd_A_FT','Odd_Over05_HT','Odd_Over15_FT','Odd_Over25_FT','Odd_BTTS_Yes']])
 
 
         st.divider()
 
 
-        st.subheader("Selecione o Mandante e o Placar para a análise")
+        st.subheader("Selecione o Visitante e o Placar para a análise")
         
         if len(df_matches) > 0:
             colb1, colb2 = st.columns(2)
             with colb1:
-                mandante = st.selectbox("Escolha o Mandante", df_matches['Home'])
+                visitante = st.selectbox("Escolha o Visitante", df_matches['Away'])
             with colb2:
                 placar = st.selectbox("Escolha o Placar", ['0x0','0x1','0x2','0x3','1x0','1x1','1x2','1x3','2x0','2x1','2x2','2x3','3x0','3x1','3x2','3x3','Goleada_H','Goleada_A'])
 
-            df_match_selected = df_matches.loc[(df_matches['Home'] == mandante)]
+            df_match_selected = df_matches.loc[(df_matches['Away'] == visitante)]
 
 
             st.divider()
@@ -143,21 +125,21 @@ def main_page():
                     
             
             st.divider()
-            
+
 
             if len(df_match_selected) > 0:
 
-                visitante = df_match_selected.iloc[0]["Away"]
+                mandante = df_match_selected.iloc[0]["Home"]
 
                 if st.session_state['active_button'] == "Over 2.5 FT / BTTS":
                             
-                    st.write(f"**Over 2.5 FT nos jogos do {mandante}**")
-                    st.write(f"**Jogos anteriores do {mandante} que bateram o Over 2.5 FT**")    
-                    aba_over25(df_hist, mandante, "Home")
+                    st.write(f"**Over 2.5 FT nos jogos do {visitante}**")
+                    st.write(f"**Jogos anteriores do {visitante} que bateram o Over 2.5 FT**")    
+                    aba_over25(df_hist, visitante, "Away")
 
-                    st.write(f"**BTTS nos jogos do {mandante}**")
-                    st.write(f"**Jogos anteriores do {mandante} que bateram o BTTS**")
-                    aba_btts(df_hist, mandante, "Home")
+                    st.write(f"**BTTS nos jogos do {visitante}**")
+                    st.write(f"**Jogos anteriores do {visitante} que bateram o BTTS**")
+                    aba_btts(df_hist, visitante, "Away")
 
                 elif st.session_state['active_button'] == "Últimos 10 jogos":
 
@@ -169,43 +151,43 @@ def main_page():
 
                 elif st.session_state['active_button'] == "Confronto Direto":
                     st.write(f"**Confronto direto - Temporadas passadas**")
-                    aba_confrontodireto(df_hist, mandante, visitante)
+                    aba_confrontodireto(df_hist, visitante, visitante)
 
                 elif st.session_state['active_button'] == "Match Odds - Back":
-                    st.write(f"**Back Home (Apostar no {mandante})**")
-                    aba_back_home(df_hist, mandante, "Home")
+                    st.write(f"**Back Home (Apostar no {visitante})**")
+                    aba_back_home(df_hist, visitante, "Away")
 
-                    st.write(f"**Back Draw (Apostar no Empate nos jogos do {mandante})**")
-                    aba_back_draw(df_hist, mandante, "Home")
+                    st.write(f"**Back Draw (Apostar no Empate nos jogos do {visitante})**")
+                    aba_back_draw(df_hist, visitante, "Away")
 
-                    st.write(f"**Back Away (Apostar no Adversário do {mandante})**")
-                    aba_back_away(df_hist, mandante, "Home")
+                    st.write(f"**Back Away (Apostar no Adversário do {visitante})**")
+                    aba_back_away(df_hist, visitante, "Away")
 
                 elif st.session_state['active_button'] == "Match Odds - Lay":
-                    st.write(f"**Lay Home (Apostar contra o {mandante})**")
-                    aba_lay_home(df_hist, mandante, "Home")
+                    st.write(f"**Lay Home (Apostar contra o {visitante})**")
+                    aba_lay_home(df_hist, visitante, "Away")
 
-                    st.write(f"**Lay Draw (Apostar cintra o Empate nos jogos do {mandante})**")
-                    aba_lay_draw(df_hist, mandante, "Home")
+                    st.write(f"**Lay Draw (Apostar cintra o Empate nos jogos do {visitante})**")
+                    aba_lay_draw(df_hist, visitante, "Away")
 
-                    st.write(f"**Lay Away (Apostar contra o Adversário do {mandante})**")
-                    aba_lay_away(df_hist, mandante, "Home")
+                    st.write(f"**Lay Away (Apostar contra o Adversário do {visitante})**")
+                    aba_lay_away(df_hist, visitante, "Away")
                     
                 elif st.session_state['active_button'] == "Ponto de Revisão HT":
                     
-                    st.write(f"**Jogos anteriores do {mandante} que terminaram em {placar} no HT.**")
-                    aba_ponto_de_revisao_ht(df_hist, mandante, "Home", placar)
+                    st.write(f"**Jogos anteriores do {visitante} que terminaram em {placar} no HT.**")
+                    aba_ponto_de_revisao_ht(df_hist, visitante, "Away", placar)
 
                 elif st.session_state['active_button'] == "Ponto de Saída Trader":
                     
-                    st.write(f"**Jogos anteriores do {mandante} que estavam em {placar} no minuto 75.**")
-                    aba_ponto_de_saida_trader(df_hist, mandante, "Home", placar)
-
+                    st.write(f"**Jogos anteriores do {visitante} que estavam em {placar} no minuto 75.**")
+                    aba_ponto_de_saida_trader(df_hist, visitante, "Away", placar)
+                
                 elif st.session_state['active_button'] == "Placares Singulares":
                     
                     st.write(f"**Singulares**")
-                    st.write(f"**Resultados que não ocorreram para o {mandante} nas últimas temporadas**")
-                    resultados_singulares(df_hist, mandante, "Home")
+                    st.write(f"**Resultados que não ocorreram para o {visitante} nas últimas temporadas**")
+                    resultados_singulares(df_hist, visitante, "Away")
                     
                     st.write(f"**Análise de Ocorrência dos Placares**")
                     analise_ocorrencia_placar(df_hist, mandante, visitante, placar)
@@ -213,14 +195,14 @@ def main_page():
                 elif any(item == st.session_state['active_button'] for item in ["", "Ponto de Saída Punter"]):
                 # elif st.session_state['active_button'] == "Ponto de Saída Punter":
         
-                    st.write(f"**Jogos anteriores do {mandante} terminados em {placar}.**")
-                    aba_ponto_de_saida_punter(df_hist, mandante, "Home", placar)
+                    st.write(f"**Jogos anteriores do {visitante} terminados em {placar}.**")
+                    aba_ponto_de_saida_punter(df_hist, visitante, "Away", placar)
 
-if "logged_in" not in st.session_state:
-    st.session_state["logged_in"] = False
+# if "logged_in" not in st.session_state:
+#     st.session_state["logged_in"] = False
 
-if st.session_state["logged_in"]:
-    display_sidebar('block')
-    main_page()
-else:
-    login_page()
+# if st.session_state["logged_in"]:
+#     display_sidebar('block')
+#     main_page()
+# else:
+#     login_page()

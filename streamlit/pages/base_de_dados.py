@@ -1,12 +1,5 @@
-import streamlit as st
-import pandas as pd
-from datetime import date
-
 from utils.functions import *
-
-pd.set_option('display.max_columns', None)
-pd.set_option('display.max_rows', None)
-st.set_page_config(layout="wide")
+from utils.filters import *
 
 def main_page():
 
@@ -44,14 +37,14 @@ def main_page():
     if st.button("Carregar dados"):
         print_dataframe(df_hist)
 
-if "logged_in" not in st.session_state:
-    st.session_state["logged_in"] = False
+# if "logged_in" not in st.session_state:
+#     st.session_state["logged_in"] = False
 
-if st.session_state["logged_in"]:
-    display_sidebar('block')
-    main_page()
-else:
-    login_page()
+# if st.session_state["logged_in"]:
+#     display_sidebar('block')
+#     main_page()
+# else:
+#     login_page()
 
 
     ### football-data.co.uk ###
