@@ -2,7 +2,6 @@ import streamlit as st
 import pandas as pd
 from datetime import date
 import plotly.express as px
-import random
 
 from utils.functions import *
 from utils.filters import *
