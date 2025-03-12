@@ -42,6 +42,7 @@ def main_page(fonte_dados):
         if match_selected.get('selection').get('rows'):
 
             df_match_selected = df_matches.iloc[match_selected.get('selection').get('rows')[0]]
+            st.write(df_match_selected["Confronto"])
 
             st.divider()
 
