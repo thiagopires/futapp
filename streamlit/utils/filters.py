@@ -1,5 +1,13 @@
 import numpy as np
 
+def profit_no_comission(odd, side='Back'):
+    comission = 0.028
+    if side == 'Back':
+        profit = (odd - 1) * (1 - comission)
+    elif side == 'Lay':
+        profit = (1 / (odd - 1)) * (1 - comission)
+    return round(profit, 2)
+
 metodos = [
     'Back Casa',
     'Back Visitante',
@@ -146,107 +154,103 @@ def get_result_filtro_pronto(df, metodo):
 
     if metodo == 'Back Casa':
         filter = (df["Goals_H_FT"] > df["Goals_A_FT"])
-        df.loc[filter, 'Profit'] = round(df['Odd_H_FT']-1, 2)
+        df.loc[filter, 'Profit'] = profit_no_comission(df['Odd_H_FT'])
         df.loc[filter, "Status_Metodo"] = "GREEN"
         odd_media = f"{str(round(df['Odd_H_FT'].mean(), 2))}"
 
     if metodo == 'Back Casa ou Back 1x1':
         filter = df["Primeiro_Gol"].str.contains("Home")
-        # filter2 = (df["Resultado_FT"] == '1-1')
-        # filter = (filter1 | filter2)
-        df.loc[filter, 'Profit'] = round(df['Odd_H_FT']-1, 2)
-        # df.loc[filter2, 'Profit'] = 0
+        df.loc[filter, 'Profit'] = profit_no_comission(df['Odd_H_FT'])
         df.loc[filter, "Status_Metodo"] = "GREEN"
         odd_media = f"{str(round(df['Odd_H_FT'].mean(), 2))}"
 
     elif metodo == 'Back Empate':
         filter = (df["Goals_H_FT"] == df["Goals_A_FT"])
-        df.loc[filter, 'Profit'] = round(df['Odd_D_FT']-1, 2)
+        df.loc[filter, 'Profit'] = profit_no_comission(df['Odd_D_FT'])
         df.loc[filter, "Status_Metodo"] = "GREEN"
         odd_media = f"{str(round(df['Odd_D_FT'].mean(), 2))}"
 
     elif metodo == 'Back Visitante':
         filter = (df["Goals_H_FT"] < df["Goals_A_FT"])
-        df.loc[filter, 'Profit'] = round(df['Odd_A_FT']-1, 2)
+        df.loc[filter, 'Profit'] = profit_no_comission(df['Odd_A_FT'])
         df.loc[filter, "Status_Metodo"] = "GREEN"
         odd_media = f"{str(round(df['Odd_A_FT'].mean(), 2))}"
 
     elif metodo == 'Lay Visitante':
         filter = (df['Goals_H_FT'] >= df['Goals_A_FT'])  
-        df.loc[filter, 'Profit'] = round(df['Odd_DC_1X']-1, 2)
+        df.loc[filter, 'Profit'] = profit_no_comission(df['Odd_DC_1X'])
         df.loc[filter, "Status_Metodo"] = "GREEN"
         odd_media = f"{str(round(df['Odd_A_FT'].mean(), 2))}"
 
     elif metodo == 'Lay Empate':
         filter = (df['Goals_H_FT'] != df['Goals_A_FT'])  
-        df.loc[filter, 'Profit'] = round(df['Odd_DC_12']-1, 2)
+        df.loc[filter, 'Profit'] = profit_no_comission(df['Odd_DC_12'])
         df.loc[filter, "Status_Metodo"] = "GREEN"
         odd_media = f"{str(round(df['Odd_D_FT'].mean(), 2))}"
 
     elif metodo == 'Lay Casa':
         filter = (df['Goals_H_FT'] <= df['Goals_A_FT'])   
-        df.loc[filter, 'Profit'] = round(df['Odd_DC_X2']-1, 2)
+        df.loc[filter, 'Profit'] = profit_no_comission(df['Odd_DC_X2'])
         df.loc[filter, "Status_Metodo"] = "GREEN"
         odd_media = f"{str(round(df['Odd_H_FT'].mean(), 2))}"
 
     elif metodo == 'Over 0.5 HT':
         filter = (df['TotalGoals_HT'] >= 0.5)   
-        df.loc[filter, 'Profit'] = round(df['Odd_Over05_HT']-1, 2)
+        df.loc[filter, 'Profit'] = profit_no_comission(df['Odd_Over05_HT'])
         df.loc[filter, "Status_Metodo"] = "GREEN"
         odd_media = f"{str(round(df['Odd_Over05_HT'].mean(), 2))}"
 
     elif metodo == 'Over 0.5 FT':
         filter = (df['TotalGoals_FT'] >= 0.5)   
-        df.loc[filter, 'Profit'] = round(df['Odd_Over05_FT']-1, 2)
+        df.loc[filter, 'Profit'] = profit_no_comission(df['Odd_Over05_FT'])
         df.loc[filter, "Status_Metodo"] = "GREEN"
         odd_media = f"{str(round(df['Odd_Over05_FT'].mean(), 2))}"
 
     elif metodo == 'Over 1.5 FT':
         filter = (df['TotalGoals_FT'] >= 1.5)   
-        df.loc[filter, 'Profit'] = round(df['Odd_Over15_FT']-1, 2)
+        df.loc[filter, 'Profit'] = profit_no_comission(df['Odd_Over15_FT'])
         df.loc[filter, "Status_Metodo"] = "GREEN"
         odd_media = f"{str(round(df['Odd_Over15_FT'].mean(), 2))}"
 
     elif metodo == 'Over 2.5 FT':
         filter = (df['TotalGoals_FT'] >= 2.5)   
-        df.loc[filter, 'Profit'] = round(df['Odd_Over25_FT']-1, 2)
+        df.loc[filter, 'Profit'] = profit_no_comission(df['Odd_Over25_FT'])
         df.loc[filter, "Status_Metodo"] = "GREEN"
         odd_media = f"{str(round(df['Odd_Over25_FT'].mean(), 2))}"
 
     elif metodo == 'Under 0.5 HT':
         filter = (df['TotalGoals_HT'] <= 0.5)   
-        df.loc[filter, 'Profit'] = round(df['Odd_Under05_HT']-1, 2)
+        df.loc[filter, 'Profit'] = profit_no_comission(df['Odd_Under05_HT'])
         df.loc[filter, "Status_Metodo"] = "GREEN"
         odd_media = f"{str(round(df['Odd_Under05_HT'].mean(), 2))}"
         
     elif metodo == 'Under 1.5 FT':
         filter = (df['TotalGoals_FT'] <= 1.5)   
-        df.loc[filter, 'Profit'] = round(df['Odd_Under15_FT']-1, 2)
+        df.loc[filter, 'Profit'] = profit_no_comission(df['Odd_Under15_FT'])
         df.loc[filter, "Status_Metodo"] = "GREEN"
         odd_media = f"{str(round(df['Odd_Under15_FT'].mean(), 2))}"
 
     elif metodo == 'Under 2.5 FT':
         filter = (df['TotalGoals_FT'] <= 2.5)   
-        df.loc[filter, 'Profit'] = round(df['Odd_Under25_FT']-1, 2)
+        df.loc[filter, 'Profit'] = profit_no_comission(df['Odd_Under25_FT'])
         df.loc[filter, "Status_Metodo"] = "GREEN"
         odd_media = f"{str(round(df['Odd_Under25_FT'].mean(), 2))}"
 
     elif metodo == 'BTTS Sim':
         filter = ((df['Goals_H_FT'] >= 1) & (df['Goals_A_FT'] >= 1))
-        df.loc[filter, 'Profit'] = round(df['Odd_BTTS_Yes']-1, 2)
+        df.loc[filter, 'Profit'] = profit_no_comission(df['Odd_BTTS_Yes'])
         df.loc[filter, "Status_Metodo"] = "GREEN"
         odd_media = f"{str(round(df['Odd_BTTS_Yes'].mean(), 2))}"
 
     elif metodo == 'BTTS Não':
         filter = ((df['Goals_H_FT'] == 0) | (df['Goals_A_FT'] == 0))
-        df.loc[filter, 'Profit'] = round(df['Odd_BTTS_No']-1, 2)
+        df.loc[filter, 'Profit'] = profit_no_comission(df['Odd_BTTS_No'])
         df.loc[filter, "Status_Metodo"] = "GREEN"
         odd_media = f"{str(round(df['Odd_BTTS_No'].mean(), 2))}"
 
     elif metodo == 'Lay 0x1 65min':
         df['Profit'] =  np.where(df['Resultado_65'] == '0-1', -0.25,
-                        np.where(df['Resultado_65'] == '0-0', -0.08, 1 / (df['Odd_CS_0x1_Lay'] - 1)))
-                        # np.where(df['Resultado_HT'] == '0-1', -0.15,
+                        np.where(df['Resultado_65'] == '0-0', -0.08, profit_no_comission(df['Odd_CS_0x1_Lay'],'Lay')))
         df['Status_Metodo']  = np.where(df['Profit'] >= 0, 'GREEN', 'RED')
         odd_media = f"{str(round(df['Odd_CS_0x1_Lay'].mean(), 2))}"
 
