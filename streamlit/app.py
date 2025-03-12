@@ -48,19 +48,19 @@ if st.session_state["logged_in"]:
         home.main_page()
 
     elif opcoes[escolha] == "jogos_do_dia":
-        jogos_do_dia.main_page()
+        jogos_do_dia.main_page(fonte_dados)
 
     elif opcoes[escolha] == "backtesting":
-        backtesting.main_page()
+        backtesting.main_page(fonte_dados)
 
     elif opcoes[escolha] == "analise_home":
-        analise_home.main_page()
+        analise_home.main_page(fonte_dados)
 
     elif opcoes[escolha] == "analise_away":
-        analise_away.main_page()
+        analise_away.main_page(fonte_dados)
 
     elif opcoes[escolha] == "base_de_dados":
-        base_de_dados.main_page()
+        base_de_dados.main_page(fonte_dados)
 
     elif opcoes[escolha] == "calculadora":
         calculadora.main_page()
