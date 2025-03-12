@@ -35,7 +35,6 @@ escolha = st.sidebar.radio("Navegação", list(opcoes.keys()))
 st.sidebar.divider()
 
 fonte_dados = st.sidebar.radio("Fonte de Dados", ['FootyStats', 'Betfair'])
-df_hist = load_histmatches(fonte_dados)
 
 display_sidebar('none')
 
