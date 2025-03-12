@@ -269,7 +269,7 @@ def get_result_filtro_pronto(df, metodo):
         df.loc[(df["Resultado_80"] != '1-1'), "Status_Metodo"] = "GREEN"
         df['Profit'] = 0
 
-    elif metodo == 'Lay 0x1 65min':
+    elif metodo == 'Lay 0x2 65min':
         df['Profit'] =  np.where(df['Resultado_65'] == '0-2', -0.25,
                         np.where(df['Resultado_65'] == '0-1', -0.08, profit_no_comission(df['Odd_CS_0x2_Lay'],'Lay')))
         df['Status_Metodo']  = np.where(df['Profit'] >= 0, 'GREEN', 'RED')
