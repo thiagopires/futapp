@@ -134,7 +134,7 @@ def main_page(fonte_dados):
             total_greens = len(df_hist[(df_hist['Status_Metodo'] == 'GREEN')])
             total_reds = len(df_hist[(df_hist['Status_Metodo'] == 'RED')])
             total_voids = len(df_hist[(df_hist['Status_Metodo'] == 'VOID')])
-            winrate = round(total_greens+total_voids / total_jogos * 100, 2)
+            winrate = round((total_greens + total_voids) / total_jogos * 100, 2)
             profit_acumulado = f"{str(round(df_hist['Profit'].sum(), 2))} unidades"
             
             str_voids = f'Voids: {total_voids}, ' if total_voids > 0 else ''
