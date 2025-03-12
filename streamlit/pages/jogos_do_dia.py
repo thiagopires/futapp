@@ -36,7 +36,7 @@ def main_page(fonte_dados):
             , on_select="rerun"
             , selection_mode="single-row"
             , use_container_width=True
-            , hide_index=True
+            , hide_index=False
         )
 
         st.write(f"Quantidade de jogos: {len(df_matches)}")
@@ -44,7 +44,7 @@ def main_page(fonte_dados):
         if match_selected.get('selection').get('rows'):
 
             df_match_selected = df_matches.iloc[match_selected.get('selection').get('rows')[0]]
-            print(match_selected.get('selection').get('rows'))
+            st.write(match_selected.get('selection').get('rows'))
 
             st.divider()
 
