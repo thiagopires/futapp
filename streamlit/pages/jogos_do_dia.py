@@ -1,6 +1,8 @@
 from utils.functions import *
 from utils.filters import *
 
+import plotly.express as px
+
 def main_page(fonte_dados):
 
     if st.secrets['ENV'] == 'dev':
