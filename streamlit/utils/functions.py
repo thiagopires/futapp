@@ -29,17 +29,18 @@ def drop_reset_index(df):
     return df.sort_index()
 
 def send_alert(message):
-    bot_id = st.secrets['TELEGRAM_BOT_ID']
-    chat_id = st.secrets['TELEGRAM_CHAT_ID']
+    if st.secrets['ENV'] == 'prd':
+        bot_id = st.secrets['TELEGRAM_BOT_ID']
+        chat_id = st.secrets['TELEGRAM_CHAT_ID']
 
-    try:
-        bot = telebot.TeleBot(bot_id)
-        response = bot.send_message(chat_id=chat_id, text=message, parse_mode='HTML')
-        return response
-    except requests.exceptions.ConnectionError:
-        print("Connection error with Telegram. Retrying after 5 seconds...")
-        time.sleep(5)
-        send_alert(message)
+        try:
+            bot = telebot.TeleBot(bot_id)
+            response = bot.send_message(chat_id=chat_id, text=message, parse_mode='HTML')
+            return response
+        except requests.exceptions.ConnectionError:
+            print("Connection error with Telegram. Retrying after 5 seconds...")
+            time.sleep(5)
+            send_alert(message)
 
 def validate_login(email):
     for key, value in st.secrets["valid_emails"].items():
