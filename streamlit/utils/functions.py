@@ -7,7 +7,6 @@ import requests
 import time
 import urllib
 import io
-import asyncio
 from datetime import datetime, timedelta
 
 def get_current_season():
@@ -44,7 +43,7 @@ def send_alert(message):
             send_alert(message)
 
 def validate_login(email):
-    for key, value in st.secrets["valid_emails"].items():
+    for _, value in st.secrets["valid_emails"].items():
         if email == value:
             return True
         
@@ -71,10 +70,6 @@ def login_page():
         "Digite seu e-mail cadastrado para acessar", 
         placeholder="email@example.com",
         on_change=submit_login)
-    
-    asyncio.create_task(load_histmatches('FootyStats'))
-    asyncio.create_task(load_histmatches('Betfair'))
-
     if st.button("Entrar") or st.session_state["submit_login"] == True:
         if st.session_state["logged_in"] == True:
             display_sidebar('block')
@@ -96,7 +91,6 @@ def print_dataframe(df, styled_df=None):
         st.dataframe(styled_df, height=len(df)*38, use_container_width=True, hide_index=True)       
 
 def rename_columns_betfair(df):
-    df = df[df["League"].isin(get_betfair_leagues())]
     df = df.rename(columns=lambda col: col.removesuffix('_Back'))
     df = df.rename(columns={
         'Goals_H': 'Goals_H_FT',
@@ -187,13 +181,16 @@ def betfair_load_histmatches():
     file = load_content_api_github("Bases_de_Dados/Betfair/Base_de_Dados_Betfair_Exchange_Back_Lay.csv")
     df = pd.read_csv(file)
     rename_leagues(df)
+    df = df[df["League"].isin(get_betfair_leagues())]
     df = rename_columns_betfair(df)
     return df
 
 @st.cache_data
 def footystats_load_histmatches():
     file = "https://github.com/futpythontrader/YouTube/blob/main/Bases_de_Dados/FootyStats/Base_de_Dados_FootyStats_(2022_2025).csv?raw=true"
-    return pd.read_csv(file)
+    df = pd.read_csv(file)
+    rename_leagues(df)
+    return df
 
 @st.cache_data
 def load_histmatches(source):
@@ -214,7 +211,6 @@ def load_histmatches(source):
             home = parse_minutes(row['Goals_H_Minutes'], 'Home')
             away = parse_minutes(row['Goals_A_Minutes'], 'Away')
         except Exception as e:
-            # Tratar casos de erro inesperado
             print(f"Erro ao processar linha: {row}. Detalhes: {e}")
             home = []
             away = []
@@ -231,8 +227,6 @@ def load_histmatches(source):
     
     def calcular_resultado_minuto(row, minute):
         # Processar os minutos para casa e visitante
-        # gols_home = [int(minuto.split('+')[0]) for minuto in eval(row['Goals_H_Minutes']) if int(minuto.split('+')[0]) <= minute]
-        # gols_away = [int(minuto.split('+')[0]) for minuto in eval(row['Goals_A_Minutes']) if int(minuto.split('+')[0]) <= minute]
         gols_home = [int(str(minuto).split('+')[0]) for minuto in eval(row['Goals_H_Minutes']) if int(str(minuto).split('+')[0]) <= minute]
         gols_away = [int(str(minuto).split('+')[0]) for minuto in eval(row['Goals_A_Minutes']) if int(str(minuto).split('+')[0]) <= minute]
 
@@ -247,13 +241,8 @@ def load_histmatches(source):
             df = betfair_load_histmatches()
         elif source == 'FootyStats':
             df = footystats_load_histmatches()
-        
-        # df['League'] = df['League'].str.replace(' ', ' - ', 1).str.upper()
-        rename_leagues(df)
-        
-        if source == 'FootyStats':
             df[["Date", "Time"]] = df["Date"].str.split(" ", expand=True)
-        
+
         df["Date"] = pd.to_datetime(df["Date"])
         df["Formatted_Date"] = df["Date"].dt.strftime("%d/%m/%Y")
         df['Month_Year'] = pd.to_datetime(df['Date']).dt.strftime('%m/%Y')
