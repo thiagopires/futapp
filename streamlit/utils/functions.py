@@ -7,6 +7,7 @@ import requests
 import time
 import urllib
 import io
+import asyncio
 from datetime import datetime, timedelta
 
 def get_current_season():
@@ -70,6 +71,10 @@ def login_page():
         "Digite seu e-mail cadastrado para acessar", 
         placeholder="email@example.com",
         on_change=submit_login)
+    
+    asyncio.create_task(load_histmatches('FootyStats'))
+    asyncio.create_task(load_histmatches('Betfair'))
+
     if st.button("Entrar") or st.session_state["submit_login"] == True:
         if st.session_state["logged_in"] == True:
             display_sidebar('block')
