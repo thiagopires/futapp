@@ -22,6 +22,12 @@ def get_today(offset=0):
     adjusted_time = now + timedelta(days=offset) - timedelta(hours=3)
     return adjusted_time.date()
 
+def drop_reset_index(df):
+    df = df.dropna()
+    df = df.reset_index(drop=True)
+    df.index += 1
+    return df.sort_index()
+
 def send_alert(message):
     bot_id = st.secrets['TELEGRAM_BOT_ID']
     chat_id = st.secrets['TELEGRAM_CHAT_ID']

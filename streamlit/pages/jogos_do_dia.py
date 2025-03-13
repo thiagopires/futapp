@@ -28,24 +28,24 @@ def main_page(fonte_dados):
             filtro_pronto_selecionado = st.selectbox("Filtros Prontos", filtros_prontos[fonte_dados])
 
         df_matches, condicao, metodo = get_details_filtro_pronto(df_matches, None, None, filtro_pronto_selecionado)
-
+        # df_matches = drop_reset_index(df_matches)
+        
         # Dataframe
         st.subheader(f"Selecione o jogo para abrir detalhes abaixo:")
         match_selected = st.dataframe(
-            df_matches[['League','Rodada','Time','Home','Away','Odd_H_FT','Odd_D_FT','Odd_A_FT','Odd_Over25_FT','Odd_Under25_FT','Odd_BTTS_Yes','Odd_BTTS_No','Odd_CS_0x1_Lay','Odd_CS_0x2_Lay','XG_Total_Pre','XG_Home_Pre','XG_Away_Pre','Odd_DC_1X','Odd_DC_12','Odd_DC_X2']].sort_values(by=["Time", "League"])
+            df_matches[['League','Rodada','Time','Home','Away','Odd_H_FT','Odd_D_FT','Odd_A_FT','Odd_Over25_FT','Odd_Under25_FT','Odd_BTTS_Yes','Odd_BTTS_No','Odd_CS_0x1_Lay','Odd_CS_0x2_Lay','XG_Total_Pre','XG_Home_Pre','XG_Away_Pre','Odd_DC_1X','Odd_DC_12','Odd_DC_X2']]
             , on_select="rerun"
             , selection_mode="single-row"
             , use_container_width=True
-            , hide_index=False
+            , hide_index=True
         )
 
         st.write(f"Quantidade de jogos: {len(df_matches)}")
+        rows = match_selected.get('selection').get('rows')
 
-        if match_selected.get('selection').get('rows'):
+        if rows:
 
-            df_match_selected = df_matches.iloc[match_selected.get('selection').get('rows')[0]]
-            
-            st.write(match_selected.get('selection').get('rows'))
+            df_match_selected = df_matches.iloc[rows[0]]
 
             st.divider()
 
