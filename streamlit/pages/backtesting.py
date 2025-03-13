@@ -202,14 +202,12 @@ def main_page(fonte_dados):
                 st.write("**Resultado por Liga**")
                 report = df_hist.groupby(["League", "Status_Metodo"]).size().unstack(fill_value=0).reset_index()
                 report['Winrate'] = round((report['GREEN'] / (report['GREEN'] + report['RED'])) * 100, 2)
-                # report["Cumulative_Profit"] = report["Profit"].cumsum()
                 print_dataframe(report)
             with col2:
                 st.write("**Resultado por FX (Prob, CV) do MO**")
                 report = df_hist.groupby(["League", "FX_Probabilidade_A", "FX_CV_HDA", "Status_Metodo"], observed=True).size().unstack(fill_value=0).reset_index()
                 report = report[report['GREEN'] + report['RED'] > 0]
                 report['Winrate'] = round((report['GREEN'] / (report['GREEN'] + report['RED'])) * 100, 2)
-                # report["Cumulative_Profit"] = report["Profit"].cumsum()
                 print_dataframe(report)
 
             st.write(f"**:green[GREENs:]**")
