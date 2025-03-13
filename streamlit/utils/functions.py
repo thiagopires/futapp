@@ -121,15 +121,12 @@ def load_daymatches(dt, source):
     try:
         if source == 'Betfair':            
             df = pd.read_csv(load_content_api_github(f"Jogos_do_Dia/Betfair/Jogos_do_Dia_Betfair_Back_Lay_{dt}.csv"))
-            rename_leagues(df)
-            rename_teams(df)
-            df = rename_columns_betfair(df)
+            df = transform_df_betfair(df)
 
         elif source == 'FootyStats':
             df = pd.read_csv(f"https://github.com/futpythontrader/YouTube/blob/main/Jogos_do_Dia/FootyStats/Jogos_do_Dia_FootyStats_{dt}.csv?raw=true")
             rename_leagues(df)
 
-        # df['League'] = df['League'].str.replace(' ', ' - ', 1).str.upper()
         df["Datetime"] = pd.to_datetime(df["Date"] + " " + df["Time"])
         df["Formatted_Datetime"] = df["Datetime"].dt.strftime("%d/%m/%Y %H:%M")
         df["Confronto"] = df["Time"] + " - " + df["Home"] + " vs. " + df["Away"]
@@ -180,9 +177,7 @@ def load_daymatches(dt, source):
 def betfair_load_histmatches():
     file = load_content_api_github("Bases_de_Dados/Betfair/Base_de_Dados_Betfair_Exchange_Back_Lay.csv")
     df = pd.read_csv(file)
-    rename_leagues(df)
-    df = df[df["League"].isin(get_betfair_leagues())]
-    df = rename_columns_betfair(df)
+    df = transform_df_betfair(df)
     return df
 
 @st.cache_data
@@ -239,6 +234,7 @@ def load_histmatches(source):
     try:
         if source == 'Betfair':            
             df = betfair_load_histmatches()
+            df = transform_df_betfair(df)
         elif source == 'FootyStats':
             df = footystats_load_histmatches()
             df[["Date", "Time"]] = df["Date"].str.split(" ", expand=True)
@@ -3752,3 +3748,10 @@ def get_betfair_leagues():
         'TURKEY - SÜPER LIG',
         'USA - MLS',
     ]
+
+def transform_df_betfair(df):
+    rename_leagues(df)
+    rename_teams(df)
+    df = df[df["League"].isin(get_betfair_leagues())]
+    df = rename_columns_betfair(df)
+    return df
