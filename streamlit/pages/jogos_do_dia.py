@@ -41,11 +41,11 @@ def main_page(fonte_dados):
         )
 
         st.write(f"Quantidade de jogos: {len(df_matches)}")
+        rows = match_selected.get('selection').get('rows')
 
-        if match_selected.get('selection').get('rows'):
+        if rows:
 
-            df_match_selected = df_matches.iloc[match_selected.get('selection').get('rows')[0]]
-            # st.write(match_selected.get('selection').get('rows'))
+            df_match_selected = df_matches.iloc[rows[0]]
 
             st.divider()
 
