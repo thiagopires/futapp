@@ -1,25 +1,19 @@
-import streamlit as st
-import pandas as pd
-
 from utils.functions import *
+from utils.filters import *
 
-pd.set_option('display.max_columns', None)
-pd.set_option('display.max_rows', None)
-st.set_page_config(layout="wide")
-
-def main_page():
+def main_page(fonte_dados):
 
     if st.secrets['ENV'] == 'dev':
         st.info("Ambiente de Desenvolvimento. Branch: dev")
 
-    st.title("Futapp v0.1")
+    st.title("Futapp v0.2")
     st.header("⚽ Análise Away")
 
     # Init
 
     data_analise = st.date_input("Data da Análise", get_today())
-    df_matches = load_daymatches(data_analise)
-    df_hist = load_histmatches()
+    df_matches = load_daymatches(data_analise, fonte_dados)
+    df_hist = load_histmatches(fonte_dados)
 
 
     st.divider()
@@ -30,9 +24,6 @@ def main_page():
 
     else:
         st.subheader("Filtro de Odds")
-        # set_odds_filtros(True)
-        # if st.button("Limpar filtros"):
-        #     set_odds_filtros(True)
 
         col1, col2, col3, col4, col5 = st.columns(5)
         with col1:
@@ -204,11 +195,11 @@ def main_page():
                     st.write(f"**Jogos anteriores do {visitante} terminados em {placar}.**")
                     aba_ponto_de_saida_punter(df_hist, visitante, "Away", placar)
 
-if "logged_in" not in st.session_state:
-    st.session_state["logged_in"] = False
+# if "logged_in" not in st.session_state:
+#     st.session_state["logged_in"] = False
 
-if st.session_state["logged_in"]:
-    display_sidebar('block')
-    main_page()
-else:
-    login_page()
+# if st.session_state["logged_in"]:
+#     display_sidebar('block')
+#     main_page()
+# else:
+#     login_page()

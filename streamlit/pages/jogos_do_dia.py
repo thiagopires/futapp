@@ -1,27 +1,23 @@
-import streamlit as st
-import pandas as pd
-import plotly.express as px
-
 from utils.functions import *
 from utils.filters import *
 
-pd.set_option('display.max_columns', None)
-pd.set_option('display.max_rows', None)
-st.set_page_config(layout="wide")
+import plotly.express as px
 
-def main_page():
+def main_page(fonte_dados):
 
     if st.secrets['ENV'] == 'dev':
         st.info("Ambiente de Desenvolvimento. Branch: dev")
 
-    st.title("Futapp v0.1")
+    st.title("Futapp v0.2")
     st.header("⚽ Jogos do dia")
 
     # Init
 
+    # fonte_dados = st.selectbox("Fonte de Dados", ['FootyStats','Betfair'])
     data_analise = st.date_input("Data da Análise", get_today())
-    df_matches = load_daymatches(data_analise)
-    df_hist = load_histmatches()
+
+    df_matches = load_daymatches(data_analise, fonte_dados)
+    df_hist = load_histmatches(fonte_dados)
 
     if df_matches.empty:
         st.info(f"Os dados para {data_analise} não estão disponíveis.")
@@ -29,14 +25,15 @@ def main_page():
     else:
         col1, col2, col3 = st.columns(3)
         with col1:
-            filtro_pronto_selecionado = st.selectbox("Filtros Prontos", filtros_prontos)
+            filtro_pronto_selecionado = st.selectbox("Filtros Prontos", filtros_prontos[fonte_dados])
 
         df_matches, condicao, metodo = get_details_filtro_pronto(df_matches, None, None, filtro_pronto_selecionado)
-
+        # df_matches = drop_reset_index(df_matches)
+        
         # Dataframe
         st.subheader(f"Selecione o jogo para abrir detalhes abaixo:")
         match_selected = st.dataframe(
-            df_matches[['League','Rodada','Time','Home','Away','Odd_H_FT','Odd_D_FT','Odd_A_FT','Odd_Over25_FT','Odd_Under25_FT','Odd_BTTS_Yes','Odd_BTTS_No','XG_Total_Pre','XG_Home_Pre','XG_Away_Pre','Odd_DC_1X','Odd_DC_12','Odd_DC_X2']].sort_values(by=["Time", "League"])
+            df_matches[['League','Rodada','Time','Home','Away','Odd_H_FT','Odd_D_FT','Odd_A_FT','Odd_Over25_FT','Odd_Under25_FT','Odd_BTTS_Yes','Odd_BTTS_No','Odd_CS_0x1_Lay','Odd_CS_0x2_Lay','XG_Total_Pre','XG_Home_Pre','XG_Away_Pre','Odd_DC_1X','Odd_DC_12','Odd_DC_X2']]
             , on_select="rerun"
             , selection_mode="single-row"
             , use_container_width=True
@@ -44,10 +41,11 @@ def main_page():
         )
 
         st.write(f"Quantidade de jogos: {len(df_matches)}")
+        rows = match_selected.get('selection').get('rows')
 
-        if match_selected.get('selection').get('rows'):
+        if rows:
 
-            df_match_selected = df_matches.iloc[match_selected.get('selection').get('rows')[0]]
+            df_match_selected = df_matches.iloc[rows[0]]
 
             st.divider()
 
@@ -186,11 +184,11 @@ def main_page():
             # Outros dados e análises podem ser adicionados conforme necessário
             st.write("⚡ Dashboard dinâmico para análise de confrontos! ⚡")
 
-if "logged_in" not in st.session_state:
-    st.session_state["logged_in"] = False
+# if "logged_in" not in st.session_state:
+#     st.session_state["logged_in"] = False
 
-if st.session_state["logged_in"]:
-    display_sidebar('block')
-    main_page()
-else:
-    login_page()
+# if st.session_state["logged_in"]:
+#     display_sidebar('block')
+#     main_page()
+# else:
+#     login_page()

@@ -1,58 +1,52 @@
-import streamlit as st
-import pandas as pd
+from utils.functions import *
+from utils.filters import *
+
 from datetime import date
 
-from utils.functions import *
-
-pd.set_option('display.max_columns', None)
-pd.set_option('display.max_rows', None)
-st.set_page_config(layout="wide")
-
-def main_page():
+def main_page(fonte_dados):
 
     if st.secrets['ENV'] == 'dev':
         st.info("Ambiente de Desenvolvimento. Branch: dev")
 
-    st.title("Futapp v0.1")
+    st.title("Futapp v0.2")
     st.header("⚽ Base de dados")
 
-    ### FootyStats ###
-
-    df_hist = load_histmatches()
-
+    # fonte_dados = st.selectbox("Fonte de Dados", ['FootyStats','Betfair'])
     col1, col2 = st.columns(2)
     with col1:
         data_inicial = st.date_input("Data Inicial", date(2022, 2, 10))
     with col2:
         data_final = st.date_input("Data Final", get_today())
 
+    df_hist = load_histmatches(fonte_dados)
     df_hist = df_hist[(df_hist['Date'] >= pd.to_datetime(data_inicial)) & (df_hist['Date'] <= pd.to_datetime(data_final))]
 
-    leagues = sorted(df_hist['League'].unique())
+    # leagues = sorted(df_hist['League'].unique())
+    leagues = get_betfair_leagues()
     leagues.insert(0, 'Todas as Ligas')
     selected_leagues = st.multiselect("Filtrar por Liga", leagues, [leagues[0]])
 
     if not (not selected_leagues or "Todas as Ligas" in selected_leagues):
         df_hist = df_hist[df_hist['League'].isin(selected_leagues)]
 
-    seasons = sorted(df_hist['Season'].unique())
-    seasons.insert(0, 'Todas as Temporadas')
-    selected_seasons = st.multiselect("Filtrar por Temporada", seasons, [seasons[0]])
+    # seasons = sorted(df_hist['Season'].unique())
+    # seasons.insert(0, 'Todas as Temporadas')
+    # selected_seasons = st.multiselect("Filtrar por Temporada", seasons, [seasons[0]])
 
-    if not (not selected_seasons or "Todas as Temporadas" in selected_seasons):
-        df_hist = df_hist[df_hist['Season'].isin(selected_seasons)]
+    # if not (not selected_seasons or "Todas as Temporadas" in selected_seasons):
+    #     df_hist = df_hist[df_hist['Season'].isin(selected_seasons)]
 
     if st.button("Carregar dados"):
         print_dataframe(df_hist)
 
-if "logged_in" not in st.session_state:
-    st.session_state["logged_in"] = False
+# if "logged_in" not in st.session_state:
+#     st.session_state["logged_in"] = False
 
-if st.session_state["logged_in"]:
-    display_sidebar('block')
-    main_page()
-else:
-    login_page()
+# if st.session_state["logged_in"]:
+#     display_sidebar('block')
+#     main_page()
+# else:
+#     login_page()
 
 
     ### football-data.co.uk ###

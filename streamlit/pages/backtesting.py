@@ -1,27 +1,19 @@
-import streamlit as st
-import pandas as pd
-from datetime import date
-import plotly.express as px
-import random
-
 from utils.functions import *
 from utils.filters import *
 
-pd.set_option('display.max_columns', None)
-pd.set_option('display.max_rows', None)
-st.set_page_config(layout="wide")
+from datetime import date
+import plotly.express as px
 
-def main_page():
+def main_page(fonte_dados):
 
     if st.secrets['ENV'] == 'dev':
         st.info("Ambiente de Desenvolvimento. Branch: dev")
 
-    st.title("Futapp v0.1")
+    st.title("Futapp v0.2")
     st.header("⚽ Backtesting")
 
-    ### FootyStats ###
-
-    df_hist = load_histmatches()
+    # fonte_dados = st.selectbox("Fonte de Dados", ['Betfair','FootyStats'])
+    df_hist = load_histmatches(fonte_dados)
 
     indicadores = df_hist.columns
 
@@ -38,7 +30,7 @@ def main_page():
     st.write("**Selecione o período**")
 
     col1, col2, col3 = st.columns(3)
-    with col1: data_inicial = st.date_input("Data Inicial", date(2022, 2, 10))
+    with col1: data_inicial = st.date_input("Data Inicial", date(2024, 7, 1))
     with col2: data_final = st.date_input("Data Final", get_today())
     with col3:
         seasons = sorted(df_hist['Season'].unique())
@@ -122,7 +114,7 @@ def main_page():
 
     col1, col2, col3 = st.columns(3)
     with col1:
-        filtro_pronto_selecionado = st.selectbox("Filtros Prontos", filtros_prontos)
+        filtro_pronto_selecionado = st.selectbox("Filtros Prontos", filtros_prontos[fonte_dados])
 
     df_hist, condicao, metodo = get_details_filtro_pronto(df_hist, condicao, metodo, filtro_pronto_selecionado)
 
@@ -140,12 +132,13 @@ def main_page():
         
         if total_jogos > 0:
             total_greens = len(df_hist[(df_hist['Status_Metodo'] == 'GREEN')])
-            total_reds = total_jogos - total_greens
-            winrate = round(total_greens / total_jogos * 100, 2)
+            total_reds = len(df_hist[(df_hist['Status_Metodo'] == 'RED')])
+            total_voids = len(df_hist[(df_hist['Status_Metodo'] == 'VOID')])
+            winrate = round((total_greens + total_voids) / total_jogos * 100, 2)
             profit_acumulado = f"{str(round(df_hist['Profit'].sum(), 2))} unidades"
-
             
-            st.write(f"Jogos: {total_jogos}, Greens: {total_greens}, Reds: {total_reds}, Winrate: {winrate}%, Profit Acumulado: {profit_acumulado}, Odd Média: {odd_media}")
+            str_voids = f'Voids: {total_voids}, ' if total_voids > 0 else ''
+            st.write(f"Jogos: {total_jogos}, Greens: {total_greens}, Reds: {total_reds}, {str_voids}Winrate: {winrate}%, Profit Acumulado Líquido: {profit_acumulado}, Comissão: 2.8%, Odd Média: {odd_media}")
 
             daily_profit = df_hist.groupby("Date")["Profit"].sum().reset_index()
             daily_profit["Cumulative_Profit"] = daily_profit["Profit"].cumsum()  
@@ -192,48 +185,58 @@ def main_page():
 
             st.plotly_chart(fig)
 
-            col1, col2, col3 = st.columns(3)
+            col1, col2 = st.columns(2)
             with col1:
                 st.write("**Profit por Liga/Mês**")
                 report = df_hist.groupby(["League", "Month_Year"])["Profit"].sum().reset_index()
-                st.dataframe(report)
+                print_dataframe(report)
             with col2:
                 st.write("**Profit acumulado por Liga**")
                 report = df_hist.groupby(["League"])["Profit"].sum().reset_index()
                 report = report.sort_values(by="Profit", ascending=False)
                 report["Cumulative_Profit"] = report["Profit"].cumsum()
-                st.dataframe(report)
-            with col3:
+                print_dataframe(report)
+
+            col1, col2 = st.columns(2)
+            with col1:
                 st.write("**Resultado por Liga**")
                 report = df_hist.groupby(["League", "Status_Metodo"]).size().unstack(fill_value=0).reset_index()
-                if 'RED' not in report.columns:
-                    report['Winrate'] = 100
-                elif 'GREEN' not in report.columns:
-                    report['Winrate'] = 0
-                else:
-                    report['Winrate'] = round((report['GREEN'] / (report['GREEN'] + report['RED'])) * 100, 2)
-                st.dataframe(report)
+                report['Winrate'] = round((report['GREEN'] / (report['GREEN'] + report['RED'])) * 100, 2)
+                print_dataframe(report)
+            with col2:
+                st.write("**Resultado por FX (Prob, CV) do MO**")
+                report = df_hist.groupby(["League", "FX_Probabilidade_A", "FX_CV_HDA", "Status_Metodo"], observed=True).size().unstack(fill_value=0).reset_index()
+                report = report[report['GREEN'] + report['RED'] > 0]
+                report['Winrate'] = round((report['GREEN'] / (report['GREEN'] + report['RED'])) * 100, 2)
+                print_dataframe(report)
 
             st.write(f"**:green[GREENs:]**")
             print_dataframe(
                 df_hist.loc[df_hist['Status_Metodo'] == 'GREEN', 
-                ['League','Rodada','Date','Time','Home','Away','Resultado_HT','Resultado_FT','Resultado_60','Resultado_70','Resultado_75','Resultado_80','Odd_H_FT','Odd_D_FT','Odd_A_FT','Odd_Over05_FT','Odd_Over15_FT','Odd_Over25_FT','Odd_Under05_FT','Odd_Under15_FT','Odd_Under25_FT','Odd_BTTS_Yes','Odd_BTTS_No','Odd_DC_1X','Odd_DC_12','Odd_DC_X2','XG_Total_Pre','XG_Home_Pre','XG_Away_Pre','Diff_XG_Home_Away_Pre','PPG_Home_Pre','PPG_Away_Pre','Goals_H_Minutes','Goals_A_Minutes','Primeiro_Gol','Status_Metodo','Profit','Probabilidade_H_FT','Probabilidade_D_FT','Probabilidade_A_FT','CV_HDA_FT']]
+                ['League','Rodada','Date','Time','Home','Away','Resultado_HT','Resultado_FT','Resultado_60','Resultado_65','Resultado_70','Resultado_75','Resultado_80','Odd_H_FT','Odd_D_FT','Odd_A_FT','Odd_Over05_FT','Odd_Over15_FT','Odd_Over25_FT','Odd_Under05_FT','Odd_Under15_FT','Odd_Under25_FT','Odd_BTTS_Yes','Odd_BTTS_No','Odd_DC_1X','Odd_DC_12','Odd_DC_X2','Odd_CS_0x1_Lay','Odd_CS_0x2_Lay','XG_Total_Pre','XG_Home_Pre','XG_Away_Pre','Diff_XG_Home_Away_Pre','PPG_Home_Pre','PPG_Away_Pre','Goals_H_Minutes','Goals_A_Minutes','Primeiro_Gol','Status_Metodo','Profit','Probabilidade_H_FT','Probabilidade_D_FT','Probabilidade_A_FT','CV_HDA_FT']]
             )
 
             st.write(f"**:red[REDs:]**")
             print_dataframe(
                 df_hist.loc[df_hist['Status_Metodo'] == 'RED', 
-                ['League','Rodada','Date','Time','Home','Away','Resultado_HT','Resultado_FT','Resultado_60','Resultado_70','Resultado_75','Resultado_80','Odd_H_FT','Odd_D_FT','Odd_A_FT','Odd_Over05_FT','Odd_Over15_FT','Odd_Over25_FT','Odd_Under05_FT','Odd_Under15_FT','Odd_Under25_FT','Odd_BTTS_Yes','Odd_BTTS_No','Odd_DC_1X','Odd_DC_12','Odd_DC_X2','XG_Total_Pre','XG_Home_Pre','XG_Away_Pre','Diff_XG_Home_Away_Pre','PPG_Home_Pre','PPG_Away_Pre','Goals_H_Minutes','Goals_A_Minutes','Primeiro_Gol','Status_Metodo','Profit','Probabilidade_H_FT','Probabilidade_D_FT','Probabilidade_A_FT','CV_HDA_FT']]
+                ['League','Rodada','Date','Time','Home','Away','Resultado_HT','Resultado_FT','Resultado_60','Resultado_65','Resultado_70','Resultado_75','Resultado_80','Odd_H_FT','Odd_D_FT','Odd_A_FT','Odd_Over05_FT','Odd_Over15_FT','Odd_Over25_FT','Odd_Under05_FT','Odd_Under15_FT','Odd_Under25_FT','Odd_BTTS_Yes','Odd_BTTS_No','Odd_DC_1X','Odd_DC_12','Odd_DC_X2','Odd_CS_0x1_Lay','Odd_CS_0x2_Lay','XG_Total_Pre','XG_Home_Pre','XG_Away_Pre','Diff_XG_Home_Away_Pre','PPG_Home_Pre','PPG_Away_Pre','Goals_H_Minutes','Goals_A_Minutes','Primeiro_Gol','Status_Metodo','Profit','Probabilidade_H_FT','Probabilidade_D_FT','Probabilidade_A_FT','CV_HDA_FT']]
             )
+
+            if total_voids > 0:
+                st.write(f"**:gray[VOIDs:]**")
+                print_dataframe(
+                    df_hist.loc[df_hist['Status_Metodo'] == 'VOID', 
+                    ['League','Rodada','Date','Time','Home','Away','Resultado_HT','Resultado_FT','Resultado_60','Resultado_65','Resultado_70','Resultado_75','Resultado_80','Odd_H_FT','Odd_D_FT','Odd_A_FT','Odd_Over05_FT','Odd_Over15_FT','Odd_Over25_FT','Odd_Under05_FT','Odd_Under15_FT','Odd_Under25_FT','Odd_BTTS_Yes','Odd_BTTS_No','Odd_DC_1X','Odd_DC_12','Odd_DC_X2','Odd_CS_0x1_Lay','Odd_CS_0x2_Lay','XG_Total_Pre','XG_Home_Pre','XG_Away_Pre','Diff_XG_Home_Away_Pre','PPG_Home_Pre','PPG_Away_Pre','Goals_H_Minutes','Goals_A_Minutes','Primeiro_Gol','Status_Metodo','Profit','Probabilidade_H_FT','Probabilidade_D_FT','Probabilidade_A_FT','CV_HDA_FT']]
+                )
 
         else:
             st.info("Sem jogos.")
 
-if "logged_in" not in st.session_state:
-    st.session_state["logged_in"] = False
+# if "logged_in" not in st.session_state:
+#     st.session_state["logged_in"] = False
 
-if st.session_state["logged_in"]:
-    display_sidebar('block')
-    main_page()
-else:
-    login_page()
+# if st.session_state["logged_in"]:
+#     display_sidebar('block')
+#     main_page()
+# else:
+#     login_page()

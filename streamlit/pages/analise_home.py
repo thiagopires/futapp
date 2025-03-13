@@ -1,25 +1,19 @@
-import streamlit as st
-import pandas as pd
-
 from utils.functions import *
+from utils.filters import *
 
-pd.set_option('display.max_columns', None)
-pd.set_option('display.max_rows', None)
-st.set_page_config(layout="wide")
-
-def main_page():
+def main_page(fonte_dados):
 
     if st.secrets['ENV'] == 'dev':
         st.info("Ambiente de Desenvolvimento. Branch: dev")
 
-    st.title("Futapp v0.1")
+    st.title("Futapp v0.2")
     st.header("⚽ Análise Home")
 
     # Init
 
     data_analise = st.date_input("Data da Análise", get_today())
-    df_matches = load_daymatches(data_analise)
-    df_hist = load_histmatches()
+    df_matches = load_daymatches(data_analise, fonte_dados)
+    df_hist = load_histmatches(fonte_dados)
 
 
     st.divider()
@@ -34,7 +28,7 @@ def main_page():
         # if st.button("Limpar filtros"):
         #     set_odds_filtros(True)
 
-        col1, col2, col3, col4, col5, col6, col7 = st.columns(7)
+        col1, col2, col3, col4, col5 = st.columns(5)
         with col1:
             st.number_input("Odd_H_Min", value=1.10, min_value=1.10, max_value=1000.00, key="odd_h_min")
             st.number_input("Odd_H_Max", value=1000.00, min_value=1.10, max_value=1000.00, key="odd_h_max")
@@ -50,13 +44,6 @@ def main_page():
         with col5:
             st.number_input("Odd_BTTS_Min", value=1.10, min_value=1.10, max_value=1000.00, key="odd_btts_min")
             st.number_input("Odd_BTTS_Max", value=1000.00, min_value=1.10, max_value=1000.00, key="odd_btts_max")
-        with col6:
-            st.number_input("XG_Total_Pre_Min", value=1.10, min_value=1.10, max_value=1000.00, key="XG_Total_Pre_Min")
-            st.number_input("XG_Total_Pre_Max", value=1000.00, min_value=1.10, max_value=1000.00, key="XG_Total_Pre_Max")
-        with col7:
-            st.number_input("XG_Home_Pre_Min", value=1.10, min_value=1.10, max_value=1000.00, key="XG_Home_Pre_Min")
-            st.number_input("XG_Home_Pre_Max", value=1000.00, min_value=1.10, max_value=1000.00, key="XG_Home_Pre_Max")
-
 
         st.divider()
 
@@ -77,13 +64,7 @@ def main_page():
             (df_matches["Odd_Over25_FT"] <= st.session_state.odd_over25_ft_max) &
 
             (df_matches["Odd_BTTS_Yes"] >= st.session_state.odd_btts_min) &
-            (df_matches["Odd_BTTS_Yes"] <= st.session_state.odd_btts_max) &
-
-            (df_matches["XG_Total_Pre"] >= st.session_state.XG_Total_Pre_Min) &
-            (df_matches["XG_Total_Pre"] <= st.session_state.XG_Total_Pre_Max) &
-
-            (df_matches["XG_Home_Pre"] >= st.session_state.XG_Home_Pre_Min) &
-            (df_matches["XG_Home_Pre"] <= st.session_state.XG_Home_Pre_Max)
+            (df_matches["Odd_BTTS_Yes"] <= st.session_state.odd_btts_max)
         ]
 
         print_dataframe(df_matches[['League','Rodada','Time','Home','Away','Odd_H_FT','Odd_D_FT','Odd_A_FT','Odd_Over05_HT','Odd_Over15_FT','Odd_Over25_FT','Odd_BTTS_Yes','XG_Total_Pre','XG_Home_Pre']])
@@ -216,11 +197,11 @@ def main_page():
                     st.write(f"**Jogos anteriores do {mandante} terminados em {placar}.**")
                     aba_ponto_de_saida_punter(df_hist, mandante, "Home", placar)
 
-if "logged_in" not in st.session_state:
-    st.session_state["logged_in"] = False
+# if "logged_in" not in st.session_state:
+#     st.session_state["logged_in"] = False
 
-if st.session_state["logged_in"]:
-    display_sidebar('block')
-    main_page()
-else:
-    login_page()
+# if st.session_state["logged_in"]:
+#     display_sidebar('block')
+#     main_page()
+# else:
+#     login_page()
