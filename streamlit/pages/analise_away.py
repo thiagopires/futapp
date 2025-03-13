@@ -6,7 +6,7 @@ def main_page(fonte_dados):
     if st.secrets['ENV'] == 'dev':
         st.info("Ambiente de Desenvolvimento. Branch: dev")
 
-    st.title("Futapp v0.1")
+    st.title("Futapp v0.2")
     st.header("⚽ Análise Away")
 
     # Init
@@ -24,9 +24,6 @@ def main_page(fonte_dados):
 
     else:
         st.subheader("Filtro de Odds")
-        # set_odds_filtros(True)
-        # if st.button("Limpar filtros"):
-        #     set_odds_filtros(True)
 
         col1, col2, col3, col4, col5 = st.columns(5)
         with col1:

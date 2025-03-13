@@ -12,7 +12,7 @@ import pages.base_de_dados as base_de_dados
 import pages.calculadora as calculadora
 import pages.jogos_do_dia as jogos_do_dia
 
-st.set_page_config(layout="wide", page_title="Futapp v0.1")
+st.set_page_config(layout="wide", page_title="Futapp v0.2")
 
 pd.set_option('display.max_columns', None)
 pd.set_option('display.max_rows', None)
@@ -29,7 +29,7 @@ opcoes = {
 }
 
 # Criando a sidebar com radio buttons
-st.sidebar.subheader("Futapp v0.1")
+st.sidebar.subheader("Futapp v0.2")
 escolha = st.sidebar.radio("Navegação", list(opcoes.keys()))
 
 st.sidebar.divider()
