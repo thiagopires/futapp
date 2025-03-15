@@ -3340,6 +3340,7 @@ def rename_teams(df):
     df.replace('Elimai FC  ', 'Yelimay Semey', inplace=True)
     df.replace('Yeoju FC', 'Yeoju Citizen', inplace=True)
     df.replace('Yokohama FM', 'Yokohama F. Marinos', inplace=True)
+    df.replace('Yokohama', 'Yokohama FC', inplace=True)
     df.replace('York9', 'York Utd', inplace=True)
     df.replace('Courts Young Lions', 'Young Lions', inplace=True)
     df.replace('Ypiranga RS', 'Ypiranga FC', inplace=True)
