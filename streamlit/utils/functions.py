@@ -220,10 +220,21 @@ def load_histmatches(source):
         else:
             return pd.Series(['-',None,"-"])  # Caso não haja gols
     
+    def parse_minutes(value):
+        try:
+            # Converte string para lista de forma segura
+            minutes_list = ast.literal_eval(value) if isinstance(value, str) else value
+            # Verifica se é uma lista válida
+            if isinstance(minutes_list, list):
+                return [int(str(minuto).split('+')[0]) for minuto in minutes_list]
+        except (ValueError, SyntaxError):
+            pass
+        return []  # Retorna lista vazia em caso de erro
+
     def calcular_resultado_minuto(row, minute):
         # Processar os minutos para casa e visitante
-        gols_home = [int(str(minuto).split('+')[0]) for minuto in eval(row['Goals_H_Minutes']) if int(str(minuto).split('+')[0]) <= minute]
-        gols_away = [int(str(minuto).split('+')[0]) for minuto in eval(row['Goals_A_Minutes']) if int(str(minuto).split('+')[0]) <= minute]
+        gols_home = [minuto for minuto in parse_minutes(row['Goals_H_Minutes']) if minuto <= minute]
+        gols_away = [minuto for minuto in parse_minutes(row['Goals_A_Minutes']) if minuto <= minute]
 
         # Contar os gols marcados até o minuto x
         gols_home = len(gols_home)
