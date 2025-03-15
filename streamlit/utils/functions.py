@@ -43,7 +43,7 @@ def send_alert(message):
             send_alert(message)
 
 def validate_login(email):
-    for key, value in st.secrets["valid_emails"].items():
+    for _, value in st.secrets["valid_emails"].items():
         if email == value:
             return True
         
@@ -91,7 +91,6 @@ def print_dataframe(df, styled_df=None):
         st.dataframe(styled_df, height=len(df)*38, use_container_width=True, hide_index=True)       
 
 def rename_columns_betfair(df):
-    df = df[df["League"].isin(get_betfair_leagues())]
     df = df.rename(columns=lambda col: col.removesuffix('_Back'))
     df = df.rename(columns={
         'Goals_H': 'Goals_H_FT',
@@ -122,15 +121,12 @@ def load_daymatches(dt, source):
     try:
         if source == 'Betfair':            
             df = pd.read_csv(load_content_api_github(f"Jogos_do_Dia/Betfair/Jogos_do_Dia_Betfair_Back_Lay_{dt}.csv"))
-            rename_leagues(df)
-            rename_teams(df)
-            df = rename_columns_betfair(df)
+            df = transform_df_betfair(df)
 
         elif source == 'FootyStats':
             df = pd.read_csv(f"https://github.com/futpythontrader/YouTube/blob/main/Jogos_do_Dia/FootyStats/Jogos_do_Dia_FootyStats_{dt}.csv?raw=true")
             rename_leagues(df)
 
-        # df['League'] = df['League'].str.replace(' ', ' - ', 1).str.upper()
         df["Datetime"] = pd.to_datetime(df["Date"] + " " + df["Time"])
         df["Formatted_Datetime"] = df["Datetime"].dt.strftime("%d/%m/%Y %H:%M")
         df["Confronto"] = df["Time"] + " - " + df["Home"] + " vs. " + df["Away"]
@@ -181,14 +177,15 @@ def load_daymatches(dt, source):
 def betfair_load_histmatches():
     file = load_content_api_github("Bases_de_Dados/Betfair/Base_de_Dados_Betfair_Exchange_Back_Lay.csv")
     df = pd.read_csv(file)
-    rename_leagues(df)
-    df = rename_columns_betfair(df)
+    df = transform_df_betfair(df)
     return df
 
 @st.cache_data
 def footystats_load_histmatches():
     file = "https://github.com/futpythontrader/YouTube/blob/main/Bases_de_Dados/FootyStats/Base_de_Dados_FootyStats_(2022_2025).csv?raw=true"
-    return pd.read_csv(file)
+    df = pd.read_csv(file)
+    rename_leagues(df)
+    return df
 
 @st.cache_data
 def load_histmatches(source):
@@ -209,7 +206,6 @@ def load_histmatches(source):
             home = parse_minutes(row['Goals_H_Minutes'], 'Home')
             away = parse_minutes(row['Goals_A_Minutes'], 'Away')
         except Exception as e:
-            # Tratar casos de erro inesperado
             print(f"Erro ao processar linha: {row}. Detalhes: {e}")
             home = []
             away = []
@@ -226,8 +222,6 @@ def load_histmatches(source):
     
     def calcular_resultado_minuto(row, minute):
         # Processar os minutos para casa e visitante
-        # gols_home = [int(minuto.split('+')[0]) for minuto in eval(row['Goals_H_Minutes']) if int(minuto.split('+')[0]) <= minute]
-        # gols_away = [int(minuto.split('+')[0]) for minuto in eval(row['Goals_A_Minutes']) if int(minuto.split('+')[0]) <= minute]
         gols_home = [int(str(minuto).split('+')[0]) for minuto in eval(row['Goals_H_Minutes']) if int(str(minuto).split('+')[0]) <= minute]
         gols_away = [int(str(minuto).split('+')[0]) for minuto in eval(row['Goals_A_Minutes']) if int(str(minuto).split('+')[0]) <= minute]
 
@@ -240,15 +234,11 @@ def load_histmatches(source):
     try:
         if source == 'Betfair':            
             df = betfair_load_histmatches()
+            df = transform_df_betfair(df)
         elif source == 'FootyStats':
             df = footystats_load_histmatches()
-        
-        # df['League'] = df['League'].str.replace(' ', ' - ', 1).str.upper()
-        rename_leagues(df)
-        
-        if source == 'FootyStats':
             df[["Date", "Time"]] = df["Date"].str.split(" ", expand=True)
-        
+
         df["Date"] = pd.to_datetime(df["Date"])
         df["Formatted_Date"] = df["Date"].dt.strftime("%d/%m/%Y")
         df['Month_Year'] = pd.to_datetime(df['Date']).dt.strftime('%m/%Y')
@@ -3758,3 +3748,10 @@ def get_betfair_leagues():
         'TURKEY - SÜPER LIG',
         'USA - MLS',
     ]
+
+def transform_df_betfair(df):
+    rename_leagues(df)
+    rename_teams(df)
+    df = df[df["League"].isin(get_betfair_leagues())]
+    df = rename_columns_betfair(df)
+    return df
