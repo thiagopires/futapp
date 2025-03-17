@@ -1,4 +1,12 @@
-from functions import *
+import numpy as np
+
+def profit_no_comission(odd, side='Back'):
+    comission = 0.028
+    if side == 'Back':
+        profit = (odd - 1) * (1 - comission)
+    elif side == 'Lay':
+        profit = (1 / (odd - 1)) * (1 - comission)
+    return round(profit, 2)
 
 metodos = [
     'Back Casa',

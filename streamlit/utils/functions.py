@@ -86,14 +86,6 @@ def print_dataframe(df, styled_df=None):
         ])
         st.dataframe(styled_df, height=len(df)*38, use_container_width=True, hide_index=True)       
 
-def profit_no_comission(odd, side='Back'):
-    comission = 0.028
-    if side == 'Back':
-        profit = (odd - 1) * (1 - comission)
-    elif side == 'Lay':
-        profit = (1 / (odd - 1)) * (1 - comission)
-    return round(profit, 2)
-
 def load_content_api_github(file_path):
     try:
         owner, repo, token = st.secrets["github"].values()
