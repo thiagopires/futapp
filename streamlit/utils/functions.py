@@ -30,9 +30,7 @@ def drop_reset_index(df):
 
 def send_alert(message):
     if st.secrets['ENV'] == 'prd':
-        bot_id = st.secrets['TELEGRAM_BOT_ID']
-        chat_id = st.secrets['TELEGRAM_CHAT_ID']
-
+        chat_id, bot_id = st.secrets['telegram'].values()
         try:
             bot = telebot.TeleBot(bot_id)
             response = bot.send_message(chat_id=chat_id, text=message, parse_mode='HTML')
@@ -43,12 +41,6 @@ def send_alert(message):
             send_alert(message)
 
 def validate_login(email):
-    # for _, value in st.secrets["valid_emails"].items():
-    #     if str(email).lower() == value:
-    #         return True
-        
-    # return False
-
     isValidEmail = True if str(email).lower() in st.secrets["valid_emails"].values() else False
     return isValidEmail
 
@@ -152,9 +144,9 @@ def load_daymatches(dt, source):
         return df
 
     except urllib.error.HTTPError as e:
-        return pd.DataFrame()  # Retorna um DataFrame vazio para evitar erro na aplicação
+        return pd.DataFrame()
     except pd.errors.EmptyDataError as e:
-        return pd.DataFrame()  # Retorna um DataFrame vazio para evitar erro na aplicação
+        return pd.DataFrame()
 
 @st.cache_data
 def betfair_load_histmatches():
