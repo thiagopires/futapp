@@ -43,11 +43,14 @@ def send_alert(message):
             send_alert(message)
 
 def validate_login(email):
-    for _, value in st.secrets["valid_emails"].items():
-        if str(email).lower() == value:
-            return True
+    # for _, value in st.secrets["valid_emails"].items():
+    #     if str(email).lower() == value:
+    #         return True
         
-    return False
+    # return False
+
+    isValidEmail = True if str(email).lower() in st.secrets["valid_emails"].values() else False
+    return isValidEmail
 
 def display_sidebar(value):
     streamlit_style = """
