@@ -30,9 +30,7 @@ def drop_reset_index(df):
 
 def send_alert(message):
     if st.secrets['ENV'] == 'prd':
-        bot_id = st.secrets['TELEGRAM_BOT_ID']
-        chat_id = st.secrets['TELEGRAM_CHAT_ID']
-
+        chat_id, bot_id = st.secrets['telegram'].values()
         try:
             bot = telebot.TeleBot(bot_id)
             response = bot.send_message(chat_id=chat_id, text=message, parse_mode='HTML')
@@ -43,11 +41,8 @@ def send_alert(message):
             send_alert(message)
 
 def validate_login(email):
-    for _, value in st.secrets["valid_emails"].items():
-        if email == value:
-            return True
-        
-    return False
+    isValidEmail = True if str(email).lower() in st.secrets["valid_emails"].values() else False
+    return isValidEmail
 
 def display_sidebar(value):
     streamlit_style = """
@@ -57,19 +52,15 @@ def display_sidebar(value):
     """
     st.markdown(streamlit_style, unsafe_allow_html=True)
 
-def submit_login():
-    st.session_state["submit_login"] = True
-
 def login_page():
     display_sidebar('none')
     st.session_state["submit_login"] = False
 
     st.title("Bem vindo ao Futapp.")
     st.header("Login")
-    email = st.text_input(
-        "Digite seu e-mail cadastrado para acessar", 
-        placeholder="email@example.com",
-        on_change=submit_login)
+
+    email = st.text_input("Digite seu e-mail cadastrado para acessar", placeholder="email@example.com")
+
     if st.button("Entrar") or st.session_state["submit_login"] == True:
         if st.session_state["logged_in"] == True:
             display_sidebar('block')
@@ -90,27 +81,11 @@ def print_dataframe(df, styled_df=None):
         ])
         st.dataframe(styled_df, height=len(df)*38, use_container_width=True, hide_index=True)       
 
-def rename_columns_betfair(df):
-    df = df.rename(columns=lambda col: col.removesuffix('_Back'))
-    df = df.rename(columns={
-        'Goals_H': 'Goals_H_FT',
-        'Goals_A': 'Goals_A_FT',
-        'Goals_Min_H': 'Goals_H_Minutes',
-        'Goals_Min_A': 'Goals_A_Minutes',
-        'Odd_H': 'Odd_H_FT',
-        'Odd_A': 'Odd_A_FT',
-        'Odd_D': 'Odd_D_FT',
-        'Odd_H_Lay': 'Odd_H_FT_Lay',
-        'Odd_A_Lay': 'Odd_A_FT_Lay',
-        'Odd_D_Lay': 'Odd_D_FT_Lay',
-    })
-
-    return df
-
 def load_content_api_github(file_path):
     try:
-        headers = {'Authorization': f'token {st.secrets["github"]["TOKEN"]}'}
-        url = f'https://api.github.com/repos/{st.secrets["github"]["OWNER"]}/{st.secrets["github"]["REPO"]}/contents/{file_path}'
+        owner, repo, token = st.secrets["github"].values()
+        headers = {'Authorization': f'token {token}'}
+        url = f'https://api.github.com/repos/{owner}/{repo}/contents/{file_path}'
         response = requests.get(url, headers=headers)
         content = requests.get(response.json()['download_url'], headers=headers).content
         return io.BytesIO(content)
@@ -169,9 +144,9 @@ def load_daymatches(dt, source):
         return df
 
     except urllib.error.HTTPError as e:
-        return pd.DataFrame()  # Retorna um DataFrame vazio para evitar erro na aplicação
+        return pd.DataFrame()
     except pd.errors.EmptyDataError as e:
-        return pd.DataFrame()  # Retorna um DataFrame vazio para evitar erro na aplicação
+        return pd.DataFrame()
 
 @st.cache_data
 def betfair_load_histmatches():
@@ -1168,6 +1143,23 @@ def set_odds_filtros(reset=False):
         if "odd_over25_ft_max" not in st.session_state: st.session_state['odd_over25_ft_max'] = 2.00
         if "odd_btts_min" not in st.session_state: st.session_state['odd_btts_min'] = 1.30
         if "odd_btts_max" not in st.session_state: st.session_state['odd_btts_max'] = 2.00
+
+def rename_columns_betfair(df):
+    df = df.rename(columns=lambda col: col.removesuffix('_Back'))
+    df = df.rename(columns={
+        'Goals_H': 'Goals_H_FT',
+        'Goals_A': 'Goals_A_FT',
+        'Goals_Min_H': 'Goals_H_Minutes',
+        'Goals_Min_A': 'Goals_A_Minutes',
+        'Odd_H': 'Odd_H_FT',
+        'Odd_A': 'Odd_A_FT',
+        'Odd_D': 'Odd_D_FT',
+        'Odd_H_Lay': 'Odd_H_FT_Lay',
+        'Odd_A_Lay': 'Odd_A_FT_Lay',
+        'Odd_D_Lay': 'Odd_D_FT_Lay',
+    })
+
+    return df
 
 def rename_leagues(df):
 

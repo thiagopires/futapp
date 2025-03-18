@@ -43,13 +43,11 @@ filtros_prontos =  {
         "Back Casa",
         "Back Empate",
         'Over 2.5 FT',
-        # 'Under 2.5 FT',
         'BTTS Sim',
         'Lay 0x1 (até 80min)',
         'Lay 0x2 (até 80min)',
         'Lay 0x3 (até 80min)',
         'Lay 1x1 (até 60min)'
-        # 'BTTS Não',
     ],
     'Betfair': [
         "Sem filtro",
@@ -73,23 +71,11 @@ def get_details_filtro_pronto(df, condicao, metodo, filtro_pronto_selecionado):
         if condicao: condicao = 'Geral'
         if metodo: metodo = 'Over 2.5 FT'
 
-    elif filtro_pronto_selecionado == "Under 2.5 FT":
-        filter = get_filter_under(df)
-        df = df[filter]
-        if condicao: condicao = 'Geral'
-        if metodo: metodo = 'Under 2.5 FT'
-
     elif filtro_pronto_selecionado == "BTTS Sim":
         filter = get_filter_btts_yes(df)
         df = df[filter]
         if condicao: condicao = 'Geral'
         if metodo: metodo = 'BTTS Sim'
-    
-    # elif filtro_pronto_selecionado == "BTTS Não":
-    #     filter = get_filter_btts_no(df)
-    #     df = df[filter]
-    #     if condicao: condicao = 'Geral'
-    #     metodo = 'BTTS Não' 
     
     elif filtro_pronto_selecionado == "Back Empate":
         filter = get_filter_back_empate(df)
@@ -326,43 +312,6 @@ def get_filter_over(df):
         ]))
     )
 
-def get_filter_under(df):
-    return (
-        (df["XG_Home_Pre"] > 0) &
-        (df["XG_Away_Pre"] > 0) &  
-        (df["XG_Home_Pre"] < 1.3) &
-        (df["XG_Away_Pre"] < 1.3) &
-        (df["Odd_Under25_FT"] >= 1.5) # & 
-        # (
-        #     (
-        #         (df["Odd_H_FT"] < df["Odd_A_FT"]) &
-        #         (df['League'].isin([
-        #             'Belgium Pro League',
-        #             # 'Netherlands Eredivisie',
-        #             'Portugal Liga NOS',
-        #             # 'Germany Bundesliga',
-        #             # 'France Ligue 1',
-        #             'England EFL League One',
-        #             'England Premier League',
-        #             'Netherlands Eerste Divisie'
-        #         ]))
-        #         ) | (
-        #         (df["Odd_H_FT"] > df["Odd_A_FT"]) &
-        #         (df['League'].isin([
-        #             # 'Turkey Süper Lig',
-        #             'England Premier League',
-        #             'England EFL League Two',
-        #             # 'France Ligue 2',
-        #             'Italy Serie B',
-        #             'Portugal Liga NOS',
-        #             'Spain Segunda División',
-        #             'Belgium Pro League',
-        #             'England Championship'
-        #         ]))
-        #     )
-        # )
-    )
-
 def get_filter_btts_yes(df):
     return (
         (df["XG_Home_Pre"] >= 1.3) &
@@ -378,41 +327,6 @@ def get_filter_btts_yes(df):
             'FRANCE - LIGUE 1',
             'SPAIN - LA LIGA',
         ]))
-    )
-
-def get_filter_btts_no(df):
-    return (
-        (df["XG_Home_Pre"] > 0) &
-        (df["XG_Away_Pre"] > 0) &
-        (df["XG_Home_Pre"] < 1.3) &
-        (df["XG_Away_Pre"] < 1.3) &
-        (df["Odd_BTTS_No"] >= 1.6) 
-        # & 
-        # (
-        #     (
-        #         (df["Odd_H_FT"] < df["Odd_A_FT"]) &
-        #         (df['League'].isin([
-        #             'Belgium Pro League',
-        #             # 'Netherlands Eerste Divisie',
-        #             'England EFL League One',
-        #             'Netherlands Eredivisie',
-        #             # 'England Premier League'
-        #         ]))
-        #         ) | (
-        #         (df["Odd_H_FT"] > df["Odd_A_FT"]) &
-        #         (df['League'].isin([
-        #             'Belgium Pro League',
-        #             'England EFL League One',
-        #             'Portugal Liga NOS',
-        #             'Italy Serie B',
-        #             'Germany 2. Bundesliga',
-        #             # 'England Championship',
-        #             'England EFL League Two',
-        #             'Spain Segunda División',
-        #             'France Ligue 2'
-        #         ]))
-        #     )
-        # )
     )
 
 def get_filter_lay_0x1(df):
@@ -449,11 +363,10 @@ def get_filter_lay_visitante_zebra(df):
         ((df["Odd_D_FT"] < 3.4) | (df["Odd_D_FT"] > 3.6)) &
         (df["Odd_H_FT"] >= 1.3) &
         (df["Odd_A_FT"] < 8) &
-        # (df["Odd_BTTS_Yes"] < 2) &
         (df["Odd_BTTS_No"] >= 1.8) &
         (df["Odd_Over25_FT"] > 1.5) &
         (df["XG_Home_Pre"] > df["XG_Away_Pre"]) &
-        (df["XG_Total_Pre"] >= 1.7) & # (df["XG_Total_Pre"] <= 2.6) &
+        (df["XG_Total_Pre"] >= 1.7) &
         (df["XG_Away_Pre"] <= 1.25) 
         &
         (df['League'].isin([
@@ -476,8 +389,6 @@ def get_filter_back_empate(df):
         (df["XG_Away_Pre"] >= 0.85) & (df["XG_Away_Pre"] < 1.7) &
         (df["XG_Total_Pre"] >= 2.13) & (df["XG_Total_Pre"] < 3.2) &
         (df["Diff_XG_Home_Away_Pre"] > -0.5) &
-        # (("PPG_Home_Pre" in df.columns) & (df["PPG_Home_Pre"] > 0.25) if "PPG_Home_Pre" in df.columns else True) &
-        # (("PPG_Away_Pre" in df.columns) & (df["PPG_Away_Pre"] < 3) if "PPG_Away_Pre" in df.columns else True) &
         (df["Odd_Under25_FT"] > 1.45) & (df["Odd_Under25_FT"] < 2.57) &
         (df["Odd_BTTS_Yes"] > 1.49) & (df["Odd_BTTS_Yes"] < 2.2) &
         (df["Odd_BTTS_No"] >= 1.7) & (df["Odd_BTTS_No"] <= 2.38) &
@@ -485,7 +396,6 @@ def get_filter_back_empate(df):
         ((df["Odd_A_FT"] < 1.9) | (df["Odd_A_FT"] > 2.1)) 
         &
         (df['League'].isin([
-            #'DENMARK - SUPERLIGA',
             'TURKEY - SÜPER LIG',
             'ROMANIA - LIGA I',
             'ITALY - SERIE A',
@@ -509,7 +419,6 @@ def get_filter_lay_1x1(df):
             'NETHERLANDS - EREDIVISIE',
             'ENGLAND - CHAMPIONSHIP',
             'BELGIUM - PRO LEAGUE',
-            # 'PORTUGAL - LIGA NOS',
             'NETHERLANDS - EERSTE DIVISIE',
 
         ]))
@@ -607,15 +516,6 @@ def get_filter_back_casa(df):
             ((df['League'] == 'WALES - WELSH PREMIER LEAGUE') 
                 & (df["Probabilidade_H_FT"].between(0.62, 0.81)))
 
-            # ((df['League'] == 'ARGENTINA - PRIMERA DIVISIÓN') 
-            #     & (df["Probabilidade_H_FT"].between(0.62, 0.71))) |
-
-            # ((df['League'] == 'BRAZIL - SERIE A') 
-            #     & (df["Probabilidade_H_FT"].between(0.62, 0.71))) |
-
-            # ((df['League'] == 'BRAZIL - SERIE B') 
-            #     & (df["Probabilidade_H_FT"].between(0.62, 0.71)))
-    
         )
     )
 
