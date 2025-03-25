@@ -102,8 +102,8 @@ def load_daymatches(dt, source):
             client = MongoClient(connectionString)
             db = client['fut_db']
             collection = db['bf_jogos_do_dia']
-
-            data = list(collection.find({"Date": datetime.strptime(dt, "%Y-%m-%d")}))
+            
+            data = list(collection.find({"Date": dt.strftime("%Y-%m-%d")}))
             df = pd.DataFrame(data)
             st.dataframe(df)
 
