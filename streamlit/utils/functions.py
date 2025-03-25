@@ -97,8 +97,9 @@ def load_daymatches(dt, source):
     try:
         if source == 'Betfair':            
             # df = pd.read_csv(load_content_api_github(f"Jogos_do_Dia/Betfair/Jogos_do_Dia_Betfair_Back_Lay_{dt}.csv"))
-
-            client = MongoClient(**st.secrets["mongo"])
+            
+            connectionString = f"mongodb+srv://thiagoserip:{st.secrets['MONGODB_PASSWORD']}@thiagopires.ottof.mongodb.net/?retryWrites=true&w=majority&appName=thiagopires"
+            client = MongoClient(connectionString)
             db = client['fut_db']
             collection = db['bf_jogos_do_dia']
 
