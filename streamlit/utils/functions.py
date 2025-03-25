@@ -104,7 +104,7 @@ def load_daymatches(dt, source):
             collection = db['bf_jogos_do_dia']
 
             data = list(collection.find({"Date": f"{dt} 00:00:00"}))
-            df = pd.DataFrame(data).sort_values(['Date','Time'])
+            df = pd.DataFrame(data)
 
             df = transform_df_betfair(df)
 
