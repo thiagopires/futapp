@@ -100,7 +100,7 @@ def load_daymatches(dt, source):
             
             connectionString = f"mongodb+srv://thiagoserip:{st.secrets['MONGODB_PASSWORD']}@thiagopires.ottof.mongodb.net/?retryWrites=true&w=majority&appName=thiagopires"
             client = MongoClient(connectionString)
-            db = client['fut_db']
+            db = client['futdb']
             collection = db['bf_jogos_do_dia']
 
             filter = {"Date": f"{dt}"}
