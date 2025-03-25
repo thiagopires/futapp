@@ -102,9 +102,9 @@ def load_daymatches(dt, source):
             client = MongoClient(connectionString)
             db = client.futdb
             collection = db.bf_jogos_do_dia
-
             data = list(collection.find({"Date": f"{dt}"}))
             df = pd.DataFrame(data)
+
             df = transform_df_betfair(df)
 
         elif source == 'FootyStats':
