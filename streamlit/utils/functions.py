@@ -105,6 +105,7 @@ def load_daymatches(dt, source):
 
             data = list(collection.find({"Date": f"{dt} 00:00:00"}))
             df = pd.DataFrame(data)
+            st.dataframe(df)
 
             df = transform_df_betfair(df)
 
