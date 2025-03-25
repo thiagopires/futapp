@@ -8,6 +8,7 @@ import time
 import urllib
 import io
 from datetime import datetime, timedelta
+from pymongo import MongoClient
 
 def get_current_season():
     SEASON = '2024/2025'
@@ -95,7 +96,15 @@ def load_content_api_github(file_path):
 def load_daymatches(dt, source):
     try:
         if source == 'Betfair':            
-            df = pd.read_csv(load_content_api_github(f"Jogos_do_Dia/Betfair/Jogos_do_Dia_Betfair_Back_Lay_{dt}.csv"))
+            # df = pd.read_csv(load_content_api_github(f"Jogos_do_Dia/Betfair/Jogos_do_Dia_Betfair_Back_Lay_{dt}.csv"))
+
+            client = MongoClient(st.secrets["mongodb_connectionString"])
+            db = client[st.secrets["mongodb_database"]]
+            collection = db['bf_jogos_do_dia']
+
+            data = list(collection.find({"Date": dt}))
+            df = pd.DataFrame(data).sort_values(['Date','Time'])
+
             df = transform_df_betfair(df)
 
         elif source == 'FootyStats':
