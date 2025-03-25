@@ -98,10 +98,9 @@ def load_daymatches(dt, source):
         if source == 'Betfair':            
             # df = pd.read_csv(load_content_api_github(f"Jogos_do_Dia/Betfair/Jogos_do_Dia_Betfair_Back_Lay_{dt}.csv"))
 
-            connectionString, database = st.secrets["mongodb"].values()
-            client = MongoClient(connectionString)
-            db = client[database]
-            collection = db['bf_jogos_do_dia']
+            client = MongoClient(**st.secrets["mongodb"])
+            db = client.fut_db
+            collection = db.bf_jogos_do_dia
 
             data = list(collection.find({"Date": dt}))
             df = pd.DataFrame(data).sort_values(['Date','Time'])
