@@ -104,7 +104,7 @@ def load_daymatches(dt, source):
             collection = db['bf_jogos_do_dia']
 
             filter = {"Date": f"{dt}"}
-            data = list(collection.find(filter))
+            data = list(collection.find())
             df = pd.DataFrame(data)
             st.dataframe(df)
 
