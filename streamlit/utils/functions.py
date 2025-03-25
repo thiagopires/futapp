@@ -100,11 +100,10 @@ def load_daymatches(dt, source):
             
             connectionString = f"mongodb+srv://thiagoserip:{st.secrets['MONGODB_PASSWORD']}@thiagopires.ottof.mongodb.net/?retryWrites=true&w=majority&appName=thiagopires"
             client = MongoClient(connectionString)
-            db = client['futdb']
-            collection = db['bf_jogos_do_dia']
+            db = client.futdb
+            collection = db.bf_jogos_do_dia
 
-            filter = {"Date": f"{dt}"}
-            data = list(collection.find())
+            data = list(collection.find({"Date": f"{dt}"}))
             df = pd.DataFrame(data)
             st.dataframe(df)
 
