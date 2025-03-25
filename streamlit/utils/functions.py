@@ -105,9 +105,7 @@ def load_daymatches(dt, source):
 
             data = list(collection.find({"Date": f"{dt}"}))
             df = pd.DataFrame(data)
-            st.dataframe(df)
-
-            # df = transform_df_betfair(df)
+            df = transform_df_betfair(df)
 
         elif source == 'FootyStats':
             df = pd.read_csv(f"https://github.com/futpythontrader/YouTube/blob/main/Jogos_do_Dia/FootyStats/Jogos_do_Dia_FootyStats_{dt}.csv?raw=true")
