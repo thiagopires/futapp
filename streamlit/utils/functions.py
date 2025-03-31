@@ -93,6 +93,21 @@ def load_content_api_github(file_path):
     except KeyError as e:
         return io.BytesIO()
 
+def last_refresh_daymatches():
+    connectionString = f"mongodb+srv://thiagoserip:{st.secrets['MONGODB_PASSWORD']}@thiagopires.ottof.mongodb.net/?retryWrites=true&w=majority&appName=thiagopires"
+    client = MongoClient(connectionString)
+    db = client.futdb
+    collection = db.bf_jogos_do_dia_log
+
+    # Buscar o documento mais recente
+    document = collection.find_one({}, sort=[("Date", -1)])
+
+    if document and "Date" in document:
+        # Formatar a data como yyyy-mm-dd hh:mm
+        return document["Date"].strftime("%Y-%m-%d %H:%M")
+    
+    return None  # Retorna None caso não haja documentos na coleção
+
 def load_daymatches(dt, source):
     try:
         if source == 'Betfair':            
