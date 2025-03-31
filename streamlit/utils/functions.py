@@ -3750,6 +3750,8 @@ def get_betfair_leagues():
         'BELGIUM - PRO LEAGUE',
         'BRAZIL - SERIE A',
         'BRAZIL - SERIE B',
+        'COPA LIBERTADORES',
+        'COPA SUDAMERICANA',
         'DENMARK - SUPERLIGA',
         'EGYPT - EGYPTIAN PREMIER LEAGUE',
         'ENGLAND - CHAMPIONSHIP',
