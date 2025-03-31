@@ -104,7 +104,7 @@ def last_refresh_daymatches():
 
     if document and "Date" in document:
         # Formatar a data como yyyy-mm-dd hh:mm
-        return (document["Date"] - timedelta(3)).strftime("%Y-%m-%d %H:%M")
+        return (document["Date"] - timedelta(hours=3)).strftime("%Y-%m-%d %H:%M")
     
     return None  # Retorna None caso não haja documentos na coleção
 
