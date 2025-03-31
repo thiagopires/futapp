@@ -94,7 +94,8 @@ def load_content_api_github(file_path):
         return io.BytesIO()
 
 def last_refresh_daymatches():
-    connectionString = f"mongodb+srv://thiagoserip:{st.secrets['MONGODB_PASSWORD']}@thiagopires.ottof.mongodb.net/?retryWrites=true&w=majority&appName=thiagopires"
+    mongodb_host, mongodb_username, mongodb_password, mongodb_appName = st.secrets['mongodb'].values()
+    connectionString = f"mongodb+srv://{mongodb_username}:{mongodb_password}@{mongodb_host}/?retryWrites=true&w=majority&appName={mongodb_appName}"
     client = MongoClient(connectionString)
     db = client.futdb
     collection = db.bf_jogos_do_dia_log
