@@ -1283,6 +1283,8 @@ def rename_leagues(df):
     df.replace('Spanish Segunda Division','SPAIN - SEGUNDA DIVISIÓN', inplace=True)
     df.replace('Turkish Super League','TURKEY - SÜPER LIG', inplace=True)
     df.replace('US Major League Soccer','USA - MLS', inplace=True)
+    df.replace('CONMEBOL Copa Libertadores','COPA LIBERTADORES', inplace=True)
+    df.replace('CONMEBOL Copa Sudamericana','COPA SUDAMERICANA', inplace=True)
 
 def rename_teams(df):
 
