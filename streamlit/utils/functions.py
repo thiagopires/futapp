@@ -8,6 +8,7 @@ import time
 import urllib
 import io
 from datetime import datetime, timedelta
+from pymongo import MongoClient
 
 def get_current_season():
     SEASON = '2024/2025'
@@ -92,10 +93,35 @@ def load_content_api_github(file_path):
     except KeyError as e:
         return io.BytesIO()
 
+def last_refresh_daymatches():
+    mongodb_host, mongodb_username, mongodb_password, mongodb_appName = st.secrets['mongodb'].values()
+    connectionString = f"mongodb+srv://{mongodb_username}:{mongodb_password}@{mongodb_host}/?retryWrites=true&w=majority&appName={mongodb_appName}"
+    client = MongoClient(connectionString)
+    db = client.futdb
+    collection = db.bf_jogos_do_dia_log
+
+    # Buscar o documento mais recente
+    document = collection.find_one({}, sort=[("Date", -1)])
+
+    if document and "Date" in document:
+        # Formatar a data como yyyy-mm-dd hh:mm
+        return (document["Date"] - timedelta(hours=3)).strftime("%Y-%m-%d %H:%M")
+    
+    return None  # Retorna None caso não haja documentos na coleção
+
 def load_daymatches(dt, source):
     try:
         if source == 'Betfair':            
-            df = pd.read_csv(load_content_api_github(f"Jogos_do_Dia/Betfair/Jogos_do_Dia_Betfair_Back_Lay_{dt}.csv"))
+            # df = pd.read_csv(load_content_api_github(f"Jogos_do_Dia/Betfair/Jogos_do_Dia_Betfair_Back_Lay_{dt}.csv"))
+            
+            mongodb_host, mongodb_username, mongodb_password, mongodb_appName = st.secrets['mongodb'].values()
+            connectionString = f"mongodb+srv://{mongodb_username}:{mongodb_password}@{mongodb_host}/?retryWrites=true&w=majority&appName={mongodb_appName}"
+            client = MongoClient(connectionString)
+            db = client.futdb
+            collection = db.bf_jogos_do_dia
+            data = list(collection.find({"Date": f"{dt}"}))
+            df = pd.DataFrame(data)
+
             df = transform_df_betfair(df)
 
         elif source == 'FootyStats':
@@ -1258,6 +1284,8 @@ def rename_leagues(df):
     df.replace('Spanish Segunda Division','SPAIN - SEGUNDA DIVISIÓN', inplace=True)
     df.replace('Turkish Super League','TURKEY - SÜPER LIG', inplace=True)
     df.replace('US Major League Soccer','USA - MLS', inplace=True)
+    df.replace('CONMEBOL Copa Libertadores','COPA LIBERTADORES', inplace=True)
+    df.replace('CONMEBOL Copa Sudamericana','COPA SUDAMERICANA', inplace=True)
 
 def rename_teams(df):
 
@@ -3723,6 +3751,8 @@ def get_betfair_leagues():
         'BELGIUM - PRO LEAGUE',
         'BRAZIL - SERIE A',
         'BRAZIL - SERIE B',
+        'COPA LIBERTADORES',
+        'COPA SUDAMERICANA',
         'DENMARK - SUPERLIGA',
         'EGYPT - EGYPTIAN PREMIER LEAGUE',
         'ENGLAND - CHAMPIONSHIP',

@@ -17,7 +17,6 @@ def main_page(fonte_dados):
     data_analise = st.date_input("Data da Análise", get_today())
 
     df_matches = load_daymatches(data_analise, fonte_dados)
-    df_hist = load_histmatches(fonte_dados)
 
     if df_matches.empty:
         st.info(f"Os dados para {data_analise} não estão disponíveis.")
@@ -39,12 +38,12 @@ def main_page(fonte_dados):
             , use_container_width=True
             , hide_index=True
         )
-
+        st.write(f"Última atualização no Codebuild: {last_refresh_daymatches()}")
         st.write(f"Quantidade de jogos: {len(df_matches)}")
         rows = match_selected.get('selection').get('rows')
 
         if rows:
-
+            df_hist = load_histmatches(fonte_dados)
             df_match_selected = df_matches.iloc[rows[0]]
 
             st.divider()
