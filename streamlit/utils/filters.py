@@ -853,7 +853,7 @@ def get_filter_betfair_lay_0x2(df):
 def get_filter_betfair_lay_0x3(df):
     return (
         (df['Odd_H_FT'].between(3, 7)) & 
-        (df["Odd_CS_0x4_Lay"] <= 30) & (
+        (df["Odd_CS_0x3_Lay"] <= 30) & (
             ((df['League'] == 'ARGENTINA - PRIMERA DIVISIÓN') & (df['FX_Probabilidade_A'] == '0.39-0.48') & (df['FX_CV_HDA'] == '0.20-0.25')) |
             ((df['League'] == 'ARGENTINA - PRIMERA DIVISIÓN') & (df['FX_Probabilidade_A'] == '0.39-0.48') & (df['FX_CV_HDA'] == '0.25-0.30')) |
             ((df['League'] == 'ARGENTINA - PRIMERA DIVISIÓN') & (df['FX_Probabilidade_A'] == '0.57-0.66') & (df['FX_CV_HDA'] == '0.45-0.50')) |
