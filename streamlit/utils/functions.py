@@ -1289,6 +1289,7 @@ def rename_leagues(df):
 
 def rename_teams(df):
 
+    # Betfair
     df.replace("Cerro Porteno","Cerro Porteno", inplace=True)
     df.replace("Melilla UD","Melilla", inplace=True)
     df.replace("Almeria II","Almeria B", inplace=True)
