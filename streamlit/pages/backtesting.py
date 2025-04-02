@@ -221,20 +221,20 @@ def main_page(fonte_dados):
             st.write(f"**:green[GREENs:]**")
             print_dataframe(
                 df_hist.loc[df_hist['Status_Metodo'] == 'GREEN', 
-                ['League','Rodada','Date','Time','Home','Away','Resultado_HT','Resultado_FT','Resultado_60','Resultado_65','Resultado_70','Resultado_75','Resultado_80','Odd_H_FT','Odd_D_FT','Odd_A_FT','Odd_Over05_FT','Odd_Over15_FT','Odd_Over25_FT','Odd_Under05_FT','Odd_Under15_FT','Odd_Under25_FT','Odd_BTTS_Yes','Odd_BTTS_No','Odd_DC_1X','Odd_DC_12','Odd_DC_X2','Odd_CS_0x1_Lay','Odd_CS_0x2_Lay','XG_Total_Pre','XG_Home_Pre','XG_Away_Pre','Diff_XG_Home_Away_Pre','PPG_Home_Pre','PPG_Away_Pre','Goals_H_Minutes','Goals_A_Minutes','Primeiro_Gol','Status_Metodo','Profit','Probabilidade_H_FT','Probabilidade_D_FT','Probabilidade_A_FT','CV_HDA_FT']]
+                ['League','Rodada','Date','Time','Home','Away','Resultado_HT','Resultado_FT','Resultado_60','Resultado_65','Resultado_70','Resultado_75','Resultado_80','Odd_H_FT','Odd_D_FT','Odd_A_FT','Odd_Over05_FT','Odd_Over15_FT','Odd_Over25_FT','Odd_Under05_FT','Odd_Under15_FT','Odd_Under25_FT','Odd_BTTS_Yes','Odd_BTTS_No','Odd_DC_1X','Odd_DC_12','Odd_DC_X2','Odd_CS_0x1_Lay','Odd_CS_0x2_Lay','Odd_CS_0x3_Lay','XG_Total_Pre','XG_Home_Pre','XG_Away_Pre','Diff_XG_Home_Away_Pre','PPG_Home_Pre','PPG_Away_Pre','Goals_H_Minutes','Goals_A_Minutes','Primeiro_Gol','Status_Metodo','Profit','Probabilidade_H_FT','Probabilidade_D_FT','Probabilidade_A_FT','CV_HDA_FT']]
             )
 
             st.write(f"**:red[REDs:]**")
             print_dataframe(
                 df_hist.loc[df_hist['Status_Metodo'] == 'RED', 
-                ['League','Rodada','Date','Time','Home','Away','Resultado_HT','Resultado_FT','Resultado_60','Resultado_65','Resultado_70','Resultado_75','Resultado_80','Odd_H_FT','Odd_D_FT','Odd_A_FT','Odd_Over05_FT','Odd_Over15_FT','Odd_Over25_FT','Odd_Under05_FT','Odd_Under15_FT','Odd_Under25_FT','Odd_BTTS_Yes','Odd_BTTS_No','Odd_DC_1X','Odd_DC_12','Odd_DC_X2','Odd_CS_0x1_Lay','Odd_CS_0x2_Lay','XG_Total_Pre','XG_Home_Pre','XG_Away_Pre','Diff_XG_Home_Away_Pre','PPG_Home_Pre','PPG_Away_Pre','Goals_H_Minutes','Goals_A_Minutes','Primeiro_Gol','Status_Metodo','Profit','Probabilidade_H_FT','Probabilidade_D_FT','Probabilidade_A_FT','CV_HDA_FT']]
+                ['League','Rodada','Date','Time','Home','Away','Resultado_HT','Resultado_FT','Resultado_60','Resultado_65','Resultado_70','Resultado_75','Resultado_80','Odd_H_FT','Odd_D_FT','Odd_A_FT','Odd_Over05_FT','Odd_Over15_FT','Odd_Over25_FT','Odd_Under05_FT','Odd_Under15_FT','Odd_Under25_FT','Odd_BTTS_Yes','Odd_BTTS_No','Odd_DC_1X','Odd_DC_12','Odd_DC_X2','Odd_CS_0x1_Lay','Odd_CS_0x2_Lay','Odd_CS_0x3_Lay','XG_Total_Pre','XG_Home_Pre','XG_Away_Pre','Diff_XG_Home_Away_Pre','PPG_Home_Pre','PPG_Away_Pre','Goals_H_Minutes','Goals_A_Minutes','Primeiro_Gol','Status_Metodo','Profit','Probabilidade_H_FT','Probabilidade_D_FT','Probabilidade_A_FT','CV_HDA_FT']]
             )
 
             if total_voids > 0:
                 st.write(f"**:gray[VOIDs:]**")
                 print_dataframe(
                     df_hist.loc[df_hist['Status_Metodo'] == 'VOID', 
-                    ['League','Rodada','Date','Time','Home','Away','Resultado_HT','Resultado_FT','Resultado_60','Resultado_65','Resultado_70','Resultado_75','Resultado_80','Odd_H_FT','Odd_D_FT','Odd_A_FT','Odd_Over05_FT','Odd_Over15_FT','Odd_Over25_FT','Odd_Under05_FT','Odd_Under15_FT','Odd_Under25_FT','Odd_BTTS_Yes','Odd_BTTS_No','Odd_DC_1X','Odd_DC_12','Odd_DC_X2','Odd_CS_0x1_Lay','Odd_CS_0x2_Lay','XG_Total_Pre','XG_Home_Pre','XG_Away_Pre','Diff_XG_Home_Away_Pre','PPG_Home_Pre','PPG_Away_Pre','Goals_H_Minutes','Goals_A_Minutes','Primeiro_Gol','Status_Metodo','Profit','Probabilidade_H_FT','Probabilidade_D_FT','Probabilidade_A_FT','CV_HDA_FT']]
+                    ['League','Rodada','Date','Time','Home','Away','Resultado_HT','Resultado_FT','Resultado_60','Resultado_65','Resultado_70','Resultado_75','Resultado_80','Odd_H_FT','Odd_D_FT','Odd_A_FT','Odd_Over05_FT','Odd_Over15_FT','Odd_Over25_FT','Odd_Under05_FT','Odd_Under15_FT','Odd_Under25_FT','Odd_BTTS_Yes','Odd_BTTS_No','Odd_DC_1X','Odd_DC_12','Odd_DC_X2','Odd_CS_0x1_Lay','Odd_CS_0x2_Lay','Odd_CS_0x3_Lay','XG_Total_Pre','XG_Home_Pre','XG_Away_Pre','Diff_XG_Home_Away_Pre','PPG_Home_Pre','PPG_Away_Pre','Goals_H_Minutes','Goals_A_Minutes','Primeiro_Gol','Status_Metodo','Profit','Probabilidade_H_FT','Probabilidade_D_FT','Probabilidade_A_FT','CV_HDA_FT']]
                 )
 
         else:
