@@ -2716,7 +2716,7 @@ def rename_teams(df):
     df.replace('Peerless SC', 'Peerless', inplace=True)
     df.replace('Pelikan Lowicz', 'Pelikan', inplace=True)
     df.replace('Pelister Bitola', 'Pelister', inplace=True)
-    df.replace('Penarol', 'Pena', inplace=True)
+    df.replace('Penarol', 'Penarol', inplace=True)
     df.replace('Pulau Pinang', 'Penang', inplace=True)
     df.replace('Deportivo Pereira', 'Pereira', inplace=True)
     df.replace('Sparta Petegem', 'Petegem', inplace=True)
