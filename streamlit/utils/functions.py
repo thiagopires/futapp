@@ -120,7 +120,7 @@ def load_daymatches(dt, source):
             db = client.futdb
             collection = db.bf_jogos_do_dia
             data = list(collection.find({"Date": f"{dt}"}))
-            df = pd.DataFrame(data)
+            df = pd.DataFrame(data).sort_values(['Date','Time'])
 
             df = transform_df_betfair(df)
 
