@@ -88,7 +88,7 @@ def main_page(fonte_dados):
             if valor != "":
                 string_indicadores += f"{indicador} {operador_selecionado} {valor} | "
 
-                if indicador != 'Primeiro_Gol_Marcador':
+                if indicador != 'Primeiro_Gol_Marcador' and tipo != 'Valor Relativo':
                     valor = float(valor)
 
                 if operador_selecionado == 'Igual (=)':
