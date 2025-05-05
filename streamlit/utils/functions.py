@@ -257,7 +257,10 @@ def load_histmatches(source):
         
         df["Resultado_HT"] = df["Goals_H_HT"].astype(str) + "-" + df["Goals_A_HT"].astype(str)
         df["Resultado_FT"] = df["Goals_H_FT"].astype(str) + "-" + df["Goals_A_FT"].astype(str)
-        
+
+        df['TotalGoals_HT'] = df["Goals_H_HT"] + df["Goals_A_HT"]
+        df['TotalGoals_FT'] = df["Goals_H_FT"] + df["Goals_A_FT"]
+
         df['Resultado_60'] = df.apply(calcular_resultado_minuto, minute=60, axis=1)
         df['Resultado_65'] = df.apply(calcular_resultado_minuto, minute=65, axis=1)
         df['Resultado_70'] = df.apply(calcular_resultado_minuto, minute=70, axis=1)
