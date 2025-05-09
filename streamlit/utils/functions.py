@@ -162,6 +162,7 @@ def load_daymatches(dt, source):
             df["Odd_DC_1X"] = round(1 / (1 / df["Odd_H_FT"] + 1 / df["Odd_D_FT"]),2)
             df["Odd_DC_12"] = round(1 / (1 / df["Odd_H_FT"] + 1 / df["Odd_A_FT"]),2)
             df["Odd_DC_X2"] = round(1 / (1 / df["Odd_D_FT"] + 1 / df["Odd_A_FT"]),2)
+            df["Resultado"] = f"{str(df['Goals_H_FT'])}-{str(df['Goals_A_FT'])}"
         elif source == 'FootyStats':
             df["Diff_XG_Home_Away_Pre"] = df['XG_Home_Pre'] - df['XG_Away_Pre']
             df["Odd_CS_0x1_Lay"] = 0
