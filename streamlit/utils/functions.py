@@ -269,8 +269,15 @@ def load_histmatches(source):
         df["Formatted_Date"] = df["Date"].dt.strftime("%d/%m/%Y")
         df['Month_Year'] = pd.to_datetime(df['Date']).dt.strftime('%m/%Y')
         
-        df["Resultado_HT"] = df["Goals_H_HT"].astype(int).astype(str) + "-" + df["Goals_A_HT"].astype(int).astype(str)
-        df["Resultado_FT"] = df["Goals_H_FT"].astype(int).astype(str) + "-" + df["Goals_A_FT"].astype(int).astype(str)
+        df["Resultado_HT"] = (
+            df["Goals_H_HT"].fillna(0).astype(int).astype(str) + "-" +
+            df["Goals_A_HT"].fillna(0).astype(int).astype(str)
+        )
+
+        df["Resultado_FT"] = (
+            df["Goals_H_FT"].fillna(0).astype(int).astype(str) + "-" +
+            df["Goals_A_FT"].fillna(0).astype(int).astype(str)
+        )
 
         df['TotalGoals_HT'] = df["Goals_H_HT"] + df["Goals_A_HT"]
         df['TotalGoals_FT'] = df["Goals_H_FT"] + df["Goals_A_FT"]
