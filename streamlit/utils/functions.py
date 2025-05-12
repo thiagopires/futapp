@@ -183,7 +183,7 @@ def load_daymatches(dt, source):
 def betfair_load_histmatches():
     # file = load_content_api_github("Bases_de_Dados/Betfair/Base_de_Dados_Betfair_Exchange_Back_Lay.csv")
     # df = pd.read_csv(file)
-    
+
     mongodb_host, mongodb_username, mongodb_password, mongodb_appName = st.secrets['mongodb'].values()
     connectionString = f"mongodb+srv://{mongodb_username}:{mongodb_password}@{mongodb_host}/?retryWrites=true&w=majority&appName={mongodb_appName}"
     client = MongoClient(connectionString)
@@ -191,6 +191,7 @@ def betfair_load_histmatches():
     collection = db.teste_bf_jogos_do_dia
     data = list(collection.find())
     df = pd.DataFrame(data).sort_values(['Date','Time'])
+
     df = transform_df_betfair(df)
     return df
 
@@ -268,8 +269,8 @@ def load_histmatches(source):
         df["Formatted_Date"] = df["Date"].dt.strftime("%d/%m/%Y")
         df['Month_Year'] = pd.to_datetime(df['Date']).dt.strftime('%m/%Y')
         
-        df["Resultado_HT"] = df["Goals_H_HT"].astype(str) + "-" + df["Goals_A_HT"].astype(str)
-        df["Resultado_FT"] = df["Goals_H_FT"].astype(str) + "-" + df["Goals_A_FT"].astype(str)
+        df["Resultado_HT"] = df["Goals_H_HT"].astype(int).astype(str) + "-" + df["Goals_A_HT"].astype(int).astype(str)
+        df["Resultado_FT"] = df["Goals_H_FT"].astype(int).astype(str) + "-" + df["Goals_A_FT"].astype(int).astype(str)
 
         df['TotalGoals_HT'] = df["Goals_H_HT"] + df["Goals_A_HT"]
         df['TotalGoals_FT'] = df["Goals_H_FT"] + df["Goals_A_FT"]
