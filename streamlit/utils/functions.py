@@ -181,8 +181,16 @@ def load_daymatches(dt, source):
 
 @st.cache_data
 def betfair_load_histmatches():
-    file = load_content_api_github("Bases_de_Dados/Betfair/Base_de_Dados_Betfair_Exchange_Back_Lay.csv")
-    df = pd.read_csv(file)
+    # file = load_content_api_github("Bases_de_Dados/Betfair/Base_de_Dados_Betfair_Exchange_Back_Lay.csv")
+    # df = pd.read_csv(file)
+    
+    mongodb_host, mongodb_username, mongodb_password, mongodb_appName = st.secrets['mongodb'].values()
+    connectionString = f"mongodb+srv://{mongodb_username}:{mongodb_password}@{mongodb_host}/?retryWrites=true&w=majority&appName={mongodb_appName}"
+    client = MongoClient(connectionString)
+    db = client.futdb
+    collection = db.teste_bf_jogos_do_dia
+    data = list(collection.find())
+    df = pd.DataFrame(data).sort_values(['Date','Time'])
     df = transform_df_betfair(df)
     return df
 
