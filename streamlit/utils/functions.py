@@ -260,7 +260,7 @@ def load_histmatches(source):
     try:
         if source == 'Betfair':            
             df = betfair_load_histmatches()
-            df = transform_df_betfair(df)
+            # df = transform_df_betfair(df)
         elif source == 'FootyStats':
             df = footystats_load_histmatches()
             df[["Date", "Time"]] = df["Date"].str.split(" ", expand=True)
