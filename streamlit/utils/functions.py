@@ -11,11 +11,11 @@ from datetime import datetime, timedelta
 from pymongo import MongoClient
 
 def get_current_season():
-    SEASON = '2024/2025'
+    SEASON = '2025/2026'
     return SEASON
 
 def get_last_season():
-    SEASON = '2023/2024'
+    SEASON = '2024/2025'
     return SEASON
 
 def get_today(offset=0):
@@ -173,6 +173,8 @@ def load_daymatches(dt, source):
                 )
             else:
                 df["Resultado"] = "N/A"
+                df["Goals_H_Minutes"] = "N/A"
+                df["Goals_A_Minutes"] = "N/A"
 
         elif source == 'FootyStats':
             df["Diff_XG_Home_Away_Pre"] = df['XG_Home_Pre'] - df['XG_Away_Pre']
