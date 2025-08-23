@@ -162,14 +162,14 @@ def load_daymatches(dt, source):
             df["Odd_DC_1X"] = round(1 / (1 / df["Odd_H_FT"] + 1 / df["Odd_D_FT"]),2)
             df["Odd_DC_12"] = round(1 / (1 / df["Odd_H_FT"] + 1 / df["Odd_A_FT"]),2)
             df["Odd_DC_X2"] = round(1 / (1 / df["Odd_D_FT"] + 1 / df["Odd_A_FT"]),2)
+
             if {"Goals_H_FT", "Goals_A_FT"}.issubset(df.columns):
-                df["Resultado"] = df.apply(
-                    lambda r: (
-                        f"{int(r['Goals_H_FT'])}-{int(r['Goals_A_FT'])}"
-                        if pd.notnull(r["Goals_H_FT"]) and pd.notnull(r["Goals_A_FT"])
-                        else "N/A"
-                    ),
-                    axis=1
+                mask = df["Goals_H_FT"].notna() & df["Goals_A_FT"].notna()
+                df["Resultado"] = "N/A"
+                df.loc[mask, "Resultado"] = (
+                    df.loc[mask, "Goals_H_FT"].astype(int).astype(str) +
+                    "-" +
+                    df.loc[mask, "Goals_A_FT"].astype(int).astype(str)
                 )
             else:
                 df["Resultado"] = "N/A"
