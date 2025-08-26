@@ -13,7 +13,7 @@ def main_page(fonte_dados):
 
     df_matches = load_daymatches(None, 'Betfair')
     df_matches["Goals_H_FT"] = pd.to_numeric(df_matches["Goals_H_FT"], errors="coerce")
-    df_matches = df_matches[(df_matches['Goals_H_FT'].isna()) | (df_matches['Goals_H_FT'] < 0)]
+    df_matches = df_matches[(((df_matches['Goals_H_FT'].isna()) | (df_matches['Goals_H_FT'] < 0)) & (df_matches['Date'] < datetime.now().strftime('%Y-%m-%d')))]
 
     if df_matches.empty:
         st.info(f"Os dados não estão disponíveis.")
