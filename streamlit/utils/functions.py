@@ -119,7 +119,8 @@ def load_daymatches(dt, source):
             client = MongoClient(connectionString)
             db = client.futdb
             collection = db.bf_jogos_do_dia
-            data = list(collection.find({"Date": f"{dt}"}))
+            if dt is not None:
+                data = list(collection.find({"Date": f"{dt}"}))
             df = pd.DataFrame(data).sort_values(['Date','Time'])
 
             df = transform_df_betfair(df)

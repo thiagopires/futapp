@@ -11,6 +11,7 @@ import pages.backtesting as backtesting
 import pages.base_de_dados as base_de_dados
 import pages.calculadora as calculadora
 import pages.jogos_do_dia as jogos_do_dia
+import pages.jogos_sem_resultado as jogos_sem_resultado
 
 st.set_page_config(layout="wide", page_title="Futapp v0.2")
 
@@ -25,7 +26,8 @@ opcoes = {
     "Análise Home": "analise_home",
     "Análise Away": "analise_away",
     "Base de Dados": "base_de_dados",
-    "Calculadora": "calculadora"
+    "Calculadora": "calculadora",
+    "Jogos sem Resultado": "jogos_sem_resultado",
 }
 
 # Criando a sidebar com radio buttons
@@ -63,6 +65,9 @@ if st.session_state["logged_in"]:
 
     elif opcoes[escolha] == "calculadora":
         calculadora.main_page()
+
+    elif opcoes[escolha] == "jogos_sem_resultado":
+        jogos_sem_resultado.main_page()
 else:
     login_page()
 
