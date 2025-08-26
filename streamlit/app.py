@@ -67,7 +67,7 @@ if st.session_state["logged_in"]:
         calculadora.main_page()
 
     elif opcoes[escolha] == "jogos_sem_resultado":
-        jogos_sem_resultado.main_page()
+        jogos_sem_resultado.main_page(fonte_dados)
 else:
     login_page()
 
