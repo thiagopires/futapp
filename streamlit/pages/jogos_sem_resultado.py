@@ -21,7 +21,7 @@ def main_page(fonte_dados):
 
     else:
         # Dataframe
-        df_matches_columns = ['Event_ID','League','Filtro','Home','Away','Resultado','Goals_H_Minutes','Goals_A_Minutes']
+        df_matches_columns = ['Event_ID','League','Filtro','Home','Away','Status','Resultado','Goals_H_Minutes','Goals_A_Minutes']
        
         match_selected = st.dataframe(
             df_matches[df_matches_columns]
