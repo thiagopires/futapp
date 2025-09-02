@@ -124,6 +124,8 @@ def main_page(fonte_dados):
 
     if filtro_pronto_selecionado != "Sem filtro" or executar:
         
+        print_dataframe(df_hist)
+
         df_hist, odd_media = get_result_filtro_pronto(df_hist, metodo)
 
         st.write(f"**Resultado:**")
