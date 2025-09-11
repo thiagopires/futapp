@@ -122,9 +122,11 @@ def load_daymatches(dt, source):
             
             filter = {"Date": f"{dt}"} if dt is not None else {}
             data = list(collection.find(filter))
-            df = pd.DataFrame(data).sort_values(['Date','Time'])
+            df = pd.DataFrame(data)
 
-            df = transform_df_betfair(df)
+            if not df.empty:
+                df = df.sort_values(['Date', 'Time'])
+                df = transform_df_betfair(df)
 
         elif source == 'FootyStats':
             df = pd.read_csv(f"https://github.com/futpythontrader/YouTube/blob/main/Jogos_do_Dia/FootyStats/Jogos_do_Dia_FootyStats_{dt}.csv?raw=true")
