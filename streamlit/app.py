@@ -36,7 +36,7 @@ escolha = st.sidebar.radio("Navegação", list(opcoes.keys()))
 
 st.sidebar.divider()
 
-fonte_dados = st.sidebar.radio("Fonte de Dados", ['FootyStats', 'Betfair'])
+fonte_dados = st.sidebar.radio("Fonte de Dados", ['Betfair','FootyStats'])
 
 display_sidebar('none')
 
