@@ -205,8 +205,6 @@ def betfair_load_histmatches():
     data = list(collection.find())
     df = pd.DataFrame(data).sort_values(['Date','Time'])
 
-    print_dataframe(df)
-
     df = transform_df_betfair(df)
 
     return df

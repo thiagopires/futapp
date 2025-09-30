@@ -14,8 +14,6 @@ def main_page(fonte_dados):
 
     # fonte_dados = st.selectbox("Fonte de Dados", ['Betfair','FootyStats'])
     df_hist = load_histmatches(fonte_dados)
-    st.info(fonte_dados)
-    st.info(len(df_hist))
 
     indicadores = df_hist.columns
 
@@ -54,19 +52,10 @@ def main_page(fonte_dados):
         #     df_hist = df_hist[df_hist['Season'].isin(selected_seasons)]
 
         if data_inicial and data_final:
-
-            st.info(df_hist.iloc[0]['Date'].normalize())
-
-            st.info(pd.to_datetime(data_inicial))
-            st.info(pd.to_datetime(data_final))
-            st.info(len(df_hist))
-            
             df_hist = df_hist[
                 (df_hist['Date'].dt.normalize() >= pd.to_datetime(data_inicial)) &
                 (df_hist['Date'].dt.normalize() <= pd.to_datetime(data_final))
             ]
-            
-            st.info(len(df_hist))
 
         if "Todas as Ligas" not in selected_leagues:
             df_hist = df_hist[df_hist['League'].isin(selected_leagues)]
@@ -130,21 +119,14 @@ def main_page(fonte_dados):
     with col1:
         filtro_pronto_selecionado = st.selectbox("Filtros Prontos", filtros_prontos[fonte_dados])
 
-    st.info(len(df_hist))
     df_hist, condicao, metodo = get_details_filtro_pronto(df_hist, condicao, metodo, filtro_pronto_selecionado)
-    st.info(len(df_hist))
 
     st.divider()
 
 
     if filtro_pronto_selecionado != "Sem filtro" or executar:
-        
-        print_dataframe(df_hist)
-        st.info("aqui2")
-        st.info(len(df_hist))
 
         df_hist, odd_media = get_result_filtro_pronto(df_hist, metodo)
-        st.info(len(df_hist))
 
         st.write(f"**Resultado:**")
 
