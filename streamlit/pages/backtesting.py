@@ -58,7 +58,7 @@ def main_page(fonte_dados):
             st.info(pd.to_datetime(data_final))
             df_hist = df_hist[(df_hist['Date'] >= pd.to_datetime(data_inicial)) & (df_hist['Date'] <= pd.to_datetime(data_final))]
 
-        if not (not selected_leagues or "Todas as Ligas" in selected_leagues):
+        if "Todas as Ligas" not in selected_leagues:
             df_hist = df_hist[df_hist['League'].isin(selected_leagues)]
 
         for i in range(1,9):
