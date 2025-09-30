@@ -54,6 +54,9 @@ def main_page(fonte_dados):
         #     df_hist = df_hist[df_hist['Season'].isin(selected_seasons)]
 
         if data_inicial and data_final:
+
+            st.info(df_hist[0]['Date'].dt.normalize())
+
             st.info(pd.to_datetime(data_inicial))
             st.info(pd.to_datetime(data_final))
             st.info(len(df_hist))
