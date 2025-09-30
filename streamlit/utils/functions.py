@@ -201,7 +201,7 @@ def betfair_load_histmatches():
     connectionString = f"mongodb+srv://{mongodb_username}:{mongodb_password}@{mongodb_host}/?retryWrites=true&w=majority&appName={mongodb_appName}"
     client = MongoClient(connectionString)
     db = client.futdb
-    collection = db.teste_bf_jogos_do_dia
+    collection = db.bf_jogos_do_dia
     data = list(collection.find())
     df = pd.DataFrame(data).sort_values(['Date','Time'])
 
