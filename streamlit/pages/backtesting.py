@@ -52,7 +52,8 @@ def main_page(fonte_dados):
         # if not (not selected_seasons or "Todas as Temporadas" in selected_seasons):
         #     df_hist = df_hist[df_hist['Season'].isin(selected_seasons)]
 
-        if data_final and data_final:
+        if data_inicial and data_final:
+            st.info("aqui1")
             df_hist = df_hist[(df_hist['Date'] >= pd.to_datetime(data_inicial)) & (df_hist['Date'] <= pd.to_datetime(data_final))]
 
         if not (not selected_leagues or "Todas as Ligas" in selected_leagues):
@@ -126,6 +127,7 @@ def main_page(fonte_dados):
     if filtro_pronto_selecionado != "Sem filtro" or executar:
         
         print_dataframe(df_hist)
+        st.info("aqui2")
 
         df_hist, odd_media = get_result_filtro_pronto(df_hist, metodo)
 
