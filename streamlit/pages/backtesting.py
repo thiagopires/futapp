@@ -55,7 +55,7 @@ def main_page(fonte_dados):
 
         if data_inicial and data_final:
 
-            st.info(df_hist[0]['Date'].dt.normalize())
+            st.info(df_hist.iloc[0]['Date'].normalize())
 
             st.info(pd.to_datetime(data_inicial))
             st.info(pd.to_datetime(data_final))
