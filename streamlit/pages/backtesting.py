@@ -130,6 +130,7 @@ def main_page(fonte_dados):
         st.info("aqui2")
 
         df_hist, odd_media = get_result_filtro_pronto(df_hist, metodo)
+        st.info(len(df_hist))
 
         st.write(f"**Resultado:**")
 
