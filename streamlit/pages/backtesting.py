@@ -224,18 +224,18 @@ def main_page(fonte_dados):
 
             st.write(f"**:green[GREENs:]**")
             print_dataframe(
-                df_hist.loc[df_hist['Status_Metodo'] == 'GREEN', df_columns
+                df_hist.loc[df_hist['Status_Metodo'] == 'GREEN', df_columns]
             )
 
             st.write(f"**:red[REDs:]**")
             print_dataframe(
-                df_hist.loc[df_hist['Status_Metodo'] == 'RED', df_columns
+                df_hist.loc[df_hist['Status_Metodo'] == 'RED', df_columns]
             )
 
             if total_voids > 0:
                 st.write(f"**:gray[VOIDs:]**")
                 print_dataframe(
-                    df_hist.loc[df_hist['Status_Metodo'] == 'VOID', df_columns
+                    df_hist.loc[df_hist['Status_Metodo'] == 'VOID', df_columns]
                 )
 
         else:
