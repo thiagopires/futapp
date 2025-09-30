@@ -13,8 +13,9 @@ def main_page(fonte_dados):
     st.header("⚽ Backtesting")
 
     # fonte_dados = st.selectbox("Fonte de Dados", ['Betfair','FootyStats'])
-    fonte_dados = 'Betfair'
     df_hist = load_histmatches(fonte_dados)
+    st.info(fonte_dados)
+    st.info(len(df_hist))
 
     indicadores = df_hist.columns
 
