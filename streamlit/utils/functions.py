@@ -959,7 +959,7 @@ def aba_back_home(df_hist, team, side):
 
     filter = (df['Goals_H_FT'] > df['Goals_A_FT'])
 
-    df['Profit_Back_Home'] = -1    
+    df['Profit_Back_Home'] = -1
     df.loc[filter, 'Profit_Back_Home'] = round(df['Odd_H_FT']-1, 2)
 
     dict['Profit Acumulado'] = f"{str(round(df['Profit_Back_Home'].sum(), 2))} unidades"
