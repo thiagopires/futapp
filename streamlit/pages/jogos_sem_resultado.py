@@ -28,7 +28,7 @@ def main_page(fonte_dados):
             df_matches[df_matches_columns]
             , on_select="rerun"
             , selection_mode="single-row"
-            , use_container_width=True
+            , width='stretch'
             , hide_index=True
         )
         st.write(f"Última atualização no Codebuild: {last_refresh_daymatches()}")

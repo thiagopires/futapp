@@ -74,13 +74,13 @@ def login_page():
 
 def print_dataframe(df, styled_df=None):
     if not styled_df:
-        st.dataframe(df, use_container_width=True, hide_index=True)
+        st.dataframe(df, width='stretch', hide_index=True)
     elif isinstance(styled_df, pd.io.formats.style.Styler):
         styled_df = styled_df.set_properties(**{'text-align': 'center'})
         styled_df = styled_df.set_table_styles([
             {'selector': 'th', 'props': [('text-align', 'center')]}
         ])
-        st.dataframe(styled_df, height=len(df)*38, use_container_width=True, hide_index=True)       
+        st.dataframe(styled_df, height=len(df)*38, width='stretch', hide_index=True)       
 
 def load_content_api_github(file_path):
     try:

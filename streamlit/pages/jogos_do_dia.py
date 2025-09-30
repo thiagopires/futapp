@@ -41,7 +41,7 @@ def main_page(fonte_dados):
             df_matches[df_matches_columns]
             , on_select="rerun"
             , selection_mode="single-row"
-            , use_container_width=True
+            , width='stretch'
             , hide_index=True
         )
         st.write(f"Última atualização no Codebuild: {last_refresh_daymatches()}")
@@ -149,7 +149,7 @@ def main_page(fonte_dados):
                             text_auto=True,
                             title=df_match_selected['Home']
                 )
-                st.plotly_chart(fig, use_container_width=True, key="fig1")
+                st.plotly_chart(fig, width='stretch', key="fig1")
             with col2:
                 fig = px.bar(away_gols_por_tempo, 
                             x='Gols',
@@ -164,7 +164,7 @@ def main_page(fonte_dados):
                             text_auto=True,
                             title=df_match_selected['Away']
                 )
-                st.plotly_chart(fig, use_container_width=True, key="fig2")
+                st.plotly_chart(fig, width='stretch', key="fig2")
 
             # Título
             st.subheader("⚽ Estatísticas de gols (últimos 10 jogos)")

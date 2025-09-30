@@ -90,34 +90,34 @@ def main_page(fonte_dados):
 
             col1, col2, col3, col4, col5, col6, col7 = st.columns(7)
             # with col1:
-            #     if st.button("Profit Acumulado", use_container_width=True):
+            #     if st.button("Profit Acumulado", width='stretch'):
             #         st.session_state['active_button'] = "Profit Acumulado"
             with col2:
-                if st.button("Ponto de Saída Punter", use_container_width=True):
+                if st.button("Ponto de Saída Punter", width='stretch'):
                     st.session_state['active_button'] = "Ponto de Saída Punter"
-            #     st.button("Ocorrências Gerais", use_container_width=True)
+            #     st.button("Ocorrências Gerais", width='stretch')
             with col3:
-                if st.button("Ponto de Saída Trader", use_container_width=True):
+                if st.button("Ponto de Saída Trader", width='stretch'):
                     st.session_state['active_button'] = "Ponto de Saída Trader"
-                if st.button("Ponto de Revisão HT", use_container_width=True):
+                if st.button("Ponto de Revisão HT", width='stretch'):
                     st.session_state['active_button'] = "Ponto de Revisão HT"
             with col4:
-                if st.button("Últimos 10 jogos", use_container_width=True):
+                if st.button("Últimos 10 jogos", width='stretch'):
                     st.session_state['active_button'] = "Últimos 10 jogos"
-                if st.button("Confronto Direto", use_container_width=True):
+                if st.button("Confronto Direto", width='stretch'):
                     st.session_state['active_button'] = "Confronto Direto"
             # with col5:
-            #     st.button("Temporada Atual", use_container_width=True)
-            #     st.button("Temporada Anterior", use_container_width=True)
+            #     st.button("Temporada Atual", width='stretch')
+            #     st.button("Temporada Anterior", width='stretch')
             with col6:
-                if st.button("Match Odds - Back", use_container_width=True):
+                if st.button("Match Odds - Back", width='stretch'):
                     st.session_state['active_button'] = "Match Odds - Back"
-                if st.button("Match Odds - Lay", use_container_width=True):
+                if st.button("Match Odds - Lay", width='stretch'):
                     st.session_state['active_button'] = "Match Odds - Lay"
             with col7:
-                if st.button("Over 2.5 FT / BTTS", use_container_width=True):
+                if st.button("Over 2.5 FT / BTTS", width='stretch'):
                     st.session_state['active_button'] = "Over 2.5 FT / BTTS"
-                if st.button("Placares Singulares", use_container_width=True):
+                if st.button("Placares Singulares", width='stretch'):
                     st.session_state['active_button'] = "Placares Singulares"
                     
             
