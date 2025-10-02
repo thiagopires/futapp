@@ -9,7 +9,8 @@ def main_page(fonte_dados):
     if st.secrets['ENV'] == 'dev':
         st.info("Ambiente de Desenvolvimento. Branch: dev")
 
-    st.title("Futapp v0.2")
+    st.title("Futapp v0.3")
+    st.caption("desenvolvido por thiago pires")
     st.header("⚽ Backtesting")
 
     # fonte_dados = st.selectbox("Fonte de Dados", ['Betfair','FootyStats'])
