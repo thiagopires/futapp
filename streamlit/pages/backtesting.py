@@ -435,7 +435,7 @@ def main_page(fonte_dados):
             pmetodo = tab8
         with tab9:
             pmetodo = tab9
-        with tab10
+        with tab10:
             pmetodo = tab10
         with tab11:
             pmetodo = tab11
