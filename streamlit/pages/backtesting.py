@@ -247,18 +247,24 @@ def generate_backtesting(pdf_hist, metodo):
         st.info("Sem jogos para analisar com os filtros selecionados.")
         return
 
-    str_voids = f"Voids: {stats['total_voids']}, " if stats['total_voids'] > 0 else ''
-    summary_text = (
-        f"**Jogos:** {stats['total_jogos']} | "
-        f"**Greens:** {stats['total_greens']} | "
-        f"**Reds:** {stats['total_reds']} | "
-        f"{str_voids}"
-        f"**Winrate:** {stats['winrate']}% | "
-        f"**Profit Líquido:** {stats['profit_acumulado']} | "
-        f"**Comissão:** {COMMISSION}% | "
-        f"**Odd Média:** {odd_media}"
-    )
-    st.markdown(summary_text)
+    # --- Apresentação em Colunas ---
+    col1, col2, col3, col4 = st.columns(4)
+
+    with col1:
+        st.metric(label="Total de Jogos", value=stats['total_jogos'])
+        st.metric(label="Profit Líquido", value=f"{stats['profit_acumulado']:.2f} un")
+
+    with col2:
+        st.metric(label="Greens ✅", value=stats['total_greens'])
+        st.metric(label="Comissão Média", value=f"{COMMISSION:.2f}%")
+
+    with col3:
+        st.metric(label="Reds ❌", value=stats['total_reds'])
+        st.metric(label="Odd Média", value=f"{odd_media:.2f}")
+
+    with col4:
+        st.metric(label="Voids 🔄", value=stats['total_voids'])
+        st.metric(label="Winrate (Taxa de Acerto)", value=f"{stats['winrate']:.2f}%")
 
     # Criação e exibição do gráfico
     profit_chart_fig = create_profit_chart(df_hist)
@@ -415,28 +421,20 @@ def main_page(fonte_dados):
 
     if filtro_pronto_selecionado != "Sem filtro" or executar:
 
-        # 1. Crie as abas usando sua lista de métodos
         tabs = st.tabs(metodos_tabs)
 
-        # 2. Use `zip` para iterar sobre as abas e os nomes dos métodos ao mesmo tempo
         for tab, metodo_nome in zip(tabs, metodos_tabs):
-            
-            # 3. `with tab:` define o conteúdo para a aba atual no loop
+
             with tab:
                 st.info(f"Analisando o método: {metodo_nome}")
 
-                # 4. CRUCIAL: Armazene o resultado do filtro em uma NOVA variável local.
-                #    Não sobrescreva o `df_hist` original.
                 pdf_hist_filtrado, _, _ = get_details_filtro_pronto(
-                    df_hist.copy(),  # Passe uma cópia para garantir que o original nunca seja alterado
+                    df_hist.copy(),  
                     condicao,
                     metodo_nome,
                     filtro_pronto_selecionado
                 )
 
-                # 5. Chame a função de backtesting com os dados filtrados específicos desta aba.
-                #    O `metodo_nome` também é usado para criar a `key` única do gráfico,
-                #    o que já tínhamos corrigido antes e agora se torna ainda mais importante.
                 generate_backtesting(pdf_hist_filtrado, metodo_nome)
 
 # if "logged_in" not in st.session_state:
