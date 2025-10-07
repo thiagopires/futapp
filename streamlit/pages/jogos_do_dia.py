@@ -45,7 +45,7 @@ def main_page(fonte_dados):
             , width='stretch'
             , hide_index=True
         )
-        st.write(f"Última atualização no Codebuild: {last_refresh_daymatches()}")
+        st.write(f"Última atualização no AWS Codebuild: {last_refresh_daymatches()}")
         st.write(f"Quantidade de jogos: {len(df_matches)}")
         rows = match_selected.get('selection').get('rows')
 
