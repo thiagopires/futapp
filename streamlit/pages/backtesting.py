@@ -419,29 +419,48 @@ def main_page(fonte_dados):
         tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8, tab9, tab10, tab11 = st.tabs(metodos_tabs)
         with tab1:
             pmetodo = tab1
+            df_hist, condicao, metodo = get_details_filtro_pronto(df_hist, condicao, pmetodo, filtro_pronto_selecionado)
+            generate_backtesting(df_hist, pmetodo)
         with tab2:
             pmetodo = tab2
+            df_hist, condicao, metodo = get_details_filtro_pronto(df_hist, condicao, pmetodo, filtro_pronto_selecionado)
+            generate_backtesting(df_hist, pmetodo)
         with tab3:
             pmetodo = tab3
+            df_hist, condicao, metodo = get_details_filtro_pronto(df_hist, condicao, pmetodo, filtro_pronto_selecionado)
+            generate_backtesting(df_hist, pmetodo)
         with tab4:
             pmetodo = tab4
+            df_hist, condicao, metodo = get_details_filtro_pronto(df_hist, condicao, pmetodo, filtro_pronto_selecionado)
+            generate_backtesting(df_hist, pmetodo)
         with tab5:
             pmetodo = tab5
+            df_hist, condicao, metodo = get_details_filtro_pronto(df_hist, condicao, pmetodo, filtro_pronto_selecionado)
+            generate_backtesting(df_hist, pmetodo)
         with tab6:
             pmetodo = tab6
+            df_hist, condicao, metodo = get_details_filtro_pronto(df_hist, condicao, pmetodo, filtro_pronto_selecionado)
+            generate_backtesting(df_hist, pmetodo)
         with tab7:
             pmetodo = tab7
+            df_hist, condicao, metodo = get_details_filtro_pronto(df_hist, condicao, pmetodo, filtro_pronto_selecionado)
+            generate_backtesting(df_hist, pmetodo)
         with tab8:
             pmetodo = tab8
+            df_hist, condicao, metodo = get_details_filtro_pronto(df_hist, condicao, pmetodo, filtro_pronto_selecionado)
+            generate_backtesting(df_hist, pmetodo)
         with tab9:
             pmetodo = tab9
+            df_hist, condicao, metodo = get_details_filtro_pronto(df_hist, condicao, pmetodo, filtro_pronto_selecionado)
+            generate_backtesting(df_hist, pmetodo)
         with tab10:
             pmetodo = tab10
+            df_hist, condicao, metodo = get_details_filtro_pronto(df_hist, condicao, pmetodo, filtro_pronto_selecionado)
+            generate_backtesting(df_hist, pmetodo)
         with tab11:
             pmetodo = tab11
-        
-        df_hist, condicao, metodo = get_details_filtro_pronto(df_hist, condicao, pmetodo, filtro_pronto_selecionado)
-        generate_backtesting(df_hist, pmetodo)
+            df_hist, condicao, metodo = get_details_filtro_pronto(df_hist, condicao, pmetodo, filtro_pronto_selecionado)
+            generate_backtesting(df_hist, pmetodo)
 
 # if "logged_in" not in st.session_state:
 #     st.session_state["logged_in"] = False
