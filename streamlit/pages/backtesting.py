@@ -413,7 +413,6 @@ def main_page(fonte_dados):
 
     st.divider()
 
-
     if filtro_pronto_selecionado != "Sem filtro" or executar:
 
         # 1. Crie as abas usando sua lista de métodos
