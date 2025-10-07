@@ -416,62 +416,29 @@ def main_page(fonte_dados):
 
     if filtro_pronto_selecionado != "Sem filtro" or executar:
 
-        tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8, tab9, tab10, tab11 = st.tabs(metodos_tabs)
-        with tab1:
-            pmetodo = tab1
-            st.info(pmetodo)
-            pdf_hist, condicao, metodo = get_details_filtro_pronto(df_hist, condicao, pmetodo, filtro_pronto_selecionado)
-            generate_backtesting(pdf_hist, pmetodo)
-        with tab2:
-            pmetodo = tab2
-            st.info(pmetodo)
-            pdf_hist, condicao, metodo = get_details_filtro_pronto(df_hist, condicao, pmetodo, filtro_pronto_selecionado)
-            generate_backtesting(pdf_hist, pmetodo)
-        with tab3:
-            pmetodo = tab3
-            st.info(pmetodo)
-            pdf_hist, condicao, metodo = get_details_filtro_pronto(df_hist, condicao, pmetodo, filtro_pronto_selecionado)
-            generate_backtesting(pdf_hist, pmetodo)
-        with tab4:
-            pmetodo = tab4
-            st.info(pmetodo)
-            pdf_hist, condicao, metodo = get_details_filtro_pronto(df_hist, condicao, pmetodo, filtro_pronto_selecionado)
-            generate_backtesting(pdf_hist, pmetodo)
-        with tab5:
-            pmetodo = tab5
-            st.info(pmetodo)
-            df_hist, condicao, metodo = get_details_filtro_pronto(df_hist, condicao, pmetodo, filtro_pronto_selecionado)
-            generate_backtesting(pdf_hist, pmetodo)
-        with tab6:
-            pmetodo = tab6
-            st.info(pmetodo)
-            pdf_hist, condicao, metodo = get_details_filtro_pronto(df_hist, condicao, pmetodo, filtro_pronto_selecionado)
-            generate_backtesting(pdf_hist, pmetodo)
-        with tab7:
-            pmetodo = tab7
-            st.info(pmetodo)
-            pdf_hist, condicao, metodo = get_details_filtro_pronto(df_hist, condicao, pmetodo, filtro_pronto_selecionado)
-            generate_backtesting(pdf_hist, pmetodo)
-        with tab8:
-            pmetodo = tab8
-            st.info(pmetodo)
-            df_hist, condicao, metodo = get_details_filtro_pronto(df_hist, condicao, pmetodo, filtro_pronto_selecionado)
-            generate_backtesting(df_hist, pmetodo)
-        with tab9:
-            pmetodo = tab9
-            st.info(pmetodo)
-            pdf_hist, condicao, metodo = get_details_filtro_pronto(df_hist, condicao, pmetodo, filtro_pronto_selecionado)
-            generate_backtesting(pdf_hist, pmetodo)
-        with tab10:
-            pmetodo = tab10
-            st.info(pmetodo)
-            pdf_hist, condicao, metodo = get_details_filtro_pronto(df_hist, condicao, pmetodo, filtro_pronto_selecionado)
-            generate_backtesting(pdf_hist, pmetodo)
-        with tab11:
-            pmetodo = tab11
-            st.info(pmetodo)
-            pdf_hist, condicao, metodo = get_details_filtro_pronto(df_hist, condicao, pmetodo, filtro_pronto_selecionado)
-            generate_backtesting(pdf_hist, pmetodo)
+        # 1. Crie as abas usando sua lista de métodos
+        tabs = st.tabs(metodos_tabs)
+
+        # 2. Use `zip` para iterar sobre as abas e os nomes dos métodos ao mesmo tempo
+        for tab, metodo_nome in zip(tabs, metodos_tabs):
+            
+            # 3. `with tab:` define o conteúdo para a aba atual no loop
+            with tab:
+                st.info(f"Analisando o método: {metodo_nome}")
+
+                # 4. CRUCIAL: Armazene o resultado do filtro em uma NOVA variável local.
+                #    Não sobrescreva o `df_hist` original.
+                pdf_hist_filtrado, _, _ = get_details_filtro_pronto(
+                    df_hist.copy(),  # Passe uma cópia para garantir que o original nunca seja alterado
+                    condicao,
+                    metodo_nome,
+                    filtro_pronto_selecionado
+                )
+
+                # 5. Chame a função de backtesting com os dados filtrados específicos desta aba.
+                #    O `metodo_nome` também é usado para criar a `key` única do gráfico,
+                #    o que já tínhamos corrigido antes e agora se torna ainda mais importante.
+                generate_backtesting(pdf_hist_filtrado, metodo_nome)
 
 # if "logged_in" not in st.session_state:
 #     st.session_state["logged_in"] = False
