@@ -247,26 +247,39 @@ def generate_backtesting(pdf_hist, metodo):
         st.info("Sem jogos para analisar com os filtros selecionados.")
         return
 
+    str_voids = f"Voids: {stats['total_voids']}, " if stats['total_voids'] > 0 else ''
+    summary_text = (
+        f"**Jogos:** {stats['total_jogos']} | "
+        f"**Greens:** {stats['total_greens']} | "
+        f"**Reds:** {stats['total_reds']} | "
+        f"{str_voids}"
+        f"**Winrate:** {stats['winrate']}% | "
+        f"**Profit Líquido:** {stats['profit_acumulado']} | "
+        f"**Comissão:** {COMMISSION}% | "
+        f"**Odd Média:** {odd_media}"
+    )
+    st.markdown(summary_text)
+
     # --- Apresentação em Colunas ---
-    col1, col2, col3, col4 = st.columns(4)
+    # col1, col2, col3, col4 = st.columns(4)
 
-    with col1:
-        st.metric(label="Total de Jogos", value=stats['total_jogos'])
-        profit = float(stats['profit_acumulado'])
-        st.metric(label="Profit Líquido", value=f"{profit:.2f} un")
+    # with col1:
+    #     st.metric(label="Total de Jogos", value=stats['total_jogos'])
+    #     profit = float(stats['profit_acumulado'])
+    #     st.metric(label="Profit Líquido", value=f"{profit:.2f} un")
 
-    with col2:
-        st.metric(label="Greens ✅", value=stats['total_greens'])
-        st.metric(label="Comissão Média", value=f"{COMMISSION:.2f}%")
+    # with col2:
+    #     st.metric(label="Greens ✅", value=stats['total_greens'])
+    #     st.metric(label="Comissão Média", value=f"{COMMISSION:.2f}%")
 
-    with col3:
-        st.metric(label="Reds ❌", value=stats['total_reds'])
-        st.metric(label="Odd Média", value=f"{odd_media:.2f}")
+    # with col3:
+    #     st.metric(label="Reds ❌", value=stats['total_reds'])
+    #     st.metric(label="Odd Média", value=f"{odd_media:.2f}")
 
-    with col4:
-        st.metric(label="Voids 🔄", value=stats['total_voids'])
-        winrate = float(stats['winrate'])
-        st.metric(label="Winrate (Taxa de Acerto)", value=f"{winrate:.2f}%")
+    # with col4:
+    #     st.metric(label="Voids 🔄", value=stats['total_voids'])
+    #     winrate = float(stats['winrate'])
+    #     st.metric(label="Winrate (Taxa de Acerto)", value=f"{winrate:.2f}%")
 
     # Criação e exibição do gráfico
     profit_chart_fig = create_profit_chart(df_hist)
