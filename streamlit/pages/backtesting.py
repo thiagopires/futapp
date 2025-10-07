@@ -4,9 +4,9 @@ from utils.filters import *
 from datetime import date
 import plotly.express as px
 
-def generate_backtesting(df_hist, metodo):
+def generate_backtesting(pdf_hist, metodo):
 
-    df_hist, odd_media = get_result_filtro_pronto(df_hist, metodo)
+    df_hist, odd_media = get_result_filtro_pronto(pdf_hist, metodo)
 
     st.write(f"**Resultado:**")
 
