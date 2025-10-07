@@ -409,7 +409,7 @@ def main_page(fonte_dados):
     with col1:
         filtro_pronto_selecionado = st.selectbox("Filtros Prontos", filtros_prontos[fonte_dados])
 
-    df_hist, condicao, metodo = get_details_filtro_pronto(df_hist, condicao, metodo, filtro_pronto_selecionado)
+    # df_hist, condicao, metodo = get_details_filtro_pronto(df_hist, condicao, metodo, filtro_pronto_selecionado)
 
     st.divider()
 
@@ -418,27 +418,30 @@ def main_page(fonte_dados):
 
         tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8, tab9, tab10, tab11 = st.tabs(metodos_tabs)
         with tab1:
-            generate_backtesting(df_hist, tab1)
+            pmetodo = tab1
         with tab2:
-            generate_backtesting(df_hist, tab2)
+            pmetodo = tab2
         with tab3:
-            generate_backtesting(df_hist, tab3)
+            pmetodo = tab3
         with tab4:
-            generate_backtesting(df_hist, tab4)
+            pmetodo = tab4
         with tab5:
-            generate_backtesting(df_hist, tab5)
+            pmetodo = tab5
         with tab6:
-            generate_backtesting(df_hist, tab6)
+            pmetodo = tab6
         with tab7:
-            generate_backtesting(df_hist, tab7)
+            pmetodo = tab7
         with tab8:
-            generate_backtesting(df_hist, tab8)
+            pmetodo = tab8
         with tab9:
-            generate_backtesting(df_hist, tab9)
-        with tab10:
-            generate_backtesting(df_hist, tab10)
+            pmetodo = tab9
+        with tab10
+            pmetodo = tab10
         with tab11:
-            generate_backtesting(df_hist, tab11)
+            pmetodo = tab11
+        
+        df_hist, condicao, metodo = get_details_filtro_pronto(df_hist, condicao, pmetodo, filtro_pronto_selecionado)
+        generate_backtesting(df_hist, pmetodo)
 
 # if "logged_in" not in st.session_state:
 #     st.session_state["logged_in"] = False
