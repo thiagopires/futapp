@@ -252,7 +252,8 @@ def generate_backtesting(pdf_hist, metodo):
 
     with col1:
         st.metric(label="Total de Jogos", value=stats['total_jogos'])
-        st.metric(label="Profit Líquido", value=f"{stats['profit_acumulado']:.2f} un")
+        profit = float(stats['profit_acumulado'])
+        st.metric(label="Profit Líquido", value=f"{profit:.2f} un")
 
     with col2:
         st.metric(label="Greens ✅", value=stats['total_greens'])
@@ -264,7 +265,8 @@ def generate_backtesting(pdf_hist, metodo):
 
     with col4:
         st.metric(label="Voids 🔄", value=stats['total_voids'])
-        st.metric(label="Winrate (Taxa de Acerto)", value=f"{stats['winrate']:.2f}%")
+        winrate = float(stats['winrate'])
+        st.metric(label="Winrate (Taxa de Acerto)", value=f"{winrate:.2f}%")
 
     # Criação e exibição do gráfico
     profit_chart_fig = create_profit_chart(df_hist)
