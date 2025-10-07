@@ -35,6 +35,20 @@ metodos = [
     'Back Casa ou Back 1x1',
 ]
 
+metodos_tabs = [
+    'Back Casa',
+    'Back Visitante',
+    'Lay Casa',
+    'Lay Visitante',
+    'Lay 0x1',
+    'Lay 0x2',
+    'Lay 0x3',
+    'Lay Goleada Visitante',
+    'Over 0.5 HT',
+    'Over 2.5 FT',
+    'BTTS Sim'
+]
+
 filtros_prontos =  {
     'FootyStats' : [
         "Sem filtro",

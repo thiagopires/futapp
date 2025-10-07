@@ -4,6 +4,123 @@ from utils.filters import *
 from datetime import date
 import plotly.express as px
 
+def generate_backtesting(metodo):
+
+    df_hist, odd_media = get_result_filtro_pronto(df_hist, metodo)
+
+    st.write(f"**Resultado:**")
+
+    total_jogos = len(df_hist)
+    
+    if total_jogos > 0:
+        total_greens = len(df_hist[(df_hist['Status_Metodo'] == 'GREEN')])
+        total_reds = len(df_hist[(df_hist['Status_Metodo'] == 'RED')])
+        total_voids = len(df_hist[(df_hist['Status_Metodo'] == 'VOID')])
+        winrate = round((total_greens + total_voids) / total_jogos * 100, 2)
+        profit_acumulado = f"{str(round(df_hist['Profit'].sum(), 2))} unidades"
+
+        str_voids = f'Voids: {total_voids}, ' if total_voids > 0 else ''
+        st.write(f"Jogos: {total_jogos}, Greens: {total_greens}, Reds: {total_reds}, {str_voids}Winrate: {winrate}%, Profit Acumulado Líquido: {profit_acumulado}, Comissão: 2.8%, Odd Média: {odd_media}")
+
+        daily_profit = df_hist.groupby("Date")["Profit"].sum().reset_index()
+        daily_profit["Cumulative_Profit"] = daily_profit["Profit"].cumsum()
+
+        fig = px.line(
+            daily_profit,
+            x="Date",
+            y="Cumulative_Profit",
+            title="Lucro Diário",
+            labels={"Date": "Data", "Cumulative_Profit": "Unidades/Stakes"},
+            markers=True
+        )
+
+        fig.update_layout(
+            template="plotly_white",
+            title={
+                "text": "Lucro Diário",
+                "y": 0.9,
+                "x": 0.5,
+                "xanchor": "center",
+                "yanchor": "top",
+                "font": {"size": 24}
+            },
+            xaxis=dict(showgrid=True, gridcolor="lightgray"),
+            yaxis=dict(showgrid=True, gridcolor="lightgray"),
+            xaxis_title="Data",
+            yaxis_title="Unidades/Stakes",
+            font=dict(family="Arial", size=14),
+            legend=dict(
+                title="Legenda",
+                orientation="h",
+                x=0.5, y=-0.2,
+                xanchor="center",
+                yanchor="top",
+                borderwidth=1,
+            )
+        )
+
+        fig.update_traces(
+            line=dict(width=2),
+            marker=dict(size=8, symbol="circle", color="red"),
+            hovertemplate="<b>Data:</b> %{x}<br><b>Lucro:</b> %{y}<extra></extra>"
+        )
+
+        st.plotly_chart(fig)
+
+        col1, col2 = st.columns(2)
+        with col1:
+            st.write("**Profit por Liga/Mês**")
+            report = df_hist.groupby(["League", "Month_Year"])["Profit"].sum().reset_index()
+            print_dataframe(report)
+        with col2:
+            st.write("**Profit acumulado por Liga**")
+            report = df_hist.groupby(["League"])["Profit"].sum().reset_index()
+            report = report.sort_values(by="Profit", ascending=False)
+            report["Cumulative_Profit"] = report["Profit"].cumsum()
+            print_dataframe(report)
+
+        col1, col2 = st.columns(2)
+        with col1:
+            st.write("**Resultado por Liga**")
+            report = df_hist.groupby(["League", "Status_Metodo"]).size().unstack(fill_value=0).reset_index()
+            if 'GREEN' not in report.columns:
+                report['GREEN'] = 0
+            if 'RED' not in report.columns:
+                report['RED'] = 0
+            report['Winrate'] = round((report['GREEN'] / (report['GREEN'] + report['RED'])) * 100, 2)
+            print_dataframe(report)
+        with col2:
+            st.write("**Resultado por FX (Prob, CV) do MO**")
+            report = df_hist.groupby(["League", "FX_Probabilidade_A", "FX_CV_HDA", "Status_Metodo"], observed=True).size().unstack(fill_value=0).reset_index()
+            if 'GREEN' not in report.columns:
+                report['GREEN'] = 0
+            if 'RED' not in report.columns:
+                report['RED'] = 0
+            report = report[report['GREEN'] + report['RED'] > 0]
+            report['Winrate'] = round((report['GREEN'] / (report['GREEN'] + report['RED'])) * 100, 2)
+            print_dataframe(report)
+
+        df_columns = ['League','Rodada','Date','Time','Home','Away','Resultado_FT','Goals_H_Minutes','Goals_A_Minutes','Odd_H_FT','Odd_D_FT','Odd_A_FT','Odd_CS_0x1_Lay','Odd_CS_0x2_Lay','Odd_CS_0x3_Lay','Odd_Over05_FT','Odd_Over15_FT','Odd_Over25_FT','Odd_Under05_FT','Odd_Under15_FT','Odd_Under25_FT','Odd_BTTS_Yes','Odd_BTTS_No','Odd_DC_1X','Odd_DC_12','Odd_DC_X2','XG_Total_Pre','XG_Home_Pre','XG_Away_Pre','Diff_XG_Home_Away_Pre','PPG_Home_Pre','PPG_Away_Pre','Primeiro_Gol','Status_Metodo','Profit','Probabilidade_H_FT','Probabilidade_D_FT','Probabilidade_A_FT','CV_HDA_FT']
+
+        st.write(f"**:green[GREENs:]**")
+        print_dataframe(
+            df_hist.loc[df_hist['Status_Metodo'] == 'GREEN', df_columns]
+        )
+
+        st.write(f"**:red[REDs:]**")
+        print_dataframe(
+            df_hist.loc[df_hist['Status_Metodo'] == 'RED', df_columns]
+        )
+
+        if total_voids > 0:
+            st.write(f"**:gray[VOIDs:]**")
+            print_dataframe(
+                df_hist.loc[df_hist['Status_Metodo'] == 'VOID', df_columns]
+            )
+
+    else:
+        st.info("Sem jogos.")
+
 def main_page(fonte_dados):
 
     if st.secrets['ENV'] == 'dev':
@@ -127,120 +244,29 @@ def main_page(fonte_dados):
 
     if filtro_pronto_selecionado != "Sem filtro" or executar:
 
-        df_hist, odd_media = get_result_filtro_pronto(df_hist, metodo)
-
-        st.write(f"**Resultado:**")
-
-        total_jogos = len(df_hist)
-        
-        if total_jogos > 0:
-            total_greens = len(df_hist[(df_hist['Status_Metodo'] == 'GREEN')])
-            total_reds = len(df_hist[(df_hist['Status_Metodo'] == 'RED')])
-            total_voids = len(df_hist[(df_hist['Status_Metodo'] == 'VOID')])
-            winrate = round((total_greens + total_voids) / total_jogos * 100, 2)
-            profit_acumulado = f"{str(round(df_hist['Profit'].sum(), 2))} unidades"
-
-            str_voids = f'Voids: {total_voids}, ' if total_voids > 0 else ''
-            st.write(f"Jogos: {total_jogos}, Greens: {total_greens}, Reds: {total_reds}, {str_voids}Winrate: {winrate}%, Profit Acumulado Líquido: {profit_acumulado}, Comissão: 2.8%, Odd Média: {odd_media}")
-
-            daily_profit = df_hist.groupby("Date")["Profit"].sum().reset_index()
-            daily_profit["Cumulative_Profit"] = daily_profit["Profit"].cumsum()
-
-            fig = px.line(
-                daily_profit,
-                x="Date",
-                y="Cumulative_Profit",
-                title="Lucro Diário",
-                labels={"Date": "Data", "Cumulative_Profit": "Unidades/Stakes"},
-                markers=True
-            )
-
-            fig.update_layout(
-                template="plotly_white",
-                title={
-                    "text": "Lucro Diário",
-                    "y": 0.9,
-                    "x": 0.5,
-                    "xanchor": "center",
-                    "yanchor": "top",
-                    "font": {"size": 24}
-                },
-                xaxis=dict(showgrid=True, gridcolor="lightgray"),
-                yaxis=dict(showgrid=True, gridcolor="lightgray"),
-                xaxis_title="Data",
-                yaxis_title="Unidades/Stakes",
-                font=dict(family="Arial", size=14),
-                legend=dict(
-                    title="Legenda",
-                    orientation="h",
-                    x=0.5, y=-0.2,
-                    xanchor="center",
-                    yanchor="top",
-                    borderwidth=1,
-                )
-            )
-
-            fig.update_traces(
-                line=dict(width=2),
-                marker=dict(size=8, symbol="circle", color="red"),
-                hovertemplate="<b>Data:</b> %{x}<br><b>Lucro:</b> %{y}<extra></extra>"
-            )
-
-            st.plotly_chart(fig)
-
-            col1, col2 = st.columns(2)
-            with col1:
-                st.write("**Profit por Liga/Mês**")
-                report = df_hist.groupby(["League", "Month_Year"])["Profit"].sum().reset_index()
-                print_dataframe(report)
-            with col2:
-                st.write("**Profit acumulado por Liga**")
-                report = df_hist.groupby(["League"])["Profit"].sum().reset_index()
-                report = report.sort_values(by="Profit", ascending=False)
-                report["Cumulative_Profit"] = report["Profit"].cumsum()
-                print_dataframe(report)
-
-            col1, col2 = st.columns(2)
-            with col1:
-                st.write("**Resultado por Liga**")
-                report = df_hist.groupby(["League", "Status_Metodo"]).size().unstack(fill_value=0).reset_index()
-                if 'GREEN' not in report.columns:
-                    report['GREEN'] = 0
-                if 'RED' not in report.columns:
-                    report['RED'] = 0
-                report['Winrate'] = round((report['GREEN'] / (report['GREEN'] + report['RED'])) * 100, 2)
-                print_dataframe(report)
-            with col2:
-                st.write("**Resultado por FX (Prob, CV) do MO**")
-                report = df_hist.groupby(["League", "FX_Probabilidade_A", "FX_CV_HDA", "Status_Metodo"], observed=True).size().unstack(fill_value=0).reset_index()
-                if 'GREEN' not in report.columns:
-                    report['GREEN'] = 0
-                if 'RED' not in report.columns:
-                    report['RED'] = 0
-                report = report[report['GREEN'] + report['RED'] > 0]
-                report['Winrate'] = round((report['GREEN'] / (report['GREEN'] + report['RED'])) * 100, 2)
-                print_dataframe(report)
-
-            df_columns = ['League','Rodada','Date','Time','Home','Away','Resultado_FT','Goals_H_Minutes','Goals_A_Minutes','Odd_H_FT','Odd_D_FT','Odd_A_FT','Odd_CS_0x1_Lay','Odd_CS_0x2_Lay','Odd_CS_0x3_Lay','Odd_Over05_FT','Odd_Over15_FT','Odd_Over25_FT','Odd_Under05_FT','Odd_Under15_FT','Odd_Under25_FT','Odd_BTTS_Yes','Odd_BTTS_No','Odd_DC_1X','Odd_DC_12','Odd_DC_X2','XG_Total_Pre','XG_Home_Pre','XG_Away_Pre','Diff_XG_Home_Away_Pre','PPG_Home_Pre','PPG_Away_Pre','Primeiro_Gol','Status_Metodo','Profit','Probabilidade_H_FT','Probabilidade_D_FT','Probabilidade_A_FT','CV_HDA_FT']
-
-            st.write(f"**:green[GREENs:]**")
-            print_dataframe(
-                df_hist.loc[df_hist['Status_Metodo'] == 'GREEN', df_columns]
-            )
-
-            st.write(f"**:red[REDs:]**")
-            print_dataframe(
-                df_hist.loc[df_hist['Status_Metodo'] == 'RED', df_columns]
-            )
-
-            if total_voids > 0:
-                st.write(f"**:gray[VOIDs:]**")
-                print_dataframe(
-                    df_hist.loc[df_hist['Status_Metodo'] == 'VOID', df_columns]
-                )
-
-        else:
-            st.info("Sem jogos.")
+        tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8, tab9, tab10, tab11 = st.tabs(metodos_tabs)
+        with tab1:
+            generate_backtesting(tab1)
+        with tab2:
+            generate_backtesting(tab2)
+        with tab3:
+            generate_backtesting(tab3)
+        with tab4:
+            generate_backtesting(tab4)
+        with tab5:
+            generate_backtesting(tab5)
+        with tab6:
+            generate_backtesting(tab6)
+        with tab7:
+            generate_backtesting(tab7)
+        with tab8:
+            generate_backtesting(tab8)
+        with tab9:
+            generate_backtesting(tab9)
+        with tab10:
+            generate_backtesting(tab10)
+        with tab11:
+            generate_backtesting(tab11)
 
 # if "logged_in" not in st.session_state:
 #     st.session_state["logged_in"] = False
