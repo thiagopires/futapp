@@ -426,7 +426,7 @@ def main_page(fonte_dados):
     st.divider()
 
 
-    col1, col2, col3 = st.columns(3)
+    col1, _, _ = st.columns(3)
     with col1:
         filtro_pronto_selecionado = st.selectbox("Filtros Prontos", filtros_prontos[fonte_dados])
 
