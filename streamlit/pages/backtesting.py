@@ -430,13 +430,18 @@ def main_page(fonte_dados):
     with col1:
         filtro_pronto_selecionado = st.selectbox("Filtros Prontos", filtros_prontos[fonte_dados])
 
-    # df_hist, condicao, metodo = get_details_filtro_pronto(df_hist, condicao, metodo, filtro_pronto_selecionado)
-
     st.divider()
 
     if filtro_pronto_selecionado != "Sem filtro" or executar:
 
-        tabs = st.tabs(metodos_tabs)
+        _, _, metodo = get_details_filtro_pronto(
+            df_hist.copy(), 
+            condicao, 
+            metodo, 
+            filtro_pronto_selecionado
+        )
+
+        tabs = st.tabs(metodos_tabs, default=metodo)
 
         for tab, metodo_nome in zip(tabs, metodos_tabs):
 
