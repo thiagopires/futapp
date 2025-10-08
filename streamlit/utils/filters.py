@@ -317,8 +317,10 @@ def get_result_filtro_pronto(df, metodo):
         df['Profit'] = 0
 
     elif metodo == 'Lay Goleada Visitante':
-        df.loc[((df['Goals_A_FT'] < 4) | (df['Goals_A_FT'] <= df['Goals_H_FT'])), "Status_Metodo"] = "GREEN"
-        df['Profit'] = 0
+        filter = ((df['Goals_A_FT'] < 4) | (df['Goals_A_FT'] <= df['Goals_H_FT']))
+        df.loc[filter, 'Profit'] = profit_no_comission(df['Odd_CS_Goleada_A'],'Lay')
+        df.loc[filter, "Status_Metodo"] = "GREEN"
+        odd_media = f"{str(round(df['Odd_CS_Goleada_A'].mean(), 2))}"
 
     elif metodo == 'Lay 0x1 e Lay 1x0':
         df.loc[((df["Resultado_80"] != '0-1') & (df["Resultado_80"] != '1-0')), "Status_Metodo"] = "GREEN"
