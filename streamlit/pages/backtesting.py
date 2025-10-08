@@ -441,9 +441,8 @@ def main_page(fonte_dados):
             filtro_pronto_selecionado
         )
         st.info(f"Default: {metodo_default}")
-        tabs = st.tabs(metodos_tabs, default=metodo_default, key=filtro_pronto_selecionado)
 
-        for tab, metodo_nome in zip(tabs, metodos_tabs):
+        for tab, metodo_nome in zip(st.tabs(metodos_tabs, default=metodo_default), metodos_tabs):
 
             with tab:
                 st.info(f"Analisando o método: {metodo_nome}")
