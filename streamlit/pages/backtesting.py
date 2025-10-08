@@ -434,14 +434,14 @@ def main_page(fonte_dados):
 
     if filtro_pronto_selecionado != "Sem filtro" or executar:
 
-        _, _, metodo = get_details_filtro_pronto(
+        _, _, metodo_default = get_details_filtro_pronto(
             df_hist.copy(), 
             condicao, 
             metodo, 
             filtro_pronto_selecionado
         )
-
-        tabs = st.tabs(metodos_tabs, default=metodo)
+        st.info(f"Default: {metodo_default}")
+        tabs = st.tabs(metodos_tabs, default=metodo_default)
 
         for tab, metodo_nome in zip(tabs, metodos_tabs):
 
