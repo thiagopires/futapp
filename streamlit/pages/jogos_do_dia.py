@@ -37,7 +37,7 @@ def main_page(fonte_dados):
             df_matches_columns = ['League','Rodada','Time','Home','Away','Odd_H_FT','Odd_D_FT','Odd_A_FT','Odd_Over25_FT','Odd_Under25_FT','Odd_BTTS_Yes','Odd_BTTS_No','Odd_CS_0x1_Lay','Odd_CS_0x2_Lay','Odd_CS_0x3_Lay','XG_Total_Pre','XG_Home_Pre','XG_Away_Pre','Odd_DC_1X','Odd_DC_12','Odd_DC_X2']
         if fonte_dados == "Betfair": 
             df_matches_columns = ['League','Rodada','Time','Home','Away','Resultado','Goals_H_Minutes','Goals_A_Minutes','Odd_H_FT','Odd_D_FT','Odd_A_FT','Odd_CS_0x1_Lay','Odd_CS_0x2_Lay','Odd_CS_0x3_Lay','Odd_Over25_FT','Odd_Under25_FT','Odd_BTTS_Yes','Odd_BTTS_No','XG_Total_Pre','XG_Home_Pre','XG_Away_Pre','Odd_DC_1X','Odd_DC_12','Odd_DC_X2']
-       
+
         match_selected = st.dataframe(
             df_matches[df_matches_columns]
             , on_select="rerun"

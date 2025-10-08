@@ -300,16 +300,16 @@ def generate_backtesting(pdf_hist, metodo):
     display_cols = [col for col in df_columns if col in df_hist.columns]
 
     st.write("### Detalhamento dos Jogos")
-    with st.expander("Clique para ver os **GREENs**"):
+    with st.expander("Clique para ver os **GREENs** ✅"):
         st.write(f"**:green[GREENs:]**")
         print_dataframe(df_hist.loc[df_hist['Status_Metodo'] == STATUS_GREEN, display_cols])
     
-    with st.expander("Clique para ver os **REDs**"):
+    with st.expander("Clique para ver os **REDs** ❌"):
         st.write(f"**:red[REDs:]**")
         print_dataframe(df_hist.loc[df_hist['Status_Metodo'] == STATUS_RED, display_cols])
 
     if stats['total_voids'] > 0:
-        with st.expander("Clique para ver os **VOIDs**"):
+        with st.expander("Clique para ver os **VOIDs** 🔄"):
             st.write(f"**:gray[VOIDs:]**")
             print_dataframe(df_hist.loc[df_hist['Status_Metodo'] == STATUS_VOID, display_cols])
 
