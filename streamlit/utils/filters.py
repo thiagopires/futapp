@@ -40,6 +40,9 @@ metodos_tabs = [
     'Back Visitante',
     'Lay Casa',
     'Lay Visitante',
+    'Lay 0x1',
+    'Lay 0x2',
+    'Lay 0x3',
     'Lay 0x1 65min',
     'Lay 0x2 65min',
     'Lay 0x3 65min',
@@ -276,8 +279,10 @@ def get_result_filtro_pronto(df, metodo):
         odd_media = f"{str(round(df['Odd_CS_0x1_Lay'].mean(), 2))}"
 
     elif metodo == 'Lay 0x1':
-        df.loc[(df["Resultado_80"] != '0-1'), "Status_Metodo"] = "GREEN"
-        df['Profit'] = 0
+        filter = (df["Resultado_FT"] != '0-1')
+        df.loc[filter, 'Profit'] = profit_no_comission(df['Odd_CS_0x1_Lay'],'Lay')
+        df.loc[filter, "Status_Metodo"] = "GREEN"
+        odd_media = f"{str(round(df['Odd_CS_0x1_Lay'].mean(), 2))}"
 
     elif metodo == 'Lay 1x1':
         df.loc[(df["Resultado_80"] != '1-1'), "Status_Metodo"] = "GREEN"
@@ -294,8 +299,10 @@ def get_result_filtro_pronto(df, metodo):
         odd_media = f"{str(round(df['Odd_CS_0x2_Lay'].mean(), 2))}"
 
     elif metodo == 'Lay 0x2':
-        df.loc[df["Resultado_80"] != '0-2', "Status_Metodo"] = "GREEN"
-        df['Profit'] = 0
+        filter = (df["Resultado_FT"] != '0-2')
+        df.loc[filter, 'Profit'] = profit_no_comission(df['Odd_CS_0x2_Lay'],'Lay')
+        df.loc[filter, "Status_Metodo"] = "GREEN"
+        odd_media = f"{str(round(df['Odd_CS_0x2_Lay'].mean(), 2))}"
 
     elif metodo == 'Lay 0x3 65min':
         df['Profit'] =  np.where(df['Resultado_65'] == '0-3', -0.25,
@@ -309,8 +316,10 @@ def get_result_filtro_pronto(df, metodo):
         odd_media = f"{str(round(df['Odd_CS_0x3_Lay'].mean(), 2))}"
         
     elif metodo == 'Lay 0x3':
-        df.loc[df["Resultado_80"] != '0-3', "Status_Metodo"] = "GREEN"
-        df['Profit'] = 0
+        filter = (df["Resultado_FT"] != '0-3')
+        df.loc[filter, 'Profit'] = profit_no_comission(df['Odd_CS_0x3_Lay'],'Lay')
+        df.loc[filter, "Status_Metodo"] = "GREEN"
+        odd_media = f"{str(round(df['Odd_CS_0x3_Lay'].mean(), 2))}"
 
     elif metodo == 'Lay 2x2':
         df.loc[df["Resultado_60"] != '2-2', "Status_Metodo"] = "GREEN"
