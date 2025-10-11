@@ -342,7 +342,7 @@ def main_page(fonte_dados):
 
     col1, col2, col3 = st.columns(3)
     with col1: data_inicial = st.date_input("Data Inicial", date(2025, 7, 1))
-    with col2: data_final = st.date_input("Data Final", get_today())
+    with col2: data_final = st.date_input("Data Final", get_today(-1))
     # with col3:
     #     seasons = sorted(df_hist['Season'].unique())
     #     seasons.insert(0, 'Todas as Temporadas')
