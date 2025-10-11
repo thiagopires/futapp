@@ -1,85 +1,106 @@
-from utils.functions import *
-from utils.filters import *
+import streamlit as st
+
+# --- Lógica de Cálculo (Separada da UI) ---
+# MELHORIA: Mover os cálculos para funções dedicadas torna o código mais limpo.
+
+def calcular_cashout_back_lay(odd_back, stake_back, odd_lay):
+    """Calcula o cashout para uma aposta Back/Lay."""
+    if odd_lay == 0: # Evita divisão por zero
+        return None
+    
+    stake_lay = (stake_back * odd_back) / odd_lay
+    lucro_perda = stake_lay - stake_back
+    
+    return {
+        "stake_necessaria": stake_lay,
+        "lucro_perda": lucro_perda
+    }
+
+def calcular_cashout_lay_back(odd_lay, responsabilidade_lay, odd_back):
+    """Calcula o cashout para uma aposta Lay/Back."""
+    if odd_lay <= 1 or odd_back == 0: # Evita divisões inválidas
+        return None
+
+    stake_lay = responsabilidade_lay / (odd_lay - 1)
+    stake_back = (stake_lay * odd_lay) / odd_back
+    lucro_perda = (stake_back * (odd_back - 1)) - responsabilidade_lay
+    
+    return {
+        "stake_necessaria": stake_back,
+        "lucro_perda": lucro_perda
+    }
+
+# --- Interface Principal ---
 
 def main_page():
 
-    if st.secrets['ENV'] == 'dev':
+    if st.secrets.get('ENV') == 'dev':
         st.info("Ambiente de Desenvolvimento. Branch: dev")
 
     st.title("Futapp v0.3")
     st.caption("desenvolvido por thiago pires")
-    st.header("⚽ Calculadora")
+    st.header("⚽ Calculadora de Trading")
 
-    def clear_state(keys):
-        for key in keys:
-            if key in st.session_state:
-                del st.session_state[key]
+    # MELHORIA: Expander com instruções para ajudar o usuário.
+    with st.expander("📘 Como usar a calculadora?"):
+        st.markdown("""
+        Esta ferramenta calcula o valor que você precisa apostar para garantir um lucro (ou minimizar uma perda) antes do final de um evento.
 
-    aba = st.radio("Selecione a aba", ["Back/Lay", "Lay/Back"], key="active_tab")
+        - **Aba Back/Lay**: Use quando você fez uma aposta **a favor** de um resultado (`Back`) e quer fechá-la com uma aposta **contra** (`Lay`).
+        - **Aba Lay/Back**: Use quando você fez uma aposta **contra** um resultado (`Lay`) e quer fechá-la com uma aposta **a favor** (`Back`).
+        """)
 
-    col_cashout, col_resultado = st.columns(2)
+    aba = st.radio(
+        "Selecione o tipo de operação:",
+        ["Back/Lay", "Lay/Back"],
+        key="active_tab",
+        horizontal=True # MELHORIA: Deixa o rádio mais compacto.
+    )
 
-    # Coluna de Cashout
-    with col_cashout:
-        st.header("Cashout")
+    col_entrada, col_resultado = st.columns(2, gap="large")
 
-        if aba == "Back/Lay":
-            clear_state(["lb_odd_lay", "lb_responsabilidade_lay", "lb_odd_back"])
+    # --- Coluna de Entrada de Dados ---
+    with col_entrada:
+        # MELHORIA: st.form melhora a UX ao evitar recálculos a cada alteração.
+        # O cálculo só ocorre quando o botão é pressionado.
+        with st.form(key="calculadora_form"):
+            if aba == "Back/Lay":
+                st.subheader("Sua aposta inicial (Back)")
+                bl_odd_back = st.number_input("Odd Back", min_value=1.01, step=0.01, format="%.2f", key="bl_odd_back")
+                bl_stake_back = st.number_input("Stake Back (€)", min_value=0.01, step=1.00, format="%.2f", key="bl_stake_back")
+                
+                st.subheader("Fechamento da aposta (Lay)")
+                bl_odd_lay = st.number_input("Odd Lay de Fechamento", min_value=1.01, step=0.01, format="%.2f", key="bl_odd_lay")
 
-            st.number_input("Odd Back", key="bl_odd_back")
-            st.number_input("Stake Back", key="bl_stake_back")
-            st.number_input("Odd Lay", key="bl_odd_lay")
+            elif aba == "Lay/Back":
+                st.subheader("Sua aposta inicial (Lay)")
+                lb_odd_lay = st.number_input("Odd Lay", min_value=1.01, step=0.01, format="%.2f", key="lb_odd_lay")
+                lb_responsabilidade_lay = st.number_input("Sua Responsabilidade (€)", min_value=0.01, step=1.00, format="%.2f", key="lb_responsabilidade_lay")
+                
+                st.subheader("Fechamento da aposta (Back)")
+                lb_odd_back = st.number_input("Odd Back de Fechamento", min_value=1.01, step=0.01, format="%.2f", key="lb_odd_back")
 
-        elif aba == "Lay/Back":
-            clear_state(["bl_odd_back", "bl_stake_back", "bl_odd_lay"])
+            submitted = st.form_submit_button("Calcular Cashout")
 
-            st.number_input("Odd Lay", key="lb_odd_lay")
-            st.number_input("Responsabilidade Lay", key="lb_responsabilidade_lay")
-            st.number_input("Odd Back", key="lb_odd_back")
-
+    # --- Coluna de Resultados ---
     with col_resultado:
-        col1, _, _ = st.columns(3)
-        with col1:
-            # Back/Lay
-            if aba == "Back/Lay" and st.session_state.get('bl_odd_back') and st.session_state.get('bl_stake_back') and st.session_state.get('bl_odd_lay'):
-                stake_lay = st.session_state['bl_stake_back'] / st.session_state['bl_odd_lay'] * st.session_state['bl_odd_back']
-                lucro_perda = round(stake_lay - st.session_state['bl_stake_back'], 2)
+        st.subheader("Resultado do Cashout")
+        
+        # MELHORIA: A lógica de exibição é acionada apenas pelo botão do formulário.
+        if submitted:
+            resultado = None
+            label_stake = ""
 
-                m1, m2, = st.columns(2)
-                m1.metric(label="Stake de Lay:", value=f"R$ {str(round(stake_lay, 2))}")
-                m2.metric(label="Perda/Lucro:", value=f"R$ {str(lucro_perda)}")
+            if aba == "Back/Lay":
+                resultado = calcular_cashout_back_lay(bl_odd_back, bl_stake_back, bl_odd_lay)
+                label_stake = "Stake de Lay necessária:"
+                
+            elif aba == "Lay/Back":
+                resultado = calcular_cashout_lay_back(lb_odd_lay, lb_responsabilidade_lay, lb_odd_back)
+                label_stake = "Stake de Back necessária:"
 
-                # st.write(f"Stake de Lay:")
-                # container = st.container(border=True)
-                # container.code(str(round(stake_lay, 2)), language="text")
-
-                # st.write(f"Perda/Lucro:")
-                # container = st.container(border=True)
-                # container.code(str(lucro_perda), language="text")
-
-            # Lay/Back
-            if aba == "Lay/Back" and st.session_state.get('lb_odd_lay') and st.session_state.get('lb_responsabilidade_lay') and st.session_state.get('lb_odd_back'):
-                stake_lay = st.session_state['lb_responsabilidade_lay'] / (st.session_state['lb_odd_lay'] - 1)
-                stake_back = stake_lay * st.session_state['lb_odd_lay'] / st.session_state['lb_odd_back']
-                lucro_perda = round((stake_back * (st.session_state['lb_odd_back'] - 1)) - st.session_state['lb_responsabilidade_lay'], 2)
-
-                m1, m2, = st.columns(2)
-                m1.metric(label="Stake de Back:", value=f"R$ {str(round(stake_back, 2))}", width="content")
-                m2.metric(label="Perda/Lucro:", value=f"R$ {str(lucro_perda)}", width="content")
-
-                # st.write(f"Stake de Back:")
-                # container = st.container(border=True)
-                # container.code(str(round(stake_back, 2)), language="text")
-
-                # st.write(f"Perda/Lucro:")
-                # container = st.container(border=True)
-                # container.code(str(lucro_perda), language="text")
-
-# if "logged_in" not in st.session_state:
-#     st.session_state["logged_in"] = False
-
-# if st.session_state["logged_in"]:
-#     display_sidebar('block')
-#     main_page()
-# else:
-#     login_page()
+            if resultado:
+                lucro_perda = resultado['lucro_perda']
+                delta_color = "normal" # cinza para 0
+                if lucro_perda > 0:
+                    delta_color = "inverse" # verde
