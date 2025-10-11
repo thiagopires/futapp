@@ -46,8 +46,8 @@ def main_page():
                 lucro_perda = round(stake_lay - st.session_state['bl_stake_back'], 2)
 
                 m1, m2, = st.columns(2)
-                m1.metric(label="Stake de Lay:", value=str(round(stake_lay, 2)))
-                m2.metric(label="Perda/Lucro:", value=str(lucro_perda))
+                m1.metric(label="Stake de Lay:", value=f"R$ {str(round(stake_lay, 2))}")
+                m2.metric(label="Perda/Lucro:", value=f"R$ {str(lucro_perda)}")
 
                 # st.write(f"Stake de Lay:")
                 # container = st.container(border=True)
@@ -64,8 +64,8 @@ def main_page():
                 lucro_perda = round((stake_back * (st.session_state['lb_odd_back'] - 1)) - st.session_state['lb_responsabilidade_lay'], 2)
 
                 m1, m2, = st.columns(2)
-                m1.metric(label="Stake de Back:", value=str(round(stake_back, 2)))
-                m2.metric(label="Perda/Lucro:", value=str(lucro_perda))
+                m1.metric(label="Stake de Back:", value=f"R$ {str(round(stake_back, 2))}", width="content")
+                m2.metric(label="Perda/Lucro:", value=f"R$ {str(lucro_perda)}", width="content")
 
                 # st.write(f"Stake de Back:")
                 # container = st.container(border=True)
