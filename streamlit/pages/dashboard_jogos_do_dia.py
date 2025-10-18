@@ -161,4 +161,4 @@ def main_page(fonte_dados):
 
 # --- Ponto de Entrada ---
 # A variável 'fonte_dados' agora vem do session_state, definido no app principal
-main_page(st.session_state.get('fonte_dados', 'Betfair'))
+# main_page(st.session_state.get('fonte_dados', 'Betfair'))

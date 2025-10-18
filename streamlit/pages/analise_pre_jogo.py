@@ -132,4 +132,4 @@ def main_page(fonte_dados):
 
 
 # --- Ponto de Entrada ---
-main_page(st.session_state.get('fonte_dados', 'Betfair'))
+# main_page(st.session_state.get('fonte_dados', 'Betfair'))

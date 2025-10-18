@@ -161,4 +161,4 @@ def main_page(fonte_dados):
                         print_dataframe(df_metodo_final.loc[df_metodo_final['Status_Metodo'] == 'VOID', display_cols])
 
 # --- Ponto de Entrada ---
-main_page(st.session_state.get('fonte_dados', 'Betfair'))
+# main_page(st.session_state.get('fonte_dados', 'Betfair'))
