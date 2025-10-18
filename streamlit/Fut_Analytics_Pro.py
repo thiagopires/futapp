@@ -58,21 +58,21 @@ else:
         st.divider()
         st.caption("Desenvolvido por Thiago Pires")
 
-        fonte_dados = st.session_state['fonte_dados']
+    fonte_dados = st.session_state['fonte_dados']
 
-        if opcoes[escolha] == "home":
-            st.title("Bem-vindo ao Fut Analytics Pro ⚽")
-            st.markdown("Use a barra de navegação à esquerda para explorar as diferentes ferramentas de análise.")
-            st.info("Selecione uma página na barra lateral para começar.")
+    if opcoes[escolha] == "home":
+        st.title("Bem-vindo ao Fut Analytics Pro ⚽")
+        st.markdown("Use a barra de navegação à esquerda para explorar as diferentes ferramentas de análise.")
+        st.info("Selecione uma página na barra lateral para começar.")
 
-        elif opcoes[escolha] == "analise_pre_jogo":
-            analise_pre_jogo.main_page(fonte_dados)
+    elif opcoes[escolha] == "analise_pre_jogo":
+        analise_pre_jogo.main_page(fonte_dados)
 
-        elif opcoes[escolha] == "backtesting":
-            backtesting.main_page(fonte_dados)
+    elif opcoes[escolha] == "backtesting":
+        backtesting.main_page(fonte_dados)
 
-        elif opcoes[escolha] == "dashboard_jogos_do_dia":
-            dashboard_jogos_do_dia.main_page(fonte_dados)
+    elif opcoes[escolha] == "dashboard_jogos_do_dia":
+        dashboard_jogos_do_dia.main_page(fonte_dados)
 
         # elif opcoes[escolha] == "base_de_dados":
         #     base_de_dados.main_page(fonte_dados)
