@@ -4,6 +4,127 @@ from utils.filters import *
 from datetime import date
 import plotly.express as px
 
+# def generate_backtesting(pdf_hist, metodo):
+
+#     df_hist, odd_media = get_result_filtro_pronto(pdf_hist, metodo)
+
+#     st.write(f"**Resultado:**")
+
+#     total_jogos = len(df_hist)
+    
+#     if total_jogos > 0:
+#         total_greens = len(df_hist[(df_hist['Status_Metodo'] == 'GREEN')])
+#         total_reds = len(df_hist[(df_hist['Status_Metodo'] == 'RED')])
+#         total_voids = len(df_hist[(df_hist['Status_Metodo'] == 'VOID')])
+#         winrate = round((total_greens + total_voids) / total_jogos * 100, 2)
+#         profit_acumulado = f"{str(round(df_hist['Profit'].sum(), 2))} unidades"
+
+#         str_voids = f'Voids: {total_voids}, ' if total_voids > 0 else ''
+#         st.write(f"Jogos: {total_jogos}, Greens: {total_greens}, Reds: {total_reds}, {str_voids}Winrate: {winrate}%, Profit Acumulado Líquido: {profit_acumulado}, Comissão: 2.8%, Odd Média: {odd_media}")
+
+#         daily_profit = df_hist.groupby("Date")["Profit"].sum().reset_index()
+#         daily_profit["Cumulative_Profit"] = daily_profit["Profit"].cumsum()
+
+#         fig = px.line(
+#             daily_profit,
+#             x="Date",
+#             y="Cumulative_Profit",
+#             title="Lucro Diário",
+#             labels={"Date": "Data", "Cumulative_Profit": "Unidades/Stakes"},
+#             markers=True
+#         )
+
+#         fig.update_layout(
+#             template="plotly_white",
+#             title={
+#                 "text": "Lucro Diário",
+#                 "y": 0.9,
+#                 "x": 0.5,
+#                 "xanchor": "center",
+#                 "yanchor": "top",
+#                 "font": {"size": 24}
+#             },
+#             xaxis=dict(showgrid=True, gridcolor="lightgray"),
+#             yaxis=dict(showgrid=True, gridcolor="lightgray"),
+#             xaxis_title="Data",
+#             yaxis_title="Unidades/Stakes",
+#             font=dict(family="Arial", size=14),
+#             legend=dict(
+#                 title="Legenda",
+#                 orientation="h",
+#                 x=0.5, y=-0.2,
+#                 xanchor="center",
+#                 yanchor="top",
+#                 borderwidth=1,
+#             )
+#         )
+
+#         fig.update_traces(
+#             line=dict(width=2),
+#             marker=dict(size=8, symbol="circle", color="red"),
+#             hovertemplate="<b>Data:</b> %{x}<br><b>Lucro:</b> %{y}<extra></extra>"
+#         )
+
+#         st.plotly_chart(fig)
+
+#         col1, col2 = st.columns(2)
+#         with col1:
+#             st.write("**Profit por Liga/Mês**")
+#             report = df_hist.groupby(["League", "Month_Year"])["Profit"].sum().reset_index()
+#             print_dataframe(report)
+#         with col2:
+#             st.write("**Profit acumulado por Liga**")
+#             report = df_hist.groupby(["League"])["Profit"].sum().reset_index()
+#             report = report.sort_values(by="Profit", ascending=False)
+#             report["Cumulative_Profit"] = report["Profit"].cumsum()
+#             print_dataframe(report)
+
+#         col1, col2 = st.columns(2)
+#         with col1:
+#             st.write("**Resultado por Liga**")
+#             report = df_hist.groupby(["League", "Status_Metodo"]).size().unstack(fill_value=0).reset_index()
+#             if 'GREEN' not in report.columns:
+#                 report['GREEN'] = 0
+#             if 'RED' not in report.columns:
+#                 report['RED'] = 0
+#             report['Winrate'] = round((report['GREEN'] / (report['GREEN'] + report['RED'])) * 100, 2)
+#             print_dataframe(report)
+#         with col2:
+#             st.write("**Resultado por FX (Prob, CV) do MO**")
+#             report = df_hist.groupby(["League", "FX_Probabilidade_A", "FX_CV_HDA", "Status_Metodo"], observed=True).size().unstack(fill_value=0).reset_index()
+#             if 'GREEN' not in report.columns:
+#                 report['GREEN'] = 0
+#             if 'RED' not in report.columns:
+#                 report['RED'] = 0
+#             report = report[report['GREEN'] + report['RED'] > 0]
+#             report['Winrate'] = round((report['GREEN'] / (report['GREEN'] + report['RED'])) * 100, 2)
+#             print_dataframe(report)
+
+#         df_columns = ['League','Rodada','Date','Time','Home','Away','Resultado_FT','Goals_H_Minutes','Goals_A_Minutes','Odd_H_FT','Odd_D_FT','Odd_A_FT','Odd_CS_0x1_Lay','Odd_CS_0x2_Lay','Odd_CS_0x3_Lay','Odd_Over05_FT','Odd_Over15_FT','Odd_Over25_FT','Odd_Under05_FT','Odd_Under15_FT','Odd_Under25_FT','Odd_BTTS_Yes','Odd_BTTS_No','Odd_DC_1X','Odd_DC_12','Odd_DC_X2','XG_Total_Pre','XG_Home_Pre','XG_Away_Pre','Diff_XG_Home_Away_Pre','PPG_Home_Pre','PPG_Away_Pre','Primeiro_Gol','Status_Metodo','Profit','Probabilidade_H_FT','Probabilidade_D_FT','Probabilidade_A_FT','CV_HDA_FT']
+
+#         st.write(f"**:green[GREENs:]**")
+#         print_dataframe(
+#             df_hist.loc[df_hist['Status_Metodo'] == 'GREEN', df_columns]
+#         )
+
+#         st.write(f"**:red[REDs:]**")
+#         print_dataframe(
+#             df_hist.loc[df_hist['Status_Metodo'] == 'RED', df_columns]
+#         )
+
+#         if total_voids > 0:
+#             st.write(f"**:gray[VOIDs:]**")
+#             print_dataframe(
+#                 df_hist.loc[df_hist['Status_Metodo'] == 'VOID', df_columns]
+#             )
+
+#     else:
+#         st.info("Sem jogos.")
+
+
+
+
+
 # --- Constantes ---
 # Usar constantes torna o código mais fácil de manter.
 COMMISSION = 2.8
@@ -139,8 +260,30 @@ def generate_backtesting(pdf_hist, metodo):
     )
     st.markdown(summary_text)
 
-    profit_chart_fig = create_profit_chart(df_hist)
+    # --- Apresentação em Colunas ---
+    # col1, col2, col3, col4 = st.columns(4)
 
+    # with col1:
+    #     st.metric(label="Total de Jogos", value=stats['total_jogos'])
+    #     profit = float(stats['profit_acumulado'])
+    #     st.metric(label="Profit Líquido", value=f"{profit:.2f} un")
+
+    # with col2:
+    #     st.metric(label="Greens ✅", value=stats['total_greens'])
+    #     st.metric(label="Comissão Média", value=f"{COMMISSION:.2f}%")
+
+    # with col3:
+    #     st.metric(label="Reds ❌", value=stats['total_reds'])
+    #     st.metric(label="Odd Média", value=f"{odd_media:.2f}")
+
+    # with col4:
+    #     st.metric(label="Voids 🔄", value=stats['total_voids'])
+    #     winrate = float(stats['winrate'])
+    #     st.metric(label="Winrate (Taxa de Acerto)", value=f"{winrate:.2f}%")
+
+    # Criação e exibição do gráfico
+    profit_chart_fig = create_profit_chart(df_hist)
+    # **A SOLUÇÃO:** Adicionar uma `key` única e descritiva.
     st.plotly_chart(profit_chart_fig, use_container_width=True, key=f"profit_chart_{metodo}")
 
     st.divider()
@@ -172,59 +315,6 @@ def generate_backtesting(pdf_hist, metodo):
 
 
 def main_page(fonte_dados):
-
-    # --- INÍCIO DO CÓDIGO DE ESTILIZAÇÃO ---
-
-    st.markdown("""
-    <style>
-        /* Usamos data-testid para encontrar o stRadio de forma mais confiável */
-        div[data-testid="stRadio"] > div {
-            flex-direction: row;
-            align-items: center;
-        }
-        
-        /* Esconde os botões de rádio originais */
-        div[data-testid="stRadio"] > div[role="radiogroup"] > label[data-baseweb="radio"] {
-            display: none;
-        }
-
-        /* Estiliza o contêiner das opções para parecer uma barra de abas */
-        div[data-testid="stRadio"] > div[role="radiogroup"] > div {
-            display: inline-flex;
-            background-color: #f0f2f6; /* Cor de fundo da barra */
-            border-radius: 8px;
-            padding: 4px;
-            margin-bottom: 1rem;
-        }
-
-        /* Estiliza cada opção (label) para parecer um botão/aba */
-        div[data-testid="stRadio"] > div[role="radiogroup"] label {
-            background-color: transparent;
-            color: #555; /* Cor do texto da aba inativa */
-            padding: 6px 16px;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.2s ease-in-out;
-            font-weight: 500;
-            margin: 0 !important; /* Remove margens extras */
-        }
-
-        /* Estilo da aba SELECIONADA */
-        div[data-testid="stRadio"] > div[role="radiogroup"] > div:has(label[data-baseweb="radio"]:checked) label[data-baseweb="radio"]:checked + div {
-            background-color: #FFFFFF; /* Cor de fundo da aba ativa */
-            color: #0068c9; /* Cor do texto da aba ativa */
-            font-weight: 600;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-        }
-        
-        /* Efeito hover nas abas inativas */
-        div[data-testid="stRadio"] > div[role="radiogroup"] label:hover {
-            background-color: #e6eaf0;
-        }
-    </style>
-    """, unsafe_allow_html=True)
-
-    # --- FIM DO CÓDIGO DE ESTILIZAÇÃO ---
 
     if st.secrets['ENV'] == 'dev':
         st.info("Ambiente de Desenvolvimento. Branch: dev")
@@ -342,50 +432,35 @@ def main_page(fonte_dados):
 
     st.divider()
 
-    if 'metodo_selecionado' not in st.session_state:
-        st.session_state.metodo_selecionado = metodos_tabs[0] # Ou um valor padrão inicial
-
     if filtro_pronto_selecionado != "Sem filtro" or executar:
 
-        # 2. Calcule o método default como você já fazia
         _, _, metodo_default = get_details_filtro_pronto(
             df_hist.copy(), 
             condicao, 
-            metodo, # Supondo que 'metodo' seja o método base para o cálculo do default
+            metodo, 
             filtro_pronto_selecionado
         )
-        st.info(f"Default sugerido: {metodo_default}")
+        st.info(f"Default: {metodo_default}")
 
-        # 3. ATUALIZE o estado da sessão com o novo default.
-        #    Isso garante que, ao trocar o filtro, a seleção do radio mude.
-        #    (Coloque uma lógica para isso só acontecer quando o filtro mudar)
-        #    Exemplo simples:
-        st.session_state.metodo_selecionado = metodo_default
+        for tab, metodo_nome in zip(st.tabs(metodos_tabs, default=metodo_default), metodos_tabs):
 
-        # 4. Crie o st.radio para funcionar como as "abas"
-        #    Encontre o índice do método default para passar ao radio
-        try:
-            default_index = metodos_tabs.index(st.session_state.metodo_selecionado)
-        except ValueError:
-            default_index = 0 # Se o método não estiver na lista, use o primeiro
+            with tab:
+                st.info(f"Analisando o método: {metodo_nome}")
 
-        metodo_escolhido = st.radio(
-            "Selecione o método de análise:",
-            options=metodos_tabs,
-            index=default_index,
-            horizontal=True, # Para parecer com abas
-            key='radio_metodos', # Uma chave para garantir a estabilidade do widget
-            label_visibility="collapsed"
-        )
+                pdf_hist_filtrado, _, _ = get_details_filtro_pronto(
+                    df_hist.copy(),  
+                    condicao,
+                    metodo_nome,
+                    filtro_pronto_selecionado
+                )
 
-        # 5. Use o método escolhido (pelo usuário ou pelo default) para renderizar o conteúdo
-        st.info(f"Analisando o método: {metodo_escolhido}")
+                generate_backtesting(pdf_hist_filtrado, metodo_nome)
 
-        pdf_hist_filtrado, _, _ = get_details_filtro_pronto(
-            df_hist.copy(),  
-            condicao,
-            metodo_escolhido, # Use a variável retornada pelo radio
-            filtro_pronto_selecionado
-        )
+# if "logged_in" not in st.session_state:
+#     st.session_state["logged_in"] = False
 
-        generate_backtesting(pdf_hist_filtrado, metodo_escolhido)
+# if st.session_state["logged_in"]:
+#     display_sidebar('block')
+#     main_page()
+# else:
+#     login_page()
