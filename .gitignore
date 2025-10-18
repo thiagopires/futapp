@@ -1,3 +1,5 @@
+.DS_Store
 streamlit/.DS_Store
 streamlit/notebooks/
 streamlit/notebooks/*
+*.zip
