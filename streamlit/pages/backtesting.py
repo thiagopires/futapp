@@ -260,6 +260,18 @@ def generate_backtesting(pdf_hist, metodo):
     )
     st.markdown(summary_text)
 
+    """Exibe as métricas de resumo em um layout de colunas."""
+    col1, col2, col3, col4, col5, col6 = st.columns(6)
+    
+    profit_value = float(stats['profit_acumulado'].split(' ')[0])
+    
+    col1.metric(label="Jogos", value=stats['total_jogos'])
+    col2.metric(label="Greens ✅", value=stats['total_greens'])
+    col3.metric(label="Reds ❌", value=stats['total_reds'])
+    col3.metric(label="Voids 🔄", value=stats['total_voids'])
+    col4.metric(label="Winrate", value=f"{stats['winrate']}%", delta=f"Odd média: {odd_media}")
+    col5.metric(label="Profit Líquido", value=f"{profit_value:.2f} un", delta=f"{round(profit_value / stats['total_jogos'] * 100, 2)}% ROI")
+
     # --- Apresentação em Colunas ---
     # col1, col2, col3, col4 = st.columns(4)
 
