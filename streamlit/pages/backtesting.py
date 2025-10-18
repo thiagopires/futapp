@@ -7,6 +7,13 @@ import plotly.express as px
 
 st.set_page_config(layout="wide", page_title="Backtesting", page_icon="🔬")
 
+# --- Constantes ---
+# Usar constantes torna o código mais fácil de manter.
+COMMISSION = 2.8
+STATUS_GREEN = 'GREEN'
+STATUS_RED = 'RED'
+STATUS_VOID = 'VOID'
+
 # --- Funções de UI Refatoradas ---
 def calculate_summary_stats(df_hist):
     """Calcula e retorna as estatísticas resumidas do backtesting."""
