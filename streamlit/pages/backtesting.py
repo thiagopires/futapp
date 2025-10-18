@@ -121,9 +121,55 @@ import plotly.express as px
 #     else:
 #         st.info("Sem jogos.")
 
+# --- INÍCIO DO CÓDIGO DE ESTILIZAÇÃO ---
 
+st.markdown("""
+<style>
+    /* Esconde os botões de rádio originais */
+    div.row-widget.stRadio > div {
+        flex-direction: row;
+        align-items: center;
+    }
+    div.row-widget.stRadio > div[role="radiogroup"] > label[data-baseweb="radio"] {
+        display: none;
+    }
 
+    /* Estiliza o label para parecer um botão/aba */
+    div.row-widget.stRadio > div[role="radiogroup"] > div {
+        display: inline-flex;
+        background-color: #f0f2f6; /* Cor de fundo da barra de abas */
+        border-radius: 8px;
+        padding: 4px;
+        margin-bottom: 1rem;
+    }
 
+    div.row-widget.stRadio > div[role="radiogroup"] label {
+        background-color: transparent;
+        color: #555; /* Cor do texto da aba inativa */
+        padding: 6px 16px;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: all 0.2s ease-in-out;
+        font-weight: 500;
+        margin: 0 !important; /* Remove margens extras */
+    }
+
+    /* Estilo da aba SELECIONADA */
+    div.row-widget.stRadio > div[role="radiogroup"] > div:has(label[data-baseweb="radio"]:checked) label[data-baseweb="radio"]:checked + div {
+        background-color: #FFFFFF; /* Cor de fundo da aba ativa */
+        color: #0068c9; /* Cor do texto da aba ativa (um azul Streamlit) */
+        font-weight: 600;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    }
+    
+    /* Efeito hover nas abas inativas */
+    div.row-widget.stRadio > div[role="radiogroup"] label:hover {
+        background-color: #e6eaf0;
+    }
+</style>
+""", unsafe_allow_html=True)
+
+# --- FIM DO CÓDIGO DE ESTILIZAÇÃO ---
 
 # --- Constantes ---
 # Usar constantes torna o código mais fácil de manter.
