@@ -432,29 +432,52 @@ def main_page(fonte_dados):
 
     st.divider()
 
+    if 'metodo_selecionado' not in st.session_state:
+        st.session_state.metodo_selecionado = metodos_tabs[0] # Ou um valor padrão inicial
+
     if filtro_pronto_selecionado != "Sem filtro" or executar:
 
+        # 2. Calcule o método default como você já fazia
         _, _, metodo_default = get_details_filtro_pronto(
             df_hist.copy(), 
             condicao, 
-            metodo, 
+            metodo, # Supondo que 'metodo' seja o método base para o cálculo do default
             filtro_pronto_selecionado
         )
-        st.info(f"Default: {metodo_default}")
+        st.info(f"Default sugerido: {metodo_default}")
 
-        for tab, metodo_nome in zip(st.tabs(metodos_tabs, default=metodo_default), metodos_tabs):
+        # 3. ATUALIZE o estado da sessão com o novo default.
+        #    Isso garante que, ao trocar o filtro, a seleção do radio mude.
+        #    (Coloque uma lógica para isso só acontecer quando o filtro mudar)
+        #    Exemplo simples:
+        st.session_state.metodo_selecionado = metodo_default
 
-            with tab:
-                st.info(f"Analisando o método: {metodo_nome}")
+        # 4. Crie o st.radio para funcionar como as "abas"
+        #    Encontre o índice do método default para passar ao radio
+        try:
+            default_index = metodos_tabs.index(st.session_state.metodo_selecionado)
+        except ValueError:
+            default_index = 0 # Se o método não estiver na lista, use o primeiro
 
-                pdf_hist_filtrado, _, _ = get_details_filtro_pronto(
-                    df_hist.copy(),  
-                    condicao,
-                    metodo_nome,
-                    filtro_pronto_selecionado
-                )
+        metodo_escolhido = st.radio(
+            "Selecione o método de análise:",
+            options=metodos_tabs,
+            index=default_index,
+            horizontal=True, # Para parecer com abas
+            key='radio_metodos' # Uma chave para garantir a estabilidade do widget
+        )
 
-                generate_backtesting(pdf_hist_filtrado, metodo_nome)
+        # 5. Use o método escolhido (pelo usuário ou pelo default) para renderizar o conteúdo
+        st.info(f"Analisando o método: {metodo_escolhido}")
+
+        pdf_hist_filtrado, _, _ = get_details_filtro_pronto(
+            df_hist.copy(),  
+            condicao,
+            metodo_escolhido, # Use a variável retornada pelo radio
+            filtro_pronto_selecionado
+        )
+
+        generate_backtesting(pdf_hist_filtrado, metodo_escolhido)
 
 # if "logged_in" not in st.session_state:
 #     st.session_state["logged_in"] = False
