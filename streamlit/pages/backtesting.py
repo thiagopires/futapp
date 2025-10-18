@@ -8,6 +8,27 @@ import plotly.express as px
 st.set_page_config(layout="wide", page_title="Backtesting", page_icon="🔬")
 
 # --- Funções de UI Refatoradas ---
+def calculate_summary_stats(df_hist):
+    """Calcula e retorna as estatísticas resumidas do backtesting."""
+    total_jogos = len(df_hist)
+    if total_jogos == 0:
+        return None
+
+    total_greens = len(df_hist[df_hist['Status_Metodo'] == STATUS_GREEN])
+    total_reds = len(df_hist[df_hist['Status_Metodo'] == STATUS_RED])
+    total_voids = len(df_hist[df_hist['Status_Metodo'] == STATUS_VOID])
+    
+    winrate = round((total_greens + total_voids) / total_jogos * 100, 2)
+    profit_acumulado = f"{str(round(df_hist['Profit'].sum(), 2))} unidades"
+
+    return {
+        "total_jogos": total_jogos,
+        "total_greens": total_greens,
+        "total_reds": total_reds,
+        "total_voids": total_voids,
+        "winrate": winrate,
+        "profit_acumulado": profit_acumulado
+    }
 
 def display_summary_metrics(stats, odd_media):
     """Exibe as métricas de resumo em um layout de colunas."""
