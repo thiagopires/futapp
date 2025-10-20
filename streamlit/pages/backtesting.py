@@ -328,14 +328,28 @@ def main_page(fonte_dados):
 
         st.session_state.active_method = metodo_default
 
-        cols = st.columns(len(metodos_tabs))
+        midpoint = math.ceil(len(metodos_tabs) / 2)
+        primeira_linha_metodos = metodos_tabs[:midpoint]
+        segunda_linha_metodos = metodos_tabs[midpoint:]
 
-        for i, metodo_nome in enumerate(metodos_tabs):
-            with cols[i]:
+        # 4. Renderize a PRIMEIRA linha de botões
+        cols_linha1 = st.columns(len(primeira_linha_metodos))
+        for i, metodo_nome in enumerate(primeira_linha_metodos):
+            with cols_linha1[i]:
                 button_type = "primary" if st.session_state.active_method == metodo_nome else "secondary"
-                
                 if st.button(metodo_nome, key=f"btn_{metodo_nome}", type=button_type, use_container_width=True):
                     st.session_state.active_method = metodo_nome
+                    st.rerun() # Opcional, mas garante a atualização visual imediata
+
+        # 5. Renderize a SEGUNDA linha de botões (se houver algum método para ela)
+        if segunda_linha_metodos: # Só cria a segunda linha se ela não estiver vazia
+            cols_linha2 = st.columns(len(segunda_linha_metodos))
+            for i, metodo_nome in enumerate(segunda_linha_metodos):
+                with cols_linha2[i]:
+                    button_type = "primary" if st.session_state.active_method == metodo_nome else "secondary"
+                    if st.button(metodo_nome, key=f"btn_{metodo_nome}", type=button_type, use_container_width=True):
+                        st.session_state.active_method = metodo_nome
+                        st.rerun() # Opcional
 
         metodo_escolhido = st.session_state.active_method
         st.info(f"Analisando o método: {metodo_escolhido}")
