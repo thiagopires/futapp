@@ -925,7 +925,7 @@ def get_filter_betfair_under25_ft(df):
 
 def get_filter_betfair_btts_yes(df):
     return (
-        (df["Odd_BTTTS_Yes"].between(1.7, 2.5))
+        (df["Odd_BTTS_Yes"].between(1.7, 2.5))
         & (
             ((df['League'] == 'ARGENTINA - PRIMERA DIVISIÓN') & (df['FX_Probabilidade_A'] == '0.12-0.21') & (df['FX_CV_HDA'] == '0.40-0.45')) |
             ((df['League'] == 'ARGENTINA - PRIMERA DIVISIÓN') & (df['FX_Probabilidade_A'] == '0.12-0.21') & (df['FX_CV_HDA'] == '0.60-0.65')) |
