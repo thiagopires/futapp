@@ -141,7 +141,7 @@ def generate_backtesting(pdf_hist, metodo):
     # st.markdown(summary_text)
 
     """Exibe as métricas de resumo em um layout de colunas."""
-    col1, col2, col3, col4, col5, col6, col7 = st.columns(6)
+    col1, col2, col3, col4, col5, col6, col7 = st.columns(7)
     
     profit_value = float(stats['profit_acumulado'].split(' ')[0])
     
