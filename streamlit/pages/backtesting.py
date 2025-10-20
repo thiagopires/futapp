@@ -310,13 +310,10 @@ def main_page(fonte_dados):
             metodo, 
             filtro_pronto_selecionado
         )
-        st.info(f"Default: {metodo_default}")
 
         for tab, metodo_nome in zip(st.tabs(metodos_tabs, default=metodo_default), metodos_tabs):
 
             with tab:
-                st.info(f"Analisando o método: {metodo_nome}")
-
                 pdf_hist_filtrado, _, _ = get_details_filtro_pronto(
                     df_hist.copy(),  
                     condicao,
