@@ -3,6 +3,7 @@ from utils.filters import *
 
 from datetime import date
 import plotly.express as px
+import math
 
 # --- Constantes ---
 # Usar constantes torna o código mais fácil de manter.
