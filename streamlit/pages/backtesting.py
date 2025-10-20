@@ -145,12 +145,13 @@ def generate_backtesting(pdf_hist, metodo):
     
     profit_value = float(stats['profit_acumulado'].split(' ')[0])
     
-    col1.metric(label="Jogos", value=stats['total_jogos'], border=True)
-    col2.metric(label="Greens ✅", value=stats['total_greens'], border=True)
-    col3.metric(label="Reds ❌", value=stats['total_reds'], border=True)
-    col4.metric(label="Voids 🔄", value=stats['total_voids'], border=True)
-    col5.metric(label="Winrate", value=f"{stats['winrate']}%", delta=f"Odd média: {odd_media}", delta_color="off", border=True)
-    col6.metric(label="Profit Líquido", value=f"{profit_value:.2f} un", delta=f"{round(profit_value / stats['total_jogos'] * 100, 2)}% ROI", border=True)
+    col1.metric(label="Método", value=metodo, border=True)
+    col2.metric(label="Jogos", value=stats['total_jogos'], border=True)
+    col3.metric(label="Greens ✅", value=stats['total_greens'], border=True)
+    col4.metric(label="Reds ❌", value=stats['total_reds'], border=True)
+    col5.metric(label="Voids 🔄", value=stats['total_voids'], border=True)
+    col6.metric(label="Winrate", value=f"{stats['winrate']}%", delta=f"Odd média: {odd_media}", delta_color="off", border=True)
+    col7.metric(label="Profit Líquido", value=f"{profit_value:.2f} un", delta=f"{round(profit_value / stats['total_jogos'] * 100, 2)}% ROI", border=True)
 
     # Criação e exibição do gráfico
     profit_chart_fig = create_profit_chart(df_hist)
@@ -329,7 +330,6 @@ def main_page(fonte_dados):
                 metodo,
                 filtro_pronto_selecionado
             )
-            st.info(f"Default sugerido: {metodo_default}")
 
             # Atualizamos o método ativo e guardamos os novos valores de filtro/condição
             st.session_state.active_method = metodo_default
@@ -364,7 +364,6 @@ def main_page(fonte_dados):
         # ETAPA 5: O resto do código usa o estado que agora está correto
         st.divider()
         metodo_escolhido = st.session_state.active_method
-        st.info(f"Analisando o método: {metodo_escolhido}")
 
         pdf_hist_filtrado, _, _ = get_details_filtro_pronto(
             df_hist.copy(),
