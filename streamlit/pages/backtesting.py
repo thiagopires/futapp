@@ -311,23 +311,40 @@ def main_page(fonte_dados):
             filtro_pronto_selecionado
         )
 
-        for tab, metodo_nome in zip(st.tabs(metodos_tabs, default=metodo_default), metodos_tabs):
+        # for tab, metodo_nome in zip(st.tabs(metodos_tabs, default=metodo_default), metodos_tabs):
 
-            with tab:
-                pdf_hist_filtrado, _, _ = get_details_filtro_pronto(
-                    df_hist.copy(),  
-                    condicao,
-                    metodo_nome,
-                    filtro_pronto_selecionado
-                )
+        #     with tab:
+        #         pdf_hist_filtrado, _, _ = get_details_filtro_pronto(
+        #             df_hist.copy(),  
+        #             condicao,
+        #             metodo_nome,
+        #             filtro_pronto_selecionado
+        #         )
 
-                generate_backtesting(pdf_hist_filtrado, metodo_nome)
+        #         generate_backtesting(pdf_hist_filtrado, metodo_nome)
 
-# if "logged_in" not in st.session_state:
-#     st.session_state["logged_in"] = False
+        if 'active_method' not in st.session_state:
+            st.session_state.active_method = metodos_tabs[0]
 
-# if st.session_state["logged_in"]:
-#     display_sidebar('block')
-#     main_page()
-# else:
-#     login_page()
+        st.session_state.active_method = metodo_default
+
+        cols = st.columns(len(metodos_tabs))
+
+        for i, metodo_nome in enumerate(metodos_tabs):
+            with cols[i]:
+                button_type = "primary" if st.session_state.active_method == metodo_nome else "secondary"
+                
+                if st.button(metodo_nome, key=f"btn_{metodo_nome}", type=button_type, use_container_width=True):
+                    st.session_state.active_method = metodo_nome
+
+        metodo_escolhido = st.session_state.active_method
+        st.info(f"Analisando o método: {metodo_escolhido}")
+
+        pdf_hist_filtrado, _, _ = get_details_filtro_pronto(
+            df_hist.copy(),  
+            condicao,
+            metodo_escolhido, # Use a variável do estado
+            filtro_pronto_selecionado
+        )
+
+        generate_backtesting(pdf_hist_filtrado, metodo_escolhido)
