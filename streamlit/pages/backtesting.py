@@ -303,62 +303,73 @@ def main_page(fonte_dados):
 
     st.divider()
 
+    # ETAPA 1: Inicializar o estado na primeira execução
+    # Guardamos o método ativo e também o último filtro/condição que foi usado para definir um default
+    if 'active_method' not in st.session_state:
+        st.session_state.active_method = metodos_tabs[0]
+    if 'last_filter' not in st.session_state:
+        st.session_state.last_filter = None
+    if 'last_condicao' not in st.session_state:
+        st.session_state.last_condicao = None
+
+    # Esta lógica de exibição continua a mesma
     if filtro_pronto_selecionado != "Sem filtro" or executar:
 
-        _, _, metodo_default = get_details_filtro_pronto(
-            df_hist.copy(), 
-            condicao, 
-            metodo, 
-            filtro_pronto_selecionado
-        )
+        # ETAPA 2: Verificar se o contexto para o default mudou
+        # Isso acontece se o filtro mudou, a condição mudou, ou o botão "Executar" foi pressionado
+        # A variável 'executar' já captura a ação do botão principal
+        contexto_mudou = (st.session_state.last_filter != filtro_pronto_selecionado) or \
+                        (st.session_state.last_condicao != condicao)
 
-        # for tab, metodo_nome in zip(st.tabs(metodos_tabs, default=metodo_default), metodos_tabs):
+        # ETAPA 3: ATUALIZAR O DEFAULT APENAS SE O CONTEXTO MUDOU
+        if contexto_mudou or executar:
+            _, _, metodo_default = get_details_filtro_pronto(
+                df_hist.copy(),
+                condicao,
+                metodo,
+                filtro_pronto_selecionado
+            )
+            st.info(f"Default sugerido: {metodo_default}")
 
-        #     with tab:
-        #         pdf_hist_filtrado, _, _ = get_details_filtro_pronto(
-        #             df_hist.copy(),  
-        #             condicao,
-        #             metodo_nome,
-        #             filtro_pronto_selecionado
-        #         )
+            # Atualizamos o método ativo e guardamos os novos valores de filtro/condição
+            st.session_state.active_method = metodo_default
+            st.session_state.last_filter = filtro_pronto_selecionado
+            st.session_state.last_condicao = condicao
 
-        #         generate_backtesting(pdf_hist_filtrado, metodo_nome)
-
-        if 'active_method' not in st.session_state:
-            st.session_state.active_method = metodos_tabs[0]
-
-        st.session_state.active_method = metodo_default
-
+        # ETAPA 4: Renderizar os botões em duas linhas (lógica que você já tinha)
         midpoint = math.ceil(len(metodos_tabs) / 2)
         primeira_linha_metodos = metodos_tabs[:midpoint]
         segunda_linha_metodos = metodos_tabs[midpoint:]
 
-        # 4. Renderize a PRIMEIRA linha de botões
+        # Renderiza a PRIMEIRA linha de botões
         cols_linha1 = st.columns(len(primeira_linha_metodos))
         for i, metodo_nome in enumerate(primeira_linha_metodos):
             with cols_linha1[i]:
                 button_type = "primary" if st.session_state.active_method == metodo_nome else "secondary"
                 if st.button(metodo_nome, key=f"btn_{metodo_nome}", type=button_type, use_container_width=True):
+                    # Se clicado, apenas atualiza o estado e deixa o Streamlit reexecutar
                     st.session_state.active_method = metodo_nome
-                    st.rerun() # Opcional, mas garante a atualização visual imediata
+                    st.rerun() # Garante a atualização visual imediata
 
-        # 5. Renderize a SEGUNDA linha de botões (se houver algum método para ela)
-        if segunda_linha_metodos: # Só cria a segunda linha se ela não estiver vazia
+        # Renderiza a SEGUNDA linha de botões
+        if segunda_linha_metodos:
             cols_linha2 = st.columns(len(segunda_linha_metodos))
             for i, metodo_nome in enumerate(segunda_linha_metodos):
                 with cols_linha2[i]:
                     button_type = "primary" if st.session_state.active_method == metodo_nome else "secondary"
                     if st.button(metodo_nome, key=f"btn_{metodo_nome}", type=button_type, use_container_width=True):
                         st.session_state.active_method = metodo_nome
-                        st.rerun() # Opcional
+                        st.rerun()
 
+        # ETAPA 5: O resto do código usa o estado que agora está correto
+        st.divider()
         metodo_escolhido = st.session_state.active_method
         st.info(f"Analisando o método: {metodo_escolhido}")
 
         pdf_hist_filtrado, _, _ = get_details_filtro_pronto(
-            df_hist.copy(),  
+            df_hist.copy(),
             condicao,
-            metodo_escolhido, # Use a variável do estado
+            metodo_escolhido,
             filtro_pronto_selecionado
         )
 
