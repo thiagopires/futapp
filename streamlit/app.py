@@ -3,6 +3,7 @@ import pandas as pd
 
 from utils.functions import *
 from utils.filters import *
+from utils.filters.filters_func import *
 
 import pages.home as home
 import pages.analise_away as analise_away
