@@ -1,6 +1,6 @@
 import numpy as np
 
-from filters_func import *
+from utils.filters_func import *
 
 def profit_no_comission(odd, side='Back'):
     comission = 0.028
