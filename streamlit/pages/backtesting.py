@@ -1,5 +1,6 @@
 from utils.functions import *
 from utils.filters import *
+from utils.filters_func import *
 
 from datetime import date
 import plotly.express as px
