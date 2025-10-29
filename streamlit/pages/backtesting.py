@@ -180,7 +180,10 @@ def generate_backtesting(pdf_hist, metodo):
     # **A SOLUÇÃO:** Adicionar uma `key` única e descritiva.
     st.plotly_chart(profit_chart_fig, use_container_width=True, key=f"profit_chart_{metodo}")
 
+    # Exibição do detalhamento
     display_details(df_hist, stats)
+
+    st.divider()
 
     # Exibição dos relatórios em dataframes
     display_reports(df_hist)
