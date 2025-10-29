@@ -109,6 +109,27 @@ def display_reports(df_hist):
         report_fx['Winrate'] = round((report_fx[STATUS_GREEN] / total_bets_fx.where(total_bets_fx != 0, 1)) * 100, 2)
         print_dataframe(report_fx)
 
+def display_details(df_hist, stats):
+    # Exibição dos jogos detalhados
+    df_columns = ['League','Rodada','Date','Time','Home','Away','Resultado_FT','Goals_H_Minutes','Goals_A_Minutes','Odd_H_FT','Odd_D_FT','Odd_A_FT','Odd_CS_0x1_Lay','Odd_CS_0x2_Lay','Odd_CS_0x3_Lay','Odd_CS_Goleada_A','Odd_Over05_FT','Odd_Over25_FT','Odd_Under05_FT','Odd_Under15_FT','Odd_Under25_FT','Odd_BTTS_Yes','Odd_BTTS_No','Odd_DC_1X','Odd_DC_12','Odd_DC_X2','XG_Total_Pre','XG_Home_Pre','XG_Away_Pre','Diff_XG_Home_Away_Pre','PPG_Home_Pre','PPG_Away_Pre','Primeiro_Gol','Status_Metodo','Profit','Probabilidade_H_FT','Probabilidade_D_FT','Probabilidade_A_FT','CV_HDA_FT']
+    
+    # Garantir que apenas colunas existentes sejam selecionadas
+    display_cols = [col for col in df_columns if col in df_hist.columns]
+
+    st.write("### Detalhamento dos Jogos")
+    with st.expander("Clique para ver os **GREENs** ✅"):
+        st.write(f"**:green[GREENs:]**")
+        print_dataframe(df_hist.loc[df_hist['Status_Metodo'] == STATUS_GREEN, display_cols])
+    
+    with st.expander("Clique para ver os **REDs** ❌"):
+        st.write(f"**:red[REDs:]**")
+        print_dataframe(df_hist.loc[df_hist['Status_Metodo'] == STATUS_RED, display_cols])
+
+    if stats['total_voids'] > 0:
+        with st.expander("Clique para ver os **VOIDs** 🔄"):
+            st.write(f"**:gray[VOIDs:]**")
+            print_dataframe(df_hist.loc[df_hist['Status_Metodo'] == STATUS_VOID, display_cols])
+
 # --- Função Principal ---
 
 def generate_backtesting(pdf_hist, metodo):
@@ -159,32 +180,10 @@ def generate_backtesting(pdf_hist, metodo):
     # **A SOLUÇÃO:** Adicionar uma `key` única e descritiva.
     st.plotly_chart(profit_chart_fig, use_container_width=True, key=f"profit_chart_{metodo}")
 
-    st.divider()
+    display_details(df_hist, stats)
 
     # Exibição dos relatórios em dataframes
     display_reports(df_hist)
-
-    st.divider()
-
-    # Exibição dos jogos detalhados
-    df_columns = ['League','Rodada','Date','Time','Home','Away','Resultado_FT','Goals_H_Minutes','Goals_A_Minutes','Odd_H_FT','Odd_D_FT','Odd_A_FT','Odd_CS_0x1_Lay','Odd_CS_0x2_Lay','Odd_CS_0x3_Lay','Odd_CS_Goleada_A','Odd_Over05_FT','Odd_Over25_FT','Odd_Under05_FT','Odd_Under15_FT','Odd_Under25_FT','Odd_BTTS_Yes','Odd_BTTS_No','Odd_DC_1X','Odd_DC_12','Odd_DC_X2','XG_Total_Pre','XG_Home_Pre','XG_Away_Pre','Diff_XG_Home_Away_Pre','PPG_Home_Pre','PPG_Away_Pre','Primeiro_Gol','Status_Metodo','Profit','Probabilidade_H_FT','Probabilidade_D_FT','Probabilidade_A_FT','CV_HDA_FT']
-    
-    # Garantir que apenas colunas existentes sejam selecionadas
-    display_cols = [col for col in df_columns if col in df_hist.columns]
-
-    st.write("### Detalhamento dos Jogos")
-    with st.expander("Clique para ver os **GREENs** ✅"):
-        st.write(f"**:green[GREENs:]**")
-        print_dataframe(df_hist.loc[df_hist['Status_Metodo'] == STATUS_GREEN, display_cols])
-    
-    with st.expander("Clique para ver os **REDs** ❌"):
-        st.write(f"**:red[REDs:]**")
-        print_dataframe(df_hist.loc[df_hist['Status_Metodo'] == STATUS_RED, display_cols])
-
-    if stats['total_voids'] > 0:
-        with st.expander("Clique para ver os **VOIDs** 🔄"):
-            st.write(f"**:gray[VOIDs:]**")
-            print_dataframe(df_hist.loc[df_hist['Status_Metodo'] == STATUS_VOID, display_cols])
 
 
 def main_page(fonte_dados):

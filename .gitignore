@@ -2,4 +2,6 @@
 streamlit/.DS_Store
 streamlit/notebooks/
 streamlit/notebooks/*
+streamlit/mentoria/
+streamlit/mentoria/*
 *.zip
