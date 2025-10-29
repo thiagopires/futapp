@@ -132,6 +132,7 @@ def load_daymatches(dt, source):
 
         df["Datetime"] = pd.to_datetime(df["Date"] + " " + df["Time"])
         df["Formatted_Datetime"] = df["Datetime"].dt.strftime("%d/%m/%Y %H:%M")
+        df["Formatted_Date"] = df["Datetime"].dt.strftime("%d/%m/%Y")
         df["Confronto"] = df["Time"] + " - " + df["Home"] + " vs. " + df["Away"]
 
         df['Probabilidade_H_FT'] = round((1 / df['Odd_H_FT']),2)
