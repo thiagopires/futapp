@@ -131,7 +131,7 @@ def load_daymatches(dt, source):
             rename_leagues(df)
 
         df["Datetime"] = pd.to_datetime(df["Date"] + " " + df["Time"])
-        df["Date"] = df["Datetime"].dt.strftime("%Y-%m-%d")
+        df["Date"] = df["Datetime"].dt.date
         df["Formatted_Datetime"] = df["Datetime"].dt.strftime("%d/%m/%Y %H:%M")
         df["Confronto"] = df["Time"] + " - " + df["Home"] + " vs. " + df["Away"]
 
