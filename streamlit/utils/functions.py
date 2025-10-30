@@ -130,9 +130,9 @@ def load_daymatches(dt, source):
             df = pd.read_csv(f"https://github.com/futpythontrader/YouTube/blob/main/Jogos_do_Dia/FootyStats/Jogos_do_Dia_FootyStats_{dt}.csv?raw=true")
             rename_leagues(df)
 
+        df["Date"] = df["Date"].dt.strftime("%Y-%m-%d")
         df["Datetime"] = pd.to_datetime(df["Date"] + " " + df["Time"])
         df["Formatted_Datetime"] = df["Datetime"].dt.strftime("%d/%m/%Y %H:%M")
-        df["Formatted_Date"] = df["Datetime"].dt.strftime("%d/%m/%Y")
         df["Confronto"] = df["Time"] + " - " + df["Home"] + " vs. " + df["Away"]
 
         df['Probabilidade_H_FT'] = round((1 / df['Odd_H_FT']),2)
