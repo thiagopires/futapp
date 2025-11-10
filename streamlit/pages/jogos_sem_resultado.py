@@ -13,7 +13,20 @@ def main_page(fonte_dados):
     # Init
 
     df_matches = load_daymatches(None, 'Betfair')
-    df_matches = df_matches[(((df_matches['Goals_H_FT'].isna()) | (df_matches['Goals_H_FT'] < 0)) & (df_matches['Date'] < get_today().strftime('%Y-%m-%d')))]
+
+    df_matches['Date'] = pd.to_datetime(df_matches['Date']).dt.date
+
+    today = get_today().date()
+
+    df_matches = df_matches[
+        (
+            (df_matches['Goals_H_FT'].isna()) | (df_matches['Goals_H_FT'] < 0)
+        ) & (
+            df_matches['Date'] < today
+        )
+    ]
+    
+    # df_matches = df_matches[(((df_matches['Goals_H_FT'].isna()) | (df_matches['Goals_H_FT'] < 0)) & (df_matches['Date'] < get_today().strftime('%Y-%m-%d')))]
     
     df_matches['Filtro'] = ('{Date: \"' + df_matches['Date'].astype(str) + '\", Time: \"' + df_matches['Time'].astype(str) + '\"}')
     df_matches["Goals_H_FT"] = pd.to_numeric(df_matches["Goals_H_FT"], errors="coerce")
