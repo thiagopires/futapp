@@ -14,11 +14,6 @@ def main_page(fonte_dados):
 
     df_matches = load_daymatches(None, 'Betfair')
 
-    # 1. Obtenha a data de hoje como um OBJETO de data (sem converter para string)
-    #    (Usando .date() para garantir que é só a data, sem horas)
-    today = get_today().date()
-
-    # 2. Garanta que sua coluna no DataFrame também seja um OBJETO de data
     df_matches['Date'] = pd.to_datetime(df_matches['Date']).dt.date
 
     # 3. Agora o filtro compara DATA com DATA
@@ -26,7 +21,7 @@ def main_page(fonte_dados):
         (
             (df_matches['Goals_H_FT'].isna()) | (df_matches['Goals_H_FT'] < 0)
         ) & (
-            df_matches['Date'] < today
+            df_matches['Date'] < get_today()
         )
     ]
     
