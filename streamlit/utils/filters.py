@@ -291,12 +291,14 @@ def get_result_filtro_pronto(df, metodo):
         odd_media = f"{str(round(df['Odd_BTTS_No'].mean(), 2))}"
 
     elif metodo == 'Lay 0x1 65min':
+        df = df[df['Odd_CS_0x1_Lay'] > 0] 
         df['Profit'] =  np.where(df['Resultado_65'] == '0-1', -0.25,
                         np.where(df['Resultado_65'] == '0-0', -0.08, profit_no_comission(df['Odd_CS_0x1_Lay'],'Lay')))
         df['Status_Metodo']  = np.where(df['Profit'] >= 0, 'GREEN', 'RED')
         odd_media = f"{str(round(df['Odd_CS_0x1_Lay'].mean(), 2))}"
 
     elif metodo == 'Lay 0x1':
+        df = df[df['Odd_CS_0x1_Lay'] > 0]
         filter = (df["Resultado_FT"] != '0-1')
         df.loc[filter, 'Profit'] = profit_no_comission(df['Odd_CS_0x1_Lay'],'Lay')
         df.loc[filter, "Status_Metodo"] = "GREEN"
@@ -307,6 +309,7 @@ def get_result_filtro_pronto(df, metodo):
         df['Profit'] = 0
 
     elif metodo == 'Lay 0x2 65min':
+        df = df[df['Odd_CS_0x2_Lay'] > 0]
         df['Profit'] =  np.where(df['Resultado_65'] == '0-2', -0.25,
                         np.where(df['Resultado_65'] == '0-1', -0.08,
                         np.where(df['Resultado_65'] == '0-0', profit_no_comission(df['Odd_CS_0x2_Lay'],'Lay') * 0.5, profit_no_comission(df['Odd_CS_0x2_Lay'],'Lay'))))
@@ -317,12 +320,14 @@ def get_result_filtro_pronto(df, metodo):
         odd_media = f"{str(round(df['Odd_CS_0x2_Lay'].mean(), 2))}"
 
     elif metodo == 'Lay 0x2':
+        df = df[df['Odd_CS_0x2_Lay'] > 0]
         filter = (df["Resultado_FT"] != '0-2')
         df.loc[filter, 'Profit'] = profit_no_comission(df['Odd_CS_0x2_Lay'],'Lay')
         df.loc[filter, "Status_Metodo"] = "GREEN"
         odd_media = f"{str(round(df['Odd_CS_0x2_Lay'].mean(), 2))}"
 
     elif metodo == 'Lay 0x3 65min':
+        df = df[df['Odd_CS_0x3_Lay'] > 0]
         df['Profit'] =  np.where(df['Resultado_65'] == '0-3', -0.25,
                         np.where(df['Resultado_65'] == '0-2', -0.08,
                         np.where(df['Resultado_65'] == '0-1', profit_no_comission(df['Odd_CS_0x3_Lay'],'Lay') * 0.25,
@@ -334,6 +339,7 @@ def get_result_filtro_pronto(df, metodo):
         odd_media = f"{str(round(df['Odd_CS_0x3_Lay'].mean(), 2))}"
         
     elif metodo == 'Lay 0x3':
+        df = df[df['Odd_CS_0x3_Lay'] > 0]
         filter = (df["Resultado_FT"] != '0-3')
         df.loc[filter, 'Profit'] = profit_no_comission(df['Odd_CS_0x3_Lay'],'Lay')
         df.loc[filter, "Status_Metodo"] = "GREEN"
