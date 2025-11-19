@@ -76,6 +76,8 @@ filtros_prontos =  {
         'BF - Over 2.5 FT',
         'BF - Under 2.5 FT',
         'BF - BTTS Sim',
+        'BF - Over 0.5 HT',
+        'BF - Under 0.5 HT',
         'BF - Lay 0x1 (até 65min)',
         'BF - Lay 0x2 (até 65min)',
         'BF - Lay 0x3 (até 65min)',
@@ -185,6 +187,18 @@ def get_details_filtro_pronto(df, condicao, metodo, filtro_pronto_selecionado):
         df = df[filter]
         if condicao: condicao = 'Geral'
         if metodo: metodo = 'BTTS Sim'
+
+    elif filtro_pronto_selecionado == "BF - Over 0.5 HT":
+        filter = get_filter_betfair_over05_ht(df)
+        df = df[filter]
+        if condicao: condicao = 'Geral'
+        if metodo: metodo = 'Over 0.5 HT'
+
+    elif filtro_pronto_selecionado == "BF - Under 0.5 HT":
+        filter = get_filter_betfair_under05_ht(df)
+        df = df[filter]
+        if condicao: condicao = 'Geral'
+        if metodo: metodo = 'Under 0.5 HT'
 
     return df, condicao, metodo
 
