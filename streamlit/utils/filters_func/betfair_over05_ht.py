@@ -1,7 +1,7 @@
 
 def get_filter_betfair_over05_ht(df):
     return (
-        (df["Odd_Over05_HT"].between(1.5, 2))
+        (df['Odd_Over05_HT'] >= 1.5)
         & (
             ((df['League'] == 'ARGENTINA - PRIMERA DIVISIÓN') & (df['FX_Probabilidade_A'] == '0.39-0.48') & (df['FX_CV_HDA'] == '0.25-0.30')) |
             ((df['League'] == 'BRAZIL - SERIE A') & (df['FX_Probabilidade_A'] == '0.48-0.57') & (df['FX_CV_HDA'] == '0.30-0.35')) |
