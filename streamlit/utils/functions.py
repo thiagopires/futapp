@@ -298,7 +298,7 @@ def load_histmatches(source):
         df['TotalGoals_FT'] = df["Goals_H_FT"] + df["Goals_A_FT"]
 
         df['Resultado_60'] = df.apply(calcular_resultado_minuto, minute=60, axis=1)
-        df['Resultado_65'] = df.apply(calcular_resultado_minuto, minute=65, axis=1)
+        df['Resultado_75'] = df.apply(calcular_resultado_minuto, minute=65, axis=1)
         df['Resultado_70'] = df.apply(calcular_resultado_minuto, minute=70, axis=1)
         df['Resultado_75'] = df.apply(calcular_resultado_minuto, minute=75, axis=1)
         df['Resultado_80'] = df.apply(calcular_resultado_minuto, minute=80, axis=1)

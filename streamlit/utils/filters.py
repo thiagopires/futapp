@@ -45,9 +45,9 @@ metodos_tabs = [
     'Lay 0x1',
     'Lay 0x2',
     'Lay 0x3',
-    'Lay 0x1 65min',
-    'Lay 0x2 65min',
-    'Lay 0x3 65min',
+    'Lay 0x1 75min',
+    'Lay 0x2 75min',
+    'Lay 0x3 75min',
     'Lay Goleada Visitante',
     'Over 0.5 HT',
     'Under 0.5 HT',
@@ -78,9 +78,9 @@ filtros_prontos =  {
         'BF - BTTS Sim',
         'BF - Over 0.5 HT',
         'BF - Under 0.5 HT',
-        'BF - Lay 0x1 (até 65min)',
-        'BF - Lay 0x2 (até 65min)',
-        'BF - Lay 0x3 (até 65min)',
+        'BF - Lay 0x1 (até 75min)',
+        'BF - Lay 0x2 (até 75min)',
+        'BF - Lay 0x3 (até 75min)',
     ]
 }
 
@@ -152,23 +152,23 @@ def get_details_filtro_pronto(df, condicao, metodo, filtro_pronto_selecionado):
         if condicao: condicao = 'Geral'
         if metodo: metodo = 'Lay Visitante'
 
-    elif filtro_pronto_selecionado == "BF - Lay 0x1 (até 65min)":
+    elif filtro_pronto_selecionado == "BF - Lay 0x1 (até 75min)":
         filter = get_filter_betfair_lay_0x1(df)
         df = df[filter]
         if condicao: condicao = 'Geral'
-        if metodo: metodo = 'Lay 0x1 65min'
+        if metodo: metodo = 'Lay 0x1 75min'
 
-    elif filtro_pronto_selecionado == "BF - Lay 0x2 (até 65min)":
+    elif filtro_pronto_selecionado == "BF - Lay 0x2 (até 75min)":
         filter = get_filter_betfair_lay_0x2(df)
         df = df[filter]
         if condicao: condicao = 'Geral'
-        if metodo: metodo = 'Lay 0x2 65min'
+        if metodo: metodo = 'Lay 0x2 75min'
 
-    elif filtro_pronto_selecionado == "BF - Lay 0x3 (até 65min)":
+    elif filtro_pronto_selecionado == "BF - Lay 0x3 (até 75min)":
         filter = get_filter_betfair_lay_0x3(df)
         df = df[filter]
         if condicao: condicao = 'Geral'
-        if metodo: metodo = 'Lay 0x3 65min'
+        if metodo: metodo = 'Lay 0x3 75min'
 
     elif filtro_pronto_selecionado == "BF - Over 2.5 FT":
         filter = get_filter_betfair_over25_ft(df)
@@ -304,10 +304,10 @@ def get_result_filtro_pronto(df, metodo):
         df.loc[filter, "Status_Metodo"] = "GREEN"
         odd_media = f"{str(round(df['Odd_BTTS_No'].mean(), 2))}"
 
-    elif metodo == 'Lay 0x1 65min':
+    elif metodo == 'Lay 0x1 75min':
         df = df[df['Odd_CS_0x1_Lay'] > 0] 
-        df['Profit'] =  np.where(df['Resultado_65'] == '0-1', -0.25,
-                        np.where(df['Resultado_65'] == '0-0', -0.08, profit_no_comission(df['Odd_CS_0x1_Lay'],'Lay')))
+        df['Profit'] =  np.where(df['Resultado_75'] == '0-1', -0.25,
+                        np.where(df['Resultado_75'] == '0-0', -0.08, profit_no_comission(df['Odd_CS_0x1_Lay'],'Lay')))
         df['Status_Metodo']  = np.where(df['Profit'] >= 0, 'GREEN', 'RED')
         odd_media = f"{str(round(df['Odd_CS_0x1_Lay'].mean(), 2))}"
 
@@ -322,14 +322,14 @@ def get_result_filtro_pronto(df, metodo):
         df.loc[(df["Resultado_80"] != '1-1'), "Status_Metodo"] = "GREEN"
         df['Profit'] = 0
 
-    elif metodo == 'Lay 0x2 65min':
+    elif metodo == 'Lay 0x2 75min':
         df = df[df['Odd_CS_0x2_Lay'] > 0]
-        df['Profit'] =  np.where(df['Resultado_65'] == '0-2', -0.25,
-                        np.where(df['Resultado_65'] == '0-1', -0.08,
-                        np.where(df['Resultado_65'] == '0-0', profit_no_comission(df['Odd_CS_0x2_Lay'],'Lay') * 0.5, profit_no_comission(df['Odd_CS_0x2_Lay'],'Lay'))))
+        df['Profit'] =  np.where(df['Resultado_75'] == '0-2', -0.25,
+                        np.where(df['Resultado_75'] == '0-1', -0.08,
+                        np.where(df['Resultado_75'] == '0-0', profit_no_comission(df['Odd_CS_0x2_Lay'],'Lay') * 0.5, profit_no_comission(df['Odd_CS_0x2_Lay'],'Lay'))))
         
-        df['Status_Metodo'] =   np.where(df['Resultado_65'].isin(['0-1','0-2']), 'RED',
-                                np.where(df['Resultado_65'] == '0-0', 'VOID', 'GREEN'))
+        df['Status_Metodo'] =   np.where(df['Resultado_75'].isin(['0-1','0-2']), 'RED',
+                                np.where(df['Resultado_75'] == '0-0', 'VOID', 'GREEN'))
         
         odd_media = f"{str(round(df['Odd_CS_0x2_Lay'].mean(), 2))}"
 
@@ -340,15 +340,15 @@ def get_result_filtro_pronto(df, metodo):
         df.loc[filter, "Status_Metodo"] = "GREEN"
         odd_media = f"{str(round(df['Odd_CS_0x2_Lay'].mean(), 2))}"
 
-    elif metodo == 'Lay 0x3 65min':
+    elif metodo == 'Lay 0x3 75min':
         df = df[df['Odd_CS_0x3_Lay'] > 0]
-        df['Profit'] =  np.where(df['Resultado_65'] == '0-3', -0.25,
-                        np.where(df['Resultado_65'] == '0-2', -0.08,
-                        np.where(df['Resultado_65'] == '0-1', profit_no_comission(df['Odd_CS_0x3_Lay'],'Lay') * 0.25,
-                        np.where(df['Resultado_65'] == '0-0', profit_no_comission(df['Odd_CS_0x3_Lay'],'Lay') * 0.5, profit_no_comission(df['Odd_CS_0x3_Lay'],'Lay')))))
+        df['Profit'] =  np.where(df['Resultado_75'] == '0-3', -0.25,
+                        np.where(df['Resultado_75'] == '0-2', -0.08,
+                        np.where(df['Resultado_75'] == '0-1', profit_no_comission(df['Odd_CS_0x3_Lay'],'Lay') * 0.25,
+                        np.where(df['Resultado_75'] == '0-0', profit_no_comission(df['Odd_CS_0x3_Lay'],'Lay') * 0.5, profit_no_comission(df['Odd_CS_0x3_Lay'],'Lay')))))
         
-        df['Status_Metodo'] =   np.where(df['Resultado_65'].isin(['0-2','0-3']), 'RED',
-                                np.where(df['Resultado_65'].isin(['0-0','0-1']), 'VOID', 'GREEN'))
+        df['Status_Metodo'] =   np.where(df['Resultado_75'].isin(['0-2','0-3']), 'RED',
+                                np.where(df['Resultado_75'].isin(['0-0','0-1']), 'VOID', 'GREEN'))
         
         odd_media = f"{str(round(df['Odd_CS_0x3_Lay'].mean(), 2))}"
         
