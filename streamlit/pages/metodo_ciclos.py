@@ -1,6 +1,10 @@
 import streamlit as st
 from pymongo import MongoClient
 import pandas as pd
+from datetime import datetime
+
+# Configuração da Página
+st.set_page_config(page_title="Ciclos Trade - Lay CS", layout="wide")
 
 def main_page():
 
@@ -9,66 +13,102 @@ def main_page():
 
     st.title("Futapp v0.3")
     st.caption("desenvolvido por thiago pires")
-    st.header("🚀 Sistema de Ciclos - Trade Esportivo")
+    st.header("🛡️ Gestão de Ciclos: Lay Correct Score")
 
-    # Init
-    # 1. Conexão com MongoDB (Substitua pela sua URI)
+    # Conexão MongoDB
     mongodb_host, mongodb_username, mongodb_password, mongodb_appName = st.secrets['mongodb'].values()
     connectionString = f"mongodb+srv://{mongodb_username}:{mongodb_password}@{mongodb_host}/?retryWrites=true&w=majority&appName={mongodb_appName}"
     client = MongoClient(connectionString)
     db = client.futdb
-    ciclos_coll = db.ciclos
+    ciclos_coll = db["ciclos"]
 
-    # Sidebar para criar novo ciclo
-    with st.sidebar:
-        st.header("Novo Ciclo")
-        valor_inicial = st.number_input("Valor Inicial (R$)", min_value=1.0, value=100.0)
-        meta_odds = st.number_input("Odd Média", min_value=1.01, value=1.50)
-        
-        if st.button("Iniciar Novo Ciclo"):
-            novo_ciclo = {
-                "status": "ativo",
-                "valor_atual": valor_inicial,
-                "historico": [],
-                "progresso": 0
-            }
-            ciclos_coll.insert_one(novo_ciclo)
-            st.success("Ciclo iniciado!")
+    # --- SEÇÃO 1: INICIALIZAÇÃO ---
+    ciclo_ativo = ciclos_coll.find_one({"status": "ativo"})
 
-    # 2. Exibição do Ciclo Ativo
-    ciclo_atual = ciclos_coll.find_one({"status": "ativo"})
-
-    if ciclo_atual:
-        st.subheader(f"Ciclo em Andamento - Banca Atual: R$ {ciclo_atual['valor_atual']:.2f}")
-        
-        col1, col2 = st.columns(2)
-        with col1:
-            odd_entrada = st.number_input("Odd da Entrada", min_value=1.01, value=1.50)
-        with col2:
-            resultado = st.selectbox("Resultado", ["Pendente", "Green", "Red"])
-
-        if st.button("Registrar Entrada"):
-            if resultado == "Green":
-                novo_valor = ciclo_atual['valor_atual'] * odd_entrada
-                lucro = novo_valor - ciclo_atual['valor_atual']
-                
-                ciclos_coll.update_one(
-                    {"_id": ciclo_atual["_id"]},
-                    {
-                        "$set": {"valor_atual": novo_valor},
-                        "$push": {"historico": {"odd": odd_entrada, "resultado": "Green", "lucro": lucro}}
-                    }
-                )
-                st.balloons()
-                st.rerun()
-            elif resultado == "Red":
-                st.error("Ciclo Quebrado! Reinicie a gestão.")
-                ciclos_coll.update_one({"_id": ciclo_atual["_id"]}, {"$set": {"status": "encerrado"}})
+    if not ciclo_ativo:
+        with st.expander("🆕 Iniciar Novo Ciclo", expanded=True):
+            col_ini1, col_ini2 = st.columns(2)
+            resp_max = col_ini1.number_input("Responsabilidade Máxima do Ciclo (R$)", min_value=1.0, value=100.0)
+            
+            if st.button("Criar Ciclo"):
+                novo_ciclo = {
+                    "status": "ativo",
+                    "responsabilidade_inicial": resp_max,
+                    "banca_atual": resp_max, # A banca cresce com os lucros do Lay
+                    "entradas": [],
+                    "data_inicio": datetime.now()
+                }
+                ciclos_coll.insert_one(novo_ciclo)
                 st.rerun()
 
-        # Exibir Tabela de Histórico
-        if ciclo_atual["historico"]:
-            df = pd.DataFrame(ciclo_atual["historico"])
-            st.table(df)
+    # --- SEÇÃO 2: REGISTRO DE ENTRADA ---
     else:
-        st.info("Nenhum ciclo ativo. Use a barra lateral para começar.")
+        with st.container(border=True):
+            st.subheader(f"Entrada Atual - Banca Disponível: R$ {ciclo_ativo['banca_atual']:.2f}")
+            
+            # Campos solicitados
+            c1, c2, c3 = st.columns(3)
+            data_jogo = c1.date_input("DATA", datetime.now())
+            jogo = c2.text_input("JOGO", placeholder="Ex: Real Madrid x City")
+            liga = c3.text_input("LIGA", placeholder="Ex: Champions League")
+            
+            c4, c5, c6 = st.columns(3)
+            entrada_desc = c4.text_input("ENTRADA", placeholder="Ex: Lay CS 0-0")
+            odd_lay = c5.number_input("ODD LAY", min_value=1.01, step=0.1, value=5.0)
+            
+            # Cálculo de Back Equivalente para Lay: Lucro = Responsabilidade / (Odd - 1)
+            lucro_potencial = ciclo_ativo['banca_atual'] / (odd_lay - 1)
+            c6.metric("Lucro Potencial (Green)", f"R$ {lucro_potencial:.2f}")
+
+            res = st.radio("RESULTADO", ["Pendente", "✅ GREEN", "❌ RED"], horizontal=True)
+
+            if st.button("Confirmar Registro"):
+                if res == "Pendente":
+                    st.warning("Selecione Green ou Red para computar.")
+                else:
+                    if res == "✅ GREEN":
+                        # No Lay, se der Green, você ganha a aposta do 'Backer'
+                        novo_saldo = ciclo_ativo['banca_atual'] + lucro_potencial
+                        status_ciclo = "ativo"
+                    else:
+                        # No Red, você perde a responsabilidade
+                        novo_saldo = 0
+                        status_ciclo = "encerrado"
+
+                    nova_entrada = {
+                        "data": str(data_jogo),
+                        "jogo": jogo,
+                        "liga": liga,
+                        "entrada": entrada_desc,
+                        "odd": odd_lay,
+                        "resultado": res,
+                        "lucro_obtido": lucro_potencial if res == "✅ GREEN" else -ciclo_ativo['banca_atual']
+                    }
+
+                    ciclos_coll.update_one(
+                        {"_id": ciclo_ativo["_id"]},
+                        {
+                            "$set": {"banca_atual": novo_saldo, "status": status_ciclo},
+                            "$push": {"entradas": nova_entrada}
+                        }
+                    )
+                    
+                    if res == "❌ RED":
+                        st.error("Ciclo encerrado por Red.")
+                    else:
+                        st.success("Green registrado! Ciclo atualizado.")
+                    st.rerun()
+
+    # --- SEÇÃO 3: HISTÓRICO E RELATÓRIO ---
+    st.divider()
+    if ciclo_ativo and ciclo_ativo["entradas"]:
+        st.subheader("📊 Histórico do Ciclo")
+        df = pd.DataFrame(ciclo_ativo["entradas"])
+        # Reordenando colunas para o que você pediu
+        df = df[["data", "jogo", "liga", "entrada", "odd", "resultado", "lucro_obtido"]]
+        st.dataframe(df, use_container_width=True)
+        
+        if st.button("Finalizar Ciclo (Sacar Lucro)"):
+            ciclos_coll.update_one({"_id": ciclo_ativo["_id"]}, {"$set": {"status": "finalizado_sucesso"}})
+            st.success("Lucro garantido! Ciclo arquivado.")
+            st.rerun()
