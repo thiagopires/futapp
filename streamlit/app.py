@@ -12,6 +12,7 @@ import pages.base_de_dados as base_de_dados
 import pages.calculadora as calculadora
 import pages.jogos_do_dia as jogos_do_dia
 import pages.jogos_sem_resultado as jogos_sem_resultado
+import pages.metodo_ciclos as metodo_ciclos
 
 st.set_page_config(layout="wide", page_title="Futapp v0.3")
 
@@ -28,6 +29,7 @@ opcoes = {
     "Base de Dados": "base_de_dados",
     "Calculadora": "calculadora",
     "Jogos sem Resultado": "jogos_sem_resultado",
+    "Método de Ciclos": "metodo_ciclos",
 }
 
 # Criando a sidebar com radio buttons
@@ -68,6 +70,9 @@ if st.session_state["logged_in"]:
 
     elif opcoes[escolha] == "jogos_sem_resultado":
         jogos_sem_resultado.main_page(fonte_dados)
+
+    elif opcoes[escolha] == "metodo_ciclos":
+        metodo_ciclos.main_page()
 else:
     login_page()
 
