@@ -600,6 +600,9 @@ def highlight_row(row, highlight):
     return [''] * len(row)
 
 def calcular_gols_por_tempo(df, team_name):
+    df['Goals_H_Minutes'] = df['Goals_H_Minutes'].fillna('[]')
+    df['Goals_A_Minutes'] = df['Goals_A_Minutes'].fillna('[]')
+
     ranges = {
         "0-15":  range(0, 16),
         "16-30": range(16, 31),
