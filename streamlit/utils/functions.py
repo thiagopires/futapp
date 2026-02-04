@@ -600,9 +600,6 @@ def highlight_row(row, highlight):
     return [''] * len(row)
 
 def calcular_gols_por_tempo(df, team_name):
-    df['Goals_H_Minutes'] = df['Goals_H_Minutes'].fillna('[]')
-    df['Goals_A_Minutes'] = df['Goals_A_Minutes'].fillna('[]')
-
     ranges = {
         "0-15":  range(0, 16),
         "16-30": range(16, 31),
@@ -612,60 +609,61 @@ def calcular_gols_por_tempo(df, team_name):
         "76-90": range(76, 91),
     }
 
+    def parsing_seguro(valor):
+        """Converte string para lista ou retorna a lista se já for uma."""
+        if isinstance(valor, list):
+            return valor
+        if pd.isna(valor) or not isinstance(valor, str):
+            return []
+        try:
+            return ast.literal_eval(valor)
+        except (ValueError, SyntaxError):
+            return []
+
+    def ajustar_minuto(minuto):
+        if '+' in str(minuto):
+            return int(str(minuto).split('+')[0])
+        try:
+            return int(minuto)
+        except:
+            return 0
+
     gols_marcados = {r: 0 for r in ranges.keys()}
     gols_sofridos = {r: 0 for r in ranges.keys()}
 
-    # Filtrar apenas jogos do time (Home ou Away)
-    jogos_time = df[(df['Home'] == team_name) | (df['Away'] == team_name)]
-
-    # Considerar apenas os últimos 10 jogos (ordenados por data)
+    # Filtrar e pegar os últimos 10
+    jogos_time = df[(df['Home'] == team_name) | (df['Away'] == team_name)].copy()
     jogos_time = jogos_time.sort_values(by='Date', ascending=False).head(10)
 
     for _, row in jogos_time.iterrows():
-        home_team = row['Home']
-        away_team = row['Away']
+        # Decidir quais colunas são 'Marcados' e quais são 'Sofridos'
+        if row['Home'] == team_name:
+            marcados_raw = row['Goals_H_Minutes']
+            sofridos_raw = row['Goals_A_Minutes']
+        else:
+            marcados_raw = row['Goals_A_Minutes']
+            sofridos_raw = row['Goals_H_Minutes']
 
-        # Função para ajustar minutos com '+' (exemplo: '45+3' -> 45)
-        def ajustar_minuto(minuto):
-            if '+' in str(minuto):
-                return int(minuto.split('+')[0])
-            return int(minuto)
+        minutos_marcados = [ajustar_minuto(m) for m in parsing_seguro(marcados_raw)]
+        minutos_sofridos = [ajustar_minuto(m) for m in parsing_seguro(sofridos_raw)]
 
-        # Processando gols do time da casa
-        if team_name == home_team:
-            home_minutes = [ajustar_minuto(m) for m in ast.literal_eval(row['Goals_H_Minutes'])]
-            away_minutes = [ajustar_minuto(m) for m in ast.literal_eval(row['Goals_A_Minutes'])]
+        # Contabilizar nos intervalos
+        for minuto in minutos_marcados:
+            for intervalo, r_values in ranges.items():
+                if minuto in r_values:
+                    gols_marcados[intervalo] += 1
+        
+        for minuto in minutos_sofridos:
+            for intervalo, r_values in ranges.items():
+                if minuto in r_values:
+                    gols_sofridos[intervalo] += 1
 
-            for minuto in home_minutes:
-                for intervalo, range_values in ranges.items():
-                    if minuto in range_values:
-                        gols_marcados[intervalo] += 1
-            
-            for minuto in away_minutes:
-                for intervalo, range_values in ranges.items():
-                    if minuto in range_values:
-                        gols_sofridos[intervalo] += 1
-
-        # Processando gols do time visitante
-        elif team_name == away_team:
-            away_minutes = [ajustar_minuto(m) for m in ast.literal_eval(row['Goals_A_Minutes'])]
-            home_minutes = [ajustar_minuto(m) for m in ast.literal_eval(row['Goals_H_Minutes'])]
-
-            for minuto in away_minutes:
-                for intervalo, range_values in ranges.items():
-                    if minuto in range_values:
-                        gols_marcados[intervalo] += 1
-            
-            for minuto in home_minutes:
-                for intervalo, range_values in ranges.items():
-                    if minuto in range_values:
-                        gols_sofridos[intervalo] += 1
-
+    # Criar DataFrame final para o Streamlit
     df_gols = pd.DataFrame({
-        "Intervalo": gols_marcados.keys(),
-        "Gols Marcados": gols_marcados.values(),
-        "Gols Sofridos": gols_sofridos.values()
-    }).sort_values(by='Intervalo', ascending=False)
+        "Intervalo": list(gols_marcados.keys()),
+        "Gols Marcados": list(gols_marcados.values()),
+        "Gols Sofridos": list(gols_sofridos.values())
+    })
 
     return df_gols.melt(id_vars='Intervalo', var_name='Tipo de Gol', value_name='Gols')
 
