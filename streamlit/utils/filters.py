@@ -21,6 +21,7 @@ metodos = [
     'Lay 1x1',
     'Lay 0x2',
     'Lay 0x3',
+    'Lay 1x3',
     "Lay 2x2",
     'Lay Goleada Visitante',
     'Lay 0x1 e Lay 1x0',
@@ -45,9 +46,11 @@ metodos_tabs = [
     'Lay 0x1',
     'Lay 0x2',
     'Lay 0x3',
+    'Lay 1x3',
     'Lay 0x1 75min',
     'Lay 0x2 75min',
     'Lay 0x3 75min',
+    'Lay 1x3 75min',
     'Lay Goleada Visitante',
     'Over 0.5 HT',
     'Under 0.5 HT',
@@ -81,6 +84,7 @@ filtros_prontos =  {
         'BF - Lay 0x1 (até 75min)',
         'BF - Lay 0x2 (até 75min)',
         'BF - Lay 0x3 (até 75min)',
+        'BF - Lay 1x3 (até 75min)',
     ]
 }
 
@@ -169,6 +173,12 @@ def get_details_filtro_pronto(df, condicao, metodo, filtro_pronto_selecionado):
         df = df[filter]
         if condicao: condicao = 'Geral'
         if metodo: metodo = 'Lay 0x3 75min'
+
+    elif filtro_pronto_selecionado == "BF - Lay 1x3 (até 75min)":
+        filter = get_filter_betfair_lay_1x3(df)
+        df = df[filter]
+        if condicao: condicao = 'Geral'
+        if metodo: metodo = 'Lay 1x3 75min'
 
     elif filtro_pronto_selecionado == "BF - Over 2.5 FT":
         filter = get_filter_betfair_over25_ft(df)
@@ -358,6 +368,21 @@ def get_result_filtro_pronto(df, metodo):
         df.loc[filter, 'Profit'] = profit_no_comission(df['Odd_CS_0x3_Lay'],'Lay')
         df.loc[filter, "Status_Metodo"] = "GREEN"
         odd_media = f"{str(round(df['Odd_CS_0x3_Lay'].mean(), 2))}"
+
+    elif metodo == 'Lay 1x3 75min':
+        df = df[df['Odd_CS_1x3_Lay'] > 0] 
+        df['Profit'] =  np.where(df['Resultado_75'] == '1-2', -0.25,
+                        np.where(df['Resultado_75'] == '0-2', -0.08, profit_no_comission(df['Odd_CS_1x3_Lay'],'Lay')))
+        df['Status_Metodo']  = np.where(df['Profit'] >= 0, 'GREEN', 'RED')
+        odd_media = f"{str(round(df['Odd_CS_1x3_Lay'].mean(), 2))}"
+
+    elif metodo == 'Lay 1x3':
+        df = df[df['Odd_CS_1x3_Lay'] > 0]
+        filter = (df["Resultado_FT"] != '1-3')
+        df.loc[filter, 'Profit'] = profit_no_comission(df['Odd_CS_1x3_Lay'],'Lay')
+        df.loc[filter, "Status_Metodo"] = "GREEN"
+        odd_media = f"{str(round(df['Odd_CS_1x3_Lay'].mean(), 2))}"
+
 
     elif metodo == 'Lay 2x2':
         df.loc[df["Resultado_60"] != '2-2', "Status_Metodo"] = "GREEN"
