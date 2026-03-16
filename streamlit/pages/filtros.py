@@ -27,17 +27,20 @@ def main_page(fonte_dados):
         for fp in filtros_prontos['Betfair'][1:]:
             
             st.subheader(f"Resultados para: {fp}")
-
-            df_matches, condicao, metodo = get_details_filtro_pronto(df_matches, None, None, fp)
-                          
-            st.dataframe(
-                df_matches[df_matches_columns]
-                , on_select="rerun"
-                , selection_mode="single-row"
-                , width='stretch'
-                , hide_index=True
-                , key=f"df_{fp}"
-            )
+            df = df_matches.copy()
+            df, condicao, metodo = get_details_filtro_pronto(df, None, None, fp)
+            
+            if not df_matches.empty:               
+                st.dataframe(
+                    df[df_matches_columns]
+                    , on_select="rerun"
+                    , selection_mode="single-row"
+                    , width='stretch'
+                    , hide_index=True
+                    , key=f"df_{fp}"
+                )
+            else:
+                st.info(f"Sem jogos.")
 
             st.divider()
         
