@@ -41,6 +41,3 @@ def main_page(fonte_dados):
                 st.info(f"Sem jogos.")
 
             st.divider()
-        
-        st.write(f"Última atualização no AWS Codebuild: {last_refresh_daymatches()}")
-        st.write(f"Quantidade de jogos: {len(df_matches)}")
