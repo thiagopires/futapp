@@ -30,11 +30,9 @@ def main_page(fonte_dados):
             df = df_matches.copy()
             df, condicao, metodo = get_details_filtro_pronto(df, None, None, fp)
             
-            if not df_matches.empty:               
+            if len(df_matches) > 0:               
                 st.dataframe(
                     df[df_matches_columns]
-                    , on_select="rerun"
-                    , selection_mode="single-row"
                     , width='stretch'
                     , hide_index=True
                     , key=f"df_{fp}"
