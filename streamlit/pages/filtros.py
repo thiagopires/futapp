@@ -25,19 +25,15 @@ def main_page(fonte_dados):
     else:
 
         for fp in filtros_prontos[fonte_dados].pop(0):
-            print(fp)
+            
+            st.subheader(f"Resultados para: {fp}")
 
             df_matches, condicao, metodo = get_details_filtro_pronto(df_matches, None, None, fp)
-
-            if not df_matches.empty:
-                st.subheader(fp)
-                st.dataframe(
-                    df_matches[df_matches_columns]
-                    , on_select="rerun"
-                    , selection_mode="single-row"
-                    , width='stretch'
-                    , hide_index=True
-                )
+            
+            if not df_matches.empty:               
+                st.dataframe(df_matches, key=f"df_{fp}")
+            else:
+                st.info(f"Sem jogos.")
 
             st.divider()
         
