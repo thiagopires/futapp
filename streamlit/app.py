@@ -13,6 +13,7 @@ import pages.calculadora as calculadora
 import pages.jogos_do_dia as jogos_do_dia
 import pages.jogos_sem_resultado as jogos_sem_resultado
 import pages.metodo_ciclos as metodo_ciclos
+import pages.filtros as filtros
 
 st.set_page_config(layout="wide", page_title="Futapp v0.3")
 
@@ -30,6 +31,7 @@ opcoes = {
     "Calculadora": "calculadora",
     "Jogos sem Resultado": "jogos_sem_resultado",
     "Método de Ciclos": "metodo_ciclos",
+    "Filtros Prontos": "filtros"
 }
 
 # Criando a sidebar com radio buttons
@@ -52,6 +54,9 @@ if st.session_state["logged_in"]:
 
     elif opcoes[escolha] == "jogos_do_dia":
         jogos_do_dia.main_page(fonte_dados)
+    
+    elif opcoes[escolha] == "filtros":
+        filtros.main_page(fonte_dados)
 
     elif opcoes[escolha] == "backtesting":
         backtesting.main_page(fonte_dados)
