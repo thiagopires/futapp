@@ -29,7 +29,7 @@ def main_page(fonte_dados):
 
             df_matches, condicao, metodo = get_details_filtro_pronto(df_matches, None, None, fp)
 
-            if not df_matches.empty():
+            if not df_matches.empty:
                 st.subheader(fp)
                 st.dataframe(
                     df_matches[df_matches_columns]
