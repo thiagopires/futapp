@@ -17,7 +17,7 @@ def main_page(fonte_dados):
     data_analise = st.date_input("Data da Análise", get_today())
 
     df_matches = load_daymatches(data_analise, 'Betfair')
-    df_matches_columns = ['League','Rodada','Time','Home','Away','Resultado','Goals_H_Minutes','Goals_A_Minutes','Odd_H_FT','Odd_D_FT','Odd_A_FT','Odd_CS_0x1_Lay','Odd_CS_0x2_Lay','Odd_CS_0x3_Lay','Odd_CS_1x3_Lay']
+    df_matches_columns = ['League','Time','Home','Away','Resultado','Goals_H_Minutes','Goals_A_Minutes','Odd_H_FT','Odd_D_FT','Odd_A_FT','Odd_CS_0x1_Lay','Odd_CS_0x2_Lay','Odd_CS_0x3_Lay','Odd_CS_1x3_Lay']
 
     if df_matches.empty:
         st.info(f"Os dados para {data_analise} não estão disponíveis.")

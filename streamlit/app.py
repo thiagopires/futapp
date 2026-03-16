@@ -24,6 +24,7 @@ pd.set_option('display.max_rows', None)
 opcoes = {
     "Página Inicial": "home",
     "Jogos do Dia": "jogos_do_dia",
+    "Filtros Prontos": "filtros",
     "Backtesting": "backtesting",
     "Análise Home": "analise_home",
     "Análise Away": "analise_away",
@@ -31,7 +32,6 @@ opcoes = {
     "Calculadora": "calculadora",
     "Jogos sem Resultado": "jogos_sem_resultado",
     "Método de Ciclos": "metodo_ciclos",
-    "Filtros Prontos": "filtros"
 }
 
 # Criando a sidebar com radio buttons
