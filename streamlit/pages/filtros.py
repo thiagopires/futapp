@@ -23,18 +23,19 @@ def main_page(fonte_dados):
 
     else:
 
-        for fp in filtros_prontos[fonte_dados]:
+        for fp in filtros_prontos[fonte_dados].pop(0):
 
-            st.subheader(fp)
             df_matches, condicao, metodo = get_details_filtro_pronto(df_matches, None, None, fp)
 
-            st.dataframe(
-                df_matches[df_matches_columns]
-                , on_select="rerun"
-                , selection_mode="single-row"
-                , width='stretch'
-                , hide_index=True
-            )
+            if not df_matches.empty():
+                st.subheader(fp)
+                st.dataframe(
+                    df_matches[df_matches_columns]
+                    , on_select="rerun"
+                    , selection_mode="single-row"
+                    , width='stretch'
+                    , hide_index=True
+                )
 
             st.divider()
         
