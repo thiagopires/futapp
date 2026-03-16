@@ -30,16 +30,26 @@ def drop_reset_index(df):
     return df.sort_index()
 
 def send_alert(message):
-    if st.secrets['ENV'] == 'prd':
-        chat_id, bot_id = st.secrets['telegram'].values()
-        try:
-            bot = telebot.TeleBot(bot_id)
-            response = bot.send_message(chat_id=chat_id, text=message, parse_mode='HTML')
-            return response
-        except requests.exceptions.ConnectionError:
-            print("Connection error with Telegram. Retrying after 5 seconds...")
-            time.sleep(5)
-            send_alert(message)
+    chat_id, bot_id = st.secrets['telegram'].values()
+    try:
+        bot = telebot.TeleBot(bot_id)
+        response = bot.send_message(chat_id=chat_id, text=message, parse_mode='HTML')
+        return response
+    except requests.exceptions.ConnectionError:
+        print("Connection error with Telegram. Retrying after 5 seconds...")
+        time.sleep(5)
+        # send_alert(message)
+        send_ntfy("Futapp - ERROR", message)
+
+def send_ntfy(title, text):
+    response = requests.post("https://ntfy.sh/Tipsgolbr",
+        data=message.encode('utf-8'),
+        headers={
+            "Title": method.replace("BF - ","").replace("até ", ""),
+            "Priority": "high",
+            "Tags": "white_check_mark"
+        })
+    return response
 
 def validate_login(email):
     isValidEmail = True if str(email).lower() in st.secrets["valid_emails"].values() else False
@@ -193,21 +203,45 @@ def load_daymatches(dt, source):
     except KeyError as e:
         return pd.DataFrame()
 
-@st.cache_data
-def betfair_load_histmatches():
-    # file = load_content_api_github("Bases_de_Dados/Betfair/Base_de_Dados_Betfair_Exchange_Back_Lay.csv")
-    # df = pd.read_csv(file)
+# @st.cache_data
+# def betfair_load_histmatches():
+#     # file = load_content_api_github("Bases_de_Dados/Betfair/Base_de_Dados_Betfair_Exchange_Back_Lay.csv")
+#     # df = pd.read_csv(file)
 
+#     mongodb_host, mongodb_username, mongodb_password, mongodb_appName = st.secrets['mongodb'].values()
+#     connectionString = f"mongodb+srv://{mongodb_username}:{mongodb_password}@{mongodb_host}/?retryWrites=true&w=majority&appName={mongodb_appName}"
+#     client = MongoClient(connectionString)
+#     db = client.futdb
+#     collection = db.bf_jogos_do_dia
+#     data = list(collection.find())
+#     df = pd.DataFrame(data).sort_values(['Date','Time'])
+
+#     df = transform_df_betfair(df)
+
+#     return df
+
+@st.cache_data(ttl=3600) # Adicione um TTL (Time To Live) para limpar o cache de hora em hora
+def betfair_load_histmatches():
+    # 1. Singleton para conexão (evita abrir conexão toda vez)
     mongodb_host, mongodb_username, mongodb_password, mongodb_appName = st.secrets['mongodb'].values()
     connectionString = f"mongodb+srv://{mongodb_username}:{mongodb_password}@{mongodb_host}/?retryWrites=true&w=majority&appName={mongodb_appName}"
     client = MongoClient(connectionString)
     db = client.futdb
     collection = db.bf_jogos_do_dia
-    data = list(collection.find())
-    df = pd.DataFrame(data).sort_values(['Date','Time'])
-
+    
+    # 2. Query Magra: Busca apenas o essencial e já vem ordenado do banco
+    # Supondo que você queira apenas jogos de 2024 em diante, por exemplo:
+    # query = {"Date": {"$gte": "2024-01-01"}}
+    query = {} 
+    
+    cursor = collection.find(query, {"_id": 0}).sort([('Date', 1), ('Time', 1)])
+    
+    # 3. Construção direta do DataFrame
+    df = pd.DataFrame(list(cursor))
+    
+    # 4. Transformação Vetorizada
     df = transform_df_betfair(df)
-
+    
     return df
 
 @st.cache_data
