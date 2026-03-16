@@ -24,7 +24,7 @@ def main_page(fonte_dados):
 
     else:
 
-        for fp in filtros_prontos[fonte_dados].pop(0):
+        for fp in filtros_prontos['Betfair'][1:]:
             
             st.subheader(f"Resultados para: {fp}")
 
