@@ -4,4 +4,5 @@ streamlit/notebooks/
 streamlit/notebooks/*
 streamlit/mentoria/
 streamlit/mentoria/*
+.streamlit/secrets.toml
 *.zip
