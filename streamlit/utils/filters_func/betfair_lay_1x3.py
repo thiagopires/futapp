@@ -2,7 +2,7 @@
 def get_filter_betfair_lay_1x3(df):
     return (
         (df["Odd_H_FT"] > df["Odd_A_FT"])
-        & (df["Odd_A_FT"].betwwen(1.6, 2.4))
+        & (df["Odd_A_FT"].between(1.6, 2.4))
         & (df["Odd_CS_1x3_Lay"] <= 40)
         & (
             ((df['League'] == 'ARGENTINA - PRIMERA DIVISIÓN') & (df['FX_Probabilidade_A'] == '0.39-0.48') & (df['FX_CV_HDA'] == '0.20-0.25')) |
