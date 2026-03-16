@@ -30,7 +30,7 @@ def main_page(fonte_dados):
             df = df_matches.copy()
             df, condicao, metodo = get_details_filtro_pronto(df, None, None, fp)
             
-            if len(df_matches) > 0:               
+            if not df.empty:               
                 st.dataframe(
                     df[df_matches_columns]
                     , width='stretch'
