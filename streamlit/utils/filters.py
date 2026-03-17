@@ -43,6 +43,7 @@ metodos_tabs = [
     'Back Visitante',
     'Lay Casa',
     'Lay Visitante',
+    'Lay Empate',
     'Lay 0x1',
     'Lay 0x2',
     'Lay 0x3',
@@ -76,6 +77,7 @@ filtros_prontos =  {
     'Betfair': [
         "Sem filtro",
         'BF - Lay Visitante',
+        'BF - LTD',
         # 'BF - Over 2.5 FT',
         # 'BF - Under 2.5 FT',
         # 'BF - BTTS Sim',
@@ -179,6 +181,12 @@ def get_details_filtro_pronto(df, condicao, metodo, filtro_pronto_selecionado):
         df = df[filter]
         if condicao: condicao = 'Geral'
         if metodo: metodo = 'Lay 1x3 75min'
+
+    elif filtro_pronto_selecionado == "BF - LTD":
+        filter = get_filter_betfair_ltd(df)
+        df = df[filter]
+        if condicao: condicao = 'Geral'
+        if metodo: metodo = 'Lay Empate'
 
     elif filtro_pronto_selecionado == "BF - Over 2.5 FT":
         filter = get_filter_betfair_over25_ft(df)
