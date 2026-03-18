@@ -3,6 +3,7 @@ def get_filter_betfair_ltd(df):
     return (
         (df["Odd_H_FT"] < df["Odd_A_FT"])
         & (df["Odd_H_FT"] < 2.3)
+        & (df["Odd_D_FT"] > 3.2)
         & (
             ((df['League'] == 'ARGENTINA - PRIMERA DIVISIÓN') & (df['FX_Probabilidade_A'] == '0.12-0.21') & (df['FX_CV_HDA'] == '0.45-0.50')) |
             ((df['League'] == 'ARGENTINA - PRIMERA DIVISIÓN') & (df['FX_Probabilidade_A'] == '0.12-0.21') & (df['FX_CV_HDA'] == '0.60-0.65')) |
