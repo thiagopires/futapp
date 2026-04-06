@@ -234,7 +234,7 @@ def betfair_load_histmatches():
     # query = {"Date": {"$gte": "2024-01-01"}}
     query = {} 
     
-    cursor = collection.find(query, {"_id": 0}).sort([('Date', 1), ('Time', 1)])
+    cursor = collection.find(query, {"_id": 0}).sort([('Date', 1), ('Time', 1)]).allow_disk_use(True)
     
     # 3. Construção direta do DataFrame
     df = pd.DataFrame(list(cursor))
