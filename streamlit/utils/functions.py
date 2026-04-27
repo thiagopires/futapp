@@ -511,6 +511,20 @@ def load_histmatches(source):
             df["Odd_DC_X2"] = round(1 / (1 / df["Odd_D_FT"] + 1 / df["Odd_A_FT"]),2)
             df['PPG_Home_Pre'] = 0
             df['PPG_Away_Pre'] = 0
+
+            if {"Goals_H_FT", "Goals_A_FT"}.issubset(df.columns):
+                mask = df["Goals_H_FT"].notna() & df["Goals_A_FT"].notna()
+                df["Resultado"] = "N/A"
+                df.loc[mask, "Resultado"] = (
+                    df.loc[mask, "Goals_H_FT"].astype(int).astype(str) +
+                    "-" +
+                    df.loc[mask, "Goals_A_FT"].astype(int).astype(str)
+                )
+            else:
+                df["Resultado"] = "N/A"
+                df["Goals_H_Minutes"] = "N/A"
+                df["Goals_A_Minutes"] = "N/A"
+
         elif source == 'FootyStats':
             df["Diff_XG_Home_Away_Pre"] = df['XG_Home_Pre'] - df['XG_Away_Pre']
             df["Odd_CS_0x1_Lay"] = 0
