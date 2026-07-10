@@ -3,7 +3,7 @@ def get_filter_betfair_lay_goleada_h(df):
     return (
         (df["Odd_H_FT"] < df["Odd_A_FT"])
         & (df["Odd_H_FT"] < 2.6)
-        & (df["Odd_CS_Goleada_H_Lay"] < 20)
+        & (df["Odd_CS_Goleada_H_Lay"].between(14, 20))
         & (
             ((df['League'] == 'ARGENTINA - PRIMERA DIVISIÓN') & (df['FX_Probabilidade_A'] == '0.12-0.21') & (df['FX_CV_HDA'] == '0.30-0.35')) |
             ((df['League'] == 'ARGENTINA - PRIMERA DIVISIÓN') & (df['FX_Probabilidade_A'] == '0.12-0.21') & (df['FX_CV_HDA'] == '0.35-0.40')) |
