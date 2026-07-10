@@ -23,6 +23,7 @@ metodos = [
     'Lay 0x3',
     'Lay 1x3',
     "Lay 2x2",
+    'Lay Goleada Casa',
     'Lay Goleada Visitante',
     'Lay 0x1 e Lay 1x0',
     'Lay 0x3 e Lay 3x0',
@@ -52,6 +53,7 @@ metodos_tabs = [
     'Lay 0x2 75min',
     'Lay 0x3 75min',
     'Lay 1x3 75min',
+    'Lay Goleada Casa',
     'Lay Goleada Visitante',
     'Over 0.5 HT',
     'Under 0.5 HT',
@@ -87,6 +89,7 @@ filtros_prontos =  {
         'BF - Lay 0x2 (até 75min)',
         'BF - Lay 0x3 (até 75min)',
         'BF - Lay 1x3 (até 75min)',
+        'BF - Lay Goleada Casa',
     ]
 }
 
@@ -181,6 +184,12 @@ def get_details_filtro_pronto(df, condicao, metodo, filtro_pronto_selecionado):
         df = df[filter]
         if condicao: condicao = 'Geral'
         if metodo: metodo = 'Lay 1x3 75min'
+
+    elif filtro_pronto_selecionado == "BF - Lay Goleada Casa":
+        filter = get_filter_betfair_lay_goleada_h(df)
+        df = df[filter]
+        if condicao: condicao = 'Geral'
+        if metodo: metodo = 'Lay Goleada Casa'
 
     elif filtro_pronto_selecionado == "BF - LTD":
         filter = get_filter_betfair_ltd(df)
@@ -395,11 +404,17 @@ def get_result_filtro_pronto(df, metodo):
         df.loc[df["Resultado_60"] != '2-2', "Status_Metodo"] = "GREEN"
         df['Profit'] = 0
 
+    elif metodo == 'Lay Goleada Casa':
+        filter = ((df['Goals_H_FT'] < 4) | (df['Goals_H_FT'] <= df['Goals_A_FT']))
+        df.loc[filter, 'Profit'] = profit_no_comission(df['Odd_CS_Goleada_H_Lay'],'Lay')
+        df.loc[filter, "Status_Metodo"] = "GREEN"
+        odd_media = f"{str(round(df['Odd_CS_Goleada_H_Lay'].mean(), 2))}"
+
     elif metodo == 'Lay Goleada Visitante':
         filter = ((df['Goals_A_FT'] < 4) | (df['Goals_A_FT'] <= df['Goals_H_FT']))
-        df.loc[filter, 'Profit'] = profit_no_comission(df['Odd_CS_Goleada_A'],'Lay')
+        df.loc[filter, 'Profit'] = profit_no_comission(df['Odd_CS_Goleada_A_Lay'],'Lay')
         df.loc[filter, "Status_Metodo"] = "GREEN"
-        odd_media = f"{str(round(df['Odd_CS_Goleada_A'].mean(), 2))}"
+        odd_media = f"{str(round(df['Odd_CS_Goleada_A_Lay'].mean(), 2))}"
 
     elif metodo == 'Lay 0x1 e Lay 1x0':
         df.loc[((df["Resultado_80"] != '0-1') & (df["Resultado_80"] != '1-0')), "Status_Metodo"] = "GREEN"

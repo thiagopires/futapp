@@ -6,6 +6,7 @@ from .betfair_lay_0x1       import get_filter_betfair_lay_0x1
 from .betfair_lay_0x2       import get_filter_betfair_lay_0x2
 from .betfair_lay_0x3       import get_filter_betfair_lay_0x3
 from .betfair_lay_1x3       import get_filter_betfair_lay_1x3
+from .betfair_lay_goleada_h import get_filter_betfair_lay_goleada_h
 from .betfair_ltd           import get_filter_betfair_ltd
 from .betfair_over05_ht     import get_filter_betfair_over05_ht
 from .betfair_under05_ht    import get_filter_betfair_under05_ht
